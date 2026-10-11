@@ -18,6 +18,7 @@ recheck before relying on one for anything consequential.
 - [Power gates of the tunneled controller](#power-gates-of-the-tunneled-controller)
 - [Not yet run on the Mac](#not-yet-run-on-the-mac)
 - [Pushing to a kernel fork from a shallow clone](#pushing-to-a-kernel-fork-from-a-shallow-clone)
+- [Kernel and device trees must be switched together](#kernel-and-device-trees-must-be-switched-together)
 - [What is inside the enclosure](#what-is-inside-the-enclosure)
 - [No backport to 7.1](#no-backport-to-71)
 - [Asahi does not take LLM work](#asahi-does-not-take-llm-work)
@@ -80,6 +81,9 @@ As of 2026-10-11 the `tbt/pcie` commits are only compiled (clang 18, PCIe driver
 
 ## Pushing to a kernel fork from a shallow clone
 GitHub answers "have" for commits of the whole fork network, so with `push.negotiate=true` a branch based on an Asahi commit was pushed to a fork that only had `master` at v6.14-rc3, from a depth-1 clone, as a pack of just the new commits (2026-10-11). Creating the ref through the API is not possible from the assistant's sandbox.
+
+## Kernel and device trees must be switched together
+Operator report, 2026-10-11: the stock 7.1.13 kernel, booted while the trial kernel's device trees were installed, hung and did not detect a USB keyboard; the trial kernel on the same device trees was fine. The device trees are part of `m1n1/boot.bin` (built by `update-m1n1` from whatever `/boot/dtb` points at), so there is one set per boot, not one per GRUB entry, and a raw dtb loaded by GRUB would miss m1n1's fix-ups. Fedora's `10-devicetree.install` assumes a newer device tree is always safe for an older kernel; that does not hold between Asahi 7.1 and `asahi-wip-7.2`. Not yet known: which node the stock kernel trips over, and whether the first trial device trees (before the PCIe nodes) did the same; the journal of the hung boot would tell. Decision: `tbt-kernel.sh try` and `stock` switch the default kernel and the device trees together and there is no one-shot boot any more; `install` leaves whichever of the two was active.
 
 ## What is inside the enclosure
 macOS, 2026-10-11: root port, then ASMedia `1b21:2463` upstream and downstream bridges, then one Realtek `10ec:9100` AHCI controller (class 010601) with eight 18 TB SATA disks. So Linux needs nothing beyond the PCIe host: the stock `ahci` driver covers the rest.

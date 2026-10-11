@@ -7,3 +7,4 @@ Measure llama.cpp on the stock kernel, Vulkan against CPU · check: llama-bench 
 Retry the PCIe controller when its tunnel comes up before its driver · check: enclosure attached at boot gets its disks without a replug
 ? Give each bus behind a tunnel its own IOMMU stream, as the 2023 tree did · options: per-bus streams (isolation between devices), or keep one shared stream (simpler) · default: keep one stream
 Drop the DEBUG cable_info_or commit from the branch once cable handling is settled · check: branch builds and links without it
+Share Bluetooth pairings between macOS and Linux with asahi-btsync · check: keyboard and mouse connect in both systems without pairing again

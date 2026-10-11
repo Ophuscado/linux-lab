@@ -25,7 +25,7 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
 
 ## Contents
 
-- `tbt-kernel.sh`: build, install, one-shot boot and roll back the trial kernel.
+- `tbt-kernel.sh`: build, install, switch between trial and stock kernel, roll back.
 - `tbt-capture.sh`: record a plug-in on the trial kernel with driver debug output.
 - `boot-dump.sh`: record what the running kernel brought up, for comparing kernels.
 - `apciec-dump.sh`: collect, in macOS, how the Thunderbolt PCIe controller is described.
@@ -38,6 +38,8 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
 
 1. Read the header of `tbt-kernel.sh`; it lists the stages and what each one touches.
 2. `./tbt-kernel.sh deps`, `TBT_NO_GPU=1 ./tbt-kernel.sh build`, `install`, `try`, reboot.
+   `try` and `stock` switch kernel and device trees together; do not pick the other
+   kernel in the GRUB menu, the stock kernel hangs on the trial device trees.
 3. `./tbt-kernel.sh status`, then `./tbt-capture.sh` for a detailed record.
    Disks behind PCIe over Thunderbolt appear read-only until `./tbt-kernel.sh readonly off`.
 4. `./tbt-kernel.sh rollback` restores the stock kernel, device trees and boot image.

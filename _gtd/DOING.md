@@ -4,3 +4,4 @@ Add device-tree nodes for the six apciec controllers and their IOMMUs on t602x �
 Give pcie-apple.c a single-port tunnel variant without reset GPIO or reference clock · check: driver binds and root port 106b:1014 shows in lspci · waits: operator builds and boots tbt/pcie, attaches boot-dump and tbt-capture files
 Bring the PCIe link up when the Thunderbolt tunnel is active · check: the two ASMedia 1b21:2463 bridges enumerate · waits: operator builds and boots tbt/pcie, attaches boot-dump and tbt-capture files
 Route DMA through the port IOMMU and deliver MSIs · check: ahci binds to 10ec:9100 and the eight disks appear, mounted read-only · waits: operator builds and boots tbt/pcie, attaches boot-dump and tbt-capture files
+Find what makes the stock kernel hang on the trial device trees · check: the failing driver or node is named in KNOWLEDGE.md · waits: operator's boot-dump file, which carries the journal of the hung boot if it was kept

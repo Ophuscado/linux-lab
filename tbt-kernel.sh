@@ -11,12 +11,11 @@
 #   build     fetches the pinned commit and builds in $SRC only; nothing else on the
 #             system changes. Run it again after updating this script: it moves $SRC to
 #             the new pinned commit and rebuilds what changed
-#   install   adds the kernel as an extra boot entry and keeps the stock kernel as default.
-#             Rewrites m1n1/boot.bin on the EFI partition, because the device trees in it
-#             are shared by every installed kernel. A copy is kept as boot.bin.stock.
-#             Also switches 'readonly' on
-#   try       selects the new kernel for the NEXT BOOT ONLY; a power cycle returns to stock
-#   status    run after booting the new kernel; prints what it sees
+#   install   adds the kernel as an extra boot entry. What Linux boots stays as it was
+#             (see 'try' and 'stock'). Also switches 'readonly' on
+#   try       makes Linux boot the trial kernel, with its device trees, until 'stock'
+#   stock     makes Linux boot the stock kernel, with its device trees, until 'try'
+#   status    prints what the running kernel sees, and whether kernel and device trees match
 #   m1n1      only if status says the host DROM is rejected: replaces m1n1 1.6.1 with
 #             Fedora's own 1.9.9 build (first release that writes the USB4 router ID)
 #   readonly  on|off: a udev rule that makes every disk reached through PCIe over
@@ -26,10 +25,20 @@
 #   rollback  removes the kernel and the udev rule, restores stock device trees and
 #             m1n1 1.6.1
 #
-# If Linux no longer boots at all (not expected), restore the boot image from macOS:
+# Kernel and device trees go together. The device trees are not loaded per boot entry:
+# they are baked into m1n1/boot.bin on the EFI partition, one set for whatever kernel is
+# picked afterwards. The stock 7.1 kernel hangs on the trial kernel's device trees, so
+# 'try' and 'stock' always switch both, and each rewrites boot.bin. A copy of the original
+# is kept as boot.bin.stock. Picking the other kernel by hand in the GRUB menu boots it on
+# the wrong device trees.
+#
+# If Linux no longer boots, pick the other kernel in the GRUB menu once (the trial kernel
+# is expected to cope with stock device trees, not the other way round), then run 'try' or
+# 'stock'. If that fails too, restore the stock boot image from macOS:
 #   diskutil list                          # find the EFI partition next to the Linux one
 #   sudo diskutil mount disk0sN
 #   cp "/Volumes/<EFI name>/m1n1/boot.bin.stock" "/Volumes/<EFI name>/m1n1/boot.bin"
+# and pick the stock kernel in the GRUB menu.
 #
 # The trial kernel has no GPU acceleration: the pinned branch disables the GPU driver.
 # The build stage therefore only proceeds with TBT_NO_GPU=1.
@@ -133,6 +142,43 @@ report_bootbin() {
     # 0 means the stock device trees, anything else the trial ones.
     echo "USB4 markers in boot.bin: $(sudo grep -c -a 'apple,t6020-usb4-acio' "$ESP_MNT/m1n1/boot.bin" || true)"
     esp_umount
+}
+
+# Release of the newest installed kernel that is not the trial one.
+stock_kver() {
+    local d v best=
+    for d in /boot/dtb-*; do
+        v=${d#/boot/dtb-}
+        [[ -d $d && $v != *"$SUFFIX" ]] || continue
+        sudo test -f "/boot/vmlinuz-$v" || continue
+        best=$(printf '%s\n%s\n' "$best" "$v" | sort -V | tail -n 1)
+    done
+    [[ -n $best ]] || die "no stock kernel with device trees found under /boot"
+    printf '%s' "$best"
+}
+
+# Which kernel the device trees in the boot image belong to: trial or stock.
+dt_mode() {
+    if [[ $(readlink /boot/dtb) == *"$SUFFIX" ]]; then echo trial; else echo stock; fi
+}
+
+# Make Linux boot one kernel on its own device trees: $1 is trial or stock.
+set_mode() {
+    local v
+    if [[ $1 == trial ]]; then v=$(kver); else v=$(stock_kver); fi
+    sudo test -f "/boot/vmlinuz-$v" || die "/boot/vmlinuz-$v is missing; run: $0 install"
+    [[ -d /boot/dtb-$v ]] || die "/boot/dtb-$v is missing; run: $0 install"
+
+    backup_bootbin
+    sudo ln -sfn "dtb-$v" /boot/dtb
+    # Rebuilds boot.bin from m1n1, the device trees /boot/dtb points at, and U-Boot.
+    sudo update-m1n1
+    sudo grubby --set-default "/boot/vmlinuz-$v"
+    sudo grub2-editenv - unset next_entry
+
+    echo "default kernel: $(sudo grubby --default-kernel)"
+    echo "/boot/dtb -> $(readlink /boot/dtb)"
+    report_bootbin
 }
 
 stage_deps() {
@@ -267,8 +313,10 @@ stage_install() {
 
     say "backing up the boot image"
     backup_bootbin
-    prev=$(sudo grubby --default-kernel)
-    echo "default kernel before install: $prev"
+    # kernel-install below switches the device trees to the new kernel's. Afterwards the
+    # mode found here is put back, kernel and device trees together.
+    prev=$(dt_mode)
+    echo "Linux boots the $prev kernel before install"
 
     say "installing $v"
     sudo rm -rf "$mod"
@@ -280,40 +328,52 @@ stage_install() {
     if command -v restorecon >/dev/null; then sudo restorecon -R "$mod"; fi
     sudo kernel-install add "$v" "$mod/vmlinuz"
 
-    # The stock kernel stays the default; the new one is only ever booted through 'try'.
-    sudo grubby --set-default "$prev"
+    sudo test -f "/boot/vmlinuz-$v" || die "/boot/vmlinuz-$v missing after kernel-install"
+    sudo test -f "/boot/initramfs-$v.img" || die "/boot/initramfs-$v.img missing after kernel-install"
 
     stage_readonly on
 
-    say "result"
-    sudo test -f "/boot/vmlinuz-$v" || die "/boot/vmlinuz-$v missing after kernel-install"
-    sudo test -f "/boot/initramfs-$v.img" || die "/boot/initramfs-$v.img missing after kernel-install"
-    echo "default kernel: $(sudo grubby --default-kernel)"
-    echo "/boot/dtb -> $(readlink /boot/dtb)"
-    report_bootbin
+    say "result: Linux keeps booting the $prev kernel"
+    set_mode "$prev"
     df -h /boot | tail -n 1
-    say "installed. Next: $0 try"
+    if [[ $prev == trial ]]; then
+        say "installed. Reboot to run it: sudo systemctl reboot"
+    else
+        say "installed. Next: $0 try"
+    fi
 }
 
 stage_try() {
     guard_machine
-    local v entry
-    v=$(kver)
-    entry=$(sudo sh -c "ls /boot/loader/entries/*-$v.conf 2>/dev/null" | head -n 1 || true)
-    [[ -n $entry ]] || die "no boot entry for $v; run: $0 install"
-    entry=$(basename "$entry" .conf)
-    sudo grub2-reboot "$entry"
-    sudo grub2-editenv list | grep -E 'next_entry|saved_entry' || true
-    say "the next boot only will use $v. Reboot with: sudo systemctl reboot"
-    echo "If it does not come up, power-cycle: the stock kernel boots again."
-    echo "After it boots: $0 status"
+    say "switching Linux to the trial kernel and its device trees"
+    set_mode trial
+    say "Linux now boots $(kver) until you run: $0 stock"
+    echo "Reboot with: sudo systemctl reboot. After it boots: $0 status"
+    echo "If it does not come up, see 'If Linux no longer boots' at the top of this script."
+}
+
+stage_stock() {
+    guard_machine
+    say "switching Linux to the stock kernel and its device trees"
+    set_mode stock
+    say "Linux now boots $(stock_kver) until you run: $0 try"
+    echo "Reboot with: sudo systemctl reboot"
 }
 
 stage_status() {
     local d log
+    local def
+    def=$(sudo grubby --default-kernel)
     echo "kernel: $(uname -r)"
     echo "m1n1:   $(rpm -q m1n1)"
+    echo "boots:  $def on $(dt_mode) device trees (/boot/dtb -> $(readlink /boot/dtb))"
     echo "grub:   $(sudo grub2-editenv list | grep -E 'next_entry' || echo 'next_entry not set')"
+    if [[ $def == *"$(readlink /boot/dtb | sed 's/^dtb-//')" ]]; then
+        echo "        kernel and device trees match"
+    else
+        echo "WARN:   the default kernel does not match the device trees; the next boot may"
+        echo "        hang. Run: $0 try   or   $0 stock"
+    fi
     echo "-- modules"
     lsmod | grep -E '^(thunderbolt|thunderbolt_apple|reset_apple_cio|phy_apple_atc|tps6598x) ' || true
     echo "-- thunderbolt bus"
@@ -365,7 +425,7 @@ stage_rollback() {
     local v=${1:-}
     [[ -n $v ]] || v=$(kver)
     [[ $v == *"$SUFFIX" ]] || die "refusing to remove '$v': not a $SUFFIX kernel"
-    [[ $(uname -r) != "$v" ]] || die "boot the stock kernel first (power-cycle), then run rollback"
+    [[ $(uname -r) != "$v" ]] || die "boot the stock kernel first ($0 stock, reboot), then run rollback"
 
     say "removing kernel $v"
     sudo kernel-install remove "$v" || true
@@ -424,13 +484,14 @@ deps) stage_deps ;;
 build) stage_build ;;
 install) stage_install ;;
 try) stage_try ;;
+stock) stage_stock ;;
 status) stage_status ;;
 m1n1) stage_m1n1 ;;
 readonly) stage_readonly "${2:-}" ;;
 cable) stage_cable "${2:-}" ;;
 rollback) stage_rollback "${2:-}" ;;
 *)
-    echo "usage: $0 {deps|build|install|try|status|m1n1|readonly on|off|cable [bits]|rollback}" >&2
+    echo "usage: $0 {deps|build|install|try|stock|status|m1n1|readonly on|off|cable [bits]|rollback}" >&2
     exit 2
     ;;
 esac

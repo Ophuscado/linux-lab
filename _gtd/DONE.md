@@ -6,3 +6,4 @@ Collect the macOS description of the Thunderbolt PCIe controller · waits: opera
 Decide the apciec driver approach from apciec.txt · check: compatible and reg layout compared with pcie-apple.c, result in KNOWLEDGE.md
 Push this repository and branch tbt/usb4-fixes to github.com/Ophuscado/linux-lab and /linux · check: git ls-remote shows main and tbt/usb4-fixes at the local tips
 Push branch tbt/usb4-fixes to the fork and build from it in tbt-kernel.sh · check: build stage fetches the fork branch and the embedded patch is gone
+Switch kernel and device trees together in tbt-kernel.sh · check: try, stock, install and status dry-run against stubs end with matching kernel and device trees
