@@ -11,3 +11,4 @@ Add device-tree nodes for the six apciec controllers and their IOMMUs on t602x �
 Give pcie-apple.c a single-port tunnel variant without reset GPIO or reference clock · check: driver binds and root port 106b:1014 shows in lspci
 Bring the PCIe link up when the Thunderbolt tunnel is active · check: the two ASMedia 1b21:2463 bridges enumerate
 Find what makes the stock kernel hang on the trial device trees · check: the failing driver or node is named in KNOWLEDGE.md
+Survive unplugging and replugging an enclosure · check: capture round 2 (eject, unplug, plug) completes and the PCI devices come back

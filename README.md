@@ -12,13 +12,13 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
 - Trial kernel (Asahi `asahi-wip-7.2` plus this lab's branch) built and booted next to the stock one.
 - USB4 link to an ASM2464 enclosure trains at 20 Gb/s per lane, dual lane.
 - PCIe over Thunderbolt, a port of Sven Peter's 2023 driver for the Mac-side controller
-  behind each port (`apciec`): the PCIe link comes up with the tunnel, the enclosure's
-  bridges and its AHCI controller enumerate, and the enclosure stays on USB4.
+  behind each port (`apciec`): the enclosure's AHCI controller and its eight disks come
+  up, and come back after an eject, unplug and replug.
 
 ## What does not yet
 
-- Disks: DMA from the AHCI controller faulted in the first run; the fix is written, not run.
-- Unplugging and plugging again froze the machine once. Use `./tbt-kernel.sh eject` first.
+- Pulling an enclosure whose disks are busy is untested; it froze the machine once in an
+  earlier, broken state. Use `./tbt-kernel.sh eject` first.
 - No GPU acceleration on the trial kernel: the branch marks the GPU driver broken.
 
 ## Contents
@@ -40,4 +40,6 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
    kernel in the GRUB menu, the stock kernel hangs on the trial device trees.
 3. `./tbt-kernel.sh status`, then `./tbt-capture.sh` for a detailed record.
    Disks behind PCIe over Thunderbolt appear read-only until `./tbt-kernel.sh readonly off`.
+   `./tbt-kernel.sh mount` mounts their HFS+ volumes under `/mnt/tbt`, `bench` measures
+   read speed, `umount` and `eject` come before unplugging.
 4. `./tbt-kernel.sh rollback` restores the stock kernel, device trees and boot image.

@@ -1,3 +1,2 @@
 Capture a stock-kernel boot dump and compare with the trial one · check: differences listed in KNOWLEDGE.md or none found · waits: operator runs boot-dump.sh on both kernels and attaches the two files
-Route DMA through the port IOMMU and deliver MSIs · check: ahci binds to 10ec:9100 and the eight disks appear, mounted read-only · waits: operator builds 523466d61f0b and attaches the tbt-capture file
-Survive unplugging and replugging an enclosure · check: capture round 2 (eject, unplug, plug) completes and the PCI devices come back · waits: operator's tbt-capture file, or the .klog and a photo if it freezes
+Route DMA through the port IOMMU and deliver MSIs · check: ahci binds to 10ec:9100 and the eight disks appear, mounted read-only · waits: operator runs tbt-kernel.sh mount and bench and pastes the output

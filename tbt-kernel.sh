@@ -20,9 +20,14 @@
 #             Fedora's own 1.9.9 build (first release that writes the USB4 router ID)
 #   readonly  on|off: a udev rule that makes every disk reached through PCIe over
 #             Thunderbolt read-only as it appears. On until you switch it off
+#   mount     mounts every HFS+ volume on disks behind PCIe over Thunderbolt read-only
+#             under /mnt/tbt/<volume name>; umount undoes it
+#   bench     read-only speed test of those disks: N MiB (default 4096) from the start of
+#             each, one at a time and then all at once
 #   eject     run it BEFORE unplugging an enclosure whose disks came up through PCIe: it
-#             refuses while one of them is mounted, then detaches the enclosure's PCI
-#             devices so the disks are flushed and stopped while they can still answer
+#             refuses while one of them is mounted, then flushes and detaches the disks.
+#             The enclosure's own PCI devices stay: taking those away makes the ASM2464
+#             reconnect by itself 10 s later, with the disks attached again
 #   cable N   debug: OR the bits N into the cable information the driver gives the router
 #             firmware (0x10 = cable does 20 Gb/s per lane, 0 = off)
 #   rollback  removes the kernel and the udev rule, restores stock device trees and
@@ -66,6 +71,7 @@ M1N1_NEW=$KOJI/1.9.9/1.fc46/noarch/m1n1-1.9.9-1.fc46.noarch.rpm
 M1N1_OLD=$KOJI/1.6.1/1.fc44/noarch/m1n1-1.6.1-1.fc44.noarch.rpm
 DTB=arch/arm64/boot/dts/apple/t6022-j475d.dtb
 RO_RULE=/etc/udev/rules.d/00-tbt-readonly.rules
+MNT=/mnt/tbt
 # Overridable only so the stages can be exercised off the target machine.
 DT=${TBT_DT:-/proc/device-tree}
 
@@ -242,7 +248,7 @@ stage_build() {
         -m USB4_APPLE_SOC -m RESET_APPLE_CIO
     # PCIe over Thunderbolt needs the Apple PCIe driver, and AHCI for the disks behind it.
     local s v was dropped=0
-    for s in USB4 PCIE_APPLE ATA SATA_AHCI BLK_DEV_SD; do want "$s"; done
+    for s in USB4 PCIE_APPLE ATA SATA_AHCI BLK_DEV_SD HFSPLUS_FS; do want "$s"; done
     mk olddefconfig
 
     for s in USB4_APPLE_SOC RESET_APPLE_CIO PCIE_APPLE SATA_AHCI BLK_DEV_SD; do
@@ -474,33 +480,90 @@ stage_readonly() {
     esac
 }
 
-# Everything behind a tunneled root port (PCI domains 0008 and up, bus 01) is removed
-# while the link is still up, so that the drivers shut their devices down properly.
-stage_eject() {
-    local d disk mounted=0 found=0
+# Names (sda, sdb, ...) of the disks reached through PCIe over Thunderbolt.
+tunnel_disks() {
+    local disk
     for disk in /sys/block/sd*; do
         [[ -e $disk ]] || continue
-        [[ $(readlink -f "$disk") == *30000000.pcie/* ]] || continue
-        if lsblk -n -o MOUNTPOINTS "/dev/${disk##*/}" | grep -q .; then
-            echo "/dev/${disk##*/} is mounted:"
-            lsblk -o NAME,SIZE,MOUNTPOINTS "/dev/${disk##*/}"
+        [[ $(readlink -f "$disk") == *30000000.pcie/* ]] && echo "${disk##*/}"
+    done
+    return 0
+}
+
+stage_mount() {
+    local d part fstype label dir n=0
+    sudo modprobe hfsplus 2>/dev/null ||
+        echo "WARN: no hfsplus module for this kernel; run build and install again, then reboot"
+    for d in $(tunnel_disks); do
+        for part in $(lsblk -lnp -o NAME,TYPE "/dev/$d" | awk '$2 == "part" {print $1}'); do
+            fstype=$(lsblk -n -o FSTYPE "$part")
+            [[ $fstype == hfsplus ]] || continue
+            if findmnt -n "$part" >/dev/null; then
+                continue
+            fi
+            label=$(lsblk -n -o LABEL "$part" | tr -c 'A-Za-z0-9._\n-' '_')
+            dir=$MNT/${label:-${part##*/}}
+            # Two volumes with the same name must not end up on top of each other.
+            if mountpoint -q "$dir" 2>/dev/null; then dir=$dir-${part##*/}; fi
+            sudo mkdir -p "$dir"
+            if sudo mount -t hfsplus -o ro "$part" "$dir"; then n=$((n + 1)); fi
+        done
+    done
+    echo "mounted $n volume(s) read-only"
+    findmnt -t hfsplus -o TARGET,SOURCE,SIZE,USED,OPTIONS || true
+    echo "Files keep their macOS owner (usually uid 501): read private folders with sudo."
+}
+
+stage_umount() {
+    local src
+    for src in $(findmnt -t hfsplus -n -o SOURCE); do
+        [[ " $(tunnel_disks | tr '\n' ' ') " == *" $(lsblk -n -o PKNAME "$src") "* ]] || continue
+        sudo umount "$src" && echo "unmounted $src"
+    done
+}
+
+# Reads only. The first read wakes a disk that is spun down, so it is not timed.
+stage_bench() {
+    local mib=${1:-4096} d disks
+    disks=$(tunnel_disks)
+    [[ -n $disks ]] || die "no disks behind PCIe over Thunderbolt"
+    for d in $disks; do sudo dd if="/dev/$d" of=/dev/null bs=1M count=1 iflag=direct status=none; done
+    say "one disk at a time, $mib MiB each"
+    for d in $disks; do
+        printf '%s: ' "$d"
+        sudo dd if="/dev/$d" of=/dev/null bs=4M count=$((mib / 4)) iflag=direct 2>&1 | tail -n 1
+    done
+    say "all disks at once, $mib MiB each"
+    for d in $disks; do
+        (sudo dd if="/dev/$d" of=/dev/null bs=4M count=$((mib / 4)) iflag=direct 2>&1 |
+            tail -n 1 | sed "s/^/$d: /") &
+    done
+    wait
+}
+
+# The disks are flushed and removed from the system while they can still answer; the SATA
+# controller and the bridges of the enclosure stay bound, which keeps the enclosure quiet.
+stage_eject() {
+    local d mounted=0 found=0
+    for d in $(tunnel_disks); do
+        if lsblk -n -o MOUNTPOINTS "/dev/$d" | grep -q .; then
+            echo "/dev/$d is mounted:"
+            lsblk -o NAME,SIZE,MOUNTPOINTS "/dev/$d"
             mounted=1
         fi
     done
-    [[ $mounted == 0 ]] || die "unmount these first, then run eject again"
+    [[ $mounted == 0 ]] || die "unmount these first ($0 umount), then run eject again"
 
     sync
-    for d in /sys/bus/pci/devices/*:01:00.0; do
-        [[ -e $d && ${d##*/} != 0000:* ]] || continue
-        [[ $(readlink -f "$d") == *30000000.pcie/* ]] || continue
+    for d in $(tunnel_disks); do
         found=1
-        echo "detaching ${d##*/} and what is behind it"
-        echo 1 | sudo tee "$d/remove" >/dev/null
+        echo "detaching /dev/$d"
+        echo 1 | sudo tee "/sys/block/$d/device/delete" >/dev/null
     done
     if [[ $found == 1 ]]; then
         echo "done: the enclosure can be unplugged now"
     else
-        echo "nothing is attached through PCIe over Thunderbolt"
+        echo "no disks are attached through PCIe over Thunderbolt"
     fi
 }
 
@@ -521,11 +584,14 @@ stock) stage_stock ;;
 status) stage_status ;;
 m1n1) stage_m1n1 ;;
 readonly) stage_readonly "${2:-}" ;;
+mount) stage_mount ;;
+umount) stage_umount ;;
+bench) stage_bench "${2:-}" ;;
 eject) stage_eject ;;
 cable) stage_cable "${2:-}" ;;
 rollback) stage_rollback "${2:-}" ;;
 *)
-    echo "usage: $0 {deps|build|install|try|stock|status|eject|m1n1|readonly on|off|cable [bits]|rollback}" >&2
+    echo "usage: $0 {deps|build|install|try|stock|status|mount|umount|bench [MiB]|eject|m1n1|readonly on|off|cable [bits]|rollback}" >&2
     exit 2
     ;;
 esac

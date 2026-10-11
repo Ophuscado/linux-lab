@@ -6,8 +6,8 @@
 # Run it while booted into the 7.2.2-tbtwip kernel.
 #
 # The router firmware can log about 30 identical link-error lines per second; they are
-# counted, not listed. The second round detaches the enclosure's PCI devices first
-# (tbt-kernel.sh eject) and then replugs: it exercises the path that takes the PCIe
+# counted, not listed. The second round detaches the disks first (tbt-kernel.sh eject)
+# and then replugs: it exercises the path that takes the PCIe
 # controller down and brings it up again, without pulling disks away from their driver.
 #
 # The machine froze during a replug once and took the capture with it. The kernel log is
@@ -104,7 +104,7 @@ round() { # $1 label, $2 instruction for plugging in, $3 = eject to detach first
     local mark="tbt-capture $$ $1"
     echo
     if [[ ${3:-} == eject ]]; then
-        echo "[$1] Detaching the enclosure's PCI devices first."
+        echo "[$1] Detaching the disks first."
         {
             sec "$1: eject"
             "$HERE/tbt-kernel.sh" eject
@@ -163,7 +163,7 @@ done &
 } >"$OUT" 2>&1
 
 echo
-echo "Before starting: detaching anything attached through PCIe over Thunderbolt."
+echo "Before starting: detaching the disks attached through PCIe over Thunderbolt."
 "$HERE/tbt-kernel.sh" eject || exit 1
 sleep 3
 echo "Now unplug ALL the USB4 enclosures (leave the USB-A disks alone)."
