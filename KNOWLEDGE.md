@@ -10,6 +10,8 @@ recheck before relying on one for anything consequential.
 - [Fallback to USB 3 needs a role cycle](#fallback-to-usb-3-needs-a-role-cycle)
 - [m1n1 1.6.1 is enough for now](#m1n1-161-is-enough-for-now)
 - [Boot chain on Fedora Asahi](#boot-chain-on-fedora-asahi)
+- [The internal PCIe driver already names tunnel registers](#the-internal-pcie-driver-already-names-tunnel-registers)
+- [Trial kernel boots clean](#trial-kernel-boots-clean)
 - [No backport to 7.1](#no-backport-to-71)
 - [Asahi does not take LLM work](#asahi-does-not-take-llm-work)
 
@@ -33,6 +35,12 @@ The driver accepts the host DROM from 1.6.1. Diff 1.6.1..1.9.9 changes PHY tunin
 
 ## Boot chain on Fedora Asahi
 `kernel-install add` points `/boot/dtb` at the new kernel's device trees and runs `update-m1n1`, which rebuilds `m1n1/boot.bin` on the EFI partition from `/usr/lib64/m1n1/m1n1.bin`, those device trees and U-Boot. That file is shared by every kernel. Pristine copy: `m1n1/boot.bin.stock`, sha256 `6522d07f...e634e`, saved 2026-10-11 12:06 UTC. The EFI partition is mounted root-only; a second mount inherits that.
+
+## The internal PCIe driver already names tunnel registers
+`drivers/pci/controller/pcie-apple.c` (internal PCIe, `apple,t6020-pcie`) defines `PORT_TUNCTRL` (0x988: PERST_ON, PERST_ACK_REQ), `PORT_TUNSTAT` (0x98c) and interrupt bit 31 `PORT_INT_TUNNEL_ERR`, none of them used. m1n1 already copies tuning data for `/arm-io/apciec%d` into nodes aliased `usb4_%d_pcie`: `apple,tunable-debug`, `-fabric`, `-rc`, and `apple,tunable` on the first port subnode. Both point at the Thunderbolt PCIe controller being the same block as the internal one (inferred, to be confirmed against apciec.txt). 2026-10-11.
+
+## Trial kernel boots clean
+Boot dump of 7.2.2-tbtwip, 2026-10-11: no deferred devices, no failed units. Firmware: iBoot1 `mBoot-20457.1.29`, iBoot2 `iBoot-8422.141.2`, OS firmware 13.5, m1n1 stage 2 v1.6.1. Warnings present are not from this work: `dwc3-apple ... late IOMMU probe at driver bind` (also on stock), missing `apple/avd-fw-v3-t1.bin`, brcmfmac `-52` errors. Thunderbolt logs `device links to tunneled native ports are missing!`, which the PCIe work has to address.
 
 ## No backport to 7.1
 Between `asahi-7.1.13-3` and the trial tree 30 files differ under `drivers/thunderbolt` and 34 under `drivers/usb/typec`, with interface changes across unrelated drivers. Decision: develop on the pinned 7.2 tree, daily use on the stock kernel, move when the GPU driver is re-enabled upstream. 2026-10-11.
