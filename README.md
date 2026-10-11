@@ -9,17 +9,20 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
 
 ## What works
 
-- Trial kernel (Asahi `asahi-wip-7.2` plus this lab's branch) built and booted next to the stock one.
 - USB4 link to an ASM2464 enclosure trains at 20 Gb/s per lane, dual lane.
 - PCIe over Thunderbolt, a port of Sven Peter's 2023 driver for the Mac-side controller
   behind each port (`apciec`): the enclosure's AHCI controller and its eight disks come
-  up, and come back after an eject, unplug and replug.
+  up, and come back after an eject, unplug and replug. Seen on the 7.2-based trial kernel.
+
+## What is written but not yet run
+
+- Branch `tbt/7.1`: the same on the stock kernel's 7.1 source, which keeps the GPU driver.
+  This is what `tbt-kernel.sh` builds now.
 
 ## What does not yet
 
 - Pulling an enclosure whose disks are busy is untested; it froze the machine once in an
-  earlier, broken state. Use `./tbt-kernel.sh eject` first.
-- No GPU acceleration on the trial kernel: the branch marks the GPU driver broken.
+  earlier, broken state. Use `./tbt-kernel.sh umount` and `eject` first.
 
 ## Contents
 
@@ -27,15 +30,18 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
 - `tbt-capture.sh`: record a plug-in on the trial kernel with driver debug output.
 - `boot-dump.sh`: record what the running kernel brought up, for comparing kernels.
 - `apciec-dump.sh`: collect, in macOS, how the Thunderbolt PCIe controller is described.
-- `patches/`: the kernel changes, against `asahi-wip-7.2` at `236788cd2602`; the same
-  commits are branch `tbt/pcie` of https://github.com/Ophuscado/linux, which the script builds.
+- `patches/`: the lab's own kernel changes as a series against `asahi-wip-7.2` at
+  `236788cd2602` (branch `tbt/pcie` of https://github.com/Ophuscado/linux). The kernel the
+  script builds is branch `tbt/7.1` of the same fork: these changes plus the backported
+  USB4 stack on the stock 7.1 source.
+- `llama-bench.sh`: llama.cpp speed on the CPU and through Vulkan, on the running kernel.
 - `KNOWLEDGE.md`: findings that were expensive to obtain, with their evidence.
 - `_gtd/`: the task board.
 
 ## Start here
 
 1. Read the header of `tbt-kernel.sh`; it lists the stages and what each one touches.
-2. `./tbt-kernel.sh deps`, `TBT_NO_GPU=1 ./tbt-kernel.sh build`, `install`, `try`, reboot.
+2. `./tbt-kernel.sh deps`, `build`, `install`, `try`, reboot.
    `try` and `stock` switch kernel and device trees together; do not pick the other
    kernel in the GRUB menu, the stock kernel hangs on the trial device trees.
 3. `./tbt-kernel.sh status`, then `./tbt-capture.sh` for a detailed record.

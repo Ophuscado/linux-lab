@@ -1,2 +1,4 @@
 Capture a stock-kernel boot dump and compare with the trial one · check: differences listed in KNOWLEDGE.md or none found · waits: operator runs boot-dump.sh on both kernels and attaches the two files
 Route DMA through the port IOMMU and deliver MSIs · check: ahci binds to 10ec:9100 and the eight disks appear, mounted read-only · waits: operator runs tbt-kernel.sh mount and bench and pastes the output
+Run the tbt/7.1 kernel on the Mac: GPU and Thunderbolt disks on one kernel · check: boot dump shows the asahi GPU module loaded and the capture shows the eight disks · waits: operator builds 9d460b403164, attaches the boot-dump and tbt-capture files
+Measure llama.cpp on the CPU and through Vulkan · check: llama-bench tables for both in the llama-bench file · waits: operator runs llama-bench.sh with a model on a kernel that has the GPU driver

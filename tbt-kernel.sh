@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# tbt-kernel.sh: trial of the Asahi 7.2 work-in-progress kernel, which carries the
-# Apple USB4/Thunderbolt host driver, plus this lab's changes on top of it (branch
-# tbt/pcie of github.com/Ophuscado/linux), installed next to the stock Fedora Asahi kernel.
+# tbt-kernel.sh: a kernel with Thunderbolt disks AND the GPU, installed next to the stock
+# Fedora Asahi kernel. It is the stock kernel's own source (Asahi tag asahi-7.1.13-3) with
+# the Apple USB4/Thunderbolt host driver of the Asahi 7.2 work-in-progress tree backported
+# and this lab's PCIe tunneling on top (branch tbt/7.1 of github.com/Ophuscado/linux).
+# The earlier trial kernel (7.2.2-tbtwip, branch tbt/pcie) had no GPU driver.
 #
 # Written for: Apple Mac Studio (M2 Ultra, 2023), Fedora Asahi Remix 44,
 # kernel 7.1.13-402.asahi.fc44.aarch64+16k, m1n1 1.6.1.
@@ -30,6 +32,7 @@
 #             reconnect by itself 10 s later, with the disks attached again
 #   cable N   debug: OR the bits N into the cable information the driver gives the router
 #             firmware (0x10 = cable does 20 Gb/s per lane, 0 = off)
+#   forget V  removes an older trial kernel, e.g.: forget 7.2.2-tbtwip
 #   rollback  removes the kernel and the udev rule, restores stock device trees and
 #             m1n1 1.6.1
 #
@@ -48,21 +51,19 @@
 #   cp "/Volumes/<EFI name>/m1n1/boot.bin.stock" "/Volumes/<EFI name>/m1n1/boot.bin"
 # and pick the stock kernel in the GRUB menu.
 #
-# The trial kernel has no GPU acceleration: the pinned branch disables the GPU driver.
-# The build stage therefore only proceeds with TBT_NO_GPU=1.
-#
-# Environment overrides: SRC (build directory), TBT_NO_GPU=1 (accept the missing GPU
-# driver), TBT_FORCE=1 (skip the machine and config guards), TBT_BASECFG (base kernel
-# config), TBT_MAKE_ARGS (extra make arguments).
+# Environment overrides: SRC (build directory), TBT_NO_GPU=1 (accept a build that lost
+# the GPU driver; not expected any more), TBT_FORCE=1 (skip the machine and config
+# guards), TBT_BASECFG (base kernel config; default is the stock kernel's),
+# TBT_MAKE_ARGS (extra make arguments).
 
 set -euo pipefail
 
-# The lab's branch: AsahiLinux/linux asahi-wip-7.2 at 236788cd2602 plus the commits that
-# are also kept as patches/ in the lab repository.
+# The lab's branch: Asahi tag asahi-7.1.13-3 plus the backported USB4 stack and the
+# commits that are also kept as patches/ in the lab repository.
 REPO=https://github.com/Ophuscado/linux
-BRANCH=tbt/pcie
+BRANCH=tbt/7.1
 # Pinned so that what gets built is the tree this script was written against.
-COMMIT=523466d61f0b1a7afc3ab36fb0c58b1e6dcfa1f7
+COMMIT=9d460b403164694c0f6a1a6ca1038d6a79dfc167
 SUFFIX=-tbtwip
 SRC=${SRC:-$HOME/src/linux-asahi-tbt}
 ESP_MNT=/run/tbt-esp
@@ -226,7 +227,9 @@ want() {
 }
 
 stage_build() {
-    local base=${TBT_BASECFG:-/boot/config-$(uname -r)}
+    # Always from the stock kernel's configuration, also when a trial kernel is running:
+    # an older trial build was configured without the GPU driver.
+    local base=${TBT_BASECFG:-/boot/config-$(stock_kver)}
     [[ -r $base ]] || die "cannot read base config $base"
 
     say "fetching $BRANCH at ${COMMIT:0:12} into $SRC"
@@ -248,10 +251,12 @@ stage_build() {
         -m USB4_APPLE_SOC -m RESET_APPLE_CIO
     # PCIe over Thunderbolt needs the Apple PCIe driver, and AHCI for the disks behind it.
     local s v was dropped=0
+    # HFS+ (the enclosure's disks) sits behind the "miscellaneous filesystems" switch.
+    scripts/config -e MISC_FILESYSTEMS
     for s in USB4 PCIE_APPLE ATA SATA_AHCI BLK_DEV_SD HFSPLUS_FS; do want "$s"; done
     mk olddefconfig
 
-    for s in USB4_APPLE_SOC RESET_APPLE_CIO PCIE_APPLE SATA_AHCI BLK_DEV_SD; do
+    for s in USB4_APPLE_SOC RESET_APPLE_CIO PCIE_APPLE SATA_AHCI BLK_DEV_SD HFSPLUS_FS; do
         v=$(scripts/config -s "$s")
         [[ $v == y || $v == m ]] || die "CONFIG_$s did not survive olddefconfig (got '$v')"
     done
@@ -277,14 +282,13 @@ stage_build() {
         die "required options were dropped (see WARN lines above); not building"
     fi
 
-    # The pinned branch marks the GPU driver as BROKEN (commit 97b22d135, "Mark the driver
-    # broken as long as it is"), so this kernel has no GPU acceleration: the display still
-    # works through the display controller driver, rendered on the CPU. That is a visible
-    # change, so it needs an explicit yes.
+    # The 7.1 tree keeps the GPU driver. Should a build lose it anyway (the 7.2 tree marks
+    # it BROKEN), the display would still work, rendered on the CPU: a visible change, so
+    # it needs an explicit yes.
     was=$(scripts/config --file "$base" -s DRM_ASAHI)
     v=$(scripts/config -s DRM_ASAHI)
     if [[ $was == y || $was == m ]] && [[ $v != y && $v != m ]]; then
-        echo "WARN: no GPU driver in this kernel (CONFIG_DRM_ASAHI is disabled upstream on this branch)"
+        echo "WARN: no GPU driver in this kernel (CONFIG_DRM_ASAHI did not survive the configuration)"
         [[ ${TBT_NO_GPU:-0} == 1 ]] ||
             die "rerun as: TBT_NO_GPU=1 $0 build   to accept a trial kernel without GPU acceleration"
     fi
@@ -427,6 +431,25 @@ stage_m1n1() {
     echo "m1n1: $(rpm -q m1n1)"
     report_bootbin
     say "done. Next: $0 try"
+}
+
+# Remove an older trial kernel that is neither running nor the current build, then make
+# sure the kernel Linux boots and the device trees still belong together.
+stage_forget() {
+    guard_machine
+    local v=${1:-} mode
+    [[ $v == *"$SUFFIX" ]] || die "usage: $0 forget <release ending in $SUFFIX>, e.g. 7.2.2$SUFFIX"
+    [[ $(uname -r) != "$v" ]] || die "$v is running; boot another kernel first"
+    [[ $v != "$(kver)" ]] || die "$v is the current build; rollback removes that one"
+    mode=$(dt_mode)
+
+    say "removing kernel $v"
+    sudo kernel-install remove "$v" || true
+    sudo rm -rf "/usr/lib/modules/$v" "/boot/dtb-$v"
+    sudo rm -f "/boot/vmlinuz-$v" "/boot/initramfs-$v.img" "/boot/System.map-$v" "/boot/config-$v"
+
+    say "Linux keeps booting the $mode kernel"
+    set_mode "$mode"
 }
 
 stage_rollback() {
@@ -589,9 +612,10 @@ umount) stage_umount ;;
 bench) stage_bench "${2:-}" ;;
 eject) stage_eject ;;
 cable) stage_cable "${2:-}" ;;
+forget) stage_forget "${2:-}" ;;
 rollback) stage_rollback "${2:-}" ;;
 *)
-    echo "usage: $0 {deps|build|install|try|stock|status|mount|umount|bench [MiB]|eject|m1n1|readonly on|off|cable [bits]|rollback}" >&2
+    echo "usage: $0 {deps|build|install|try|stock|status|mount|umount|bench [MiB]|eject|m1n1|readonly on|off|cable [bits]|forget VERSION|rollback}" >&2
     exit 2
     ;;
 esac

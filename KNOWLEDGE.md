@@ -20,6 +20,7 @@ recheck before relying on one for anything consequential.
 - [The tunneled port offsets DMA addresses](#the-tunneled-port-offsets-dma-addresses)
 - [Disks work; what eject and replug do](#disks-work-what-eject-and-replug-do)
 - [Why the GPU driver is off on the 7.2 tree](#why-the-gpu-driver-is-off-on-the-72-tree)
+- [The 7.1 backport](#the-71-backport)
 - [Pushing to a kernel fork from a shallow clone](#pushing-to-a-kernel-fork-from-a-shallow-clone)
 - [Kernel and device trees must be switched together](#kernel-and-device-trees-must-be-switched-together)
 - [What is inside the enclosure](#what-is-inside-the-enclosure)
@@ -92,6 +93,9 @@ Replug: after the PCI devices of the enclosure were removed through sysfs, the p
 ## Why the GPU driver is off on the 7.2 tree
 Probed 2026-10-11 by building `drivers/gpu/drm/asahi` on `tbt/pcie` with `depends on BROKEN` removed (rustc 1.97, bindgen 0.73.2, clang 18, 16K pages). The kernel crate builds; the driver stops in its first compile pass with 56 errors in nine files. They are API changes of the Rust kernel crate in 7.2, not typos: the GPUVM abstraction was replaced (`DriverGpuVm` now wants `Object`, `VaData`, `VmBoData`, `SmContext`, `sm_step_map/unmap/remap`; `UpdatingGpuVm`, `GpuVaFlags`, `OpUnMap`, `OpReMap`, `DriverGpuVmBo` are gone), which hits `mmu.rs`, the GPU's address-space code; the DRM driver trait changed (`FEATURES` gone, `RegistrationData`, `ParentDevice`, `Data` required); `kernel::iosys_map` and `shmem::SGTable` moved; and one macro change gives `u8: Deref` errors at eight firmware-structure sites. Later compile passes will add more. Upstream state the same day: `asahi-wip-7.2` unchanged since 2026-08-31, `bits/210-gpu` ends in the commit that marks the driver broken, no `asahi-7.2` tag, `asahi-wip` is still 7.1.13. Decision: do not port the GPU driver here; it is a rewrite of memory-management code that cannot be tested from the sandbox, and Asahi is doing it. For a kernel with both GPU and Thunderbolt disks, backport the USB4 stack instead: on top of v7.2 it is about 30 commits (`bits/270-thunderbolt` 21 plus the CIO reset driver, the Thunderbolt-switch part of `bits/260-spmi-typec` 4, `bits/170-atc` 3, device trees) plus this lab's 9, onto tag `asahi-7.1.13-3`, the source of the stock Fedora kernel. This replaces the earlier "No backport to 7.1" decision, which was made before the GPU mattered.
 
+## The 7.1 backport
+Built 2026-10-11 as branch `tbt/7.1` of the fork, on Asahi tag `asahi-7.1.13-3` (same commit as branch `asahi-wip`, the source of the stock Fedora kernel). What it took: cherry-picking Sven Peter's Thunderbolt commits fails at the first one, because 7.2 reworked the Thunderbolt core for non-PCI host interfaces, so `drivers/thunderbolt`, `include/linux/thunderbolt.h` and `drivers/net/thunderbolt` are taken whole from `tbt/pcie` (one include adapted: 7.2 split `mod_devicetable.h`). `tipd` (92 added, 31 removed lines apart) and `phy/apple/atc.c` (120/82) are taken whole too; the CIO reset driver, the Type-C Thunderbolt switch and the lab's PCIe and IOMMU commits are cherry-picked, the IOMMU one with a small conflict (7.1 derives the address mask from the table levels). Device trees are the trap: 7.2 moved every DART's DMA window from `apple,dma-range` into five-cell `iommus`, which is exactly what crashes the 7.1 display driver, so only the USB4 and PCIe hunks are taken and the NHI DARTs are written in 7.1 form (one cell plus `apple,dma-range`). Because the display nodes are untouched, the stock kernel should now tolerate these device trees; not tried. Checked in the sandbox: full build without warnings, all device trees build, and the script's build stage on a tree prepared like the operator's. Not run on the Mac.
+
 ## Pushing to a kernel fork from a shallow clone
 GitHub answers "have" for commits of the whole fork network, so with `push.negotiate=true` a branch based on an Asahi commit was pushed to a fork that only had `master` at v6.14-rc3, from a depth-1 clone, as a pack of just the new commits (2026-10-11). Creating the ref through the API is not possible from the assistant's sandbox.
 
@@ -102,7 +106,7 @@ Operator report, 2026-10-11: the stock 7.1.13 kernel, booted while the trial ker
 macOS, 2026-10-11: root port, then ASMedia `1b21:2463` upstream and downstream bridges, then one Realtek `10ec:9100` AHCI controller (class 010601) with eight 18 TB SATA disks. So Linux needs nothing beyond the PCIe host: the stock `ahci` driver covers the rest.
 
 ## No backport to 7.1
-Between `asahi-7.1.13-3` and the trial tree 30 files differ under `drivers/thunderbolt` and 34 under `drivers/usb/typec`, with interface changes across unrelated drivers. Decision: develop on the pinned 7.2 tree, daily use on the stock kernel, move when the GPU driver is re-enabled upstream. 2026-10-11.
+Superseded on 2026-10-11 by [The 7.1 backport](#the-71-backport): the GPU driver is missing on 7.2, which changed the weighing.
 
 ## Asahi does not take LLM work
 Policy read 2026-10-11: generative AI is forbidden for material contributions; LLM-drafted issues may be closed; using an LLM on m1n1 hypervisor traces is listed as a violation; concealment leads to a ban. Decision: publish in this repository and the operator's fork, always disclosed. Any report to Asahi is written by the operator.
