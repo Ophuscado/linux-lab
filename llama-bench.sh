@@ -15,14 +15,15 @@
 #
 # Environment: LLAMA_SRC (source directory), LLAMA_REF (branch, tag or commit to build,
 # default: what is checked out, master on a first run), THREADS (CPU threads for the CPU
-# run, default: performance cores).
+# run, default: performance cores), BENCH_LABEL (added to the output file name; set by
+# mesa-side.sh run).
 
 set -euo pipefail
 
 MODEL=${1:-}
 SRC=${LLAMA_SRC:-$HOME/src/llama.cpp}
 OS=$(uname -s)
-OUT=$HOME/llama-bench-$OS-$(uname -r).txt
+OUT=$HOME/llama-bench-$OS-$(uname -r)${BENCH_LABEL:+-$BENCH_LABEL}.txt
 
 die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
 sec() { printf '\n===== %s\n' "$*"; }
