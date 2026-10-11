@@ -163,7 +163,10 @@ done &
 } >"$OUT" 2>&1
 
 echo
-echo "Before starting: unplug ALL the USB4 enclosures (leave the USB-A disks alone)."
+echo "Before starting: detaching anything attached through PCIe over Thunderbolt."
+"$HERE/tbt-kernel.sh" eject || exit 1
+sleep 3
+echo "Now unplug ALL the USB4 enclosures (leave the USB-A disks alone)."
 read -r -p "        Press Enter when they are unplugged. "
 
 sync "$OUT"
