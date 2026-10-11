@@ -12,6 +12,8 @@ recheck before relying on one for anything consequential.
 - [Boot chain on Fedora Asahi](#boot-chain-on-fedora-asahi)
 - [The internal PCIe driver already names tunnel registers](#the-internal-pcie-driver-already-names-tunnel-registers)
 - [Trial kernel boots clean](#trial-kernel-boots-clean)
+- [The Thunderbolt PCIe controller is a sibling of the internal one](#the-thunderbolt-pcie-controller-is-a-sibling-of-the-internal-one)
+- [What is inside the enclosure](#what-is-inside-the-enclosure)
 - [No backport to 7.1](#no-backport-to-71)
 - [Asahi does not take LLM work](#asahi-does-not-take-llm-work)
 
@@ -41,6 +43,25 @@ The driver accepts the host DROM from 1.6.1. Diff 1.6.1..1.9.9 changes PHY tunin
 
 ## Trial kernel boots clean
 Boot dump of 7.2.2-tbtwip, 2026-10-11: no deferred devices, no failed units. Firmware: iBoot1 `mBoot-20457.1.29`, iBoot2 `iBoot-8422.141.2`, OS firmware 13.5, m1n1 stage 2 v1.6.1. Warnings present are not from this work: `dwc3-apple ... late IOMMU probe at driver bind` (also on stock), missing `apple/avd-fw-v3-t1.bin`, brcmfmac `-52` errors. Thunderbolt logs `device links to tunneled native ports are missing!`, which the PCIe work has to address.
+
+## The Thunderbolt PCIe controller is a sibling of the internal one
+From the macOS device tree (27.0.1, Mac14,14), read 2026-10-11. Six nodes `apciec0..5`, `compatible = "apciec,t6000"`, `device_type = "pci-c"`, macOS driver `AppleT6000PCIeC`, root port `106b:1014`. Per port, with B = 0x7, 0xb, 0xf, 0x13 (die 0) and 0x27, 0x2b (die 1) times 0x1_0000_0000:
+
+| Region | Address | Size |
+|---|---|---|
+| config (ECAM) | B + 0x30000000 | 0x10000000 |
+| rc | B + 0x20000000 | 0x4000 |
+| fabric | B + 0x20004000 | 0x4000 |
+| port | B + 0x21000000 | 0x8000 |
+| IOMMU (`dart,t8110`, sid 0xf) | B + 0x21008000 | 0x4000 |
+| unidentified | B + 0x20200000, B + 0x2100c000, B + 0x21010000 | 0x4000 each |
+
+Port 0: interrupt 0x4f0, 32 MSIs from 0x729, MSI address 0xfffff000, power gates 0x234 and 0x3f, windows 64-bit prefetchable 0x8_0000_0000 (8 GB), 32-bit 0xa_0010_0000 (bus 0x100000, about 1 GB), 32-bit prefetchable 0xa_4000_0000 (1 GB). Each further port adds 0x12 to the interrupt, 0x20 to the MSI base and 1 and 2 to the power gates.
+
+This is the layout `pcie-apple.c` already handles for the internal controller on t8103: rc, fabric at rc + 0x4000 (`CORE_FABRIC_STAT`, same 0x001f001f mask as the first fabric tuning entry), port at rc + 0x1000000, same MSI doorbell address. Decision: extend `pcie-apple.c` with a single-port tunnel variant instead of writing a new driver. Inferred, not yet run: the "rc" tuning offsets (0x78, 0x718, 0x814, 0x8bc) look like DesignWare root-port registers reached through config space.
+
+## What is inside the enclosure
+macOS, 2026-10-11: root port, then ASMedia `1b21:2463` upstream and downstream bridges, then one Realtek `10ec:9100` AHCI controller (class 010601) with eight 18 TB SATA disks. So Linux needs nothing beyond the PCIe host: the stock `ahci` driver covers the rest.
 
 ## No backport to 7.1
 Between `asahi-7.1.13-3` and the trial tree 30 files differ under `drivers/thunderbolt` and 34 under `drivers/usb/typec`, with interface changes across unrelated drivers. Decision: develop on the pinned 7.2 tree, daily use on the stock kernel, move when the GPU driver is re-enabled upstream. 2026-10-11.

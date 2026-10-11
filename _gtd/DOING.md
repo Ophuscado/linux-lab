@@ -1,2 +1,1 @@
-Collect the macOS description of the Thunderbolt PCIe controller · waits: operator runs apciec-dump.sh in macOS and returns ~/apciec.txt
-Create the GitHub fork of AsahiLinux/linux and this lab repository · waits: operator creates both and names them
+Push this repository and branch tbt/usb4-fixes to github.com/Ophuscado/linux-lab and /linux · waits: operator links GitHub to Claude, or pushes from the Mac
