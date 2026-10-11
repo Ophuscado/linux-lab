@@ -6,12 +6,19 @@
 # Run it while booted into the 7.2.2-tbtwip kernel.
 #
 # The router firmware can log about 30 identical link-error lines per second; they are
-# counted, not listed. The second round is a plain replug: it exercises the path that
-# takes the PCIe controller down and brings it up again.
+# counted, not listed. The second round detaches the enclosure's PCI devices first
+# (tbt-kernel.sh eject) and then replugs: it exercises the path that takes the PCIe
+# controller down and brings it up again, without pulling disks away from their driver.
+#
+# The machine froze during a replug once and took the capture with it. The kernel log is
+# therefore also copied, line by line and flushed to disk, into a second file (.klog),
+# and the capture itself is flushed after every step.
 
 set -uo pipefail # deliberately not -e: one missing file must not stop the capture
 
 OUT=$HOME/tbt-capture-$(date +%Y%m%d-%H%M%S).txt
+KLOG=${OUT%.txt}.klog
+HERE=$(cd "$(dirname "$0")" && pwd)
 DDC=/sys/kernel/debug/dynamic_debug/control
 TR=/sys/kernel/tracing
 TBDBG=/sys/kernel/debug/thunderbolt
@@ -93,9 +100,18 @@ state() {
     lsblk -o NAME,TRAN,RO,SIZE,MODEL,FSTYPE
 }
 
-round() { # $1 label, $2 instruction for plugging in
+round() { # $1 label, $2 instruction for plugging in, $3 = eject to detach first
     local mark="tbt-capture $$ $1"
     echo
+    if [[ ${3:-} == eject ]]; then
+        echo "[$1] Detaching the enclosure's PCI devices first."
+        {
+            sec "$1: eject"
+            "$HERE/tbt-kernel.sh" eject
+        } 2>&1 | tee -a "$OUT"
+        sync "$OUT"
+        sleep 5
+    fi
     echo "[$1] Unplug the enclosure from the Mac."
     read -r -p "        Press Enter when it is unplugged. "
     sleep 3
@@ -111,6 +127,7 @@ round() { # $1 label, $2 instruction for plugging in
         sudo grep -v 'cd321x_irq: event=$' "$TR/trace" | tail -n 80
         state "$1"
     } >>"$OUT" 2>&1
+    sync "$OUT"
 }
 
 case $(uname -r) in
@@ -119,8 +136,17 @@ case $(uname -r) in
     exit 1 ;;
 esac
 
+[[ -x $HERE/tbt-kernel.sh ]] || { echo "tbt-kernel.sh must be next to this script" >&2; exit 1; }
+
 sudo -v || exit 1
-trap 'debug -p; echo 0 | sudo tee "$TR/events/tps6598x/enable" >/dev/null 2>&1' EXIT
+trap 'debug -p; echo 0 | sudo tee "$TR/events/tps6598x/enable" >/dev/null 2>&1; sudo pkill -f "dmesg --follow-new" 2>/dev/null' EXIT
+
+# New kernel messages, each one on disk before the next is read.
+: >"$KLOG"
+sudo dmesg --follow-new 2>/dev/null | while IFS= read -r line; do
+    printf '%s\n' "$line" >>"$KLOG"
+    sync "$KLOG"
+done &
 
 {
     sec "system"
@@ -140,6 +166,7 @@ echo
 echo "Before starting: unplug ALL the USB4 enclosures (leave the USB-A disks alone)."
 read -r -p "        Press Enter when they are unplugged. "
 
+sync "$OUT"
 debug +p
 echo 1 | sudo tee "$TR/events/tps6598x/enable" >/dev/null 2>&1
 {
@@ -147,7 +174,8 @@ echo 1 | sudo tee "$TR/events/tps6598x/enable" >/dev/null 2>&1
 } >>"$OUT" 2>&1
 
 round "round1-as-usual" "Plug ONE enclosure into a REAR port, the way you normally do."
-round "round2-replug" "Plug the SAME enclosure into the SAME port again, the same way."
+round "round2-eject-replug" "Plug the SAME enclosure into the SAME port again, the same way." eject
 
 echo
 echo "Done. Send this file: $OUT ($(wc -l <"$OUT") lines)"
+echo "If the machine froze instead, send $KLOG after the next boot, and a photo of the screen."

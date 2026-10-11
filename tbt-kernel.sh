@@ -20,6 +20,9 @@
 #             Fedora's own 1.9.9 build (first release that writes the USB4 router ID)
 #   readonly  on|off: a udev rule that makes every disk reached through PCIe over
 #             Thunderbolt read-only as it appears. On until you switch it off
+#   eject     run it BEFORE unplugging an enclosure whose disks came up through PCIe: it
+#             refuses while one of them is mounted, then detaches the enclosure's PCI
+#             devices so the disks are flushed and stopped while they can still answer
 #   cable N   debug: OR the bits N into the cable information the driver gives the router
 #             firmware (0x10 = cable does 20 Gb/s per lane, 0 = off)
 #   rollback  removes the kernel and the udev rule, restores stock device trees and
@@ -54,7 +57,7 @@ set -euo pipefail
 REPO=https://github.com/Ophuscado/linux
 BRANCH=tbt/pcie
 # Pinned so that what gets built is the tree this script was written against.
-COMMIT=1b233c05d58511fb87dbc5a7de0abed31578fe72
+COMMIT=523466d61f0b1a7afc3ab36fb0c58b1e6dcfa1f7
 SUFFIX=-tbtwip
 SRC=${SRC:-$HOME/src/linux-asahi-tbt}
 ESP_MNT=/run/tbt-esp
@@ -471,6 +474,36 @@ stage_readonly() {
     esac
 }
 
+# Everything behind a tunneled root port (PCI domains 0008 and up, bus 01) is removed
+# while the link is still up, so that the drivers shut their devices down properly.
+stage_eject() {
+    local d disk mounted=0 found=0
+    for disk in /sys/block/sd*; do
+        [[ -e $disk ]] || continue
+        [[ $(readlink -f "$disk") == *30000000.pcie/* ]] || continue
+        if lsblk -n -o MOUNTPOINTS "/dev/${disk##*/}" | grep -q .; then
+            echo "/dev/${disk##*/} is mounted:"
+            lsblk -o NAME,SIZE,MOUNTPOINTS "/dev/${disk##*/}"
+            mounted=1
+        fi
+    done
+    [[ $mounted == 0 ]] || die "unmount these first, then run eject again"
+
+    sync
+    for d in /sys/bus/pci/devices/*:01:00.0; do
+        [[ -e $d && ${d##*/} != 0000:* ]] || continue
+        [[ $(readlink -f "$d") == *30000000.pcie/* ]] || continue
+        found=1
+        echo "detaching ${d##*/} and what is behind it"
+        echo 1 | sudo tee "$d/remove" >/dev/null
+    done
+    if [[ $found == 1 ]]; then
+        echo "done: the enclosure can be unplugged now"
+    else
+        echo "nothing is attached through PCIe over Thunderbolt"
+    fi
+}
+
 stage_cable() {
     local p=/sys/module/thunderbolt_apple/parameters/cable_info_or
     [[ -e $p ]] || die "no cable_info_or parameter; boot the trial kernel with an enclosure plugged in"
@@ -488,10 +521,11 @@ stock) stage_stock ;;
 status) stage_status ;;
 m1n1) stage_m1n1 ;;
 readonly) stage_readonly "${2:-}" ;;
+eject) stage_eject ;;
 cable) stage_cable "${2:-}" ;;
 rollback) stage_rollback "${2:-}" ;;
 *)
-    echo "usage: $0 {deps|build|install|try|stock|status|m1n1|readonly on|off|cable [bits]|rollback}" >&2
+    echo "usage: $0 {deps|build|install|try|stock|status|eject|m1n1|readonly on|off|cable [bits]|rollback}" >&2
     exit 2
     ;;
 esac

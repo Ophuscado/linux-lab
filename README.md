@@ -11,16 +11,14 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
 
 - Trial kernel (Asahi `asahi-wip-7.2` plus this lab's branch) built and booted next to the stock one.
 - USB4 link to an ASM2464 enclosure trains at 20 Gb/s per lane, dual lane.
-- Enclosure falls back to USB 3 at 10 Gb/s when its PCIe tunnel gets no answer.
+- PCIe over Thunderbolt, a port of Sven Peter's 2023 driver for the Mac-side controller
+  behind each port (`apciec`): the PCIe link comes up with the tunnel, the enclosure's
+  bridges and its AHCI controller enumerate, and the enclosure stays on USB4.
 
-## What is written but not yet run
+## What does not yet
 
-- PCIe over Thunderbolt: a port of Sven Peter's 2023 driver for the Mac-side PCIe
-  controller behind each port (`apciec`), with device-tree nodes for the Mac Studio.
-  Until it has run, the disks of an enclosure that only tunnels PCIe do not appear.
-
-## What does not
-
+- Disks: DMA from the AHCI controller faulted in the first run; the fix is written, not run.
+- Unplugging and plugging again froze the machine once. Use `./tbt-kernel.sh eject` first.
 - No GPU acceleration on the trial kernel: the branch marks the GPU driver broken.
 
 ## Contents

@@ -1,0 +1,75 @@
+From 523466d61f0b1a7afc3ab36fb0c58b1e6dcfa1f7 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Sun, 11 Oct 2026 16:42:50 +0000
+Subject: [PATCH 9/9] arm64: dts: apple: t602x: Offset the tunneled PCIe DART
+ addresses
+
+Limit the DARTs of the tunneled PCIe ports to 32-bit device addresses
+and tell the driver that they arrive with 0x100_00000000 added, as the
+translation faults of the first run on a Mac Studio showed.
+
+Check: all Apple device trees build; the j475d tree carries
+apple,dma-range and apple,dma-offset on the six DARTs.
+---
+ arch/arm64/boot/dts/apple/t602x-dieX.dtsi | 24 +++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/apple/t602x-dieX.dtsi b/arch/arm64/boot/dts/apple/t602x-dieX.dtsi
+index b801f8bb2..847d29e16 100644
+--- a/arch/arm64/boot/dts/apple/t602x-dieX.dtsi
++++ b/arch/arm64/boot/dts/apple/t602x-dieX.dtsi
+@@ -639,6 +639,12 @@ DIE_NODE(usb4_0_pcie_dart): iommu@721008000 {
+ 		interrupts = <AIC_IRQ DIE_NO 1265 IRQ_TYPE_LEVEL_HIGH>;
+ 		power-domains = <&DIE_NODE(ps_atc0_pcie)>;
+ 		clocks = <&DIE_NODE(usb4_0_pcie_port)>;
++		/*
++		 * The port passes 32-bit addresses on and adds 0x100_00000000
++		 * to them (macOS: vm-base 0x100_80000000).
++		 */
++		apple,dma-range = <0x0 0x0 0x1 0x0>;
++		apple,dma-offset = /bits/ 64 <0x10000000000>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -870,6 +876,12 @@ DIE_NODE(usb4_1_pcie_dart): iommu@b21008000 {
+ 		interrupts = <AIC_IRQ DIE_NO 1283 IRQ_TYPE_LEVEL_HIGH>;
+ 		power-domains = <&DIE_NODE(ps_atc1_pcie)>;
+ 		clocks = <&DIE_NODE(usb4_1_pcie_port)>;
++		/*
++		 * The port passes 32-bit addresses on and adds 0x100_00000000
++		 * to them (macOS: vm-base 0x100_80000000).
++		 */
++		apple,dma-range = <0x0 0x0 0x1 0x0>;
++		apple,dma-offset = /bits/ 64 <0x10000000000>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -1101,6 +1113,12 @@ DIE_NODE(usb4_2_pcie_dart): iommu@f21008000 {
+ 		interrupts = <AIC_IRQ DIE_NO 1301 IRQ_TYPE_LEVEL_HIGH>;
+ 		power-domains = <&DIE_NODE(ps_atc2_pcie)>;
+ 		clocks = <&DIE_NODE(usb4_2_pcie_port)>;
++		/*
++		 * The port passes 32-bit addresses on and adds 0x100_00000000
++		 * to them (macOS: vm-base 0x100_80000000).
++		 */
++		apple,dma-range = <0x0 0x0 0x1 0x0>;
++		apple,dma-offset = /bits/ 64 <0x10000000000>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -1332,6 +1350,12 @@ DIE_NODE(usb4_3_pcie_dart): iommu@1321008000 {
+ 		interrupts = <AIC_IRQ DIE_NO 1319 IRQ_TYPE_LEVEL_HIGH>;
+ 		power-domains = <&DIE_NODE(ps_atc3_pcie)>;
+ 		clocks = <&DIE_NODE(usb4_3_pcie_port)>;
++		/*
++		 * The port passes 32-bit addresses on and adds 0x100_00000000
++		 * to them (macOS: vm-base 0x100_80000000).
++		 */
++		apple,dma-range = <0x0 0x0 0x1 0x0>;
++		apple,dma-offset = /bits/ 64 <0x10000000000>;
+ 		status = "disabled";
+ 	};
+ 
+-- 
+2.43.0
+

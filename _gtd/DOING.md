@@ -1,7 +1,3 @@
-Capture a replug on the kernel with both fixes · check: capture shows USB4 up, drop after 10 s, then SuperSpeed enumeration · waits: superseded if PCIe works; else the operator's tbt-capture file from the tbt/pcie kernel
 Capture a stock-kernel boot dump and compare with the trial one · check: differences listed in KNOWLEDGE.md or none found · waits: operator runs boot-dump.sh on both kernels and attaches the two files
-Add device-tree nodes for the six apciec controllers and their IOMMUs on t602x · check: dtb builds and the nodes are present and enabled under /proc/device-tree · waits: operator builds and boots tbt/pcie, attaches boot-dump and tbt-capture files
-Give pcie-apple.c a single-port tunnel variant without reset GPIO or reference clock · check: driver binds and root port 106b:1014 shows in lspci · waits: operator builds and boots tbt/pcie, attaches boot-dump and tbt-capture files
-Bring the PCIe link up when the Thunderbolt tunnel is active · check: the two ASMedia 1b21:2463 bridges enumerate · waits: operator builds and boots tbt/pcie, attaches boot-dump and tbt-capture files
-Route DMA through the port IOMMU and deliver MSIs · check: ahci binds to 10ec:9100 and the eight disks appear, mounted read-only · waits: operator builds and boots tbt/pcie, attaches boot-dump and tbt-capture files
-Find what makes the stock kernel hang on the trial device trees · check: the failing driver or node is named in KNOWLEDGE.md · waits: operator's boot-dump file, which carries the journal of the hung boot if it was kept
+Route DMA through the port IOMMU and deliver MSIs · check: ahci binds to 10ec:9100 and the eight disks appear, mounted read-only · waits: operator builds 523466d61f0b and attaches the tbt-capture file
+Survive unplugging and replugging an enclosure · check: capture round 2 (eject, unplug, plug) completes and the PCI devices come back · waits: operator's tbt-capture file, or the .klog and a photo if it freezes

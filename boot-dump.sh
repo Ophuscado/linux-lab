@@ -71,6 +71,10 @@ sudo -v || exit 1
             other=$off
         fi
     done
+    # The end of the previous boot, whatever kernel it ran: what the journal kept of a freeze.
+    sec "last kernel messages of boot -1"
+    sudo journalctl -k -b -1 --no-pager -o short-monotonic 2>&1 | tail -n 250
+
     if [[ -n ${other:-} ]]; then
         sec "kernel log of boot $other"
         sudo journalctl -k -b "$other" --no-pager -o short-monotonic 2>&1 | tail -n 4000

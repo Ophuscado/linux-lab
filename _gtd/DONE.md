@@ -7,3 +7,7 @@ Decide the apciec driver approach from apciec.txt · check: compatible and reg l
 Push this repository and branch tbt/usb4-fixes to github.com/Ophuscado/linux-lab and /linux · check: git ls-remote shows main and tbt/usb4-fixes at the local tips
 Push branch tbt/usb4-fixes to the fork and build from it in tbt-kernel.sh · check: build stage fetches the fork branch and the embedded patch is gone
 Switch kernel and device trees together in tbt-kernel.sh · check: try, stock, install and status dry-run against stubs end with matching kernel and device trees
+Add device-tree nodes for the six apciec controllers and their IOMMUs on t602x · check: dtb builds and the nodes are present and enabled under /proc/device-tree
+Give pcie-apple.c a single-port tunnel variant without reset GPIO or reference clock · check: driver binds and root port 106b:1014 shows in lspci
+Bring the PCIe link up when the Thunderbolt tunnel is active · check: the two ASMedia 1b21:2463 bridges enumerate
+Find what makes the stock kernel hang on the trial device trees · check: the failing driver or node is named in KNOWLEDGE.md

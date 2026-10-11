@@ -8,3 +8,5 @@ Retry the PCIe controller when its tunnel comes up before its driver · check: e
 ? Give each bus behind a tunnel its own IOMMU stream, as the 2023 tree did · options: per-bus streams (isolation between devices), or keep one shared stream (simpler) · default: keep one stream
 Drop the DEBUG cable_info_or commit from the branch once cable handling is settled · check: branch builds and links without it
 Share Bluetooth pairings between macOS and Linux with asahi-btsync · check: keyboard and mouse connect in both systems without pairing again
+Survive pulling an enclosure without eject · check: unplug with disks attached leaves the system running and a replug brings them back
+Find why the boot dump shows apple,tunable-pcie-adapter on two of the six ACIO nodes only · check: all six listed, or the reason is in KNOWLEDGE.md
