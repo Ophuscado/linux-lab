@@ -36,6 +36,8 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
   USB4 stack on the stock 7.1 source.
 - `llama-bench.sh`: llama.cpp speed on the CPU and the GPU (Vulkan in Linux, Metal in macOS), with
   per-operation Vulkan timings.
+- `llama-sweep.sh`: try llama.cpp's mat-vec settings on this GPU, check the fastest against the CPU.
+- `mesa-side.sh`: build another Mesa Vulkan driver beside the system one and run programs with it.
 - `bt-sync.sh`: give Linux the Bluetooth pairings macOS made, replacing stale Linux ones.
 - `power-dump.sh`: record power sensors, link power states and disk settings before tuning.
 - `netlog.sh`: send kernel messages to a second computer, so a freeze leaves a log.

@@ -28,6 +28,9 @@ recheck before relying on one for anything consequential.
 - [Asahi does not take LLM work](#asahi-does-not-take-llm-work)
 - [Vulkan against Metal for llama.cpp: public figures](#vulkan-against-metal-for-llamacpp-public-figures)
 - [The 7.1 kernel on the Mac: results and the read ceiling](#the-71-kernel-on-the-mac-results-and-the-read-ceiling)
+- [llama.cpp on the Mac: first numbers and where the time goes](#llamacpp-on-the-mac-first-numbers-and-where-the-time-goes)
+- [The cooperative-matrix Mesa series](#the-cooperative-matrix-mesa-series)
+- [Idle power and what the enclosure adds](#idle-power-and-what-the-enclosure-adds)
 
 ## Stock kernel has no Apple USB4 host
 7.1.13-402.asahi.fc44: `CONFIG_USB4=y` is the PCI driver only; no Apple code under `drivers/thunderbolt`, no USB4 device-tree nodes (source at tag `asahi-7.1.13-3`). A USB4 partner leaves the port at USB2: `ATCPHY_PIPEHANDLER_STATE_USB4 not implemented; falling back to USB2`. 2026-10-11.
@@ -122,3 +125,23 @@ Operator's boot dump, capture and bench of 2026-10-11, kernel `7.1.13-tbtwip` (`
 Reads with `dd` and direct I/O, 4 GiB each: one disk at a time 267 to 287 MB/s (the platters), all eight together 211 MB/s each, 1.69 GB/s in total. The ceiling is inside the enclosure: its SATA controller's PCIe link is 8 GT/s x2 (its maximum, `LnkCap` and `LnkSta` agree), about 1.97 GB/s before packet overhead, while the USB4 link carries 2 x 20 Gb/s. Nothing on the Mac side limits sequential reads.
 
 One new warning at boot, `WARNING: drivers/base/core.c:1504 at __device_links_no_driver`, for `2702280000.usb` (same device pointer as the "late IOMMU probe" warning two lines earlier): the USB controller's probe was deferred while the `apple_dart` module was still probing the IOMMU that had just attached to it. The port works afterwards (the keyboard is on it). Inferred to be a timing variant of the "late IOMMU probe" warning the stock kernel also prints; not seen in three 7.2 boots, and no clean stock boot dump exists yet to compare.
+
+## llama.cpp on the Mac: first numbers and where the time goes
+Operator's run of 2026-10-11: kernel `7.1.13-tbtwip`, Mesa 26.2.4 (Honeykrisp, `Apple M2 Ultra (G14D B1)`), llama.cpp `f2cc7282`, model `gpt-oss-20b-Q4_0.gguf` (10.7 GiB, mixture of experts, expert weights in MXFP4). Tokens per second:
+
+| | 512-token prompt | generating 128 |
+|---|---|---|
+| CPU, 16 performance cores | 237 | 64.8 |
+| Vulkan, all layers | 617 | 35.8 |
+
+Flash attention changes neither. So today the GPU wins on prompts by 2.6 times and loses on generation by 1.8 times; for this model, generation is best left on the CPU (`-ngl 0`). llama.cpp reports for the device `fp16: 1`, `int dot: 0`, `matrix cores: none`.
+
+Where the Vulkan time goes (llama.cpp's own per-operation timer; it submits each operation alone, so a token costs 35.9 ms there against 27.9 ms in the plain run). Generation, per token: expert mat-vec in MXFP4 (`MUL_MAT_ID_VEC`, 72 calls of about 245 us) 49 %; Q4_0 mat-vec (three shapes) 18 %; RMS norm 6 %; the output projection in Q8_0 4 %; attention 4 %. About 410 operations make a token and none averages under 28 us, even a row copy. Prompt: expert mat-mat in MXFP4 (`MUL_MAT_ID`) 67 %, Q4_0 mat-mat 21 %. Mat-mat runs at 4100 to 5700 GFLOPS; mat-vec at about 270 to 320, which is 70 to 90 GB of weights read per second in the large calls. A token reads about 2.2 GB of weights (from the call counts and shapes), so the plain runs correspond to about 80 GB/s on the GPU and 145 GB/s on the CPU. Inferred from that: generation is limited by how the mat-vec shaders walk memory on this GPU, not by arithmetic, so the first lever is llama.cpp's mat-vec settings (rows per work group, work-group size, integer path), which the Asahi driver gets as generic defaults. `llama-sweep.sh` measures them. Cooperative matrices only touch mat-mat, the prompt side.
+
+Not known yet: the Metal figures for the same model and commit on this Mac.
+
+## The cooperative-matrix Mesa series
+Read 2026-10-11 at `omacom/mesa` pull request 6 head `795ae42a71c8` (includes 3 to 5): 56 commits by one author on upstream main `7cda7850edd1` (26.3 development), touching the asahi driver, nir, spirv, the Vulkan runtime and tests; build files only gain sources. It exposes `VK_KHR_cooperative_matrix` through hardware matrix instructions (`simd_matrix_fmadd16/32`, 8x8x8, tiled to 16x16x16) and changes compute batching. Chip classes: any generation-14 GPU with more than one cluster is `AGX_CHIP_G14X`, which includes the M2 Ultra (8 clusters), and the series enables cooperative matrices there by default since `5fbd5e9` (author's claim on an M2 Max: prompt 160 to 902 tokens/s, same output); `AGX_SIMDMAT=0` turns them off. llama.cpp accepts cooperative matrices from this driver without an allow-list and uses them for mat-mat only. The driver alone (`-Dvulkan-drivers=asahi`, no OpenGL or window system) configures and builds from that commit with LLVM 20 on x86-64 in the sandbox; it installs one library and an ICD file with an absolute path, so `VK_DRIVER_FILES` is enough to use it beside the system Mesa. Not run on the GPU yet.
+
+## Idle power and what the enclosure adds
+Operator's power dumps of 2026-10-11, kernel `7.1.13-tbtwip`, `tuned` profile balanced, sensor `macsmc_hwmon` "Total System Power", two readings ten seconds apart each: 20.8 and 21.1 W with nothing attached; 27.5 and 27.4 W with the enclosure attached and its disks idle (the enclosure has its own supply, so this is the Mac's side only). In that state the PCIe links have ASPM L1 on and L1 substates off, the SATA links are at `med_power_with_dipm`, and the USB4 link stays in CL0: the log says `CLx: CL0s/CL1 supported` for one end and `not supported` for the other. With nothing attached, all six Thunderbolt PCIe controllers still hold their power domains (`atcN_pcie` on, `runtime=unsupported`) while their root ports are runtime-suspended; what that costs is unknown until the same reading is taken on the stock kernel. Disk queues: `bfq`, 8 MiB read-ahead, depth 32; since sequential reads already sit at the enclosure's link ceiling, nothing there is worth changing. `hdparm -C` says `unknown` for the Seagate disks and `idle` for the Toshiba ones (inferred: the Seagates are in one of their intermediate idle states, which `smartctl -n standby` names). `asahi-btsync.service` does not exist on this system, so nothing has been copying macOS Bluetooth pairings at boot.

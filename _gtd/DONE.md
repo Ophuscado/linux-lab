@@ -20,3 +20,7 @@ Apply the lab's nine commits to tbt/7.1 · check: pcie-apple and apple-dart buil
 Let tbt-kernel.sh build tbt/7.1 with the GPU driver kept · check: build stage ends without TBT_NO_GPU and DRM_ASAHI stays m
 Run the tbt/7.1 kernel on the Mac: GPU and Thunderbolt disks on one kernel · check: boot dump shows the asahi GPU module loaded and the capture shows the eight disks · waits: operator builds 9d460b403164, attaches the boot-dump and tbt-capture files
 Find why the boot dump shows apple,tunable-pcie-adapter on two of the six ACIO nodes only · check: all six listed, or the reason is in KNOWLEDGE.md
+Route DMA through the port IOMMU and deliver MSIs · check: ahci binds to 10ec:9100 and the eight disks appear, mounted read-only · waits: operator runs tbt-kernel.sh mount and bench and pastes the output
+Measure llama.cpp on the CPU and through Vulkan · check: llama-bench tables for both in the llama-bench file · waits: operator runs llama-bench.sh with a model on a kernel that has the GPU driver
+Record the power and tuning state with and without the enclosure · check: two power-dump files with sensor readings, link power states and disk settings · waits: operator runs power-dump.sh idle with the enclosure attached and again without it, attaches both files
+Name the operations that make up the Vulkan gap from the timings in the llama-bench file · check: the five largest by time with their share in KNOWLEDGE.md
