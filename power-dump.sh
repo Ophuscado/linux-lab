@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # power-dump.sh: how the running system is set up for power saving and speed, into
-# ~/power-dump-<kernel release>.txt. It is the "before" for every tuning step: run it
+# ~/power-dump-<kernel release>-enclosure.txt or -bare.txt. It is the "before" for every tuning step: run it
 # once idle with the enclosure attached and once without, so the cost of the enclosure
 # and of the idle Thunderbolt controllers can be read from the power sensors.
 # Read-only: it changes no setting and does not wake a sleeping disk. Lines with serial
@@ -8,7 +8,12 @@
 
 set -uo pipefail # deliberately not -e: one missing file must not stop the dump
 
-OUT=$HOME/power-dump-$(uname -r).txt
+# The two runs get different names, so the second does not replace the first.
+if readlink -f /sys/block/sd* 2>/dev/null | grep -q '30000000\.pcie/'; then
+    OUT=$HOME/power-dump-$(uname -r)-enclosure.txt
+else
+    OUT=$HOME/power-dump-$(uname -r)-bare.txt
+fi
 
 sec() { printf '\n===== %s\n' "$*"; }
 # Print "path: value" for every readable file given.
