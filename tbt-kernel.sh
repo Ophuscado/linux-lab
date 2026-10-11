@@ -26,6 +26,9 @@
 #             under /mnt/tbt/<volume name>; umount undoes it
 #   bench     read-only speed test of those disks: N MiB (default 4096) from the start of
 #             each, one at a time and then all at once
+#   spindown  N|off: lets those disks stop spinning after N idle minutes (1 to 20, or 30,
+#             60, ... 330; default 30), now and each time they appear; off undoes it. The
+#             timer runs in each disk, so a read simply waits some seconds for the spin-up
 #   eject     run it BEFORE unplugging an enclosure whose disks came up through PCIe: it
 #             refuses while one of them is mounted, then flushes and detaches the disks.
 #             The enclosure's own PCI devices stay: taking those away makes the ASM2464
@@ -72,6 +75,7 @@ M1N1_NEW=$KOJI/1.9.9/1.fc46/noarch/m1n1-1.9.9-1.fc46.noarch.rpm
 M1N1_OLD=$KOJI/1.6.1/1.fc44/noarch/m1n1-1.6.1-1.fc44.noarch.rpm
 DTB=arch/arm64/boot/dts/apple/t6022-j475d.dtb
 RO_RULE=/etc/udev/rules.d/00-tbt-readonly.rules
+SPIN_RULE=/etc/udev/rules.d/61-tbt-spindown.rules
 MNT=/mnt/tbt
 # Overridable only so the stages can be exercised off the target machine.
 DT=${TBT_DT:-/proc/device-tree}
@@ -409,6 +413,8 @@ stage_status() {
     lspci -D -nn 2>/dev/null | grep -v '^0000:' || echo "none"
     echo "-- disks (read-only rule: $([[ -f $RO_RULE ]] && echo on || echo off))"
     lsblk -o NAME,TRAN,RO,SIZE,MODEL
+    echo "-- spin state (spin-down rule: $([[ -f $SPIN_RULE ]] && sed -n 's/.*hdparm -S \([0-9]*\) .*/-S \1/p' "$SPIN_RULE" || echo off))"
+    for d in $(tunnel_disks); do printf '%s: %s\n' "$d" "$(disk_power "$d")"; done
     echo "-- kernel log"
     log=$(sudo dmesg | grep -iE 'thunderbolt|usb4|acio|nhi|drom|atcphy|phy-apple-atc|tunnel|cio|pcie-apple|pci 00(0[89a-f]|1)|pcieport 00(0[89a-f]|1)|ahci|ata[0-9]+|sd [0-9]' || true)
     echo "$log" | tail -n 140
@@ -465,6 +471,7 @@ stage_rollback() {
     sudo rm -f "/boot/vmlinuz-$v" "/boot/initramfs-$v.img" "/boot/System.map-$v" "/boot/config-$v"
     sudo grub2-editenv - unset next_entry
     stage_readonly off
+    sudo rm -f "$SPIN_RULE"
 
     if [[ $(rpm -q --qf '%{VERSION}' m1n1) != 1.6.1 ]]; then
         say "restoring m1n1 1.6.1"
@@ -504,6 +511,49 @@ stage_readonly() {
 }
 
 # Names (sda, sdb, ...) of the disks reached through PCIe over Thunderbolt.
+# Asking for the power mode does not wake a disk. smartctl names the idle states of
+# newer disks, which hdparm reports as "unknown".
+disk_power() {
+    local out
+    if command -v smartctl >/dev/null; then
+        out=$(sudo smartctl -i -n standby "/dev/$1" 2>/dev/null |
+            sed -n 's/^Power mode [a-z]*: *//p; s/^Device is in \([A-Z_]*\) mode.*/\1/p' | head -n 1) || true
+        [[ -n $out ]] && { echo "$out"; return; }
+    fi
+    sudo hdparm -C "/dev/$1" 2>&1 | sed -n 's/.*drive state is: *//p' || true
+}
+
+# hdparm -S counts in 5 s steps up to 240 (20 minutes) and in 30 minute steps from 241.
+stage_spindown() {
+    local arg=${1:-30} n d hdparm
+    hdparm=$(command -v hdparm) || die "hdparm not found (sudo dnf install hdparm)"
+    if [[ $arg == off ]]; then
+        sudo rm -f "$SPIN_RULE"
+        sudo udevadm control --reload
+        for d in $(tunnel_disks); do sudo "$hdparm" -q -S 0 "/dev/$d" && echo "$d: timer off"; done
+        echo "spin-down rule is off"
+        return
+    fi
+    [[ $arg =~ ^[0-9]+$ ]] || die "usage: $0 spindown MINUTES|off"
+    if ((arg >= 1 && arg <= 20)); then
+        n=$((arg * 12))
+    elif ((arg % 30 == 0 && arg >= 30 && arg <= 330)); then
+        n=$((240 + arg / 30))
+    else
+        die "the disks' timer takes 1 to 20 minutes, or 30, 60, 90 ... 330"
+    fi
+    printf '%s\n' \
+        '# Written by tbt-kernel.sh spindown; removed by spindown off and by rollback.' \
+        "ACTION==\"add\", SUBSYSTEM==\"block\", KERNEL==\"sd*[!0-9]\", DEVPATH==\"*30000000.pcie/*\", ATTR{queue/rotational}==\"1\", RUN+=\"$hdparm -q -S $n /dev/%k\"" |
+        sudo tee "$SPIN_RULE" >/dev/null
+    sudo udevadm control --reload
+    for d in $(tunnel_disks); do
+        [[ $(cat "/sys/block/$d/queue/rotational") == 1 ]] || continue
+        sudo "$hdparm" -q -S "$n" "/dev/$d" && echo "$d: stops after $arg idle minutes"
+    done
+    echo "spin-down rule is on ($arg minutes). Check later with: $0 status"
+}
+
 tunnel_disks() {
     local disk
     for disk in /sys/block/sd*; do
@@ -610,12 +660,13 @@ readonly) stage_readonly "${2:-}" ;;
 mount) stage_mount ;;
 umount) stage_umount ;;
 bench) stage_bench "${2:-}" ;;
+spindown) stage_spindown "${2:-}" ;;
 eject) stage_eject ;;
 cable) stage_cable "${2:-}" ;;
 forget) stage_forget "${2:-}" ;;
 rollback) stage_rollback "${2:-}" ;;
 *)
-    echo "usage: $0 {deps|build|install|try|stock|status|mount|umount|bench [MiB]|eject|m1n1|readonly on|off|cable [bits]|forget VERSION|rollback}" >&2
+    echo "usage: $0 {deps|build|install|try|stock|status|mount|umount|bench [MiB]|spindown [MINUTES|off]|eject|m1n1|readonly on|off|cable [bits]|forget VERSION|rollback}" >&2
     exit 2
     ;;
 esac
