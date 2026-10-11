@@ -32,8 +32,13 @@ MODEL=$(cd "$(dirname "$MODEL")" && pwd)/$(basename "$MODEL")
 
 if [[ $OS == Linux ]]; then
     GPU_OPTS=(-DGGML_VULKAN=ON)
-    if ! command -v cmake >/dev/null || ! command -v glslc >/dev/null || ! command -v vulkaninfo >/dev/null; then
-        sudo dnf install -y git-core cmake gcc-c++ make glslc vulkan-headers vulkan-loader-devel vulkan-tools
+    # spirv-headers-devel: the Vulkan part of llama.cpp looks for its CMake package.
+    missing=()
+    for pkg in git-core cmake gcc-c++ make glslc vulkan-headers vulkan-loader-devel vulkan-tools spirv-headers-devel; do
+        rpm -q --quiet "$pkg" || missing+=("$pkg")
+    done
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        sudo dnf install -y "${missing[@]}"
     fi
     JOBS=$(nproc)
 else
@@ -54,9 +59,13 @@ fi
 build() { # $1 directory, rest cmake options
     local dir=$1
     shift
-    cmake -S . -B "$dir" -DCMAKE_BUILD_TYPE=Release -DLLAMA_BUILD_TESTS=OFF \
-        -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=OFF "$@" >/dev/null
-    cmake --build "$dir" --target llama-bench -j"$JOBS" >/dev/null
+    # Compiler output goes to a log; only a failure shows its end.
+    if ! { cmake -S . -B "$dir" -DCMAKE_BUILD_TYPE=Release -DLLAMA_BUILD_TESTS=OFF \
+        -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=OFF "$@" &&
+        cmake --build "$dir" --target llama-bench -j"$JOBS"; } >"$dir.log" 2>&1; then
+        grep -B2 -A12 -m1 -E 'CMake Error|error:' "$dir.log" || tail -n 25 "$dir.log"
+        die "build failed; full log in $SRC/$dir.log"
+    fi
     [[ -x $dir/bin/llama-bench ]] || die "no llama-bench in $dir"
 }
 
