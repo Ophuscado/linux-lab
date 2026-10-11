@@ -35,6 +35,7 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
   script builds is branch `tbt/7.1` of the same fork: these changes plus the backported
   USB4 stack on the stock 7.1 source.
 - `llama-bench.sh`: llama.cpp speed on the CPU and through Vulkan, on the running kernel.
+- `bt-sync.sh`: give Linux the Bluetooth pairings macOS made, replacing stale Linux ones.
 - `KNOWLEDGE.md`: findings that were expensive to obtain, with their evidence.
 - `_gtd/`: the task board.
 
