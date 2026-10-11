@@ -26,6 +26,7 @@ recheck before relying on one for anything consequential.
 - [What is inside the enclosure](#what-is-inside-the-enclosure)
 - [No backport to 7.1](#no-backport-to-71)
 - [Asahi does not take LLM work](#asahi-does-not-take-llm-work)
+- [Vulkan against Metal for llama.cpp: public figures](#vulkan-against-metal-for-llamacpp-public-figures)
 
 ## Stock kernel has no Apple USB4 host
 7.1.13-402.asahi.fc44: `CONFIG_USB4=y` is the PCI driver only; no Apple code under `drivers/thunderbolt`, no USB4 device-tree nodes (source at tag `asahi-7.1.13-3`). A USB4 partner leaves the port at USB2: `ATCPHY_PIPEHANDLER_STATE_USB4 not implemented; falling back to USB2`. 2026-10-11.
@@ -110,3 +111,6 @@ Superseded on 2026-10-11 by [The 7.1 backport](#the-71-backport): the GPU driver
 
 ## Asahi does not take LLM work
 Policy read 2026-10-11: generative AI is forbidden for material contributions; LLM-drafted issues may be closed; using an LLM on m1n1 hypervisor traces is listed as a violation; concealment leads to a ban. Decision: publish in this repository and the operator's fork, always disclosed. Any report to Asahi is written by the operator.
+
+## Vulkan against Metal for llama.cpp: public figures
+Read 2026-10-11; none of it measured here yet. llama.cpp's Vulkan scoreboard (discussion 10879, Llama 2 7B Q4_0) lists an M2 Ultra on Asahi at 206 tokens/s for a 512-token prompt and 34 generating; its Metal table (discussion 4167) lists the M2 Ultra with 76 GPU cores at 1238 and 94 in 2023 and 1489 and 125 in August 2026 with flash attention. So the published gap is about six times on prompts and three on generation, on the same hardware. Both halves of the Vulkan path are userspace: the kernel driver only submits work and manages memory, while the shader compiler is Mesa's Honeykrisp and the shaders are llama.cpp's. llama.cpp at `c83f305` has no settings for Apple GPUs beyond one matrix-shader size choice for Honeykrisp (`ggml-vulkan.cpp`, "Honeykrisp driver for Asahi Linux doesn't report VK_VENDOR_ID_APPLE"), reports `matrix cores: none` on it, and can time each operation with `GGML_VK_PERF_LOGGER`. Issue 10982 (opened by an Asahi GPU developer, M2 Max: Metal 580 and 61, Vulkan 92 and 22 on Mistral 7B Q4_K_M) names the missing cooperative-matrix path and Mesa's code generation as causes. A third-party Mesa series (omacom/mesa pull requests 3 to 6, September 2026, not submitted upstream) adds `VK_KHR_cooperative_matrix` to Honeykrisp; its author restricts it to M1 until other chips pass an output check, and one outside run on an M2 Pro reports 14 to 80 percent more decode speed with one output differing from stock. Unverified claims, to be tested with an output comparison before any trust.
