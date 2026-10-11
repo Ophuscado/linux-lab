@@ -34,8 +34,11 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
   `236788cd2602` (branch `tbt/pcie` of https://github.com/Ophuscado/linux). The kernel the
   script builds is branch `tbt/7.1` of the same fork: these changes plus the backported
   USB4 stack on the stock 7.1 source.
-- `llama-bench.sh`: llama.cpp speed on the CPU and through Vulkan, on the running kernel.
+- `llama-bench.sh`: llama.cpp speed on the CPU and the GPU (Vulkan in Linux, Metal in macOS), with
+  per-operation Vulkan timings.
 - `bt-sync.sh`: give Linux the Bluetooth pairings macOS made, replacing stale Linux ones.
+- `power-dump.sh`: record power sensors, link power states and disk settings before tuning.
+- `netlog.sh`: send kernel messages to a second computer, so a freeze leaves a log.
 - `KNOWLEDGE.md`: findings that were expensive to obtain, with their evidence.
 - `_gtd/`: the task board.
 
