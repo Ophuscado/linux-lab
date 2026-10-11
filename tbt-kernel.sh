@@ -1,26 +1,30 @@
 #!/usr/bin/env bash
 # tbt-kernel.sh: trial of the Asahi 7.2 work-in-progress kernel, which carries the
-# Apple USB4/Thunderbolt host driver, installed next to the stock Fedora Asahi kernel.
+# Apple USB4/Thunderbolt host driver, plus this lab's changes on top of it (branch
+# tbt/pcie of github.com/Ophuscado/linux), installed next to the stock Fedora Asahi kernel.
 #
 # Written for: Apple Mac Studio (M2 Ultra, 2023), Fedora Asahi Remix 44,
 # kernel 7.1.13-402.asahi.fc44.aarch64+16k, m1n1 1.6.1.
 #
 # Stages, in the order to run them, and what each one touches:
 #   deps      dnf-installs the build packages
-#   build     clones and builds in $SRC only; nothing else on the system changes
+#   build     fetches the pinned commit and builds in $SRC only; nothing else on the
+#             system changes. Run it again after updating this script: it moves $SRC to
+#             the new pinned commit and rebuilds what changed
 #   install   adds the kernel as an extra boot entry and keeps the stock kernel as default.
 #             Rewrites m1n1/boot.bin on the EFI partition, because the device trees in it
 #             are shared by every installed kernel. A copy is kept as boot.bin.stock.
+#             Also switches 'readonly' on
 #   try       selects the new kernel for the NEXT BOOT ONLY; a power cycle returns to stock
 #   status    run after booting the new kernel; prints what it sees
 #   m1n1      only if status says the host DROM is rejected: replaces m1n1 1.6.1 with
 #             Fedora's own 1.9.9 build (first release that writes the USB4 router ID)
-#   patch     fixes the Thunderbolt driver's cable-speed check, makes the port fall back
-#             to USB 3 properly when a device gives up on USB4, and adds a debug parameter
-#             (cable_info_or); then rebuilds. Follow with install, try and a reboot
-#   cable N   on the patched kernel: OR the bits N into the cable information the driver
-#             gives the router firmware (0x10 = cable does 20 Gb/s per lane, 0 = off)
-#   rollback  removes the kernel, restores stock device trees and m1n1 1.6.1
+#   readonly  on|off: a udev rule that makes every disk reached through PCIe over
+#             Thunderbolt read-only as it appears. On until you switch it off
+#   cable N   debug: OR the bits N into the cable information the driver gives the router
+#             firmware (0x10 = cable does 20 Gb/s per lane, 0 = off)
+#   rollback  removes the kernel and the udev rule, restores stock device trees and
+#             m1n1 1.6.1
 #
 # If Linux no longer boots at all (not expected), restore the boot image from macOS:
 #   diskutil list                          # find the EFI partition next to the Linux one
@@ -36,10 +40,12 @@
 
 set -euo pipefail
 
-REPO=https://github.com/AsahiLinux/linux
-BRANCH=asahi-wip-7.2
-# Pinned so that what gets built is the tree that was inspected, not whatever the branch is today.
-COMMIT=236788cd2602a24c703fe7bdaddaf73ef77d2027
+# The lab's branch: AsahiLinux/linux asahi-wip-7.2 at 236788cd2602 plus the commits that
+# are also kept as patches/ in the lab repository.
+REPO=https://github.com/Ophuscado/linux
+BRANCH=tbt/pcie
+# Pinned so that what gets built is the tree this script was written against.
+COMMIT=1b233c05d58511fb87dbc5a7de0abed31578fe72
 SUFFIX=-tbtwip
 SRC=${SRC:-$HOME/src/linux-asahi-tbt}
 ESP_MNT=/run/tbt-esp
@@ -47,6 +53,7 @@ KOJI=https://kojipkgs.fedoraproject.org/packages/m1n1
 M1N1_NEW=$KOJI/1.9.9/1.fc46/noarch/m1n1-1.9.9-1.fc46.noarch.rpm
 M1N1_OLD=$KOJI/1.6.1/1.fc44/noarch/m1n1-1.6.1-1.fc44.noarch.rpm
 DTB=arch/arm64/boot/dts/apple/t6022-j475d.dtb
+RO_RULE=/etc/udev/rules.d/00-tbt-readonly.rules
 # Overridable only so the stages can be exercised off the target machine.
 DT=${TBT_DT:-/proc/device-tree}
 
@@ -132,7 +139,35 @@ stage_deps() {
     say "installing build packages"
     sudo dnf install -y git-core gcc make bc bison flex perl-interpreter openssl openssl-devel \
         elfutils-libelf-devel dwarves rust rust-src rustfmt bindgen-cli clang python3 \
-        grubby kmod zstd xz
+        grubby kmod zstd xz pciutils
+}
+
+# Move $SRC to the pinned commit. Earlier versions of this script patched two files in
+# place; that change is part of the branch now, so it is set aside (kept as a diff) and
+# dropped. Any other local change stops the stage.
+checkout_pinned() {
+    local dirty f keep
+    dirty=$(git status --porcelain --untracked-files=no | awk '{print $2}')
+    for f in $dirty; do
+        case $f in
+        drivers/thunderbolt/apple.c | drivers/usb/typec/tipd/core.c) ;;
+        *) die "local change in $SRC/$f; commit it or move it away, it will not be overwritten" ;;
+        esac
+    done
+    if [[ -n $dirty ]]; then
+        keep=$SRC/local-changes-$(date +%Y%m%d-%H%M%S).diff
+        # shellcheck disable=SC2086
+        git diff -- $dirty >"$keep"
+        # shellcheck disable=SC2086
+        git checkout -q -- $dirty
+        echo "the in-place patch of an earlier script version was saved as $keep and dropped"
+    fi
+    git checkout -q --detach "$COMMIT"
+}
+
+# Switch an option on as a module unless the configuration already has it.
+want() {
+    case $(scripts/config -s "$1") in y | m) ;; *) scripts/config -m "$1" ;; esac
 }
 
 stage_build() {
@@ -142,15 +177,12 @@ stage_build() {
     say "fetching $BRANCH at ${COMMIT:0:12} into $SRC"
     mkdir -p "$SRC"
     cd "$SRC"
-    if [[ ! -d .git ]]; then
-        git init -q
-        git remote add origin "$REPO"
-    fi
+    [[ -d .git ]] || git init -q
     if ! git cat-file -e "$COMMIT^{commit}" 2>/dev/null; then
-        git fetch --depth 1 origin "$COMMIT" ||
-            die "pinned commit is no longer fetchable; the branch was rewritten, ask before using its new tip"
+        git fetch --depth 1 "$REPO" "$COMMIT" ||
+            die "pinned commit is no longer fetchable from $REPO; the branch was rewritten"
     fi
-    git checkout -q --detach "$COMMIT"
+    checkout_pinned
 
     say "configuring from $base"
     cp "$base" .config
@@ -159,14 +191,20 @@ stage_build() {
         --set-str SYSTEM_TRUSTED_KEYS "" --set-str SYSTEM_REVOCATION_KEYS "" \
         --set-str EFI_SBAT_FILE "" \
         -m USB4_APPLE_SOC -m RESET_APPLE_CIO
-    case $(scripts/config -s USB4) in y | m) ;; *) scripts/config -m USB4 ;; esac
+    # PCIe over Thunderbolt needs the Apple PCIe driver, and AHCI for the disks behind it.
+    local s v was dropped=0
+    for s in USB4 PCIE_APPLE ATA SATA_AHCI BLK_DEV_SD; do want "$s"; done
     mk olddefconfig
 
-    local s v was dropped=0
-    for s in USB4_APPLE_SOC RESET_APPLE_CIO; do
+    for s in USB4_APPLE_SOC RESET_APPLE_CIO PCIE_APPLE SATA_AHCI BLK_DEV_SD; do
         v=$(scripts/config -s "$s")
         [[ $v == y || $v == m ]] || die "CONFIG_$s did not survive olddefconfig (got '$v')"
     done
+    # The PCIe driver follows the Thunderbolt core: built in only if that is built in.
+    was=$(scripts/config --file "$base" -s PCIE_APPLE)
+    v=$(scripts/config -s PCIE_APPLE)
+    [[ $was != y || $v == y ]] ||
+        echo "WARN: CONFIG_PCIE_APPLE was built in and is now a module (CONFIG_USB4 is a module)"
     scripts/diffconfig "$base" .config >config.diff 2>/dev/null || true
 
     # Options this machine depends on must not be dropped silently by the version jump.
@@ -204,6 +242,7 @@ stage_build() {
     [[ -f $img ]] || die "kernel image $img missing"
     [[ -f $DTB ]] || die "$DTB missing"
     grep -q -a 'apple,t6020-usb4-acio' "$DTB" || die "device tree has no USB4 nodes"
+    grep -q -a 'apple,t8103-usb4-pcie' "$DTB" || die "device tree has no Thunderbolt PCIe nodes"
     [[ $(scripts/config -s USB4_APPLE_SOC) == y || -f drivers/thunderbolt/thunderbolt_apple.ko ]] ||
         die "thunderbolt_apple.ko missing"
     say "built $(kver) ($img). Nothing outside $SRC was changed. Next: $0 install"
@@ -243,6 +282,8 @@ stage_install() {
 
     # The stock kernel stays the default; the new one is only ever booted through 'try'.
     sudo grubby --set-default "$prev"
+
+    stage_readonly on
 
     say "result"
     sudo test -f "/boot/vmlinuz-$v" || die "/boot/vmlinuz-$v missing after kernel-install"
@@ -291,11 +332,13 @@ stage_status() {
     echo "-- usb"
     lsusb -t
     lsusb | grep -iE '174c|asmedia' || echo "no ASMedia USB device"
-    echo "-- disks"
-    lsblk -o NAME,TRAN,SIZE,MODEL
+    echo "-- pci behind the thunderbolt ports (domains 0008 and up)"
+    lspci -D -nn 2>/dev/null | grep -v '^0000:' || echo "none"
+    echo "-- disks (read-only rule: $([[ -f $RO_RULE ]] && echo on || echo off))"
+    lsblk -o NAME,TRAN,RO,SIZE,MODEL
     echo "-- kernel log"
-    log=$(sudo dmesg | grep -iE 'thunderbolt|usb4|acio|nhi|drom|atcphy|phy-apple-atc|tunnel|cio' || true)
-    echo "$log" | tail -n 80
+    log=$(sudo dmesg | grep -iE 'thunderbolt|usb4|acio|nhi|drom|atcphy|phy-apple-atc|tunnel|cio|pcie-apple|pci 00(0[89a-f]|1)|pcieport 00(0[89a-f]|1)|ahci|ata[0-9]+|sd [0-9]' || true)
+    echo "$log" | tail -n 140
     echo "-- reading"
     if grep -qiE 'No valid host DROM|DROM UID CRC8 mismatch' <<<"$log"; then
         echo "The host DROM from m1n1 $(rpm -q --qf '%{VERSION}' m1n1) is rejected. Next: $0 m1n1, then $0 try"
@@ -329,6 +372,7 @@ stage_rollback() {
     sudo rm -rf "/usr/lib/modules/$v" "/boot/dtb-$v"
     sudo rm -f "/boot/vmlinuz-$v" "/boot/initramfs-$v.img" "/boot/System.map-$v" "/boot/config-$v"
     sudo grub2-editenv - unset next_entry
+    stage_readonly off
 
     if [[ $(rpm -q --qf '%{VERSION}' m1n1) != 1.6.1 ]]; then
         say "restoring m1n1 1.6.1"
@@ -344,140 +388,32 @@ stage_rollback() {
     echo "boot.bin and boot.bin.stock should now have the same checksum."
 }
 
-# The driver derives the cable information word from what the port controller reports.
-# It set the 20 Gb/s-per-lane flag only for a cable speed of exactly 3 (USB4 Gen 3). The
-# cables here report 4 (USB4 v2), so the flag was missing, the Mac's router trained at
-# 10 Gb/s per lane against an enclosure at 20, and the link never came up. The patch
-# accepts any speed of 3 or above, and adds a run-time override (cable_info_or) for tests.
-#
-# Second change, in the port-controller driver: these enclosures only tunnel PCIe, which
-# this kernel cannot serve, so after 10 s they drop USB4 and fall back to USB 3 without
-# an unplug. The USB controller was not reinitialised for that, which left the port with
-# USB 2 only (and the enclosure reporting no medium). The patch takes the USB controller
-# down and up again whenever a partner enters or leaves USB4/Thunderbolt.
-write_patch() {
-    cat >"$1" <<'PATCH_EOF'
-diff --git a/drivers/thunderbolt/apple.c b/drivers/thunderbolt/apple.c
-index 530008cc8..94f3d7960 100644
---- a/drivers/thunderbolt/apple.c
-+++ b/drivers/thunderbolt/apple.c
-@@ -140,6 +140,11 @@
- #define TB_VSE_CAP_APPLE_CABLE_INFO_LEGACY_ADAPTER BIT(9)
- #define TB_VSE_CAP_APPLE_CABLE_INFO_TBT2_3 BIT(10)
- 
-+static unsigned int cable_info_or;
-+module_param(cable_info_or, uint, 0644);
-+MODULE_PARM_DESC(cable_info_or,
-+		 "Debug: bits OR-ed into the cable information word of a present cable");
-+
- /**
-  * struct apple_cio - Apple Converged I/O host router complex
-  * @dev: ACIO device
-@@ -843,7 +848,11 @@ static int apple_cio_tbt_switch_set(struct typec_thunderbolt_switch_dev *sw,
- 		acio->target_cable_info = TB_VSE_CAP_APPLE_CABLE_INFO_PRESENT;
- 		if (FIELD_GET(EUDO_CABLE_TYPE_MASK, data->usb4.eudo) != EUDO_CABLE_TYPE_PASSIVE)
- 			acio->target_cable_info |= TB_VSE_CAP_APPLE_CABLE_INFO_ACTIVE_CABLE;
--		if (FIELD_GET(EUDO_CABLE_SPEED_MASK, data->usb4.eudo) == EUDO_CABLE_SPEED_USB4_GEN3)
-+		/*
-+		 * Cables rated above Gen 3 (USB4 v2 cables report speed 4) also
-+		 * carry 20 Gb/s per lane, which is the most this router does.
-+		 */
-+		if (FIELD_GET(EUDO_CABLE_SPEED_MASK, data->usb4.eudo) >= EUDO_CABLE_SPEED_USB4_GEN3)
- 			acio->target_cable_info |= TB_VSE_CAP_APPLE_CABLE_INFO_20_GBPS;
- 		if (data->orientation == TYPEC_ORIENTATION_REVERSE)
- 			acio->target_cable_info |= TB_VSE_CAP_APPLE_CABLE_INFO_ORIENTATION_REVERSE;
-@@ -852,6 +861,14 @@ static int apple_cio_tbt_switch_set(struct typec_thunderbolt_switch_dev *sw,
- 		break;
- 	}
- 
-+	/* Debug aid: lets cable-information bits be tested without rebuilding. */
-+	if (acio->target_cable_info && cable_info_or) {
-+		dev_info(acio->dev, "cable info 0x%x overridden to 0x%x\n",
-+			 acio->target_cable_info,
-+			 acio->target_cable_info | cable_info_or);
-+		acio->target_cable_info |= cable_info_or;
-+	}
-+
- 	if (acio->target_cable_info == acio->current_cable_info)
- 		return 0;
- 
-diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
-index 0687cc28d..18e65f9a6 100644
---- a/drivers/usb/typec/tipd/core.c
-+++ b/drivers/usb/typec/tipd/core.c
-@@ -662,6 +662,15 @@ static void cd321x_typec_update_mode(struct tps6598x *tps, struct cd321x_status
- 	cd321x->state.data = NULL;
- }
- 
-+/* True while the port is in a tunneled mode, i.e. USB4 or the Thunderbolt alternate mode. */
-+static bool cd321x_state_is_tunneled(const struct cd321x *cd321x)
-+{
-+	if (!cd321x->state.alt)
-+		return cd321x->state.mode == TYPEC_MODE_USB4;
-+
-+	return cd321x->state.alt == cd321x->port_altmode_tbt;
-+}
-+
- static void cd321x_update_work(struct work_struct *work)
- {
- 	struct cd321x *cd321x = container_of(to_delayed_work(work),
-@@ -684,6 +693,11 @@ static void cd321x_update_work(struct work_struct *work)
- 	bool usb_connection = st.data_status &
- 			      (TPS_DATA_STATUS_USB2_CONNECTION | TPS_DATA_STATUS_USB3_CONNECTION);
- 
-+	bool was_tunneled = cd321x_state_is_tunneled(cd321x);
-+	bool is_tunneled = new_connected &&
-+			   (st.data_status & (TPS_DATA_STATUS_TBT_CONNECTION |
-+					      CD321X_DATA_STATUS_USB4_CONNECTION));
-+
- 	enum usb_role old_role = usb_role_switch_get_role(tps->role_sw);
- 	enum usb_role new_role = USB_ROLE_NONE;
- 	enum typec_pwr_opmode pwr_opmode = TYPEC_PWR_MODE_USB;
-@@ -708,8 +722,15 @@ static void cd321x_update_work(struct work_struct *work)
- 		 (is_pd && memcmp(&st.partner_identity,
- 				  &cd321x->cur_partner_identity, sizeof(struct usb_pd_identity))));
- 
--	/* If we are switching from an active role, transition to USB_ROLE_NONE first */
--	if (old_role != USB_ROLE_NONE && (new_role != old_role || was_disconnected))
-+	/*
-+	 * If we are switching from an active role, transition to USB_ROLE_NONE first.
-+	 * The same is needed when a partner enters or leaves USB4/Thunderbolt without a
-+	 * disconnect, e.g. a device that gives up on USB4 and falls back to USB3: the PHY
-+	 * can only change mode while the USB controller is down, otherwise the port is
-+	 * left with USB2 only.
-+	 */
-+	if (old_role != USB_ROLE_NONE &&
-+	    (new_role != old_role || was_disconnected || was_tunneled != is_tunneled))
- 		usb_role_switch_set_role(tps->role_sw, USB_ROLE_NONE);
- 
- 	/* Process partner disconnection or change */
-PATCH_EOF
-}
-
-stage_patch() {
-    kver >/dev/null
-    cd "$SRC"
-    local pf
-    pf=$(mktemp)
-    write_patch "$pf"
-    if git apply --reverse --check "$pf" 2>/dev/null; then
-        echo "patch already applied"
-    else
-        # An earlier version of this patch may be in the tree; start from the pinned file.
-        git checkout -q -- drivers/thunderbolt/apple.c drivers/usb/typec/tipd/core.c
-        git apply --check "$pf" || die "patch does not apply to $SRC"
-        git apply "$pf"
-        echo "patch applied to drivers/thunderbolt/apple.c and drivers/usb/typec/tipd/core.c"
-    fi
-    rm -f "$pf"
-    say "rebuilding"
-    mk
-    say "rebuilt $(kver). Next: $0 install, then $0 try, and reboot"
+# Disks behind PCIe over Thunderbolt appear under one of the six tunneled controllers,
+# whose device names all end in 30000000.pcie (the internal one is 580000000.pcie). The
+# rule runs before any other udev program gets to act on a new disk or partition.
+stage_readonly() {
+    case ${1:-} in
+    on)
+        printf '%s\n' \
+            '# Written by tbt-kernel.sh readonly on; removed by readonly off and by rollback.' \
+            'ACTION=="add|change", SUBSYSTEM=="block", DEVPATH=="*30000000.pcie/*", RUN+="/usr/sbin/blockdev --setro /dev/%k"' |
+            sudo tee "$RO_RULE" >/dev/null
+        sudo udevadm control --reload
+        echo "read-only rule is on: disks behind PCIe over Thunderbolt appear read-only"
+        ;;
+    off)
+        sudo rm -f "$RO_RULE"
+        sudo udevadm control --reload
+        echo "read-only rule is off. Disks already present stay read-only until they are"
+        echo "replugged, or: sudo blockdev --setrw /dev/sdX"
+        ;;
+    *) die "usage: $0 readonly on|off" ;;
+    esac
 }
 
 stage_cable() {
     local p=/sys/module/thunderbolt_apple/parameters/cable_info_or
-    [[ -e $p ]] || die "this kernel's driver has no cable_info_or parameter; run: $0 patch, install, try, then reboot"
+    [[ -e $p ]] || die "no cable_info_or parameter; boot the trial kernel with an enclosure plugged in"
     echo "${1:-0x10}" | sudo tee "$p" >/dev/null
     echo "cable_info_or is now $(cat "$p") (16 = 20 Gb/s per lane, 0 = off)."
     echo "It applies to the next plug-in: unplug the enclosure and plug it back in."
@@ -490,11 +426,11 @@ install) stage_install ;;
 try) stage_try ;;
 status) stage_status ;;
 m1n1) stage_m1n1 ;;
-patch) stage_patch ;;
+readonly) stage_readonly "${2:-}" ;;
 cable) stage_cable "${2:-}" ;;
 rollback) stage_rollback "${2:-}" ;;
 *)
-    echo "usage: $0 {deps|build|install|try|status|m1n1|patch|cable [bits]|rollback}" >&2
+    echo "usage: $0 {deps|build|install|try|status|m1n1|readonly on|off|cable [bits]|rollback}" >&2
     exit 2
     ;;
 esac

@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# tbt-capture.sh (v2): record USB4 enclosure plug-ins on the trial kernel, with driver
+# tbt-capture.sh: record USB4 enclosure plug-ins on the trial kernel, with driver
 # debug output switched on, into a single text file to send back.
 #
 # It only reads state and toggles kernel debug printing (switched off again at the end).
 # Run it while booted into the 7.2.2-tbtwip kernel.
 #
-# v2: the router firmware logs about 30 identical link-error lines per second, which
-# pushed everything else out of the v1 capture. They are now counted, not listed.
+# The router firmware can log about 30 identical link-error lines per second; they are
+# counted, not listed. The second round is a plain replug: it exercises the path that
+# takes the PCIe controller down and brings it up again.
 
 set -uo pipefail # deliberately not -e: one missing file must not stop the capture
 
@@ -14,7 +15,7 @@ OUT=$HOME/tbt-capture-$(date +%Y%m%d-%H%M%S).txt
 DDC=/sys/kernel/debug/dynamic_debug/control
 TR=/sys/kernel/tracing
 TBDBG=/sys/kernel/debug/thunderbolt
-MODS="thunderbolt thunderbolt_apple phy_apple_atc tps6598x dwc3_apple typec"
+MODS="thunderbolt thunderbolt_apple pcie_apple phy_apple_atc tps6598x dwc3_apple typec"
 SPAM='Gen2/3 link error'
 
 sec() { printf '\n===== %s\n' "$*"; }
@@ -79,10 +80,17 @@ state() {
         attrs "${d%-*}" | grep -E 'data_role|power_role|orientation|vconn_source|power_operation_mode'
     done
 
+    sec "$1: pci behind the thunderbolt ports"
+    lspci -D -nn 2>/dev/null | grep -v '^0000:' || echo "none (or no lspci)"
+    for d in $(lspci -D 2>/dev/null | awk '$1 !~ /^0000:/ {print $1}' | head -n 12); do
+        sudo lspci -D -vv -s "$d" 2>/dev/null | grep -E '^[0-9a-f]{4}:|LnkSta:|LnkCap:|Bus:|Memory behind|Prefetchable memory|Region|Kernel driver|Interrupt:|MSI'
+    done
+    grep -iE 'pcie|ahci' /proc/interrupts | awk '{print $1, $(NF-2), $(NF-1), $NF}' | head -n 40
+
     sec "$1: usb and disks"
     lsusb -t
     lsusb | grep -iE '174c|asmedia' || echo "no ASMedia USB device"
-    lsblk -o NAME,TRAN,SIZE,MODEL
+    lsblk -o NAME,TRAN,RO,SIZE,MODEL,FSTYPE
 }
 
 round() { # $1 label, $2 instruction for plugging in
@@ -94,7 +102,7 @@ round() { # $1 label, $2 instruction for plugging in
     echo | sudo tee "$TR/trace" >/dev/null 2>&1
     echo "$mark" | sudo tee /dev/kmsg >/dev/null
     echo "[$1] $2"
-    read -r -p "        Wait about 20 seconds, then press Enter. "
+    read -r -p "        Wait about 30 seconds, then press Enter. "
     sleep 2
     {
         sec "$1: kernel log"
@@ -139,7 +147,7 @@ echo 1 | sudo tee "$TR/events/tps6598x/enable" >/dev/null 2>&1
 } >>"$OUT" 2>&1
 
 round "round1-as-usual" "Plug ONE enclosure into a REAR port, the way you normally do."
-round "round2-plug-rotated" "Plug the SAME enclosure into the SAME port with the Mac-side plug rotated 180 degrees."
+round "round2-replug" "Plug the SAME enclosure into the SAME port again, the same way."
 
 echo
 echo "Done. Send this file: $OUT ($(wc -l <"$OUT") lines)"

@@ -13,6 +13,11 @@ recheck before relying on one for anything consequential.
 - [The internal PCIe driver already names tunnel registers](#the-internal-pcie-driver-already-names-tunnel-registers)
 - [Trial kernel boots clean](#trial-kernel-boots-clean)
 - [The Thunderbolt PCIe controller is a sibling of the internal one](#the-thunderbolt-pcie-controller-is-a-sibling-of-the-internal-one)
+- [A 2023 driver for the tunneled controller exists](#a-2023-driver-for-the-tunneled-controller-exists)
+- [Where the PCIe tunables go](#where-the-pcie-tunables-go)
+- [Power gates of the tunneled controller](#power-gates-of-the-tunneled-controller)
+- [Not yet run on the Mac](#not-yet-run-on-the-mac)
+- [Pushing to a kernel fork from a shallow clone](#pushing-to-a-kernel-fork-from-a-shallow-clone)
 - [What is inside the enclosure](#what-is-inside-the-enclosure)
 - [No backport to 7.1](#no-backport-to-71)
 - [Asahi does not take LLM work](#asahi-does-not-take-llm-work)
@@ -54,11 +59,27 @@ From the macOS device tree (27.0.1, Mac14,14), read 2026-10-11. Six nodes `apcie
 | fabric | B + 0x20004000 | 0x4000 |
 | port | B + 0x21000000 | 0x8000 |
 | IOMMU (`dart,t8110`, sid 0xf) | B + 0x21008000 | 0x4000 |
-| unidentified | B + 0x20200000, B + 0x2100c000, B + 0x21010000 | 0x4000 each |
+| debug (see the tunables entry) | B + 0x20200000 | 0x4000 |
+| unidentified | B + 0x2100c000, B + 0x21010000 | 0x4000 each |
 
 Port 0: interrupt 0x4f0, 32 MSIs from 0x729, MSI address 0xfffff000, power gates 0x234 and 0x3f, windows 64-bit prefetchable 0x8_0000_0000 (8 GB), 32-bit 0xa_0010_0000 (bus 0x100000, about 1 GB), 32-bit prefetchable 0xa_4000_0000 (1 GB). Each further port adds 0x12 to the interrupt, 0x20 to the MSI base and 1 and 2 to the power gates.
 
 This is the layout `pcie-apple.c` already handles for the internal controller on t8103: rc, fabric at rc + 0x4000 (`CORE_FABRIC_STAT`, same 0x001f001f mask as the first fabric tuning entry), port at rc + 0x1000000, same MSI doorbell address. Decision: extend `pcie-apple.c` with a single-port tunnel variant instead of writing a new driver. Inferred, not yet run: the "rc" tuning offsets (0x78, 0x718, 0x814, 0x8bc) look like DesignWare root-port registers reached through config space.
+
+## A 2023 driver for the tunneled controller exists
+Found 2026-10-11 in `AsahiLinux/linux` branch `atcphy-20230219` (Sven Peter, M1): `pcie-apple.c` with an `apple,usb4-pcie` variant, `drivers/thunderbolt/protocol_adapter.c`, and node `pciec1` in `t8103.dtsi` at the same offsets as `apciec` here (config B + 0x30000000, rc B + 0x20000000, port B + 0x21000000, IOMMU B + 0x21008000). No later Asahi branch carries it (`sven/tbt-wip`, `bits/270-thunderbolt`, `b4/apple-soc-tbt`, `tbt-reset-wip`, `asahi-wip-7.2` checked: only the register names survive). m1n1 has filled in the matching tunables since February 2023, 1.6.1 included (aliases `usb4_N_pcie`, `usb4_N_pcie_adapter`). Decision: port that driver instead of working the sequences out again; branch `tbt/pcie` of the fork is the port. Its tunnel start is: release tunnel PERST (`PORT_TUNCTRL`), start the LTSSM, wait for link up, rescan the root port as a hotplug bridge, write 1 to `PORT_PREFMEM_ENABLE`. Its tunnel stop resets the whole controller through the `ATCn_PCIE` power state.
+
+## Where the PCIe tunables go
+From the macOS device tree and m1n1 source, 2026-10-11. `atc-apcie-fabric-tunables` go to rc + 0x4000 and `atc-apcie-debug-tunables` to B + 0x20200000 (the region the 2023 node covers with an rc size of 0x202000; this settles one of the three unidentified regions). `apcie-config-tunables` go to the port registers, as m1n1 does for the internal controller. `atc-apcie-rc-tunables` are applied to the root port's configuration space: inferred, because the list starts with the same entry (0x78, mask 0x7000) as the internal `pcie-rc-tunables`, which m1n1 applies there. The ACIO node's `pcie_adapter_regs_tunables` (one entry, 0x1008 |= 0x6) go to ACIO base + 0xe44000. `pcie_apple.tunnel_tunables=0` skips the PCIe ones if they turn out wrong.
+
+## Power gates of the tunneled controller
+From the macOS power manager table, 2026-10-11: `apciec0` gates 0x234 and 0x3f are `AUSB0_AONPCIE-V` (virtual, child of `ATC0_USB_AON`) and `ATC0_PCIE` (register 0x278, child of `ATC0_COMMON`), which Linux has as `ps_atc0_usb_aon` (always on) and `ps_atc0_pcie`. Ports 1 to 3 follow with 0x41, 0x43, 0x45; die 1 repeats the numbering.
+
+## Not yet run on the Mac
+As of 2026-10-11 the `tbt/pcie` commits are only compiled (clang 18, PCIe driver as module and built in, all Apple device trees) and reviewed. Open points a first run answers: whether the port registers answer at boot without a cable, whether the M2 Ultra port really has the T8103 register layout (the driver logs the RID/SID entry count it detects), whether the IOMMU survives the controller reset on unplug, and whether the enclosure stays on USB4 once the PCIe link is up.
+
+## Pushing to a kernel fork from a shallow clone
+GitHub answers "have" for commits of the whole fork network, so with `push.negotiate=true` a branch based on an Asahi commit was pushed to a fork that only had `master` at v6.14-rc3, from a depth-1 clone, as a pack of just the new commits (2026-10-11). Creating the ref through the API is not possible from the assistant's sandbox.
 
 ## What is inside the enclosure
 macOS, 2026-10-11: root port, then ASMedia `1b21:2463` upstream and downstream bridges, then one Realtek `10ec:9100` AHCI controller (class 010601) with eight 18 TB SATA disks. So Linux needs nothing beyond the PCIe host: the stock `ahci` driver covers the rest.
