@@ -18,3 +18,5 @@ Backport the Type-C Thunderbolt switch, tipd, atcphy USB4 and CIO reset changes 
 Add the USB4 and tunneled PCIe device-tree nodes to the 7.1 device trees without touching the display nodes · check: all Apple device trees build and the DCP nodes are byte-identical to the stock ones
 Apply the lab's nine commits to tbt/7.1 · check: pcie-apple and apple-dart build, module and built in
 Let tbt-kernel.sh build tbt/7.1 with the GPU driver kept · check: build stage ends without TBT_NO_GPU and DRM_ASAHI stays m
+Run the tbt/7.1 kernel on the Mac: GPU and Thunderbolt disks on one kernel · check: boot dump shows the asahi GPU module loaded and the capture shows the eight disks · waits: operator builds 9d460b403164, attaches the boot-dump and tbt-capture files
+Find why the boot dump shows apple,tunable-pcie-adapter on two of the six ACIO nodes only · check: all six listed, or the reason is in KNOWLEDGE.md

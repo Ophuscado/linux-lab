@@ -4,4 +4,3 @@ Install m1n1 1.9.9 for unique router IDs before attaching several enclosures · 
 Retry the PCIe controller when its tunnel comes up before its driver · check: enclosure attached at boot gets its disks without a replug
 ? Give each bus behind a tunnel its own IOMMU stream, as the 2023 tree did · options: per-bus streams (isolation between devices), or keep one shared stream (simpler) · default: keep one stream
 Drop the DEBUG cable_info_or commit from the branch once cable handling is settled · check: branch builds and links without it
-Find why the boot dump shows apple,tunable-pcie-adapter on two of the six ACIO nodes only · check: all six listed, or the reason is in KNOWLEDGE.md
