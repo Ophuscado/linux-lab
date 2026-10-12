@@ -10,8 +10,8 @@
 # and the same LLAMA_REF to get the figure Vulkan is compared against (needs the Xcode
 # command line tools and cmake).
 #
-# The first Linux run installs build packages with dnf; nothing else outside
-# ~/src/llama.cpp and the output file is touched.
+# The first Linux run installs build packages with dnf ("llama-bench.sh deps" does only
+# that); nothing else outside ~/src/llama.cpp and the output file is touched.
 #
 # Environment: LLAMA_SRC (source directory), LLAMA_REF (branch, tag or commit to build,
 # default: what is checked out, master on a first run), THREADS (CPU threads for the CPU
@@ -28,19 +28,29 @@ OUT=$HOME/llama-bench-$OS-$(uname -r)${BENCH_LABEL:+-$BENCH_LABEL}.txt
 die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
 sec() { printf '\n===== %s\n' "$*"; }
 
-[[ -n $MODEL && -r $MODEL ]] || die "usage: $0 MODEL.gguf (a model file you already have)"
-MODEL=$(cd "$(dirname "$MODEL")" && pwd)/$(basename "$MODEL")
-
-if [[ $OS == Linux ]]; then
-    GPU_OPTS=(-DGGML_VULKAN=ON)
-    # spirv-headers-devel: the Vulkan part of llama.cpp looks for its CMake package.
-    missing=()
+# spirv-headers-devel: the Vulkan part of llama.cpp looks for its CMake package.
+install_packages() {
+    local missing=() pkg
     for pkg in git-core cmake gcc-c++ make glslc vulkan-headers vulkan-loader-devel vulkan-tools spirv-headers-devel; do
         rpm -q --quiet "$pkg" || missing+=("$pkg")
     done
     if [[ ${#missing[@]} -gt 0 ]]; then
         sudo dnf install -y "${missing[@]}"
     fi
+}
+
+if [[ $MODEL == deps ]]; then
+    [[ $OS == Linux ]] || die "deps installs Fedora packages; in macOS install cmake yourself"
+    install_packages
+    exit 0
+fi
+
+[[ -n $MODEL && -r $MODEL ]] || die "usage: $0 MODEL.gguf (a model file you already have) | $0 deps"
+MODEL=$(cd "$(dirname "$MODEL")" && pwd)/$(basename "$MODEL")
+
+if [[ $OS == Linux ]]; then
+    GPU_OPTS=(-DGGML_VULKAN=ON)
+    install_packages
     JOBS=$(nproc)
 else
     GPU_OPTS=(-DGGML_METAL=ON)

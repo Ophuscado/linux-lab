@@ -17,7 +17,8 @@
 # Vulkan runtime, tests) and that its build files add sources only. Treat its results as
 # unproven until the operator tests pass: mesa-side.sh run coopmat ./llama-sweep.sh test
 #
-#   mesa-side.sh build base|coopmat     install packages (dnf), fetch, build, install under
+#   mesa-side.sh deps                   only install the build packages (dnf)
+#   mesa-side.sh build base|coopmat     install packages, fetch, build, install under
 #                                       ~/src/mesa-side/<name>
 #   mesa-side.sh check base|coopmat     what the driver reports
 #   mesa-side.sh run base|coopmat CMD   run CMD with that driver; llama-bench.sh and
@@ -55,10 +56,8 @@ icd_of() {
     echo "$f"
 }
 
-stage_build() {
-    local name=$1 sha src missing=() pkg
-    sha=$(commit_of "$name")
-    src=$ROOT/src-$name
+stage_deps() {
+    local missing=() pkg
     for pkg in "${PKGS[@]}"; do
         rpm -q --quiet --whatprovides "$pkg" || missing+=("$pkg")
     done
@@ -66,6 +65,13 @@ stage_build() {
         sudo dnf install -y "${missing[@]}" ||
             die "dnf could not install the build packages; 'sudo dnf builddep mesa' installs a superset"
     fi
+}
+
+stage_build() {
+    local name=$1 sha src
+    sha=$(commit_of "$name")
+    src=$ROOT/src-$name
+    stage_deps
     mkdir -p "$ROOT"
     if [[ ! -d $src/.git ]]; then
         git init -q "$src"
@@ -110,6 +116,7 @@ stage_run() {
 }
 
 case ${1:-} in
+deps) stage_deps ;;
 build) stage_build "${2:-}" ;;
 check) stage_check "${2:-}" ;;
 run)
@@ -122,7 +129,7 @@ remove)
     echo "removed $ROOT"
     ;;
 *)
-    echo "usage: $0 {build base|coopmat | check base|coopmat | run base|coopmat COMMAND... | remove}" >&2
+    echo "usage: $0 {deps | build base|coopmat | check base|coopmat | run base|coopmat COMMAND... | remove}" >&2
     exit 2
     ;;
 esac

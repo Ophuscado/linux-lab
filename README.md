@@ -12,12 +12,18 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
 - USB4 link to an ASM2464 enclosure trains at 20 Gb/s per lane, dual lane.
 - PCIe over Thunderbolt, a port of Sven Peter's 2023 driver for the Mac-side controller
   behind each port (`apciec`): the enclosure's AHCI controller and its eight disks come
-  up, and come back after an eject, unplug and replug. Seen on the 7.2-based trial kernel.
+  up, and come back after an eject, unplug and replug.
+- All of that on the stock kernel's 7.1 source (branch `tbt/7.1`, what `tbt-kernel.sh`
+  builds), which keeps the GPU driver: one kernel for the desktop and the enclosure.
 
-## What is written but not yet run
+## Starting from a fresh install
 
-- Branch `tbt/7.1`: the same on the stock kernel's 7.1 source, which keeps the GPU driver.
-  This is what `tbt-kernel.sh` builds now.
+    curl -fsSLO https://raw.githubusercontent.com/Ophuscado/linux-lab/main/setup.sh
+    bash setup.sh all
+
+It clones this repository, takes over the Bluetooth pairings macOS made, snapshots the
+clean system, builds and installs the kernel and installs what the measuring scripts need.
+`setup.sh restore NAME` puts the system back to a snapshot later.
 
 ## What does not yet
 
@@ -26,6 +32,7 @@ contributions (https://asahilinux.org/llm-policy/), so none of this is submitted
 
 ## Contents
 
+- `setup.sh`: bring a fresh install to the lab's state; snapshot and restore the system.
 - `tbt-kernel.sh`: build, install, switch between trial and stock kernel, roll back.
 - `tbt-capture.sh`: record a plug-in on the trial kernel with driver debug output.
 - `boot-dump.sh`: record what the running kernel brought up, for comparing kernels.
