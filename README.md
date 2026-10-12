@@ -32,6 +32,7 @@ clean system, builds and installs the kernel and installs what the measuring scr
 
 ## Contents
 
+- `reinstall-prep.sh`: in macOS, remove the old Linux partitions and size macOS for the new install.
 - `setup.sh`: bring a fresh install to the lab's state; snapshot and restore the system.
 - `tbt-kernel.sh`: build, install, switch between trial and stock kernel, roll back.
 - `tbt-capture.sh`: record a plug-in on the trial kernel with driver debug output.
