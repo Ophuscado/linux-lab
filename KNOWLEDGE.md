@@ -32,6 +32,7 @@ recheck before relying on one for anything consequential.
 - [The cooperative-matrix Mesa series](#the-cooperative-matrix-mesa-series)
 - [Idle power and what the enclosure adds](#idle-power-and-what-the-enclosure-adds)
 - [Sizes when installing again](#sizes-when-installing-again)
+- [What macOS the m1n1 hypervisor wants](#what-macos-the-m1n1-hypervisor-wants)
 
 ## Stock kernel has no Apple USB4 host
 7.1.13-402.asahi.fc44: `CONFIG_USB4=y` is the PCI driver only; no Apple code under `drivers/thunderbolt`, no USB4 device-tree nodes (source at tag `asahi-7.1.13-3`). A USB4 partner leaves the port at USB2: `ATCPHY_PIPEHANDLER_STATE_USB4 not implemented; falling back to USB2`. 2026-10-11.
@@ -149,3 +150,6 @@ Operator's power dumps of 2026-10-11, kernel `7.1.13-tbtwip`, `tuned` profile ba
 
 ## Sizes when installing again
 2026-10-13. The 4.0 TB disk held macOS at 1.0 TB and a Linux root of 3.0 TB, which Linux shows as 2.7T (binary units); nothing was lost. Read in the installer's source (`asahi-installer` `main.py`, `util.py`): the resize prompt asks for the new size of the macOS partition, not of Linux; `GB` and `TB` are decimal, `GiB` binary, a bare number is bytes; it keeps 38 GB free in macOS and takes 2.5 GB for its boot stub; "New OS size" defaults to `max`. Around the root the installer adds the stub, a 500 MiB EFI partition and a 1 GiB `/boot`; the system container (0.5 GB) and recovery (5.4 GB) stay. Standing decision of the operator: the Linux root gets 3.5 TB, everything else shares the rest (about 490 GB for macOS). `reinstall-prep.sh` computes the macOS size from the partition offsets. Partitions are deleted with `diskutil eraseVolume free free` and `diskutil apfs deleteContainer` (Asahi's partitioning cheatsheet), never with Disk Utility, and never the recovery partition.
+
+## What macOS the m1n1 hypervisor wants
+Asahi's hypervisor guide, read 2026-10-13: supported guests are macOS 13.5 (M1 and M2 series) and 14.8.3 (M1 to M3); other versions are explicitly not supported and 15 or later is not mentioned. The guest is a second macOS on its own volume inside the existing macOS container ("Create a second Volume on your macOS partition"), not a partition of its own, so it needs no room in the partition table. Only when tracing starts is that volume's security lowered from recovery (`bputil -nkcas`, `csrutil disable`) and m1n1 installed as its boot object with `kmutil configure-boot`; a host computer on the DFU port drives it. A Kernel Debug Kit is optional. 13.5 is also the firmware version Linux runs here (`os-fw-version: 13.5` in the boot dumps), so a 13.5 guest talks to the same firmware interfaces. Whether the M2 Ultra itself has been run under the hypervisor is not stated there.
