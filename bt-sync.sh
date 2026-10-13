@@ -9,7 +9,8 @@
 # sets the old entry aside and lets asahi-btsync write the macOS one.
 #
 # When to run it: in Linux, after the devices were (re)paired in macOS. Nothing has to be
-# collected in macOS. Afterwards do not pair these devices in Linux again: a new pairing
+# collected in macOS. "bt-sync.sh status" shows what both sides know, without keys.
+# Afterwards do not pair these devices in Linux again: a new pairing
 # on either side replaces the key in the device, and the other system loses it.
 #
 # Only device names and addresses are shown, never keys. Old entries are kept, readable
@@ -18,6 +19,33 @@
 set -euo pipefail
 
 die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
+# asahi-btsync's list format has changed between versions: take any line with an address.
+mac_of() { grep -oE '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}' <<<"$1" | head -n 1 | tr 'a-f' 'A-F' || true; }
+name_of() { sed -E 's/^ID [0-9A-Fa-f]+:[0-9A-Fa-f]+ +//; s/ *\(?([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}\)?.*$//' <<<"$1"; }
+
+# status: what Linux knows about each device, without keys.
+if [[ ${1:-} == status ]]; then
+    echo "asahi-btsync: $(rpm -q asahi-btsync 2>/dev/null || echo 'not installed')"
+    echo "adapter: $(bluetoothctl show 2>/dev/null | grep -E 'Powered|Pairable|Discoverable:' | tr -s '\t\n' '  ')"
+    echo "-- what macOS stored (asahi-btsync list, as printed)"
+    sudo asahi-btsync list 2>&1 || true
+    echo "-- what bluetoothd has"
+    while IFS= read -r line; do
+        mac=$(mac_of "$line")
+        [[ -n $mac ]] || continue
+        printf '%s %s\n' "$mac" "$(bluetoothctl info "$mac" 2>/dev/null | grep -E 'Name:|Paired:|Bonded:|Trusted:|Connected:' | tr -s '\t\n' '  ')"
+    done < <(bluetoothctl devices 2>/dev/null)
+    echo "-- entries on disk (name, kind of key, written)"
+    sudo find /var/lib/bluetooth -mindepth 2 -maxdepth 2 -type d | while read -r d; do
+        printf '%s: %s / %s / %s\n' "$(basename "$d")" \
+            "$(sudo sed -n 's/^Name=//p' "$d/info" 2>/dev/null)" \
+            "$(sudo grep -oE '^\[(LinkKey|LongTermKey|PeripheralLongTermKey|IdentityResolvingKey)\]' "$d/info" 2>/dev/null | tr -d '[]' | tr '\n' ' ')" \
+            "$(sudo stat -c %y "$d/info" 2>/dev/null | cut -c1-16)"
+    done
+    echo "-- bluetooth messages of this boot (last 40)"
+    sudo journalctl -b --no-pager -o short-monotonic -u bluetooth -k 2>/dev/null | grep -iE 'bluetooth|hci0|bluez' | tail -n 40
+    exit 0
+fi
 
 command -v asahi-btsync >/dev/null || sudo dnf install -y asahi-btsync
 command -v bluetoothctl >/dev/null || die "bluetoothctl not found"
@@ -33,8 +61,8 @@ replace=()
 echo "Devices macOS has paired:"
 seen=" "
 while IFS= read -r -u 3 line; do
-    mac=$(sed -n 's/.*(\([0-9A-F:]\{17\}\)) [A-Z/]*$/\1/p' <<<"$line")
-    name=$(sed -n 's/^ID [0-9a-f:]* \(.*\) ([0-9A-F:]\{17\}) [A-Z/]*$/\1/p' <<<"$line")
+    mac=$(mac_of "$line")
+    name=$(name_of "$line")
     [[ -n $mac && $seen != *" $mac "* ]] || continue
     seen+="$mac "
     entry=$(sudo sh -c "ls -d /var/lib/bluetooth/*/$mac 2>/dev/null | head -n 1")
@@ -71,7 +99,7 @@ echo
 echo "State now:"
 seen=" "
 while IFS= read -r line; do
-    mac=$(sed -n 's/.*(\([0-9A-F:]\{17\}\)) [A-Z/]*$/\1/p' <<<"$line")
+    mac=$(mac_of "$line")
     [[ -n $mac && $seen != *" $mac "* ]] || continue
     seen+="$mac "
     state=$(bluetoothctl info "$mac" 2>/dev/null | grep -E 'Name:|Paired:|Connected:' | tr -s '\t\n' '  ' || true)
