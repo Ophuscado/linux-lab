@@ -73,6 +73,7 @@ disk_of() {
     local d
     d=$(awk -F, -v n="$1" '$14 == n { print $4 }' "$PLAN")
     [[ -n $d ]] || die "disk $1 is not in $PLAN"
+    [[ $(wc -l <<<"$d") == 1 ]] || die "disk $1 appears more than once in $PLAN; run disk-inventory.sh again"
     [[ -b $d ]] || die "disk $1 ($d) is not present"
     echo "$d"
 }
@@ -252,6 +253,8 @@ need_row() { [[ -n ${1:-} && -n ${CHAIN[$1]:-} ]] || die "row must be A, B, C or
 prepare() {
     [[ -r $PLAN ]] || die "no $PLAN; run disk-inventory.sh first"
     ! grep -q ',?$' "$PLAN" || die "$PLAN still has unnamed disks"
+    [[ $(tail -n +2 "$PLAN" | cut -d, -f14 | sort | uniq -d | wc -l) == 0 ]] || die "$PLAN names a disk twice; run disk-inventory.sh again"
+    [[ $(tail -n +2 "$PLAN" | wc -l) == 32 ]] || echo "WARN: $PLAN lists $(tail -n +2 "$PLAN" | wc -l) disks, not 32"
     mkdir -p "$MIG/state" "$MIG/mnt"
     for t in mkfs.xfs rsync parted tmux; do
         command -v "$t" >/dev/null || sudo dnf install -y xfsprogs rsync parted tmux
