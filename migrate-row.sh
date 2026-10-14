@@ -502,7 +502,9 @@ start)
             echo "worker mig-$2-$i is already running"
             continue
         fi
-        tmux new-session -d -s "mig-$2-$i" "VERIFY=$VERIFY '$0' run $2; echo; echo 'worker ended; press enter'; read"
+        # The worker holds a sleep inhibitor: a suspend would drop the tunnels mid-copy.
+        inhibit=""; command -v systemd-inhibit >/dev/null && inhibit="systemd-inhibit --what=sleep:idle --who=migrate-row --why='row $2 copying'"
+        tmux new-session -d -s "mig-$2-$i" "VERIFY=$VERIFY $inhibit '$0' run $2; echo; echo 'worker ended; press enter'; read"
         echo "row $2 worker $i started in tmux session mig-$2-$i"
         [[ $i == 1 && $n -gt 1 ]] && sleep 20 # let the first one take the confirmation prompt
     done
