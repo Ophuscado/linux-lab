@@ -12,8 +12,9 @@
 #                          what the migration works from. Stays on the Mac
 #
 # The name of a disk (00 to 31) comes from its HFS+ label, HD_nn. Disks without a label
-# get the name you write in ~/disk-names.txt, one "sdX nn" per line, found by mounting the
-# volume or with disk-blink.sh; until then they show as "?". The row of each enclosure is
+# get the name you write in ~/disk-names.txt, one "sdX nn", "SERIAL nn" or "SERIAL-TAIL nn" per line
+# (the last four characters of the serial, as the table prints them), found by mounting
+# the volume or with disk-blink.sh; until then they show as "?". The row of each enclosure is
 # taken from the labels it holds (the rule "slot = bay" does not hold: two boxes wire their
 # bays to SATA ports 0 to 5, 7 and 8).
 
@@ -70,9 +71,12 @@ NAMES=$HOME/disk-names.txt
 {
     echo "domain,port,dev,byid,serial,model,size,fstype,label,used,avail,row,slot,name"
     printf '%s\n' "${rows[@]}" | sort -t, -k1,1 -k2,2n | awk -F, -v OFS=, -v names="$NAMES" '
-        BEGIN { while ((getline l < names) > 0) { split(l, f, " "); if (f[1] != "" && f[2] ~ /^[0-9][0-9]?$/) given[f[1]] = sprintf("%02d", f[2]) } }
+        BEGIN { while ((getline l < names) > 0) { sub(/#.*/, "", l); split(l, f, " "); if (f[1] != "" && f[2] ~ /^[0-9][0-9]?$/) given[f[1]] = sprintf("%02d", f[2]) } }
         { n = "?"
-          if ($9 ~ /^HD_[0-9][0-9]$/) n = substr($9, 4); else if ($3 in given) n = given[$3]
+          # A line in the names file may key on the device (sdX, this boot only) or on the
+          # last four characters of the serial number (survives reboots and replugs).
+          tail4 = substr($5, length($5) - 3)
+          if ($9 ~ /^HD_[0-9][0-9]$/) n = substr($9, 4); else if ($3 in given) n = given[$3]; else if ($5 in given) n = given[$5]; else if (tail4 in given) n = given[tail4]
           line[NR] = $0 OFS $2 OFS n; dom[NR] = $1
           if (n != "?") { r = int(n / 8); if (!($1 in rowof)) rowof[$1] = r; else if (rowof[$1] != r) rowof[$1] = "?" } }
         END { for (i = 1; i <= NR; i++) { split(line[i], f, ","); r = (dom[i] in rowof) ? rowof[dom[i]] : "?"
