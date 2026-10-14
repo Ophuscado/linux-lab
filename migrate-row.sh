@@ -164,7 +164,8 @@ format_target() {
     done
     [[ -n $part && -b $part ]] || die "$mm: no partition appeared on $dev after formatting"
     sudo blockdev --setrw "$part"
-    sudo mkfs.xfs -q -f -L "HD_$mm" "$part" >>"$LOG" 2>&1 || die "$mm: mkfs.xfs failed; see $LOG"
+    # A 256 MiB log instead of the 2 GiB default: two disks are within 2 GB of full.
+    sudo mkfs.xfs -q -f -L "HD_$mm" -l size=256m "$part" >>"$LOG" 2>&1 || die "$mm: mkfs.xfs failed; see $LOG"
     sudo rm -f "$MIG/state/$mm.copied"
     touch "$MIG/state/$mm.formatted"
     log "$mm: formatted"
