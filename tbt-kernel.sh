@@ -20,6 +20,11 @@
 #   status    prints what the running kernel sees, and whether kernel and device trees match
 #   m1n1      only if status says the host DROM is rejected: replaces m1n1 1.6.1 with
 #             Fedora's own 1.9.9 build (first release that writes the USB4 router ID)
+#   authorize on|off: a udev rule that authorizes every USB4 device the moment it appears,
+#             instead of waiting for boltd. boltd files devices by a UUID these ASM2464
+#             boxes do not keep unique: with four boxes, the second of each UUID pair was
+#             never authorized, got no PCIe tunnel and fell back to USB after 10 s.
+#             install switches it on
 #   readonly  on|off: a udev rule that makes every disk reached through PCIe over
 #             Thunderbolt read-only as it appears. On until you switch it off
 #   mount     mounts every HFS+ volume on disks behind PCIe over Thunderbolt read-only
@@ -75,6 +80,7 @@ M1N1_NEW=$KOJI/1.9.9/1.fc46/noarch/m1n1-1.9.9-1.fc46.noarch.rpm
 M1N1_OLD=$KOJI/1.6.1/1.fc44/noarch/m1n1-1.6.1-1.fc44.noarch.rpm
 DTB=arch/arm64/boot/dts/apple/t6022-j475d.dtb
 RO_RULE=/etc/udev/rules.d/00-tbt-readonly.rules
+AUTH_RULE=/etc/udev/rules.d/60-tbt-authorize.rules
 SPIN_RULE=/etc/udev/rules.d/61-tbt-spindown.rules
 MNT=/mnt/tbt
 # Overridable only so the stages can be exercised off the target machine.
@@ -349,6 +355,7 @@ stage_install() {
     sudo test -f "/boot/initramfs-$v.img" || die "/boot/initramfs-$v.img missing after kernel-install"
 
     stage_readonly on
+    stage_authorize on
 
     say "result: Linux keeps booting the $prev kernel"
     set_mode "$prev"
@@ -398,7 +405,7 @@ stage_status() {
         for d in /sys/bus/thunderbolt/devices/*; do
             [[ -e $d ]] || continue
             printf '%s' "$(basename "$d")"
-            for a in vendor_name device_name authorized generation; do
+            for a in vendor_name device_name authorized generation unique_id; do
                 [[ -r $d/$a ]] && printf ' %s=%s' "$a" "$(cat "$d/$a" 2>/dev/null)"
             done
             echo
@@ -406,6 +413,7 @@ stage_status() {
     else
         echo "no thunderbolt bus"
     fi
+    echo "-- authorize rule: $([[ -f $AUTH_RULE ]] && echo on || echo off); boltd: $(systemctl is-active bolt 2>/dev/null)"
     echo "-- usb"
     lsusb -t
     lsusb | grep -iE '174c|asmedia' || echo "no ASMedia USB device"
@@ -471,7 +479,7 @@ stage_rollback() {
     sudo rm -f "/boot/vmlinuz-$v" "/boot/initramfs-$v.img" "/boot/System.map-$v" "/boot/config-$v"
     sudo grub2-editenv - unset next_entry
     stage_readonly off
-    sudo rm -f "$SPIN_RULE"
+    sudo rm -f "$SPIN_RULE" "$AUTH_RULE"
 
     if [[ $(rpm -q --qf '%{VERSION}' m1n1) != 1.6.1 ]]; then
         say "restoring m1n1 1.6.1"
@@ -490,6 +498,26 @@ stage_rollback() {
 # Disks behind PCIe over Thunderbolt appear under one of the six tunneled controllers,
 # whose device names all end in 30000000.pcie (the internal one is 580000000.pcie). The
 # rule runs before any other udev program gets to act on a new disk or partition.
+stage_authorize() {
+    case ${1:-} in
+    on)
+        printf '%s\n' \
+            '# Written by tbt-kernel.sh authorize on; removed by authorize off and by rollback.' \
+            '# The kernel authorizes the device itself; boltd then only sees it as authorized.' \
+            'ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"' |
+            sudo tee "$AUTH_RULE" >/dev/null
+        sudo udevadm control --reload
+        echo "authorize rule is on: USB4 devices are authorized as they appear. Replug boxes that are in USB mode."
+        ;;
+    off)
+        sudo rm -f "$AUTH_RULE"
+        sudo udevadm control --reload
+        echo "authorize rule is off; boltd decides again"
+        ;;
+    *) die "usage: $0 authorize on|off" ;;
+    esac
+}
+
 stage_readonly() {
     case ${1:-} in
     on)
@@ -656,6 +684,7 @@ try) stage_try ;;
 stock) stage_stock ;;
 status) stage_status ;;
 m1n1) stage_m1n1 ;;
+authorize) stage_authorize "${2:-}" ;;
 readonly) stage_readonly "${2:-}" ;;
 mount) stage_mount ;;
 umount) stage_umount ;;
@@ -666,7 +695,7 @@ cable) stage_cable "${2:-}" ;;
 forget) stage_forget "${2:-}" ;;
 rollback) stage_rollback "${2:-}" ;;
 *)
-    echo "usage: $0 {deps|build|install|try|stock|status|mount|umount|bench [MiB]|spindown [MINUTES|off]|eject|m1n1|readonly on|off|cable [bits]|forget VERSION|rollback}" >&2
+    echo "usage: $0 {deps|build|install|try|stock|status|mount|umount|bench [MiB]|spindown [MINUTES|off]|eject|m1n1|authorize on|off|readonly on|off|cable [bits]|forget VERSION|rollback}" >&2
     exit 2
     ;;
 esac

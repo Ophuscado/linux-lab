@@ -33,6 +33,7 @@ recheck before relying on one for anything consequential.
 - [Idle power and what the enclosure adds](#idle-power-and-what-the-enclosure-adds)
 - [The fresh install, and four enclosures at boot](#the-fresh-install-and-four-enclosures-at-boot)
 - [Filesystems for the migration](#filesystems-for-the-migration)
+- [Two of four enclosures never get a tunnel: boltd and shared UUIDs](#two-of-four-enclosures-never-get-a-tunnel-boltd-and-shared-uuids)
 - [Sizes when installing again](#sizes-when-installing-again)
 - [What macOS the m1n1 hypervisor wants](#what-macos-the-m1n1-hypervisor-wants)
 
@@ -163,3 +164,6 @@ Status of 2026-10-14 with four enclosures attached at boot, disks powered off: t
 
 ## Filesystems for the migration
 Decision 2026-10-14 (default, operator to confirm): XFS on all 32 disks. The parity disks force it: SnapRAID keeps each parity level in one file (or a list of files), and an 18 TB disk's parity file is about 16.4 TiB, over ext4's 16 TiB limit for one file at 4 KiB blocks; XFS allows 8 EiB. Data disks could be ext4, but one filesystem across the set means one set of tools, one `fstab` pattern and no accidental limit later. XFS cannot shrink and has no undelete, neither of which matters for a disk that is filled once and kept. Mount with `noatime`; SnapRAID itself needs no special options. Inferred, not yet measured: large-file writes over the enclosure link will run at the disk's 250 to 290 MB/s, so a full 16 TB copy is about 18 hours, and a row's seven copies in sequence are about five days; the four rows are independent and run in parallel.
+
+## Two of four enclosures never get a tunnel: boltd and shared UUIDs
+Operator's bolt log and captures, 2026-10-14. With four ASM2464 enclosures, two always came up and two always fell back to USB, at boot and after replugs, on changing ports. The domain runs at `security=user`, so a device gets its PCIe tunnel only once authorized, and that is boltd's job. boltd's store holds exactly two device UUIDs (`0e3a4c17-c007…`, `1a524c17-2032…`) for four boxes: the ASMedia firmware does not give each box a unique router UUID. When a box whose UUID is already connected appears, boltd re-points its record (`authorized -> connected`) and never authorizes it; the box gets no tunnel and drops the USB4 link after 10 s. Verified by the log; the earlier "tunnel before driver" reading was wrong, it was always this. Fix: a udev rule that writes `authorized=1` on every new thunderbolt device (`tbt-kernel.sh authorize on`, installed by `install`), which makes boltd irrelevant; the kernel keeps devices by route, so same UUIDs in different domains are fine. Consequence for the board: the "retry when the tunnel precedes the driver" line is withdrawn.
