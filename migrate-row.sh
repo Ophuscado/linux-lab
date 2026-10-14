@@ -1,27 +1,30 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2024
 # (the log file belongs to the user; sudo is for the command only)
-# migrate-row.sh: move one row of eight 18 TB disks from HFS+ into an XFS pool of the same
-# bays, disk by disk, until the row's parity disk (24, 00, 08, 16) is empty.
+# migrate-row.sh: move four rows of eight 18 TB disks from HFS+ into one XFS pool made of
+# the same bays, disk by disk, until each row's parity disk (24, 00, 08, 16) is empty.
 #
-# The plan, in plain words. A row is eight bays:
+# The plan, in plain words. A row is eight bays, one enclosure:
 #
 #   A  24 25 26 27 28 29 30 31   parity 24
 #   B  00 01 02 03 04 05 06 07   parity 00
 #   C  08 09 10 11 12 13 14 15   parity 08
 #   D  16 17 18 19 20 21 22 23   parity 16
 #
-# The row's pool is a mergerfs union of every bay this script has formatted to XFS, the
-# parity bay excepted, mounted at ~/migrate/pool-<row>. New files go to the branch with the
-# most free space, so the data spreads evenly and no single disk has to fit a whole source.
-# Every disk still on HFS+ with more than 10 GB on it is a source (an emptier one holds only
-# HFS+ metadata and is just formatted when needed). Each round takes the SMALLEST remaining
-# source (the parity disk last, since emptying it frees no bay), copies it into the pool,
-# checks the copy, and only then may the source be formatted and added to the pool as a
-# fresh branch. Small disks go first, so bays join the pool early.
+# The pool is one mergerfs union of every bay this script has formatted to XFS, in any row,
+# the parity bays excepted, mounted at ~/migrate/pool. New files go to the branch with the
+# most free space, so the data spreads over every writable disk and no single disk has to
+# fit a whole source. Every disk still on HFS+ with more than 10 GB on it is a source (an
+# emptier one holds only HFS+ metadata and is just formatted when needed). One worker per
+# row is one read stream per enclosure; each round takes the SMALLEST remaining source of
+# its row (the parity disk last, since emptying it frees no bay; a deferred disk after
+# that), copies it into the pool, checks the copy, and only then may the source be
+# formatted and added to the pool as a fresh branch. Small disks go first, so bays join the
+# pool early. When the pool lacks room, a worker formats an emptied bay of its own row,
+# else of any row. Workers reserve their source's size in the pool, so four copies at once
+# cannot run it dry.
 #
-# Workers: "start B 2" runs two copies of row B at once, both into the same pool (three or
-# four disks busy); "start B" one. Rows are independent; run them in parallel.
+# Workers: "start B" runs one worker for row B; "start B 2" two (same pool, two sources).
 #
 # What one round does, and what stops it:
 #   1. If the pool lacks room for the source, a bay is formatted: one GPT partition, XFS,
@@ -36,12 +39,13 @@
 #      owners, times, permissions, hard links and extended attributes (resource forks do
 #      not exist on Linux and are not copied). A file that already exists in the pool under
 #      the same path is never overwritten (--ignore-existing); verification then reports it.
-#   3. Verification: every file of the source is read back from the pool and compared by
-#      checksum (VERIFY=quick compares size and time only). Any difference stops the worker;
-#      the source is untouched.
+#   3. Verification: every file of the source is looked up in the pool and compared by size
+#      and time (VERIFY=full reads both back and compares checksums; twice the time). Any
+#      difference stops the worker; the source is untouched.
 #   4. The source is marked "copied, verified"; it may now be formatted and join the pool.
 # Parent folders with the same name on several sources merge into one folder in the pool,
 # which is what a library spread over disks looks like afterwards.
+# A disk on a flaky link ("defer 28") is copied after everything else in its row.
 # A worker logs to ~/migrate/<row>.log; state lives in ~/migrate/state/. A stopped or
 # crashed worker is restarted with the same command and continues. The pool mount is
 # recreated from the formatted bays whenever a worker starts.
@@ -51,7 +55,8 @@
 #   migrate-row.sh run A            one worker in this terminal
 #   migrate-row.sh status           every row: disks copied, workers, pool, mounts
 #   migrate-row.sh attach A [N]     watch a worker (Ctrl-b d to leave it running)
-#   migrate-row.sh pool A           mount the row's pool without copying (after a reboot)
+#   migrate-row.sh pool             mount the pool without copying (after a reboot)
+#   migrate-row.sh defer 28 ...     copy these disks last in their row (unstable link)
 #   migrate-row.sh mergerfs        build and install mergerfs 2.42.0 (once; Fedora has no package)
 #   migrate-row.sh erase 07 15 ...  mark disks whose content is not needed: formatted
 #                                   without a copy and without asking
@@ -60,17 +65,20 @@
 # xfsprogs rsync tmux parted attr (installed on the first run) and mergerfs ("mergerfs" command).
 #
 # Test hooks: MIG_PLAN, MIG_HOME, MIG_SRC_FS (filesystem type of the sources, hfsplus),
-# MIG_EMPTY_LIMIT (bytes), MIG_MINFREE (mergerfs minfreespace), MIG_MERGERFS (binary).
+# MIG_EMPTY_LIMIT (bytes), MIG_MINFREE (mergerfs minfreespace), MIG_MERGERFS (binary),
+# MIG_WAIT (seconds between looks at a full pool).
 
 set -euo pipefail
 
 PLAN=${MIG_PLAN:-$HOME/disk-plan.csv}
 MIG=${MIG_HOME:-$HOME/migrate}
 SRC_FS=${MIG_SRC_FS:-hfsplus}
-VERIFY=${VERIFY:-full}
+VERIFY=${VERIFY:-quick}
 EMPTY_LIMIT=${MIG_EMPTY_LIMIT:-10000000000} # bytes; under 10 GB is HFS+ metadata, not data
 MINFREE=${MIG_MINFREE:-4G} # mergerfs stops placing new files on a branch below this
 MERGERFS=${MIG_MERGERFS:-mergerfs}
+POOL=$MIG/pool
+WAIT=${MIG_WAIT:-300}
 MERGERFS_TAG=2.42.0 # built from source: Fedora 44 has no mergerfs package
 
 declare -A ROW=(
@@ -195,8 +203,6 @@ format_target() {
 
 # ---- the pool ---------------------------------------------------------------------------
 
-pool_dir() { echo "$MIG/pool-$1"; }
-
 # Mount bay $1 read-write at its place under the pool's branches.
 mount_branch() {
     local mm=$1 d
@@ -206,57 +212,83 @@ mount_branch() {
     mount_at "$mm" "$d" "$MIG/mnt/hd-$mm" rw,noatime
 }
 
-# Bays of row $1 that are XFS and not the parity disk, in bay order.
+# Bays of rows $@ (default all) that are XFS and not a parity disk, in bay order.
 branches_of() {
-    local mm
-    for mm in ${ROW[$1]}; do
-        [[ $mm == "${PARITY[$1]}" ]] && continue
-        [[ $(disk_state "$mm") == xfs* ]] && echo "$mm"
+    local row mm rows=${*:-A B C D}
+    for row in $rows; do
+        for mm in ${ROW[$row]}; do
+            [[ $mm == "${PARITY[$row]}" ]] && continue
+            [[ $(disk_state "$mm") == xfs* ]] && echo "$mm"
+        done
     done
 }
 
-# Mount the row's pool over its current branches (nothing if already mounted). New files go
-# to the branch with the most free space; a branch that fills up mid-file hands the file on.
+# Mount the pool over its current branches (nothing if already mounted). New files go to
+# the branch with the most free space; a branch that fills up mid-file hands the file on.
 pool_mount() {
-    local row=$1 mm list=""
-    sudo mkdir -p "$(pool_dir "$row")"
-    for mm in $(branches_of "$row"); do
+    local mm list=""
+    sudo mkdir -p "$POOL"
+    for mm in $(branches_of); do
         mount_branch "$mm"
         list+="${list:+:}$MIG/mnt/hd-$mm"
     done
     [[ -n $list ]] || return 1
-    findmnt -n "$(pool_dir "$row")" >/dev/null && return 0
-    sudo "$MERGERFS" -o "category.create=mfs,moveonenospc=true,minfreespace=$MINFREE,cache.files=off,dropcacheonclose=true,fsname=row$row" \
-        "$list" "$(pool_dir "$row")"
+    findmnt -n "$POOL" >/dev/null && return 0
+    sudo "$MERGERFS" -o "category.create=mfs,moveonenospc=true,minfreespace=$MINFREE,cache.files=off,dropcacheonclose=true,fsname=pool" \
+        "$list" "$POOL"
 }
 
-# Add a freshly formatted bay $2 to row $1's pool.
+pool_branches() { sudo getfattr -n user.mergerfs.branches --only-values "$POOL/.mergerfs" 2>/dev/null | sed 's|=RW||g; s|[^:]*/hd-||g; s|:| |g'; }
+
+# Add a freshly formatted bay $1 to the pool.
 pool_add() {
-    local row=$1 mm=$2 br
+    local mm=$1 br
     mount_branch "$mm"
     br=$MIG/mnt/hd-$mm
-    if findmnt -n "$(pool_dir "$row")" >/dev/null; then
-        if ! sudo getfattr -n user.mergerfs.branches --only-values "$(pool_dir "$row")/.mergerfs" 2>/dev/null | tr ':' '\n' | grep -qx "$br=RW"; then
-            sudo setfattr -n user.mergerfs.branches -v "+>$br" "$(pool_dir "$row")/.mergerfs"
+    if findmnt -n "$POOL" >/dev/null; then
+        if ! sudo getfattr -n user.mergerfs.branches --only-values "$POOL/.mergerfs" 2>/dev/null | tr ':' '\n' | grep -qx "$br=RW"; then
+            sudo setfattr -n user.mergerfs.branches -v "+>$br" "$POOL/.mergerfs"
         fi
     else
-        pool_mount "$row" >/dev/null
+        pool_mount >/dev/null
     fi
-    log "pool $row: branches $(sudo getfattr -n user.mergerfs.branches --only-values "$(pool_dir "$row")/.mergerfs" 2>/dev/null | sed 's|=RW||g; s|[^:]*/hd-||g')"
+    log "pool: branches $(pool_branches)"
 }
 
-pool_avail() { avail_at "$(pool_dir "$1")"; }
+pool_avail() { avail_at "$POOL"; }
 
-# $1 row, $2 source name: copy the source into the row's pool.
+# Free pool space minus what the other workers' running copies still need.
+pool_room() {
+    local c r=0
+    for c in "$MIG"/state/claim-*/need; do
+        [[ -f $c && ${c%/need} != "$MIG/state/claim-$1" ]] && r=$((r + $(cat "$c")))
+    done
+    echo $(( $(pool_avail) - r ))
+}
+
+# Reserve $2 bytes of room for source $1 if the pool has them, under a lock so two workers
+# cannot both take the last room. Returns 1 when there is not enough.
+reserve_room() {
+    local ok=1
+    until mkdir "$MIG/state/lock-room" 2>/dev/null; do sleep 2; done
+    if (($(pool_room "$1") >= $2)); then
+        echo "$2" >"$MIG/state/claim-$1/need"
+        ok=0
+    fi
+    rmdir "$MIG/state/lock-room"
+    return $ok
+}
+
+# $1 row, $2 source name: copy the source into the pool.
 copy_disk() {
-    local row=$1 nn=$2 src dst s pass rc
+    local nn=$2 src dst s pass rc
     src=$MIG/mnt/src-$nn
-    dst=$(pool_dir "$row")
+    dst=$POOL
     s=$(part_of "$(disk_of "$nn")") || exit 1
     [[ $(fstype_of "$s") == "$SRC_FS" ]] || die "$nn is not $SRC_FS any more"
-    findmnt -n "$dst" >/dev/null || die "pool $row is not mounted"
+    findmnt -n "$dst" >/dev/null || die "pool is not mounted"
     mount_at "$nn" "$s" "$src" ro
-    log "$nn>pool: copying $(used_at "$src") bytes from $s; pool has $(pool_avail "$row") free"
+    log "$nn>pool: copying $(used_at "$src") bytes from $s; pool has $(pool_avail) free"
     for pass in 1 2 3; do
         rc=0
         sudo rsync -aHAX --ignore-existing --info=progress2,stats1 --no-inc-recursive "$src/" "$dst/" >>"$LOG" 2>&1 || rc=$?
@@ -267,14 +299,14 @@ copy_disk() {
     done
     [[ $rc == 0 ]] || die "$nn>pool: files could not be copied after three passes; see $LOG. Source untouched."
     sync
-    log "$nn>pool: copy done; pool has $(pool_avail "$row") free"
+    log "$nn>pool: copy done; pool has $(pool_avail) free"
 }
 
 # $1 row, $2 source: read every file of the source back from the pool and compare.
 verify_disk() {
     local row=$1 nn=$2 src dst diff opts
     src=$MIG/mnt/src-$nn
-    dst=$(pool_dir "$row")
+    dst=$POOL
     if [[ $VERIFY == quick ]]; then
         opts=(-rln --times --size-only)
         log "$nn>pool: verifying by size and time"
@@ -291,16 +323,17 @@ verify_disk() {
     local nsrc
     nsrc=$(sudo find "$src" -xdev -type f | wc -l)
     sudo umount "$src"
-    echo "copied to pool $row, $nsrc files, verified $VERIFY $(date '+%F %T')" >"$MIG/state/$nn.copied"
-    echo "$nn -> pool $row  $nsrc files  $(date '+%F %T')  branches then: $(branches_of "$row" | tr '\n' ' ')" >>"$MIG/state/placement.txt"
+    echo "copied to the pool by worker $row, $nsrc files, verified $VERIFY $(date '+%F %T')" >"$MIG/state/$nn.copied"
+    echo "$nn -> pool  $nsrc files  $(date '+%F %T')  branches then: $(pool_branches)" >>"$MIG/state/placement.txt"
     log "$nn>pool: verified, $nsrc files. $nn may now be formatted and join the pool."
 }
 
 # ---- the scheduler ----------------------------------------------------------------------
 
 # Claims keep two workers off the same disk; a claim is a directory, made atomically.
+# A claim with a "need" file inside is a running copy that has reserved pool space.
 claim() { mkdir "$MIG/state/claim-$1" 2>/dev/null; }
-release() { rmdir "$MIG/state/claim-$1" 2>/dev/null || true; }
+release() { rm -rf "$MIG/state/claim-$1"; }
 claimed() { [[ -d $MIG/state/claim-$1 ]]; }
 # True when some other disk than $1 is claimed: another worker is at work.
 others_claimed() {
@@ -312,7 +345,7 @@ others_claimed() {
 }
 
 # Prints "nn USED" for every HFS+ disk of row $1 not yet copied and not claimed, smallest
-# first, the parity disk last.
+# first, the parity disk last, a deferred disk after that.
 sources_of() {
     local nn st
     for nn in ${ROW[$1]}; do
@@ -325,23 +358,29 @@ sources_of() {
             echo "empty, nothing to copy $(date '+%F %T')" >"$MIG/state/$nn.copied"
             continue
         fi
-        # The parity disk frees no bay when copied, so it goes last whatever its size.
-        [[ $nn == "${PARITY[$1]}" ]] && echo "$nn ${st#src } last" || echo "$nn ${st#src } first"
+        # The parity disk frees no bay when copied, so it goes last whatever its size; a
+        # deferred disk (flaky link) after everything else.
+        if [[ -f $MIG/state/$nn.deferred ]]; then echo "$nn ${st#src } z-deferred"
+        elif [[ $nn == "${PARITY[$1]}" ]]; then echo "$nn ${st#src } last"
+        else echo "$nn ${st#src } first"; fi
     done | sort -k3,3 -k2,2n | cut -d' ' -f1,2
 }
 
-# Prints a disk of row $1 that may be formatted now: one this script emptied by a verified
-# copy and has not reformatted; else, before the first round, the row's last bay (the old
-# parity disk, which asks for confirmation); else nothing.
+# Prints a disk that may be formatted now: one this script emptied by a verified copy (or
+# you marked with "erase") and has not reformatted, row $1 first, then the other rows;
+# else, before row $1's first round, its last bay (the old parity disk, which asks for
+# confirmation); else nothing.
 formattable_of() {
-    local nn
-    for nn in ${ROW[$1]}; do
-        [[ $nn == "${PARITY[$1]}" ]] && continue
-        claimed "$nn" && continue
-        if [[ -f $MIG/state/$nn.copied ]] && [[ $(disk_state "$nn") == src* ]]; then
-            echo "$nn"
-            return
-        fi
+    local row nn
+    for row in "$1" A B C D; do
+        for nn in ${ROW[$row]}; do
+            [[ $nn == "${PARITY[$row]}" ]] && continue
+            claimed "$nn" && continue
+            if [[ -f $MIG/state/$nn.copied ]] && [[ $(disk_state "$nn") == src* ]]; then
+                echo "$nn"
+                return
+            fi
+        done
     done
     [[ -f $MIG/state/row-$1.started ]] || echo "${ROW[$1]##* }"
 }
@@ -349,7 +388,7 @@ formattable_of() {
 # One worker: rounds until no source is left.
 run_row() {
     local row=$1 src used tgt need line
-    pool_mount "$row" >/dev/null 2>&1 || true
+    pool_mount >/dev/null 2>&1 || true
     while true; do
         line=$(sources_of "$row" | head -n 1)
         if [[ -z $line ]]; then
@@ -357,15 +396,17 @@ run_row() {
             break
         fi
         read -r src used <<<"$line"
-        claim "$src" || { sleep 60; continue; }
         need=$((used + used / 1000 + 1000000000)) # 0.1 % and 1 GB of slack
-        # Enough room in the pool? Otherwise format a bay and add it, as long as one is free.
-        while ! findmnt -n "$(pool_dir "$row")" >/dev/null || (($(pool_avail "$row") < need)); do
+        claim "$src" || { sleep 60; continue; }
+        # Enough room in the pool, after the other workers' running copies? Otherwise format
+        # a bay and add it, as long as one is free; else wait for the other workers to free
+        # one (a wait with no other worker at all is a dead end).
+        while ! findmnt -n "$POOL" >/dev/null || ! reserve_room "$src" "$need"; do
             tgt=$(formattable_of "$row")
             if [[ -z $tgt ]]; then
                 if others_claimed "$src"; then
                     log "row $row: pool too small for $src ($used bytes) and no bay to add yet; waiting for other workers"
-                    sleep 300
+                    sleep "$WAIT"
                     continue
                 fi
                 release "$src"
@@ -374,20 +415,20 @@ run_row() {
             claim "$tgt" || { sleep 60; continue; }
             format_target "$tgt"
             touch "$MIG/state/row-$row.started"
-            pool_add "$row" "$tgt"
+            pool_add "$tgt"
             release "$tgt"
         done
-        log "round: $src ($used bytes) -> pool $row ($(pool_avail "$row") free)"
+        log "round: $src ($used bytes) -> pool ($(pool_avail) free, $(pool_room "$src") after reservations)"
         copy_disk "$row" "$src"
         verify_disk "$row" "$src"
         release "$src"
     done
-    # Every copied bay that is still HFS+ joins the pool now, so the row ends complete.
+    # Every copied bay of the row that is still HFS+ joins the pool now, so the row ends complete.
     for src in ${ROW[$row]}; do
         [[ $src == "${PARITY[$row]}" ]] && continue
         if [[ -f $MIG/state/$src.copied && $(disk_state "$src") == src* ]] && claim "$src"; then
             format_target "$src"
-            pool_add "$row" "$src"
+            pool_add "$src"
             release "$src"
         fi
     done
@@ -397,7 +438,7 @@ run_row() {
         format_target "${PARITY[$row]}"
         release "${PARITY[$row]}"
     fi
-    log "row $row: worker finished; pool $row: $(branches_of "$row" | tr '\n' ' ')"
+    log "row $row: worker finished; pool: $(pool_branches)"
 }
 
 # ---- front ------------------------------------------------------------------------------
@@ -428,14 +469,16 @@ plan)
         printf '  %s  %-14s %-8s' "$nn" "$(readlink -f "$(disk_of "$nn")")" "${st%% *}"
         awk -v s="$st" 'BEGIN { split(s, f, " "); if (f[1] == "src") printf "%.2f TB used", f[2] / 1e12; else if (f[1] == "xfs") printf "%.2f TB used, %.2f TB free", f[2] / 1e12, f[3] / 1e12; else printf "%s", s }'
         [[ -f $MIG/state/$nn.copied ]] && printf '  (%s)' "$(cat "$MIG/state/$nn.copied")"
+        [[ -f $MIG/state/$nn.deferred ]] && printf '  deferred: copied last'
         [[ -f $MIG/state/$nn.dirty ]] && printf '  DIRTY: holds a failed copy'
         echo
     done
     nsets=$(sources_of "$2" | wc -l)
     ((nsets <= 7)) || echo "  WARN: $nsets disks hold data and the row has 7 bays for it: the last bay (${ROW[$2]##* }) will be erased without a copy, after you confirm"
-    echo "  copies, smallest source first (the parity disk last):"
+    echo "  copies, smallest source first (the parity disk last, deferred disks after it):"
     sources_of "$2" | awk '{ printf "    %s (%.2f TB)\n", $1, $2 / 1e12 }'
-    echo "  pool branches now: $(branches_of "$2" | tr '\n' ' ')"
+    echo "  pool branches now (all rows): $(branches_of | tr '\n' ' ')"
+    findmnt -n "$POOL" >/dev/null && echo "  pool mounted at $POOL: $(df -h --output=avail "$POOL" | tail -n 1 | tr -d ' ') free"
     echo "  formatted without asking when needed (under $((EMPTY_LIMIT / 1000000)) MB, or marked by 'erase'): $(for nn in ${ROW[$2]}; do [[ -f $MIG/state/$nn.copied ]] && grep -qE '^(empty|erase)' "$MIG/state/$nn.copied" && printf '%s ' "$nn"; done)"
     f=$(formattable_of "$2")
     if [[ -n $f && -f $MIG/state/$f.copied ]]; then
@@ -447,10 +490,20 @@ plan)
     fi
     ;;
 pool)
-    need_row "${2:-}"
     prepare
     LOG=/dev/null
-    pool_mount "$2" && echo "pool $2 mounted at $(pool_dir "$2"): $(branches_of "$2" | tr '\n' ' ')" || echo "row $2 has no formatted bay yet"
+    pool_mount && echo "pool mounted at $POOL: $(pool_branches)" || echo "no formatted bay yet"
+    ;;
+defer)
+    # Copied after everything else in its row; nothing else changes.
+    shift
+    [[ $# -gt 0 ]] || die "defer needs disk names, e.g. defer 28"
+    prepare
+    for nn in "$@"; do
+        [[ $nn =~ ^[0-3][0-9]$ && -n $(disk_of "$nn" 2>/dev/null) ]] || die "$nn is not a disk in $PLAN"
+        touch "$MIG/state/$nn.deferred"
+        echo "$nn: deferred, copied last in its row"
+    done
     ;;
 mergerfs)
     # Fedora 44 ships no mergerfs. Build the upstream release and install it with its own
@@ -514,21 +567,22 @@ attach) tmux attach -t "mig-${2:-}-${3:-1}" ;;
 status)
     for row in A B C D; do
         n=0; done_n=0
-        for nn in ${ROW[$row]}; do n=$((n + 1)); [[ -f $MIG/state/$nn.copied ]] && done_n=$((done_n + 1)); done
+        for nn in ${ROW[$row]}; do n=$((n + 1)); grep -qs "^$nn -> " "$MIG/state/placement.txt" && done_n=$((done_n + 1)); done
         printf 'row %s: %d of %d disks copied; workers running: %s\n' "$row" "$done_n" "$n" \
             "$(tmux ls 2>/dev/null | grep -c "^mig-$row-" || true)"
         [[ -f $MIG/$row.log ]] && tail -n 1 "$MIG/$row.log" | sed 's/^/    /'
     done
     [[ -f $MIG/state/placement.txt ]] && { echo "placement:"; sed 's/^/    /' "$MIG/state/placement.txt"; }
-    echo "pools:"
-    for row in A B C D; do
-        findmnt -n "$MIG/pool-$row" >/dev/null && printf '    %s: %s free, branches %s\n' "$row" "$(df -h --output=avail "$MIG/pool-$row" | tail -n 1 | tr -d ' ')" "$(sudo getfattr -n user.mergerfs.branches --only-values "$MIG/pool-$row/.mergerfs" 2>/dev/null | sed 's|=RW||g; s|[^:]*/hd-||g')"
-    done
+    if findmnt -n "$POOL" >/dev/null; then
+        printf 'pool %s: %s free, branches %s\n' "$POOL" "$(df -h --output=avail "$POOL" | tail -n 1 | tr -d ' ')" "$(pool_branches)"
+    else
+        echo "pool: not mounted"
+    fi
     echo "mounted:"
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | pool ROW | erase NN... | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | pool | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
