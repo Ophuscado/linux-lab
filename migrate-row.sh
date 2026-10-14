@@ -52,14 +52,15 @@
 #   migrate-row.sh status           every row: disks copied, workers, pool, mounts
 #   migrate-row.sh attach A [N]     watch a worker (Ctrl-b d to leave it running)
 #   migrate-row.sh pool A           mount the row's pool without copying (after a reboot)
+#   migrate-row.sh mergerfs        build and install mergerfs (once; Fedora has no package)
 #   migrate-row.sh erase 07 15 ...  mark disks whose content is not needed: formatted
 #                                   without a copy and without asking
 #
 # Needs ~/disk-plan.csv from disk-inventory.sh with every disk named, and the packages
-# xfsprogs rsync tmux parted mergerfs attr (installed on the first run).
+# xfsprogs rsync tmux parted attr (installed on the first run) and mergerfs ("mergerfs" command).
 #
 # Test hooks: MIG_PLAN, MIG_HOME, MIG_SRC_FS (filesystem type of the sources, hfsplus),
-# MIG_EMPTY_LIMIT (bytes), MIG_MINFREE (mergerfs minfreespace).
+# MIG_EMPTY_LIMIT (bytes), MIG_MINFREE (mergerfs minfreespace), MIG_MERGERFS (binary).
 
 set -euo pipefail
 
@@ -69,6 +70,8 @@ SRC_FS=${MIG_SRC_FS:-hfsplus}
 VERIFY=${VERIFY:-full}
 EMPTY_LIMIT=${MIG_EMPTY_LIMIT:-10000000000} # bytes; under 10 GB is HFS+ metadata, not data
 MINFREE=${MIG_MINFREE:-4G} # mergerfs stops placing new files on a branch below this
+MERGERFS=${MIG_MERGERFS:-mergerfs}
+MERGERFS_TAG=2.42.0 # built from source: Fedora 44 has no mergerfs package
 
 declare -A ROW=(
     [A]="24 25 26 27 28 29 30 31"
@@ -223,7 +226,7 @@ pool_mount() {
     done
     [[ -n $list ]] || return 1
     findmnt -n "$(pool_dir "$row")" >/dev/null && return 0
-    sudo mergerfs -o "category.create=mfs,moveonenospc=true,minfreespace=$MINFREE,cache.files=off,dropcacheonclose=true,fsname=row$row" \
+    sudo "$MERGERFS" -o "category.create=mfs,moveonenospc=true,minfreespace=$MINFREE,cache.files=off,dropcacheonclose=true,fsname=row$row" \
         "$list" "$(pool_dir "$row")"
 }
 
@@ -407,9 +410,10 @@ prepare() {
     [[ $(tail -n +2 "$PLAN" | cut -d, -f14 | sort | uniq -d | wc -l) == 0 ]] || die "$PLAN names a disk twice; run disk-inventory.sh again"
     [[ $(tail -n +2 "$PLAN" | wc -l) == 32 ]] || echo "WARN: $PLAN lists $(tail -n +2 "$PLAN" | wc -l) disks, not 32"
     mkdir -p "$MIG/state" "$MIG/mnt"
-    for t in mkfs.xfs rsync parted tmux mergerfs setfattr; do
-        command -v "$t" >/dev/null || sudo dnf install -y xfsprogs rsync parted tmux mergerfs attr
+    for t in mkfs.xfs rsync parted tmux setfattr; do
+        command -v "$t" >/dev/null || sudo dnf install -y xfsprogs rsync parted tmux attr
     done
+    command -v "$MERGERFS" >/dev/null || die "no mergerfs; run '$0 mergerfs' once to build and install it"
     sudo -v
 }
 
@@ -447,6 +451,17 @@ pool)
     prepare
     LOG=/dev/null
     pool_mount "$2" && echo "pool $2 mounted at $(pool_dir "$2"): $(branches_of "$2" | tr '\n' ' ')" || echo "row $2 has no formatted bay yet"
+    ;;
+mergerfs)
+    # Fedora 44 ships no mergerfs. Build the upstream release as an RPM (the project's own
+    # spec: gcc-c++, git, rpm-build) and install it through dnf, so it stays a package.
+    sudo dnf install -y git rpm-build gcc-c++ make which libatomic
+    mkdir -p "$MIG/build"
+    [[ -d $MIG/build/mergerfs ]] || git -C "$MIG/build" clone -q --depth 1 --branch "$MERGERFS_TAG" https://github.com/trapexit/mergerfs
+    git -C "$MIG/build/mergerfs" describe --tags | grep -q "^$MERGERFS_TAG$" || die "$MIG/build/mergerfs is not at $MERGERFS_TAG; remove it and rerun"
+    make -C "$MIG/build/mergerfs" rpm
+    sudo dnf install -y "$MIG/build/mergerfs/rpmbuild/RPMS/$(uname -m)/mergerfs-$MERGERFS_TAG-1."*".$(uname -m).rpm"
+    mergerfs --version | head -n 1
     ;;
 erase)
     # Your decision, written down: the disk counts as copied, so a worker formats it without
@@ -510,7 +525,7 @@ status)
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | pool ROW | erase NN...}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | pool ROW | erase NN... | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
