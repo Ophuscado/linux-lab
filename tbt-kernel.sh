@@ -25,8 +25,9 @@
 #             boxes do not keep unique: with four boxes, the second of each UUID pair was
 #             never authorized, got no PCIe tunnel and fell back to USB after 10 s.
 #             install switches it on
-#   readonly  on|off: a udev rule that makes every disk reached through PCIe over
-#             Thunderbolt read-only as it appears. On until you switch it off
+#   readonly  on|off: a udev rule that makes every HFS+ volume reached through PCIe over
+#             Thunderbolt read-only as it appears. On until you switch it off. Run 'on'
+#             again after updating this script: the rule changed for the migration
 #   mount     mounts every HFS+ volume on disks behind PCIe over Thunderbolt read-only
 #             under /mnt/tbt/<volume name>; umount undoes it
 #   bench     read-only speed test of those disks: N MiB (default 4096) from the start of
@@ -79,7 +80,8 @@ KOJI=https://kojipkgs.fedoraproject.org/packages/m1n1
 M1N1_NEW=$KOJI/1.9.9/1.fc46/noarch/m1n1-1.9.9-1.fc46.noarch.rpm
 M1N1_OLD=$KOJI/1.6.1/1.fc44/noarch/m1n1-1.6.1-1.fc44.noarch.rpm
 DTB=arch/arm64/boot/dts/apple/t6022-j475d.dtb
-RO_RULE=/etc/udev/rules.d/00-tbt-readonly.rules
+RO_RULE=/etc/udev/rules.d/99-tbt-readonly.rules
+RO_RULE_OLD=/etc/udev/rules.d/00-tbt-readonly.rules
 AUTH_RULE=/etc/udev/rules.d/60-tbt-authorize.rules
 SPIN_RULE=/etc/udev/rules.d/61-tbt-spindown.rules
 MNT=/mnt/tbt
@@ -523,13 +525,17 @@ stage_readonly() {
     on)
         printf '%s\n' \
             '# Written by tbt-kernel.sh readonly on; removed by readonly off and by rollback.' \
-            'ACTION=="add|change", SUBSYSTEM=="block", DEVPATH=="*30000000.pcie/*", RUN+="/usr/sbin/blockdev --setro /dev/%k"' |
+            '# Only HFS+ volumes: a whole disk flagged read-only would also block writes to an XFS' \
+            '# partition on it, and the migration needs those. Runs after 60-persistent-storage,' \
+            '# which fills in ID_FS_TYPE.' \
+            'ACTION=="add|change", SUBSYSTEM=="block", ENV{DEVTYPE}=="partition", ENV{ID_FS_TYPE}=="hfsplus", DEVPATH=="*30000000.pcie/*", RUN+="/usr/sbin/blockdev --setro /dev/%k"' |
             sudo tee "$RO_RULE" >/dev/null
+        sudo rm -f "$RO_RULE_OLD"
         sudo udevadm control --reload
-        echo "read-only rule is on: disks behind PCIe over Thunderbolt appear read-only"
+        echo "read-only rule is on: HFS+ volumes behind PCIe over Thunderbolt appear read-only"
         ;;
     off)
-        sudo rm -f "$RO_RULE"
+        sudo rm -f "$RO_RULE" "$RO_RULE_OLD"
         sudo udevadm control --reload
         echo "read-only rule is off. Disks already present stay read-only until they are"
         echo "replugged, or: sudo blockdev --setrw /dev/sdX"

@@ -35,6 +35,7 @@ recheck before relying on one for anything consequential.
 - [Filesystems for the migration](#filesystems-for-the-migration)
 - [Two of four enclosures never get a tunnel: boltd and shared UUIDs](#two-of-four-enclosures-never-get-a-tunnel-boltd-and-shared-uuids)
 - [All 32 disks at boot; what the inventory showed](#all-32-disks-at-boot-what-the-inventory-showed)
+- [The migration plan and its safety rules](#the-migration-plan-and-its-safety-rules)
 - [Sizes when installing again](#sizes-when-installing-again)
 - [What macOS the m1n1 hypervisor wants](#what-macos-the-m1n1-hypervisor-wants)
 
@@ -174,3 +175,6 @@ Operator, 2026-10-14, after `authorize on` and one reboot with the four boxes at
 - Bays are not SATA ports: two boxes wire their eight bays to ports 0 to 5, 7 and 8, so "slot" is not the bay and names must come from the HFS+ labels (`HD_nn`) or from the operator. The labels found give the row of each box: domain 0008 holds 24 to 31, 0009 holds 00 to 07, 000a holds 08 to 15, 000b holds 16 to 23. 20 of 32 disks have no label.
 - Box 0008 (24 to 31) has a different SATA controller, `20c3:3118`, not the Realtek `10ec:9100` of the other three; its disk on port 3 (`sdad`, WDC, full) logged four `BadCRC` link errors in the first 20 s and was dropped to 3.0 Gb/s by the kernel. A CRC error on the SATA link is the cable or the backplane contact, not the platters; reseat that disk before any copy, and that box's bays are suspect for the whole migration.
 - Fill: 18 disks within 1.6 TB of full, 4 nearly empty (the old parity disks), the rest between 1.7 and 13.3 TB.
+
+## The migration plan and its safety rules
+Decided 2026-10-14 with the operator's full inventory (all 32 named by label). Per row, content moves one bay down, so names stay with bays and the first bay (00, 08, 16, 24) ends empty for parity: A `30>31 … 24>25`, B `06>07 … 00>01`, C `14>15 … 08>09`, D `22>23 … 16>17`. Sequential within a row (two disks busy, six free to spin down), rows in parallel. `migrate-row.sh` formats a disk only if it is under 1 GB used and confirmed by typing its name, or if the script itself verified its copy on the next disk; the copy is `rsync -aHAX` with retries, then a full checksum read-back (`VERIFY=quick` for size and time only); any difference stops the row with the source untouched; state in `~/migrate/state`, resumable. The read-only udev rule had to change for this: a whole disk flagged read-only blocks writes to any partition on it, so the rule now flags HFS+ partitions only (`99-tbt-readonly.rules`, after udev's blkid import). Checked on loop devices with ext4 standing in for HFS+: three-step chain, owners, hard links, xattrs and names kept, re-run a no-op, data-bearing target refused, differing trees caught. Symbolic links get the copy's time. Not run on the Mac. Old parity disk 31 still holds about 100 GB and will be refused until emptied.
