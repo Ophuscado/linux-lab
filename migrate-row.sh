@@ -1,51 +1,56 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2024
 # (the log file belongs to the user; sudo is for the command only)
-# migrate-row.sh: move one row of eight 18 TB disks from HFS+ to XFS, disk by disk, so
-# that the row's first disk ends up empty for SnapRAID parity.
+# migrate-row.sh: move one row of eight 18 TB disks from HFS+ to XFS, disk by disk, until
+# the row's parity disk (24, 00, 08, 16) is empty.
 #
-# The plan, in plain words. Each row has one empty disk (07, 15, 23, 31). The data of the
-# disk next to it is copied there, checked, and only then is that disk formatted and used
-# as the next target, and so on down the row, until the row's first disk (00, 08, 16, 24)
-# is empty. Content moves one bay down; bay names (HD_nn) stay with the bays:
+# The plan, in plain words. A row is eight bays:
 #
-#   A  parity 24   30>31  29>30  28>29  27>28  26>27  25>26  24>25
-#   B  parity 00   06>07  05>06  04>05  03>04  02>03  01>02  00>01
-#   C  parity 08   14>15  13>14  12>13  11>12  10>11  09>10  08>09
-#   D  parity 16   22>23  21>22  20>21  19>20  18>19  17>18  16>17
+#   A  24 25 26 27 28 29 30 31   parity 24
+#   B  00 01 02 03 04 05 06 07   parity 00
+#   C  08 09 10 11 12 13 14 15   parity 08
+#   D  16 17 18 19 20 21 22 23   parity 16
 #
-# One copy at a time per row, so two disks of a row are busy and the other six can spin
-# down. Rows are independent: run the four in parallel, one tmux session each.
+# Every disk still on HFS+ with more than 10 GB on it is a source (an emptier one holds
+# only HFS+ metadata and is just formatted when needed). Every disk this script has formatted to XFS and
+# not yet filled is a target; the row's parity disk is never a target. Each round takes
+# the SMALLEST remaining source (the parity disk last, since emptying it frees no bay) and
+# copies it whole onto the target with the most free space that fits it, checks the copy, and only then may the source be formatted, which
+# makes it the next target. Small disks go first, so free disks appear early; the two
+# disks that are full to the last gigabyte go last, onto a fresh disk. Where each disk's
+# content landed is written to ~/migrate/state/placement.txt; a disk's data is never
+# split.
 #
-# What one step "nn>mm" does, and what stops it:
-#   1. mm must be empty: either a disk already formatted by this script and holding
-#      nothing, or an HFS+ volume with under 1 GB used (the old parity disks); anything
-#      else is refused. A disk that still holds data this script has not verified as
-#      copied is never formatted.
-#   2. mm is formatted: one GPT partition, XFS, label HD_mm. The one destructive command;
-#      the devices are shown and the name must be typed, except for a disk that this
-#      script itself emptied in the previous step (its copy was verified).
-#   3. nn is mounted read-only (HFS+), mm read-write, and rsync copies everything with
-#      owners, times, permissions and extended attributes (resource forks do not exist on
-#      Linux and are not copied). A second rsync pass is run until nothing is left.
-#   4. Verification: every file is read back on both sides and compared by checksum
+# Workers: "start A 2" runs two copies of row A at once (four disks busy); "start A" one
+# (two disks busy, six free to spin down). Rows are independent; run them in parallel.
+#
+# What one copy "nn>mm" does, and what stops it:
+#   1. mm is formatted: one GPT partition, XFS, label HD_mm. The one destructive command.
+#      It happens on its own only for a disk this script emptied by a verified copy or
+#      found under 10 GB; any other disk needs you to type "erase mm" at the prompt,
+#      after seeing what it holds. A row has seven bays for data and eight disks; when
+#      all eight hold data, the old parity disk (last bay) is the one that asks.
+#   2. nn is mounted read-only, mm read-write, and rsync copies everything with owners,
+#      times, permissions and extended attributes (resource forks do not exist on Linux
+#      and are not copied). Up to three passes until nothing is left.
+#   3. Verification: every file is read back on both sides and compared by checksum
 #      (VERIFY=quick compares only size and time; faster, weaker). Any difference stops
-#      the row; the source is untouched.
-#   5. nn is marked "copied to mm, verified"; the next step may format it. Symbolic
-#      links keep their targets but get the copy's time, not the original's.
-# Every step is logged to ~/migrate/<row>.log, state lives in ~/migrate/state/. A stopped
-# or crashed run is restarted with the same command and continues where it was.
+#      the worker; the source is untouched and mm is set aside as "dirty".
+#   4. nn is marked "copied to mm, verified"; it may now be formatted.
+# A worker logs to ~/migrate/<row>.log; state lives in ~/migrate/state/. A stopped or
+# crashed worker is restarted with the same command and continues.
 #
-#   migrate-row.sh plan A         print the steps with the real devices, change nothing
-#   migrate-row.sh start A        run row A in a tmux session named mig-A, detached
-#   migrate-row.sh run A          run row A in this terminal
-#   migrate-row.sh status         where each row is, and what is mounted
-#   migrate-row.sh attach A       watch row A (Ctrl-b d to leave it running)
+#   migrate-row.sh plan A           what the row holds and what the first round would do
+#   migrate-row.sh start A [N]      run N workers (default 1) in tmux sessions mig-A-1..N
+#   migrate-row.sh run A            one worker in this terminal
+#   migrate-row.sh status           every row: disks copied, workers, placement, mounts
+#   migrate-row.sh attach A [N]     watch a worker (Ctrl-b d to leave it running)
 #
 # Needs ~/disk-plan.csv from disk-inventory.sh with every disk named, and the packages
 # xfsprogs rsync tmux parted (installed on the first run).
 #
-# Test hooks: MIG_PLAN, MIG_HOME, MIG_SRC_FS (filesystem type of the sources, hfsplus).
+# Test hooks: MIG_PLAN, MIG_HOME, MIG_SRC_FS (filesystem type of the sources, hfsplus),
+# MIG_EMPTY_LIMIT (bytes).
 
 set -euo pipefail
 
@@ -53,13 +58,13 @@ PLAN=${MIG_PLAN:-$HOME/disk-plan.csv}
 MIG=${MIG_HOME:-$HOME/migrate}
 SRC_FS=${MIG_SRC_FS:-hfsplus}
 VERIFY=${VERIFY:-full}
-EMPTY_LIMIT=${MIG_EMPTY_LIMIT:-$((1000 * 1000 * 1000))} # 1 GB: more than this on a target is data
+EMPTY_LIMIT=${MIG_EMPTY_LIMIT:-10000000000} # bytes; under 10 GB is HFS+ metadata, not data
 
-declare -A CHAIN=(
-    [A]="30>31 29>30 28>29 27>28 26>27 25>26 24>25"
-    [B]="06>07 05>06 04>05 03>04 02>03 01>02 00>01"
-    [C]="14>15 13>14 12>13 11>12 10>11 09>10 08>09"
-    [D]="22>23 21>22 20>21 19>20 18>19 17>18 16>17"
+declare -A ROW=(
+    [A]="24 25 26 27 28 29 30 31"
+    [B]="00 01 02 03 04 05 06 07"
+    [C]="08 09 10 11 12 13 14 15"
+    [D]="16 17 18 19 20 21 22 23"
 )
 declare -A PARITY=([A]=24 [B]=00 [C]=08 [D]=16)
 
@@ -97,54 +102,53 @@ mount_at() {
     sudo mount -o "$4" "$2" "$3"
 }
 
-# Bytes used on a mounted filesystem.
+# Bytes used / available on a mounted filesystem.
 used_at() { df -B1 --output=used "$1" | tail -n 1 | tr -d ' '; }
+avail_at() { df -B1 --output=avail "$1" | tail -n 1 | tr -d ' '; }
 
-# ---- the steps --------------------------------------------------------------------------
-
-# $1 target name. Refuses anything that is not empty.
-check_target_empty() {
-    local mm=$1 dev part fs m used
-    dev=$(disk_of "$mm") || exit 1
-    if [[ -f $MIG/state/$mm.copied ]]; then
-        return 0 # this script emptied it: its data is verified on the next disk
-    fi
+# $1 name: "src USED" (still on HFS+), "xfs USED AVAIL" (formatted by us), or "other TYPE".
+# Mounts the volume read-only for the figures and unmounts it again.
+disk_state() {
+    local nn=$1 dev part fs m
+    dev=$(disk_of "$nn") || exit 1
     part=$(part_of "$dev") || exit 1
     fs=$(fstype_of "$part")
-    m=$MIG/mnt/check-$mm
+    m=$MIG/mnt/peek-$nn
     case $fs in
     "$SRC_FS")
-        mount_at "$mm" "$part" "$m" ro
-        used=$(used_at "$m")
+        mount_at "$nn" "$part" "$m" ro
+        echo "src $(used_at "$m")"
         sudo umount "$m"
-        ((used < EMPTY_LIMIT)) || die "disk $mm ($dev) holds $((used / 1000000)) MB and was never copied by this script: not formatting it"
         ;;
     xfs)
-        [[ $(label_of "$part") == "HD_$mm" ]] || die "disk $mm is XFS but not labelled HD_$mm; not touching it"
-        mount_at "$mm" "$part" "$m" ro
-        used=$(used_at "$m")
+        [[ $(label_of "$part") == "HD_$nn" ]] || { echo "other xfs-not-ours"; return; }
+        mount_at "$nn" "$part" "$m" ro
+        echo "xfs $(used_at "$m") $(avail_at "$m")"
         sudo umount "$m"
-        ((used < EMPTY_LIMIT)) || die "disk $mm is XFS and holds $((used / 1000000)) MB: not formatting it"
         ;;
-    *) die "disk $mm ($dev) has filesystem '$fs': not formatting it" ;;
+    *) echo "other ${fs:-none}" ;;
     esac
 }
 
+# ---- the steps --------------------------------------------------------------------------
+
 # $1 target name. The destructive step.
 format_target() {
-    local mm=$1 dev part answer
+    local mm=$1 dev part answer st
     dev=$(disk_of "$mm") || exit 1
-    if [[ -f $MIG/state/$mm.formatted ]]; then
-        log "$mm: already formatted"
+    st=$(disk_state "$mm")
+    if [[ $st == xfs* ]]; then
+        log "$mm: already XFS"
         return 0
     fi
-    check_target_empty "$mm"
     if [[ ! -f $MIG/state/$mm.copied ]]; then
         echo
-        echo "About to ERASE disk $mm: $dev ($(readlink -f "$dev"), $(lsblk -dno MODEL,SIZE "$dev" | tr -s ' '))"
-        echo "It holds $(fstype_of "$(part_of "$dev")") '$(label_of "$(part_of "$dev")")', under 1 GB used."
-        read -r -p "Type $mm to erase it: " answer </dev/tty
-        [[ $answer == "$mm" ]] || die "not confirmed; nothing changed"
+        echo "About to ERASE disk $mm: $dev"
+        echo "  $(readlink -f "$dev"), $(lsblk -dno MODEL,SIZE "$dev" | tr -s ' ')"
+        echo "  holds ${st#* } bytes on $(fstype_of "$(part_of "$dev")") '$(label_of "$(part_of "$dev")")'"
+        echo "  this script has NOT copied it anywhere."
+        read -r -p "Type 'erase $mm' to erase it: " answer </dev/tty
+        [[ $answer == "erase $mm" ]] || die "not confirmed; nothing changed"
     fi
     log "$mm: formatting $dev as XFS, label HD_$mm"
     # The read-only udev rule may have flagged the disk; the flags are cleared first.
@@ -166,8 +170,7 @@ format_target() {
     sudo blockdev --setrw "$part"
     # A 256 MiB log instead of the 2 GiB default: two disks are within 2 GB of full.
     sudo mkfs.xfs -q -f -L "HD_$mm" -l size=256m "$part" >>"$LOG" 2>&1 || die "$mm: mkfs.xfs failed; see $LOG"
-    sudo rm -f "$MIG/state/$mm.copied"
-    touch "$MIG/state/$mm.formatted"
+    rm -f "$MIG/state/$mm.copied" "$MIG/state/$mm.dirty" "$MIG/state/$mm.filled"
     log "$mm: formatted"
 }
 
@@ -184,23 +187,24 @@ copy_disk() {
     mount_at "$nn" "$s" "$src" ro
     sudo blockdev --setrw "$d"
     mount_at "$mm" "$d" "$dst" rw,noatime
-    log "$nn>$mm: copying $(du -sh "$src" 2>/dev/null | cut -f1 || echo '?') from $s to $d"
+    touch "$MIG/state/$mm.dirty" # until verified, mm holds a copy in progress
+    log "$nn>$mm: copying $(used_at "$src") bytes from $s to $d"
     for pass in 1 2 3; do
         rc=0
         sudo rsync -aHAX --info=progress2,stats1 --no-inc-recursive "$src/" "$dst/" >>"$LOG" 2>&1 || rc=$?
         # 23/24: some files could not be read or vanished; those are listed in the log.
         log "$nn>$mm: rsync pass $pass finished with code $rc"
         [[ $rc == 0 ]] && break
-        [[ $rc == 23 || $rc == 24 ]] || die "$nn>$mm: rsync failed (code $rc); see $LOG"
+        [[ $rc == 23 || $rc == 24 ]] || die "$nn>$mm: rsync failed (code $rc); see $LOG. $mm is set aside as dirty."
     done
-    [[ $rc == 0 ]] || die "$nn>$mm: files could not be copied after three passes; see $LOG"
+    [[ $rc == 0 ]] || die "$nn>$mm: files could not be copied after three passes; see $LOG. $mm is set aside as dirty."
     sync
     log "$nn>$mm: copy done, $(used_at "$dst") bytes on $mm"
 }
 
 # $1 source, $2 target: read everything back and compare.
 verify_disk() {
-    local nn=$1 mm=$2 src dst diff opts
+    local nn=$1 mm=$2 src dst diff opts nsrc ndst
     src=$MIG/mnt/src-$nn
     dst=$MIG/mnt/hd-$mm
     if [[ $VERIFY == quick ]]; then
@@ -213,43 +217,126 @@ verify_disk() {
     diff=$(sudo rsync "${opts[@]}" --delete --out-format='%n' "$src/" "$dst/" 2>&1 | grep -v '^\./$' || true)
     if [[ -n $diff ]]; then
         printf '%s\n' "$diff" >>"$MIG/state/$nn.differences"
-        die "$nn>$mm: $(wc -l <<<"$diff") differences; see $MIG/state/$nn.differences. Source untouched."
+        die "$nn>$mm: $(wc -l <<<"$diff") differences; see $MIG/state/$nn.differences. Source untouched, $mm dirty."
     fi
-    local nsrc ndst
     nsrc=$(sudo find "$src" -xdev -type f | wc -l)
     ndst=$(sudo find "$dst" -xdev -type f | wc -l)
-    [[ $nsrc == "$ndst" ]] || die "$nn>$mm: $nsrc files on $nn, $ndst on $mm. Source untouched."
+    [[ $nsrc == "$ndst" ]] || die "$nn>$mm: $nsrc files on $nn, $ndst on $mm. Source untouched, $mm dirty."
     sudo umount "$src"
     sudo umount "$dst"
+    rm -f "$MIG/state/$mm.dirty"
+    touch "$MIG/state/$mm.filled"
     echo "copied to $mm, $nsrc files, verified $VERIFY $(date '+%F %T')" >"$MIG/state/$nn.copied"
-    cp "$MIG/state/$nn.copied" "$MIG/state/step-$nn-$mm.done"
+    echo "$nn -> $mm  $nsrc files  $(date '+%F %T')" >>"$MIG/state/placement.txt"
     log "$nn>$mm: verified, $nsrc files. $nn may now be formatted."
 }
 
-run_step() {
-    local nn=${1%>*} mm=${1#*>}
-    if [[ -f $MIG/state/step-$nn-$mm.done ]]; then
-        log "$nn>$mm: done earlier ($(cat "$MIG/state/step-$nn-$mm.done"))"
-        return 0
-    fi
-    format_target "$mm"
-    copy_disk "$nn" "$mm"
-    verify_disk "$nn" "$mm"
+# ---- the scheduler ----------------------------------------------------------------------
+
+# Claims keep two workers off the same disk; a claim is a directory, made atomically.
+claim() { mkdir "$MIG/state/claim-$1" 2>/dev/null; }
+release() { rmdir "$MIG/state/claim-$1" 2>/dev/null || true; }
+claimed() { [[ -d $MIG/state/claim-$1 ]]; }
+
+# Prints "nn USED" for every HFS+ disk of row $1 not yet copied and not claimed, smallest
+# first, the parity disk last.
+sources_of() {
+    local nn st
+    for nn in ${ROW[$1]}; do
+        [[ -f $MIG/state/$nn.copied ]] && continue
+        claimed "$nn" && continue
+        st=$(disk_state "$nn")
+        [[ $st == src* ]] || continue
+        if ((${st#src } < EMPTY_LIMIT)); then
+            # Under 1 GB: nothing worth a copy; it may be formatted like a copied disk.
+            echo "empty, nothing to copy $(date '+%F %T')" >"$MIG/state/$nn.copied"
+            continue
+        fi
+        # The parity disk frees no bay when copied, so it goes last whatever its size.
+        [[ $nn == "${PARITY[$1]}" ]] && echo "$nn ${st#src } last" || echo "$nn ${st#src } first"
+    done | sort -k3,3 -k2,2n | cut -d' ' -f1,2
 }
 
-run_row() {
-    local row=$1 step
-    for step in ${CHAIN[$row]}; do
-        run_step "$step"
+# Prints "mm AVAIL" for every formatted, unfilled, unclaimed XFS disk of row $1 (never the
+# parity disk), most free space first.
+targets_of() {
+    local mm st
+    for mm in ${ROW[$1]}; do
+        [[ $mm == "${PARITY[$1]}" ]] && continue
+        [[ -f $MIG/state/$mm.filled || -f $MIG/state/$mm.dirty ]] && continue
+        claimed "$mm" && continue
+        st=$(disk_state "$mm")
+        [[ $st == xfs* ]] && echo "$mm ${st##* }"
+    done | sort -k2,2nr
+}
+
+# Prints a disk of row $1 that may be formatted now: one this script emptied by a verified
+# copy and has not reformatted; else, before the first round, the row's last bay (the old
+# parity disk, which asks for confirmation); else nothing.
+formattable_of() {
+    local nn
+    for nn in ${ROW[$1]}; do
+        [[ $nn == "${PARITY[$1]}" ]] && continue
+        claimed "$nn" && continue
+        if [[ -f $MIG/state/$nn.copied ]] && [[ $(disk_state "$nn") == src* ]]; then
+            echo "$nn"
+            return
+        fi
     done
-    log "row $row: all copies done. Parity disk ${PARITY[$row]} is empty; formatting it."
-    format_target "${PARITY[$row]}"
-    log "row $row: finished"
+    [[ -f $MIG/state/row-$1.started ]] || echo "${ROW[$1]##* }"
+}
+
+# One worker: rounds until no source is left.
+run_row() {
+    local row=$1 src used tgt avail need line mm
+    while true; do
+        line=$(sources_of "$row" | head -n 1)
+        if [[ -z $line ]]; then
+            log "row $row: no source left for this worker"
+            break
+        fi
+        read -r src used <<<"$line"
+        claim "$src" || { sleep 60; continue; }
+        need=$((used + used / 1000 + 1000000000)) # 0.1 % and 1 GB of slack
+        tgt=""
+        while read -r mm avail; do
+            [[ -n $mm && $avail -ge $need ]] && { tgt=$mm; break; }
+        done < <(targets_of "$row")
+        if [[ -z $tgt ]]; then
+            tgt=$(formattable_of "$row")
+            if [[ -z $tgt ]]; then
+                release "$src"
+                if [[ -n $(ls -d "$MIG"/state/claim-* 2>/dev/null) ]]; then
+                    log "row $row: nothing fits $src ($used bytes) yet; waiting for other workers"
+                    sleep 300
+                    continue
+                fi
+                die "row $row: nothing fits $src ($used bytes) and nothing can be formatted. See placement.txt; free a disk by hand or split this one."
+            fi
+            claim "$tgt" || { release "$src"; sleep 60; continue; }
+            format_target "$tgt"
+            touch "$MIG/state/row-$row.started"
+        else
+            claim "$tgt" || { release "$src"; sleep 60; continue; }
+        fi
+        log "round: $src ($used bytes) -> $tgt"
+        copy_disk "$src" "$tgt"
+        verify_disk "$src" "$tgt"
+        release "$src"
+        release "$tgt"
+    done
+    # The parity disk: once its content is copied it holds nothing we need.
+    if [[ -f $MIG/state/${PARITY[$row]}.copied && $(disk_state "${PARITY[$row]}") == src* ]] && claim "${PARITY[$row]}"; then
+        log "row $row: formatting parity disk ${PARITY[$row]}"
+        format_target "${PARITY[$row]}"
+        release "${PARITY[$row]}"
+    fi
+    log "row $row: worker finished"
 }
 
 # ---- front ------------------------------------------------------------------------------
 
-need_row() { [[ -n ${1:-} && -n ${CHAIN[$1]:-} ]] || die "row must be A, B, C or D"; }
+need_row() { [[ -n ${1:-} && -n ${ROW[$1]:-} ]] || die "row must be A, B, C or D"; }
 
 prepare() {
     [[ -r $PLAN ]] || die "no $PLAN; run disk-inventory.sh first"
@@ -269,41 +356,60 @@ plan)
     prepare
     LOG=/dev/null
     echo "row $2, parity ${PARITY[$2]}:"
-    for step in ${CHAIN[$2]}; do
-        nn=${step%>*}; mm=${step#*>}
-        printf '  %s>%s  %s -> %s  %s\n' "$nn" "$mm" "$(readlink -f "$(disk_of "$nn")")" "$(readlink -f "$(disk_of "$mm")")" \
-            "$([[ -f $MIG/state/step-$nn-$mm.done ]] && echo "done" || echo "pending")"
+    for nn in ${ROW[$2]}; do
+        st=$(disk_state "$nn")
+        printf '  %s  %-14s %-8s' "$nn" "$(readlink -f "$(disk_of "$nn")")" "${st%% *}"
+        awk -v s="$st" 'BEGIN { split(s, f, " "); if (f[1] == "src") printf "%.2f TB used", f[2] / 1e12; else if (f[1] == "xfs") printf "%.2f TB used, %.2f TB free", f[2] / 1e12, f[3] / 1e12; else printf "%s", s }'
+        [[ -f $MIG/state/$nn.copied ]] && printf '  (%s)' "$(cat "$MIG/state/$nn.copied")"
+        [[ -f $MIG/state/$nn.dirty ]] && printf '  DIRTY: holds a failed copy'
+        echo
     done
-    echo "  then format ${PARITY[$2]} ($(readlink -f "$(disk_of "${PARITY[$2]}")")) for parity"
+    nsets=$(sources_of "$2" | wc -l)
+    ((nsets <= 7)) || echo "  WARN: $nsets disks hold data and the row has 7 bays for it: the last bay (${ROW[$2]##* }) will be erased without a copy, after you confirm"
+    echo "  copies, smallest source first:"
+    sources_of "$2" | awk '{ printf "    %s (%.2f TB)\n", $1, $2 / 1e12 }'
+    echo "  targets ready now: $(targets_of "$2" | awk '{ printf "%s (%.2f TB free) ", $1, $2 / 1e12 }')"
+    echo "  formatted without asking when needed (under $((EMPTY_LIMIT / 1000000)) MB): $(for nn in ${ROW[$2]}; do [[ -f $MIG/state/$nn.copied ]] && grep -q '^empty' "$MIG/state/$nn.copied" && printf '%s ' "$nn"; done)"
+    echo "  next disk to be formatted if none fits: $(formattable_of "$2")$([[ -f $MIG/state/row-$2.started ]] || echo ' (the old parity disk; asks for confirmation)')"
     ;;
 run)
     need_row "${2:-}"
     prepare
     LOG=$MIG/$2.log
-    log "row $2: start (VERIFY=$VERIFY)"
+    log "row $2: worker start (VERIFY=$VERIFY)"
     run_row "$2"
     ;;
 start)
     need_row "${2:-}"
     prepare
-    tmux has-session -t "mig-$2" 2>/dev/null && die "row $2 is already running: $0 attach $2"
-    tmux new-session -d -s "mig-$2" "VERIFY=$VERIFY '$0' run $2; echo; echo 'row $2 ended; press enter'; read"
-    echo "row $2 started in tmux session mig-$2. Watch: $0 attach $2; progress: $0 status"
+    n=${3:-1}
+    [[ $n =~ ^[1-4]$ ]] || die "workers: 1 to 4"
+    for i in $(seq 1 "$n"); do
+        if tmux has-session -t "mig-$2-$i" 2>/dev/null; then
+            echo "worker mig-$2-$i is already running"
+            continue
+        fi
+        tmux new-session -d -s "mig-$2-$i" "VERIFY=$VERIFY '$0' run $2; echo; echo 'worker ended; press enter'; read"
+        echo "row $2 worker $i started in tmux session mig-$2-$i"
+        [[ $i == 1 && $n -gt 1 ]] && sleep 20 # let the first one take the confirmation prompt
+    done
+    echo "Watch: $0 attach $2 [N]; progress: $0 status"
     ;;
-attach) tmux attach -t "mig-${2:-}" ;;
+attach) tmux attach -t "mig-${2:-}-${3:-1}" ;;
 status)
     for row in A B C D; do
         n=0; done_n=0
-        for step in ${CHAIN[$row]}; do n=$((n + 1)); [[ -f $MIG/state/step-${step%>*}-${step#*>}.done ]] && done_n=$((done_n + 1)); done
-        printf 'row %s: %d of %d copies verified%s\n' "$row" "$done_n" "$n" \
-            "$(tmux has-session -t "mig-$row" 2>/dev/null && echo ', running' || echo '')"
+        for nn in ${ROW[$row]}; do n=$((n + 1)); [[ -f $MIG/state/$nn.copied ]] && done_n=$((done_n + 1)); done
+        printf 'row %s: %d of %d disks copied; workers running: %s\n' "$row" "$done_n" "$n" \
+            "$(tmux ls 2>/dev/null | grep -c "^mig-$row-" || true)"
         [[ -f $MIG/$row.log ]] && tail -n 1 "$MIG/$row.log" | sed 's/^/    /'
     done
+    [[ -f $MIG/state/placement.txt ]] && { echo "placement:"; sed 's/^/    /' "$MIG/state/placement.txt"; }
     echo "mounted:"
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW | run ROW | attach ROW | status}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
