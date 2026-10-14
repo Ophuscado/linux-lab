@@ -52,7 +52,7 @@
 #   migrate-row.sh status           every row: disks copied, workers, pool, mounts
 #   migrate-row.sh attach A [N]     watch a worker (Ctrl-b d to leave it running)
 #   migrate-row.sh pool A           mount the row's pool without copying (after a reboot)
-#   migrate-row.sh mergerfs        build and install mergerfs (once; Fedora has no package)
+#   migrate-row.sh mergerfs        build and install mergerfs 2.42.0 (once; Fedora has no package)
 #   migrate-row.sh erase 07 15 ...  mark disks whose content is not needed: formatted
 #                                   without a copy and without asking
 #
@@ -453,14 +453,15 @@ pool)
     pool_mount "$2" && echo "pool $2 mounted at $(pool_dir "$2"): $(branches_of "$2" | tr '\n' ' ')" || echo "row $2 has no formatted bay yet"
     ;;
 mergerfs)
-    # Fedora 44 ships no mergerfs. Build the upstream release as an RPM (the project's own
-    # spec: gcc-c++, git, rpm-build) and install it through dnf, so it stays a package.
-    sudo dnf install -y git rpm-build gcc-c++ make which libatomic
+    # Fedora 44 ships no mergerfs. Build the upstream release and install it with its own
+    # Makefile ("make uninstall" in ~/migrate/build/mergerfs removes it). Not an RPM: the
+    # project's rpm target chowns a setuid helper, which only works as root.
+    sudo dnf install -y git gcc-c++ make which libatomic
     mkdir -p "$MIG/build"
     [[ -d $MIG/build/mergerfs ]] || git -C "$MIG/build" clone -q --depth 1 --branch "$MERGERFS_TAG" https://github.com/trapexit/mergerfs
     git -C "$MIG/build/mergerfs" describe --tags | grep -q "^$MERGERFS_TAG$" || die "$MIG/build/mergerfs is not at $MERGERFS_TAG; remove it and rerun"
-    make -C "$MIG/build/mergerfs" rpm
-    sudo dnf install -y "$MIG/build/mergerfs/rpmbuild/RPMS/$(uname -m)/mergerfs-$MERGERFS_TAG-1."*".$(uname -m).rpm"
+    make -C "$MIG/build/mergerfs" -j"$(nproc)"
+    sudo make -C "$MIG/build/mergerfs" install PREFIX=/usr
     mergerfs --version | head -n 1
     ;;
 erase)
