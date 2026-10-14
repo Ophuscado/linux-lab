@@ -29,7 +29,9 @@
 #      own only for a disk this script emptied by a verified copy or found under 10 GB; any
 #      other disk needs you to type "erase nn" at the prompt, after seeing what it holds.
 #      Seven bays hold a row's data; when all eight disks hold data, the old parity disk
-#      (last bay) is the one that asks.
+#      (last bay) is the one that asks. "migrate-row.sh erase 07 15 23 31" records in
+#      advance that a disk's content is not needed (the old parity disks, migrated already):
+#      it is then never copied, is the first bay formatted, and nothing asks.
 #   2. The source is mounted read-only and rsync copies everything into the pool with
 #      owners, times, permissions, hard links and extended attributes (resource forks do
 #      not exist on Linux and are not copied). A file that already exists in the pool under
@@ -50,6 +52,8 @@
 #   migrate-row.sh status           every row: disks copied, workers, pool, mounts
 #   migrate-row.sh attach A [N]     watch a worker (Ctrl-b d to leave it running)
 #   migrate-row.sh pool A           mount the row's pool without copying (after a reboot)
+#   migrate-row.sh erase 07 15 ...  mark disks whose content is not needed: formatted
+#                                   without a copy and without asking
 #
 # Needs ~/disk-plan.csv from disk-inventory.sh with every disk named, and the packages
 # xfsprogs rsync tmux parted mergerfs attr (installed on the first run).
@@ -428,7 +432,7 @@ plan)
     echo "  copies, smallest source first (the parity disk last):"
     sources_of "$2" | awk '{ printf "    %s (%.2f TB)\n", $1, $2 / 1e12 }'
     echo "  pool branches now: $(branches_of "$2" | tr '\n' ' ')"
-    echo "  formatted without asking when needed (under $((EMPTY_LIMIT / 1000000)) MB): $(for nn in ${ROW[$2]}; do [[ -f $MIG/state/$nn.copied ]] && grep -q '^empty' "$MIG/state/$nn.copied" && printf '%s ' "$nn"; done)"
+    echo "  formatted without asking when needed (under $((EMPTY_LIMIT / 1000000)) MB, or marked by 'erase'): $(for nn in ${ROW[$2]}; do [[ -f $MIG/state/$nn.copied ]] && grep -qE '^(empty|erase)' "$MIG/state/$nn.copied" && printf '%s ' "$nn"; done)"
     f=$(formattable_of "$2")
     if [[ -n $f && -f $MIG/state/$f.copied ]]; then
         echo "  first bay added to the pool: $f (empty, without asking)"
@@ -443,6 +447,27 @@ pool)
     prepare
     LOG=/dev/null
     pool_mount "$2" && echo "pool $2 mounted at $(pool_dir "$2"): $(branches_of "$2" | tr '\n' ' ')" || echo "row $2 has no formatted bay yet"
+    ;;
+erase)
+    # Your decision, written down: the disk counts as copied, so a worker formats it without
+    # a copy and without a prompt. Shows what the disk holds, so a wrong name is seen now.
+    shift
+    [[ $# -gt 0 ]] || die "erase needs disk names, e.g. erase 07 15 23 31"
+    prepare
+    LOG=/dev/null
+    for nn in "$@"; do
+        [[ $nn =~ ^[0-3][0-9]$ && -n $(disk_of "$nn" 2>/dev/null) ]] || die "$nn is not a disk in $PLAN"
+        st=$(disk_state "$nn")
+        case $st in
+        src*)
+            [[ -f $MIG/state/$nn.copied ]] && { echo "$nn: already marked: $(cat "$MIG/state/$nn.copied")"; continue; }
+            echo "erase: not needed, says the operator $(date '+%F %T')" >"$MIG/state/$nn.copied"
+            printf '%s: %s, %.2f TB on %s, marked: will be formatted without a copy\n' "$nn" "$(readlink -f "$(disk_of "$nn")")" "$(awk -v u="${st#src }" 'BEGIN { print u / 1e12 }')" "$SRC_FS"
+            ;;
+        xfs*) echo "$nn: already XFS, nothing to mark" ;;
+        *) die "$nn: $st; not a $SRC_FS disk" ;;
+        esac
+    done
     ;;
 run)
     need_row "${2:-}"
@@ -485,7 +510,7 @@ status)
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | pool ROW}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | pool ROW | erase NN...}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
