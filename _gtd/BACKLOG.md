@@ -4,3 +4,4 @@ Install m1n1 1.9.9 for unique router IDs before attaching several enclosures · 
 ? Give each bus behind a tunnel its own IOMMU stream, as the 2023 tree did · options: per-bus streams (isolation between devices), or keep one shared stream (simpler) · default: keep one stream
 Drop the DEBUG cable_info_or commit from the branch once cable handling is settled · check: branch builds and links without it
 Let the USB4 link to the enclosure use its low-power states, which the log shows as supported on one end only · check: capture shows CLx enabled and idle power with the enclosure attached drops below 27 W
+Four-finger trackpad gestures need a longer swipe than three-finger ones · check: threshold found in KWin source and a local patch or a setting; no setting exists today

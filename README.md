@@ -47,6 +47,9 @@ clean system, builds and installs the kernel and installs what the measuring scr
 - `llama-sweep.sh`: try llama.cpp's mat-vec settings on this GPU, check the fastest against the CPU.
 - `mesa-side.sh`: build another Mesa Vulkan driver beside the system one and run programs with it.
 - `bt-sync.sh`: give Linux the Bluetooth pairings macOS made, replacing stale Linux ones.
+- `ux-fix.sh`: Magic Mouse without false middle clicks or drift scrolls; no middle-click paste.
+- `disk-blink.sh`: make one disk blink to find it in the box.
+- `disk-inventory.sh`: map every enclosure disk to row, slot, serial and volume fill.
 - `power-dump.sh`: record power sensors, link power states and disk settings before tuning.
 - `netlog.sh`: send kernel messages to a second computer, so a freeze leaves a log.
 - `KNOWLEDGE.md`: findings that were expensive to obtain, with their evidence.
