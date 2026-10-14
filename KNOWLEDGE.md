@@ -34,6 +34,7 @@ recheck before relying on one for anything consequential.
 - [The fresh install, and four enclosures at boot](#the-fresh-install-and-four-enclosures-at-boot)
 - [Filesystems for the migration](#filesystems-for-the-migration)
 - [Two of four enclosures never get a tunnel: boltd and shared UUIDs](#two-of-four-enclosures-never-get-a-tunnel-boltd-and-shared-uuids)
+- [All 32 disks at boot; what the inventory showed](#all-32-disks-at-boot-what-the-inventory-showed)
 - [Sizes when installing again](#sizes-when-installing-again)
 - [What macOS the m1n1 hypervisor wants](#what-macos-the-m1n1-hypervisor-wants)
 
@@ -167,3 +168,9 @@ Decision 2026-10-14 (default, operator to confirm): XFS on all 32 disks. The par
 
 ## Two of four enclosures never get a tunnel: boltd and shared UUIDs
 Operator's bolt log and captures, 2026-10-14. With four ASM2464 enclosures, two always came up and two always fell back to USB, at boot and after replugs, on changing ports. The domain runs at `security=user`, so a device gets its PCIe tunnel only once authorized, and that is boltd's job. boltd's store holds exactly two device UUIDs (`0e3a4c17-c007…`, `1a524c17-2032…`) for four boxes: the ASMedia firmware does not give each box a unique router UUID. When a box whose UUID is already connected appears, boltd re-points its record (`authorized -> connected`) and never authorizes it; the box gets no tunnel and drops the USB4 link after 10 s. Verified by the log; the earlier "tunnel before driver" reading was wrong, it was always this. Fix: a udev rule that writes `authorized=1` on every new thunderbolt device (`tbt-kernel.sh authorize on`, installed by `install`), which makes boltd irrelevant; the kernel keeps devices by route, so same UUIDs in different domains are fine. Consequence for the board: the "retry when the tunnel precedes the driver" line is withdrawn.
+
+## All 32 disks at boot; what the inventory showed
+Operator, 2026-10-14, after `authorize on` and one reboot with the four boxes attached: four tunnels, 32 SATA disks, no fallback to USB. Verified fix. Findings from the inventory and boot log:
+- Bays are not SATA ports: two boxes wire their eight bays to ports 0 to 5, 7 and 8, so "slot" is not the bay and names must come from the HFS+ labels (`HD_nn`) or from the operator. The labels found give the row of each box: domain 0008 holds 24 to 31, 0009 holds 00 to 07, 000a holds 08 to 15, 000b holds 16 to 23. 20 of 32 disks have no label.
+- Box 0008 (24 to 31) has a different SATA controller, `20c3:3118`, not the Realtek `10ec:9100` of the other three; its disk on port 3 (`sdad`, WDC, full) logged four `BadCRC` link errors in the first 20 s and was dropped to 3.0 Gb/s by the kernel. A CRC error on the SATA link is the cable or the backplane contact, not the platters; reseat that disk before any copy, and that box's bays are suspect for the whole migration.
+- Fill: 18 disks within 1.6 TB of full, 4 nearly empty (the old parity disks), the rest between 1.7 and 13.3 TB.

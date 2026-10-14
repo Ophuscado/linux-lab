@@ -11,9 +11,11 @@
 #   ~/disk-plan.csv        the same rows with the full /dev/disk/by-id names, which is
 #                          what the migration works from. Stays on the Mac
 #
-# The proposed name of each disk is row*8 + slot, rows in enclosure order: the first
-# enclosure holds 00 to 07, the second 08 to 15, and so on. Check it against the labels on
-# the boxes; the rule "the empty disk of each row is 07, 15, 23, 31" is printed as a test.
+# The name of a disk (00 to 31) comes from its HFS+ label, HD_nn. Disks without a label
+# get the name you write in ~/disk-names.txt, one "sdX nn" per line, found by mounting the
+# volume or with disk-blink.sh; until then they show as "?". The row of each enclosure is
+# taken from the labels it holds (the rule "slot = bay" does not hold: two boxes wire their
+# bays to SATA ports 0 to 5, 7 and 8).
 
 set -uo pipefail
 
@@ -62,12 +64,19 @@ for dev in /sys/block/sd*; do
     rows+=("$domain,$port,$d,$byid,$serial,$model,$size,$fstype,$label,$used,$avail")
 done
 
-# Enclosures in PCI-domain order become rows 0, 1, 2, 3; SATA ports in order become slots.
+# name: nn from the label HD_nn, else from ~/disk-names.txt ("sdX nn"), else "?".
+# row: the enclosure's row, from the names it holds (nn / 8), "?" when they disagree.
+NAMES=$HOME/disk-names.txt
 {
     echo "domain,port,dev,byid,serial,model,size,fstype,label,used,avail,row,slot,name"
-    printf '%s\n' "${rows[@]}" | sort -t, -k1,1 -k2,2n | awk -F, -v OFS=, '
-        { if ($1 != dom) { dom = $1; row++ }
-          print $0, row - 1, $2, sprintf("%02d", (row - 1) * 8 + $2) }'
+    printf '%s\n' "${rows[@]}" | sort -t, -k1,1 -k2,2n | awk -F, -v OFS=, -v names="$NAMES" '
+        BEGIN { while ((getline l < names) > 0) { split(l, f, " "); if (f[1] != "" && f[2] ~ /^[0-9][0-9]?$/) given[f[1]] = sprintf("%02d", f[2]) } }
+        { n = "?"
+          if ($9 ~ /^HD_[0-9][0-9]$/) n = substr($9, 4); else if ($3 in given) n = given[$3]
+          line[NR] = $0 OFS $2 OFS n; dom[NR] = $1
+          if (n != "?") { r = int(n / 8); if (!($1 in rowof)) rowof[$1] = r; else if (rowof[$1] != r) rowof[$1] = "?" } }
+        END { for (i = 1; i <= NR; i++) { split(line[i], f, ","); r = (dom[i] in rowof) ? rowof[dom[i]] : "?"
+                print f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10], f[11], r, f[12], f[13] } }'
 } >"$PLAN"
 chmod 600 "$PLAN"
 
@@ -79,8 +88,10 @@ chmod 600 "$PLAN"
         u = ($10 == "-") ? "-" : sprintf("%.1fT", $10 / 1e12); a = ($11 == "-") ? "-" : sprintf("%.1fT", $11 / 1e12)
         printf "%-4s %-3s %-4s %-5s %-4s %-22s %-6s %-7s %-10s %7s %7s\n", $14, $12, $13, $3, s, $6, $7, $8, $9, u, a }'
     echo
-    echo "test: the empty disk of each row should be its slot 7:"
-    tail -n +2 "$PLAN" | awk -F, '$10 != "-" && $10 < 1e9 { printf "  empty: %s (row %s slot %s)\n", $14, $12, $13 }'
+    echo "disks still without a name (write 'sdX nn' lines into $NAMES):"
+    tail -n +2 "$PLAN" | awk -F, '$14 == "?" { printf "  %s row %s slot %s %s used %.1fT\n", $3, $12, $13, $6, ($10 == "-") ? 0 : $10 / 1e12 }'
+    echo "names given twice:"
+    tail -n +2 "$PLAN" | awk -F, '$14 != "?" { c[$14]++ } END { for (n in c) if (c[n] > 1) print "  " n }'
     echo
     echo "enclosures seen as USB only (need a replug to get their PCIe tunnel):"
     lsusb 2>/dev/null | grep -i '174c:2463' || echo "  none"
