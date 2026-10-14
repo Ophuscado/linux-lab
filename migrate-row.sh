@@ -370,7 +370,14 @@ plan)
     sources_of "$2" | awk '{ printf "    %s (%.2f TB)\n", $1, $2 / 1e12 }'
     echo "  targets ready now: $(targets_of "$2" | awk '{ printf "%s (%.2f TB free) ", $1, $2 / 1e12 }')"
     echo "  formatted without asking when needed (under $((EMPTY_LIMIT / 1000000)) MB): $(for nn in ${ROW[$2]}; do [[ -f $MIG/state/$nn.copied ]] && grep -q '^empty' "$MIG/state/$nn.copied" && printf '%s ' "$nn"; done)"
-    echo "  next disk to be formatted if none fits: $(formattable_of "$2")$([[ -f $MIG/state/row-$2.started ]] || echo ' (the old parity disk; asks for confirmation)')"
+    f=$(formattable_of "$2")
+    if [[ -n $f && -f $MIG/state/$f.copied ]]; then
+        echo "  first disk to be formatted: $f (empty, without asking)"
+    elif [[ -n $f ]]; then
+        echo "  first disk to be formatted: $f (holds data that will NOT be copied; asks for 'erase $f')"
+    else
+        echo "  first disk to be formatted: none needed now"
+    fi
     ;;
 run)
     need_row "${2:-}"
