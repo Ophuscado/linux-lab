@@ -234,10 +234,13 @@ mount_branch() {
 # Bays of rows $@ (default all) that are XFS and not a parity disk, in bay order.
 branches_of() {
     local row mm rows=${*:-A B C D}
+    local part
     for row in $rows; do
         for mm in ${ROW[$row]}; do
             [[ $mm == "${PARITY[$row]}" ]] && continue
-            [[ $(disk_state "$mm") == xfs* ]] && echo "$mm"
+            # Type and label only: no mount, so 32 cold disks do not each spin up for a look.
+            part=$(part_of "$(disk_of "$mm")") || exit 1
+            [[ $(fstype_of "$part") == xfs && $(label_of "$part") == "HD_$mm" ]] && echo "$mm"
         done
     done
 }
