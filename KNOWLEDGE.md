@@ -39,6 +39,7 @@ recheck before relying on one for anything consequential.
 - [Sizes when installing again](#sizes-when-installing-again)
 - [What macOS the m1n1 hypervisor wants](#what-macos-the-m1n1-hypervisor-wants)
 - [Final disk layout: pool and SnapRAID](#final-disk-layout-pool-and-snapraid)
+- [SATA errors in the enclosures were a missing earth](#sata-errors-in-the-enclosures-were-a-missing-earth)
 
 ## Stock kernel has no Apple USB4 host
 7.1.13-402.asahi.fc44: `CONFIG_USB4=y` is the PCI driver only; no Apple code under `drivers/thunderbolt`, no USB4 device-tree nodes (source at tag `asahi-7.1.13-3`). A USB4 partner leaves the port at USB2: `ATCPHY_PIPEHANDLER_STATE_USB4 not implemented; falling back to USB2`. 2026-10-11.
@@ -193,4 +194,16 @@ copied: the hfsplus driver lists them under truncated names it cannot read; oper
 flags are not very important since most things are ebooks". snapraid-setup.sh writes it all.
 Evidence: loop-device run of snapraid-setup.sh: sync, scrub, a damaged file found by check
 and repaired by fix.
+
+## SATA errors in the enclosures were a missing earth
+
+2026-10-15. Months of random SATA faults in the home-made boxes (BadCRC, Handshk, command
+timeouts hopping between ports and boxes, under load, on macOS too; a bay "bad with any
+disk"; box C dropping four ports under three readers) had one thing in common the logs could
+not show: the USB-C plugs tingled and sparked. The Mac Studio ran on a two-pin EU cord through
+a travel adapter, so its chassis floated; every box's PSU leakage then flowed through the
+USB-C shields, the ground reference of every SATA pair. A three-pin cord for the Mac ended the
+tingle at once. The error rate under load afterwards is the proof still to collect (OBSERVED
+tingle gone; error counts INFERRED). Rule kept: Mac and boxes on one strip, three pins all
+the way; `libata.force=3.0G` only if errors remain at 6 Gbps.
 
