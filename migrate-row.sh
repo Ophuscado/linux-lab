@@ -356,7 +356,7 @@ verify_disk() {
 # the worker's pid inside. A claim whose worker is gone (killed, crashed, died on an error)
 # is stale and is swept away wherever claims are read, so a restart never waits on a ghost.
 # A claim with a "need" file inside is a running copy that has reserved pool space.
-claim() { mkdir "$MIG/state/claim-$1" 2>/dev/null || return 1; echo $$ >"$MIG/state/claim-$1/pid"; }
+claim() { claimed "$1" && return 1; mkdir "$MIG/state/claim-$1" 2>/dev/null || return 1; echo $$ >"$MIG/state/claim-$1/pid"; }
 release() { rm -rf "$MIG/state/claim-$1"; }
 # True when $1 is claimed by a living worker; a stale claim is removed.
 claimed() {
