@@ -552,7 +552,7 @@ recheck)
     [[ $# -gt 0 ]] || die "recheck needs source names, e.g. recheck 26 27 02 05 10 13 18 19 20"
     prepare
     LOG=$MIG/recheck.log
-    ! sudo tmux ls 2>/dev/null | grep -q '^mig-' || die "workers still run; sudo tmux kill-server first"
+    ! sudo tmux ls 2>/dev/null | grep -q '^mig-[A-D]-' || die "workers still run; sudo tmux kill-server first"
     pool_mount >/dev/null || die "no pool"
     aside=0
     # 1. The same path on two branches: the copy on the branch that comes first in the pool
@@ -602,7 +602,7 @@ recheck)
 finish)
     prepare
     LOG=/dev/null
-    ! sudo tmux ls 2>/dev/null | grep -q '^mig-' && true || die "workers still run: $(sudo tmux ls | grep -o '^mig-[A-D]-[0-9]' | tr '\n' ' ')"
+    ! sudo tmux ls 2>/dev/null | grep -q '^mig-[A-D]-' && true || die "workers still run: $(sudo tmux ls | grep -o '^mig-[A-D]-[0-9]' | tr '\n' ' ')"
     left=""
     for row in A B C D; do for nn in ${ROW[$row]}; do [[ $(disk_state "$nn") == xfs* ]] || left+="$nn "; done; done
     [[ -z $left ]] || die "not XFS yet: $left(parity disks are formatted by their row's worker at its end; a source still HFS+ was not copied)"
