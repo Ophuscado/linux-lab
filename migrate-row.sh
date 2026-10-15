@@ -262,9 +262,11 @@ pool_avail() { avail_at "$POOL"; }
 
 # Free pool space minus what the other workers' running copies still need.
 pool_room() {
-    local c r=0
+    local c nn r=0
     for c in "$MIG"/state/claim-*/need; do
-        [[ -f $c && ${c%/need} != "$MIG/state/claim-$1" ]] && r=$((r + $(cat "$c")))
+        [[ -f $c ]] || continue
+        nn=${c%/need}; nn=${nn##*/claim-}
+        [[ $nn != "$1" ]] && claimed "$nn" && r=$((r + $(cat "$c")))
     done
     echo $(( $(pool_avail) - r ))
 }
@@ -337,16 +339,27 @@ verify_disk() {
 
 # ---- the scheduler ----------------------------------------------------------------------
 
-# Claims keep two workers off the same disk; a claim is a directory, made atomically.
+# Claims keep two workers off the same disk; a claim is a directory, made atomically, with
+# the worker's pid inside. A claim whose worker is gone (killed, crashed, died on an error)
+# is stale and is swept away wherever claims are read, so a restart never waits on a ghost.
 # A claim with a "need" file inside is a running copy that has reserved pool space.
-claim() { mkdir "$MIG/state/claim-$1" 2>/dev/null; }
+claim() { mkdir "$MIG/state/claim-$1" 2>/dev/null || return 1; echo $$ >"$MIG/state/claim-$1/pid"; }
 release() { rm -rf "$MIG/state/claim-$1"; }
-claimed() { [[ -d $MIG/state/claim-$1 ]]; }
-# True when some other disk than $1 is claimed: another worker is at work.
+# True when $1 is claimed by a living worker; a stale claim is removed.
+claimed() {
+    local c=$MIG/state/claim-$1 pid
+    [[ -d $c ]] || return 1
+    pid=$(cat "$c/pid" 2>/dev/null || echo 0)
+    if [[ $pid == "$$" ]] || kill -0 "$pid" 2>/dev/null; then return 0; fi
+    log "claim on $1 by worker $pid, which is gone: removed"
+    rm -rf "$c"
+    return 1
+}
+# True when some other disk than $1 is claimed by a living worker.
 others_claimed() {
     local c
     for c in "$MIG"/state/claim-*; do
-        [[ -d $c && ${c##*/claim-} != "$1" ]] && return 0
+        [[ -d $c && ${c##*/claim-} != "$1" ]] && claimed "${c##*/claim-}" && return 0
     done
     return 1
 }
