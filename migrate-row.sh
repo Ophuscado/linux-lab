@@ -62,6 +62,9 @@
 #   migrate-row.sh stats [SECONDS]  the pool and each branch: fill, and MB/s read and
 #                                   written per disk over SECONDS (default 5)
 #   migrate-row.sh defer 28 ...     copy these disks last in their row (unstable link)
+#   migrate-row.sh add 23 ...       format these bays now and add them to the pool (only
+#                                   disks already copied, marked "erase" or found empty;
+#                                   otherwise a worker does it when the pool needs room)
 #   migrate-row.sh mergerfs        build and install mergerfs 2.42.0 (once; Fedora has no package)
 #   migrate-row.sh erase 07 15 ...  mark disks whose content is not needed: formatted
 #                                   without a copy and without asking
@@ -524,6 +527,24 @@ pool)
     LOG=/dev/null
     pool_mount && echo "pool mounted at $POOL: $(pool_branches)" || echo "no formatted bay yet"
     ;;
+add)
+    # Format now, do not wait for a worker to need the room. Refuses a disk that still holds
+    # uncopied data; use "erase" first if that is what you want.
+    shift
+    [[ $# -gt 0 ]] || die "add needs disk names, e.g. add 23"
+    prepare
+    LOG=$MIG/add.log
+    for nn in "$@"; do
+        [[ $nn =~ ^[0-3][0-9]$ && -n $(disk_of "$nn" 2>/dev/null) ]] || die "$nn is not a disk in $PLAN"
+        for row in A B C D; do [[ $nn == "${PARITY[$row]}" ]] && die "$nn is a parity disk; it is formatted last by its row's worker"; done
+        [[ -f $MIG/state/$nn.copied ]] || [[ $(disk_state "$nn") == xfs* ]] || die "$nn holds data this script has not copied; 'erase $nn' first if its content is not needed"
+        claim "$nn" || die "$nn is claimed by a worker; try later"
+        format_target "$nn"
+        pool_add "$nn"
+        release "$nn"
+    done
+    echo "pool: $(pool_branches)"
+    ;;
 defer)
     # Copied after everything else in its row; nothing else changes.
     shift
@@ -634,7 +655,7 @@ status)
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | add NN... | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
