@@ -604,7 +604,9 @@ finish)
     for row in A B C D; do for nn in ${ROW[$row]}; do [[ -f $MIG/state/$nn.differences ]] && echo "WARN: $nn.differences exists; a verify once failed, see it"; done; done
     sudo umount "$POOL" 2>/dev/null || true
     for m in $(findmnt -rn -o TARGET | grep "^$MIG/mnt/" | sort -r); do sudo umount "$m"; done
-    echo "every disk is XFS; migration mounts released. Logs and placement stay in $MIG."
+    # The workers ran as root; the logs and state go back to you.
+    sudo chown -R "${SUDO_USER:-$USER}:" "$MIG"
+    echo "every disk is XFS; migration mounts released. Logs and placement stay in $MIG, yours again."
     echo "Next: snapraid-setup.sh install, then mount, then first."
     ;;
 add)
