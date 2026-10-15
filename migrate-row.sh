@@ -349,8 +349,8 @@ release() { rm -rf "$MIG/state/claim-$1"; }
 claimed() {
     local c=$MIG/state/claim-$1 pid
     [[ -d $c ]] || return 1
-    pid=$(cat "$c/pid" 2>/dev/null || echo 0)
-    if [[ $pid == "$$" ]] || kill -0 "$pid" 2>/dev/null; then return 0; fi
+    pid=$(cat "$c/pid" 2>/dev/null || echo none) # none: made by a version before pids
+    if [[ $pid == "$$" ]] || { [[ $pid =~ ^[1-9][0-9]*$ ]] && kill -0 "$pid" 2>/dev/null; }; then return 0; fi
     log "claim on $1 by worker $pid, which is gone: removed"
     rm -rf "$c"
     return 1
