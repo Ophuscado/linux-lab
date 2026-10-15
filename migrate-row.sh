@@ -47,11 +47,13 @@
 # which is what a library spread over disks looks like afterwards.
 # A disk on a flaky link ("defer 28") is copied after everything else in its row.
 # A worker logs to ~/migrate/<row>.log; state lives in ~/migrate/state/. A stopped or
-# crashed worker is restarted with the same command and continues. The pool mount is
+# crashed worker is restarted with the same command and continues. Workers run as root
+# inside root's tmux server (one password at "start"), so a copy that takes a day is never
+# stopped by a sudo prompt in a pane nobody watches. The pool mount is
 # recreated from the formatted bays whenever a worker starts.
 #
 #   migrate-row.sh plan A           what the row holds and what the first round would do
-#   migrate-row.sh start A [N]      run N workers (default 1) in tmux sessions mig-A-1..N
+#   migrate-row.sh start A [N]      run N workers (default 1) in root's tmux sessions mig-A-1..N
 #   migrate-row.sh run A            one worker in this terminal
 #   migrate-row.sh status           every row: disks copied, workers, pool, mounts
 #   migrate-row.sh attach A [N]     watch a worker (Ctrl-b d to leave it running)
@@ -551,32 +553,34 @@ start)
     n=${3:-1}
     [[ $n =~ ^[1-4]$ ]] || die "workers: 1 to 4"
     for i in $(seq 1 "$n"); do
-        if tmux has-session -t "mig-$2-$i" 2>/dev/null; then
+        if sudo tmux has-session -t "mig-$2-$i" 2>/dev/null; then
             echo "worker mig-$2-$i is already running"
             continue
         fi
         # The worker holds a sleep inhibitor: a suspend would drop the tunnels mid-copy.
-        inhibit=""; command -v systemd-inhibit >/dev/null && inhibit="systemd-inhibit --what=sleep:idle --who=migrate-row --why='row $2 copying'"
-        tmux new-session -d -s "mig-$2-$i" "VERIFY=$VERIFY $inhibit '$0' run $2; echo; echo 'worker ended; press enter'; read"
-        echo "row $2 worker $i started in tmux session mig-$2-$i"
+        inhibit=""; sudo systemd-inhibit --what=sleep:idle --who=migrate-row --why=probe true 2>/dev/null && inhibit="systemd-inhibit --what=sleep:idle --who=migrate-row --why='row $2 copying'"
+        # The inner shell is root's: HOME and the hooks are passed on explicitly.
+        sudo tmux new-session -d -s "mig-$2-$i" "HOME='$HOME' MIG_HOME='$MIG' MIG_PLAN='$PLAN' MIG_MERGERFS='$MERGERFS' MIG_SRC_FS='$SRC_FS' MIG_EMPTY_LIMIT='$EMPTY_LIMIT' MIG_MINFREE='$MINFREE' MIG_WAIT='$WAIT' VERIFY=$VERIFY $inhibit '$0' run $2; echo; echo 'worker ended; press enter'; read"
+        echo "row $2 worker $i started in tmux session mig-$2-$i (root's tmux)"
         [[ $i == 1 && $n -gt 1 ]] && sleep 20 # let the first one take the confirmation prompt
     done
-    echo "Watch: $0 attach $2 [N]; progress: $0 status"
+    echo "Watch: $0 attach $2 [N] (Ctrl-b d to leave); progress: $0 status"
     ;;
-attach) tmux attach -t "mig-${2:-}-${3:-1}" ;;
+attach) sudo tmux attach -t "mig-${2:-}-${3:-1}" ;;
 status)
     for row in A B C D; do
         n=0; done_n=0
         for nn in ${ROW[$row]}; do n=$((n + 1)); grep -qs "^$nn -> " "$MIG/state/placement.txt" && done_n=$((done_n + 1)); done
         printf 'row %s: %d of %d disks copied; workers running: %s\n' "$row" "$done_n" "$n" \
-            "$(tmux ls 2>/dev/null | grep -c "^mig-$row-" || true)"
+            "$(sudo tmux ls 2>/dev/null | grep -c "^mig-$row-" || true)"
         [[ -f $MIG/$row.log ]] && tail -n 1 "$MIG/$row.log" | sed 's/^/    /'
     done
     [[ -f $MIG/state/placement.txt ]] && { echo "placement:"; sed 's/^/    /' "$MIG/state/placement.txt"; }
+    echo "pool:"
     if findmnt -n "$POOL" >/dev/null; then
-        printf 'pool %s: %s free, branches %s\n' "$POOL" "$(df -h --output=avail "$POOL" | tail -n 1 | tr -d ' ')" "$(pool_branches)"
+        printf '    %s: %s free, branches %s\n' "$POOL" "$(df -h --output=avail "$POOL" | tail -n 1 | tr -d ' ')" "$(pool_branches)"
     else
-        echo "pool: not mounted"
+        echo "    not mounted"
     fi
     echo "mounted:"
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
