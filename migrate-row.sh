@@ -12,9 +12,9 @@
 #   D  16 17 18 19 20 21 22 23   parity 16
 #
 # The pool is one mergerfs union of every bay this script has formatted to XFS, in any row,
-# the parity bays excepted, mounted at ~/migrate/pool. New files go to the branch with the
-# most free space, so the data spreads over every writable disk and no single disk has to
-# fit a whole source. Every disk still on HFS+ with more than 10 GB on it is a source (an
+# the parity bays excepted, mounted at ~/migrate/pool. Each new file goes to a branch drawn
+# at random, weighted by free space, so the data spreads over every writable disk, parallel
+# copies write to different disks, and no single disk has to fit a whole source. Every disk still on HFS+ with more than 10 GB on it is a source (an
 # emptier one holds only HFS+ metadata and is just formatted when needed). One worker per
 # row is one read stream per enclosure; each round takes the SMALLEST remaining source of
 # its row (the parity disk last, since emptying it frees no bay; a deferred disk after
@@ -84,6 +84,9 @@ SRC_FS=${MIG_SRC_FS:-hfsplus}
 VERIFY=${VERIFY:-quick}
 EMPTY_LIMIT=${MIG_EMPTY_LIMIT:-10000000000} # bytes; under 10 GB is HFS+ metadata, not data
 MINFREE=${MIG_MINFREE:-4G} # mergerfs stops placing new files on a branch below this
+# Where a new file goes: pfrd picks a branch at random, weighted by free space, so parallel
+# streams land on different disks (mfs would send them all to the emptiest one at a time).
+CREATE=${MIG_CREATE:-pfrd}
 MERGERFS=${MIG_MERGERFS:-mergerfs}
 POOL=$MIG/pool
 WAIT=${MIG_WAIT:-300}
@@ -231,8 +234,7 @@ branches_of() {
     done
 }
 
-# Mount the pool over its current branches (nothing if already mounted). New files go to
-# the branch with the most free space; a branch that fills up mid-file hands the file on.
+# Mount the pool over its current branches. A branch that fills up mid-file hands the file on.
 pool_mount() {
     local mm list=""
     sudo mkdir -p "$POOL"
@@ -242,14 +244,15 @@ pool_mount() {
     done
     [[ -n $list ]] || return 1
     if findmnt -n "$POOL" >/dev/null; then
-        # Already mounted: add any formatted bay it does not have yet.
+        # Already mounted: apply the placement policy and add any formatted bay it lacks.
+        sudo setfattr -n user.mergerfs.category.create -v "$CREATE" "$POOL/.mergerfs"
         for mm in $(branches_of); do
             sudo getfattr -n user.mergerfs.branches --only-values "$POOL/.mergerfs" 2>/dev/null | tr ':' '\n' | grep -qx "$MIG/mnt/hd-$mm=RW" ||
                 sudo setfattr -n user.mergerfs.branches -v "+>$MIG/mnt/hd-$mm" "$POOL/.mergerfs"
         done
         return 0
     fi
-    sudo "$MERGERFS" -o "category.create=mfs,moveonenospc=true,minfreespace=$MINFREE,cache.files=off,dropcacheonclose=true,fsname=pool" \
+    sudo "$MERGERFS" -o "category.create=$CREATE,moveonenospc=true,minfreespace=$MINFREE,cache.files=off,dropcacheonclose=true,fsname=pool" \
         "$list" "$POOL"
 }
 
