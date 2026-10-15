@@ -583,12 +583,13 @@ stats)
         [[ -n ${r0[$d]:-} && $d == sd* && $d != *[0-9] ]] || continue
         rd=$(( (r - r0[$d]) * 512 / secs / 1000000 )); wr=$(( (w - w0[$d]) * 512 / secs / 1000000 ))
         ((rd + wr > 0)) || continue
-        src=$(findmnt -n -o SOURCE,TARGET -l | grep "^/dev/$d" | grep -oE 'mnt/(hd|src)-[0-9]+' | head -n 1)
+        src=$(findmnt -n -o SOURCE,TARGET -l | grep "^/dev/$d" | grep -oE 'mnt/(hd|src)-[0-9]+' | head -n 1 || true)
         printf '%-6s %-9s read %4d MB/s  write %4d MB/s\n' "$d" "${src#mnt/}" "$rd" "$wr"
     done </proc/diskstats | sort -k2
     echo "branches:"
     for d in "$MIG"/mnt/hd-*; do
-        findmnt -n "$d" >/dev/null && printf '    %s %s\n' "${d##*/hd-}" "$(df -h --output=size,used,avail,pcent "$d" | tail -n 1)"
+        findmnt -n "$d" >/dev/null || continue
+        printf '    %s %s\n' "${d##*/hd-}" "$(df -h --output=size,used,avail,pcent "$d" | tail -n 1)"
     done
     ;;
 erase)
