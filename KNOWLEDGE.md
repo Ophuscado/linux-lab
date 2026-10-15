@@ -38,6 +38,7 @@ recheck before relying on one for anything consequential.
 - [The migration plan and its safety rules](#the-migration-plan-and-its-safety-rules)
 - [Sizes when installing again](#sizes-when-installing-again)
 - [What macOS the m1n1 hypervisor wants](#what-macos-the-m1n1-hypervisor-wants)
+- [Final disk layout: pool and SnapRAID](#final-disk-layout-pool-and-snapraid)
 
 ## Stock kernel has no Apple USB4 host
 7.1.13-402.asahi.fc44: `CONFIG_USB4=y` is the PCI driver only; no Apple code under `drivers/thunderbolt`, no USB4 device-tree nodes (source at tag `asahi-7.1.13-3`). A USB4 partner leaves the port at USB2: `ATCPHY_PIPEHANDLER_STATE_USB4 not implemented; falling back to USB2`. 2026-10-11.
@@ -178,3 +179,18 @@ Operator, 2026-10-14, after `authorize on` and one reboot with the four boxes at
 
 ## The migration plan and its safety rules
 Decided 2026-10-14 with the operator's full inventory (all 32 identified by blinking), revised twice the same day: from a fixed chain, to a scheduler, to a pool, after the operator chose even distribution and confirmed that 07, 15, 23 and 31 may be erased. Per row: a mergerfs union of the bays this script has formatted to XFS (the parity bay 24/00/08/16 never joins), create policy most-free-space, `moveonenospc`, `minfreespace=4G`. Every HFS+ disk over 10 GB is a source, smallest first and the parity disk last (emptying it frees no bay); a source is copied into the pool with `rsync -aHAX --ignore-existing`, read back from the pool by checksum (`VERIFY=quick` for size and time), and only then may it be formatted and added as a branch (runtime, through the `user.mergerfs.branches` xattr). When all eight disks of a row hold data, the old parity disk is erased after a typed `erase nn`; disks under 10 GB (HFS+ metadata only) are formatted without asking. A same-path file from two sources is never overwritten: the second copy skips it and verification stops the worker with the path listed. Workers share a row through claim directories. Checked on eight loop disks with ext4 for HFS+ and real mergerfs: two workers, the erase prompt, all seven data sets present once in the pool with owners and hard links kept (mergerfs clones the parent path so a hard link lands on the source's branch), the parent folder `Library` merged, parity disk formatted last, rerun a no-op, a planted collision caught. Not run on the Mac. Distribution is not even at the end: bays join as they empty, so the last ones stay nearly empty; `mergerfs.balance` can even it out later at the cost of copying again. The read-only udev rule flags HFS+ partitions only, because a whole-disk flag would block writes to XFS partitions. Afterwards SnapRAID can protect all 28 data disks with the four parity disks as one four-parity array; the pools become the row mounts, or one mergerfs over all 28.
+
+## Final disk layout: pool and SnapRAID
+
+2026-10-15, operator decisions during the migration. Data disks mount by label at /mnt/hd/NN,
+parity disks (24, 00, 08, 16, one per box) at /mnt/parity/NN, the pool at /srv/pool as one
+mergerfs over /mnt/hd/* with category.create=pfrd (random, weighted by free space: parallel
+writers spread over disks; mfs sent every stream to the single emptiest disk). SnapRAID with
+4 parity levels over 28 data disks: SnapRAID's own table gives 4 for up to 28, the boxes
+fail as a unit, data is ~360 TB of 504 TB raw so the 72 TB of parity cost nothing needed.
+Content files on the root filesystem and on 25, 01, 09, 17. Apple xattrs (osx.*) were not
+copied: the hfsplus driver lists them under truncated names it cannot read; operator: "file
+flags are not very important since most things are ebooks". snapraid-setup.sh writes it all.
+Evidence: loop-device run of snapraid-setup.sh: sync, scrub, a damaged file found by check
+and repaired by fix.
+
