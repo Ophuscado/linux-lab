@@ -62,7 +62,8 @@
 #   migrate-row.sh stats [SECONDS]  the pool and each branch: fill, and MB/s read and
 #                                   written per disk over SECONDS (default 5)
 #   migrate-row.sh defer 28 ...     copy these disks last in their row (unstable link)
-#   migrate-row.sh recheck NN ...   after a disk or box fault during copies: files of these
+#   migrate-row.sh recheck NN ...   (in parallel: one per source, MIG_RECHECK_DUPS=0 on all but
+#                                   the first) after a disk or box fault during copies: files of these
 #                                   sources that exist in the pool are compared by checksum
 #                                   and a copy that differs, or that exists on two branches,
 #                                   is moved aside on its disk (.migrate-aside/), so the next
@@ -556,6 +557,9 @@ recheck)
     aside=0
     # 1. The same path on two branches: the copy on the branch that comes first in the pool
     #    hides the other. Both are kept; the first one goes aside, the next pass compares.
+    # The two-branch pass is global; several rechecks at once (one per source, in parallel)
+    # run it only in one of them: MIG_RECHECK_DUPS=0 in the others.
+    if [[ ${MIG_RECHECK_DUPS:-1} == 1 ]]; then
     log "recheck: looking for paths present on two branches"
     seen=$MIG/state/recheck.paths; : >"$seen"; prev=""; prevbr=""
     for br in $(pool_branches); do
@@ -569,6 +573,7 @@ recheck)
         log "recheck: '$path' on $prevbr and $br; the $prevbr copy moved aside"
         aside=$((aside + 1)); prev=$path; prevbr=$br
     done < <(cat "$seen"; echo)
+    fi
     # 2. Checksum of every file of each source that has a copy in the pool.
     for nn in "$@"; do
         [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
