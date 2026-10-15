@@ -295,9 +295,9 @@ copy_disk() {
     for pass in 1 2 3; do
         rc=0
         # Extended attributes: all but system.* and the Finder info, which the hfsplus
-        # driver lists on every file and cannot read when empty (1.4 M errors on disk 19);
+        # driver lists on every file, under a truncated name, and cannot read when empty;
         # security.* (SELinux labels) on the XFS side are left alone, not deleted.
-        sudo rsync -aHAX --filter='-x system.*' --filter='-x osx.com.apple.FinderInfo' --filter='-xr security.*' \
+        sudo rsync -aHAX --filter='-x system.*' --filter='-x osx.com.apple.FinderInf*' --filter='-xr security.*' \
             --ignore-existing --info=progress2,stats1 --no-inc-recursive "$src/" "$dst/" >>"$LOG" 2>&1 || rc=$?
         # 23/24: some files could not be read or vanished; those are listed in the log.
         log "$nn>pool: rsync pass $pass finished with code $rc"
