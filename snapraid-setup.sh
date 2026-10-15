@@ -18,6 +18,11 @@
 #   snapraid-setup.sh mount     mount everything (after the migration; refuses while it runs)
 #   snapraid-setup.sh first     the first "snapraid sync" (hours: hashes every file) and a
 #                               short scrub
+#   snapraid-setup.sh timers on|off|status
+#                               systemd timers: sync nightly at 03:10, scrub 3 % of the
+#                               oldest blocks weekly (Sunday 04:10); a sync stops itself
+#                               when more than 500 files were deleted (a lost disk or a
+#                               mistake), for you to look first
 #
 # Needs ~/disk-plan.csv from disk-inventory.sh with every disk named; snapraid and mergerfs
 # installed. Test hooks: SR_PLAN, SR_ROOT, SR_POOL, SR_ETC (where snapraid.conf and fstab
@@ -30,6 +35,7 @@ PLAN=${SR_PLAN:-$HOME/disk-plan.csv}
 ROOT=${SR_ROOT:-/mnt}
 POOL=${SR_POOL:-/srv/pool}
 ETC=${SR_ETC:-/etc}
+UNITS=${SR_UNITS:-/etc/systemd/system}
 CONTENT=${SR_CONTENT:-/var/snapraid}
 MIG=${SR_MIG:-$HOME/migrate}
 OUT=${SR_OUT:-$PWD/out}
@@ -151,6 +157,36 @@ mount)
     sudo mount -a
     echo "mounted:"; findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep -E "$ROOT/(hd|parity)/|$POOL" | sed 's/^/    /'
     ;;
+timers)
+    case ${2:-} in
+    on)
+        [[ -f $ETC/snapraid.conf ]] || die "no $ETC/snapraid.conf; run install first"
+        sudo mkdir -p "$UNITS"
+        printf '%s\n' '[Unit]' 'Description=SnapRAID sync (parity update); refuses when a data disk reads empty' \
+            'ConditionPathIsMountPoint='"$POOL" '' '[Service]' 'Type=oneshot' 'Nice=10' 'IOSchedulingClass=idle' \
+            'ExecStart=/usr/bin/snapraid -c '"$ETC/snapraid.conf"' sync -h' |
+            sudo tee "$UNITS/snapraid-sync.service" >/dev/null
+        printf '%s\n' '[Unit]' 'Description=SnapRAID sync nightly' '' '[Timer]' 'OnCalendar=*-*-* 03:10' 'Persistent=true' 'RandomizedDelaySec=10m' '' '[Install]' 'WantedBy=timers.target' |
+            sudo tee "$UNITS/snapraid-sync.timer" >/dev/null
+        printf '%s\n' '[Unit]' 'Description=SnapRAID scrub: 3 percent of the oldest blocks' 'ConditionPathIsMountPoint='"$POOL" '' '[Service]' 'Type=oneshot' 'Nice=10' 'IOSchedulingClass=idle' \
+            'ExecStart=/usr/bin/snapraid -c '"$ETC/snapraid.conf"' scrub -p 3 -o 30' |
+            sudo tee "$UNITS/snapraid-scrub.service" >/dev/null
+        printf '%s\n' '[Unit]' 'Description=SnapRAID scrub weekly' '' '[Timer]' 'OnCalendar=Sun *-*-* 04:10' 'Persistent=true' '' '[Install]' 'WantedBy=timers.target' |
+            sudo tee "$UNITS/snapraid-scrub.timer" >/dev/null
+        sudo systemctl daemon-reload
+        sudo systemctl enable --now snapraid-sync.timer snapraid-scrub.timer
+        systemctl list-timers --no-pager 'snapraid-*'
+        ;;
+    off)
+        sudo systemctl disable --now snapraid-sync.timer snapraid-scrub.timer 2>/dev/null || true
+        sudo rm -f "$UNITS"/snapraid-{sync,scrub}.{service,timer}
+        sudo systemctl daemon-reload
+        echo "timers removed"
+        ;;
+    status) systemctl list-timers --no-pager 'snapraid-*'; systemctl --no-pager status snapraid-sync.service snapraid-scrub.service 2>/dev/null | grep -E 'Active|snapraid' | head -n 6 ;;
+    *) die "usage: $0 timers on|off|status" ;;
+    esac
+    ;;
 first)
     [[ -f $ETC/snapraid.conf ]] || die "no $ETC/snapraid.conf; run install first"
     findmnt -n "$POOL" >/dev/null || die "$POOL is not mounted; run mount first"
@@ -161,7 +197,7 @@ first)
     sudo snapraid -c "$ETC/snapraid.conf" status | tail -n 20
     ;;
 *)
-    echo "usage: $0 {conf | install | mount | first}" >&2
+    echo "usage: $0 {conf | install | mount | first | timers on|off|status}" >&2
     exit 2
     ;;
 esac
