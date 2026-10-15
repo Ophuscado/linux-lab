@@ -59,6 +59,8 @@
 #   migrate-row.sh status           every row: disks copied, workers, pool, mounts
 #   migrate-row.sh attach A [N]     watch a worker (Ctrl-b d to leave it running)
 #   migrate-row.sh pool             mount the pool without copying (after a reboot)
+#   migrate-row.sh stats [SECONDS]  the pool and each branch: fill, and MB/s read and
+#                                   written per disk over SECONDS (default 5)
 #   migrate-row.sh defer 28 ...     copy these disks last in their row (unstable link)
 #   migrate-row.sh mergerfs        build and install mergerfs 2.42.0 (once; Fedora has no package)
 #   migrate-row.sh erase 07 15 ...  mark disks whose content is not needed: formatted
@@ -538,6 +540,26 @@ mergerfs)
     sudo make -C "$MIG/build/mergerfs" install PREFIX=/usr
     mergerfs --version | head -n 1
     ;;
+stats)
+    # Fill per branch from df; throughput per disk from /proc/diskstats (sectors of 512 B).
+    secs=${2:-5}
+    findmnt -n "$POOL" >/dev/null || die "pool not mounted"
+    printf 'pool: %s\n' "$(df -h --output=size,used,avail,pcent "$POOL" | tail -n 1)"
+    declare -A r0 w0
+    while read -r _ _ d _ _ r _ _ _ w _; do r0[$d]=$r; w0[$d]=$w; done </proc/diskstats
+    sleep "$secs"
+    while read -r _ _ d _ _ r _ _ _ w _; do
+        [[ -n ${r0[$d]:-} && $d == sd* && $d != *[0-9] ]] || continue
+        rd=$(( (r - r0[$d]) * 512 / secs / 1000000 )); wr=$(( (w - w0[$d]) * 512 / secs / 1000000 ))
+        ((rd + wr > 0)) || continue
+        src=$(findmnt -n -o SOURCE,TARGET -l | grep "^/dev/$d" | grep -oE 'mnt/(hd|src)-[0-9]+' | head -n 1)
+        printf '%-6s %-9s read %4d MB/s  write %4d MB/s\n' "$d" "${src#mnt/}" "$rd" "$wr"
+    done </proc/diskstats | sort -k2
+    echo "branches:"
+    for d in "$MIG"/mnt/hd-*; do
+        findmnt -n "$d" >/dev/null && printf '    %s %s\n' "${d##*/hd-}" "$(df -h --output=size,used,avail,pcent "$d" | tail -n 1)"
+    done
+    ;;
 erase)
     # Your decision, written down: the disk counts as copied, so a worker formats it without
     # a copy and without a prompt. Shows what the disk holds, so a wrong name is seen now.
@@ -605,7 +627,7 @@ status)
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | pool | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
