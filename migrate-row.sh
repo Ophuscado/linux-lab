@@ -38,8 +38,11 @@
 #   2. The source is mounted read-only and rsync copies everything into the pool with
 #      owners, times, permissions, hard links and extended attributes (resource forks do
 #      not exist on Linux and are not copied; neither are the Apple attributes, Finder
-#      info, quarantine and Spotlight metadata, which the driver cannot read). A file that already exists in the pool under
-#      the same path is never overwritten (--ignore-existing); verification then reports it.
+#      info, quarantine and Spotlight metadata, which the driver cannot read; nor the
+#      volume's own bookkeeping: .journal, .fseventsd, .Spotlight-V100, .Trashes, .DS_Store
+#      and the like, which every HFS+ volume has and which are not data). A file that
+#      already exists in the pool under the same path is never overwritten
+#      (--ignore-existing); verification then reports it.
 #   3. Verification: every file of the source is looked up in the pool and compared by size
 #      and time (VERIFY=full reads both back and compares checksums; twice the time). Any
 #      difference stops the worker; the source is untouched.
@@ -62,8 +65,10 @@
 #   migrate-row.sh stats [SECONDS]  the pool and each branch: fill, and MB/s read and
 #                                   written per disk over SECONDS (default 5)
 #   migrate-row.sh defer 28 ...     copy these disks last in their row (unstable link)
-#   migrate-row.sh recheck NN ...   (in parallel: one per source, MIG_RECHECK_DUPS=0 on all but
-#                                   the first) after a disk or box fault during copies: files of these
+#   migrate-row.sh recheck NN ...   (MIG_RECHECK_SINCE="YYYY-MM-DD HH:MM" limits it to pool files
+#                                   written since then: minutes instead of a day; in parallel:
+#                                   one per source, MIG_RECHECK_DUPS=0 on all but the first)
+#                                   after a disk or box fault during copies: files of these
 #                                   sources that exist in the pool are compared by checksum
 #                                   and a copy that differs, or that exists on two branches,
 #                                   is moved aside on its disk (.migrate-aside/), so the next
@@ -97,6 +102,11 @@ MINFREE=${MIG_MINFREE:-4G} # mergerfs stops placing new files on a branch below 
 # streams land on different disks (mfs would send them all to the emptiest one at a time).
 CREATE=${MIG_CREATE:-pfrd}
 MERGERFS=${MIG_MERGERFS:-mergerfs}
+# HFS+ keeps its own bookkeeping as files in the volume root; each disk has its own, they
+# collide in the pool and are no data. Never copied, never reported by verify.
+VOLUME_FILES=(/.journal /.journal_info_block /.fseventsd /.Spotlight-V100 /.Trashes /.TemporaryItems
+    /.DocumentRevisions-V100 /.hotfiles.btree '/.HFS+ Private Directory Data*' /.DS_Store)
+volume_excludes() { local f; for f in "${VOLUME_FILES[@]}"; do printf -- "--exclude=%s\n" "$f"; done; }
 POOL=$MIG/pool
 WAIT=${MIG_WAIT:-300}
 MERGERFS_TAG=2.42.0 # built from source: Fedora 44 has no mergerfs package
@@ -328,7 +338,8 @@ copy_disk() {
         # quarantine, provenance, Spotlight metadata), which the hfsplus driver lists under
         # truncated names it cannot read back; security.* (SELinux labels) on the XFS side
         # are left alone, not deleted.
-        sudo rsync -aHAX --filter='-x system.*' --filter='-x osx.*' --filter='-xr security.*' \
+        mapfile -t vx < <(volume_excludes)
+        sudo rsync -aHAX --filter='-x system.*' --filter='-x osx.*' --filter='-xr security.*' "${vx[@]}" \
             --ignore-existing --info=progress2,stats1 --no-inc-recursive "$src/" "$dst/" >>"$LOG" 2>&1 || rc=$?
         # 23/24: some files could not be read or vanished; those are listed in the log.
         log "$nn>pool: rsync pass $pass finished with code $rc"
@@ -353,7 +364,8 @@ verify_disk() {
         log "$nn>pool: verifying every file by checksum (reads the source and its copy in full)"
     fi
     # No --delete: the pool also holds the other sources' files.
-    diff=$(sudo rsync "${opts[@]}" --out-format='%n' "$src/" "$dst/" 2>&1 | grep -v '^\./$' || true)
+    mapfile -t vx < <(volume_excludes)
+    diff=$(sudo rsync "${opts[@]}" "${vx[@]}" --out-format='%n' "$src/" "$dst/" 2>&1 | grep -v '^\./$' || true)
     if [[ -n $diff ]]; then
         printf '%s\n' "$diff" >>"$MIG/state/$nn.differences"
         die "$nn>pool: $(wc -l <<<"$diff") files differ or are missing in the pool (a same-named file from another disk?); see $MIG/state/$nn.differences. Source untouched."
@@ -574,7 +586,36 @@ recheck)
         aside=$((aside + 1)); prev=$path; prevbr=$br
     done < <(cat "$seen"; echo)
     fi
-    # 2. Checksum of every file of each source that has a copy in the pool.
+    # 2. Checksum of every file of each source that has a copy in the pool; or, with
+    #    MIG_RECHECK_SINCE="YYYY-MM-DD HH:MM", only the pool files whose inode changed since then (rsync sets the times last, so a
+    #    file finished before SINCE is untouched; a dying disk only leaves short the files it wrote last).
+    if [[ -n ${MIG_RECHECK_SINCE:-} ]]; then
+        cand=$MIG/state/recheck.recent; : >"$cand"
+        for br in $(pool_branches); do
+            sudo find "$MIG/mnt/hd-$br" -xdev -type f ! -path '*/.migrate-aside/*' -newerct "$MIG_RECHECK_SINCE" -printf "$br\t%P\n"
+        done >"$cand"
+        log "recheck: $(wc -l <"$cand") pool files created since $MIG_RECHECK_SINCE; comparing those with their sources"
+        for nn in "$@"; do
+            [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
+            part=$(part_of "$(disk_of "$nn")") || exit 1
+            [[ $(fstype_of "$part") == "$SRC_FS" ]] || { log "recheck: $nn is not $SRC_FS any more, nothing to compare"; continue; }
+            src=$MIG/mnt/src-$nn
+            mount_at "$nn" "$part" "$src" ro
+            while IFS=$'\t' read -r br path; do
+                [[ -n $path && -f $src/$path ]] || continue
+                f="$MIG/mnt/hd-$br/$path"
+                [[ -f $f ]] || continue
+                sudo cmp -s "$src/$path" "$f" && continue
+                to="$MIG/mnt/hd-$br/.migrate-aside/$nn/$path"
+                sudo mkdir -p "$(dirname "$to")"; sudo mv "$f" "$to"
+                log "recheck: $nn: '$path' differs from the source; the $br copy moved aside"
+                aside=$((aside + 1))
+            done <"$cand"
+            sudo umount "$src"
+        done
+        log "recheck: $aside copies moved aside; the next copy pass rewrites them. Remove .migrate-aside folders when the row is verified."
+        exit 0
+    fi
     for nn in "$@"; do
         [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
         part=$(part_of "$(disk_of "$nn")") || exit 1
@@ -594,7 +635,7 @@ recheck)
                 log "recheck: $nn: '$path' differs from the source; the $br copy moved aside"
                 aside=$((aside + 1))
             done
-        done < <(sudo rsync -rlc --existing --dry-run --out-format='%n' --filter='-x *' "$src/" "$POOL/" 2>>"$LOG" | grep -v '^\./$' || true)
+        done < <(mapfile -t vx < <(volume_excludes); sudo rsync -rlc --existing --dry-run --out-format='%n' --filter='-x *' "${vx[@]}" "$src/" "$POOL/" 2>>"$LOG" | grep -v '^\./$' || true)
         sudo umount "$src"
     done
     log "recheck: $aside copies moved aside; the next copy pass rewrites them. Remove .migrate-aside folders when the row is verified."
@@ -607,6 +648,16 @@ finish)
     for row in A B C D; do for nn in ${ROW[$row]}; do [[ $(disk_state "$nn") == xfs* ]] || left+="$nn "; done; done
     [[ -z $left ]] || die "not XFS yet: $left(parity disks are formatted by their row's worker at its end; a source still HFS+ was not copied)"
     for row in A B C D; do for nn in ${ROW[$row]}; do [[ -f $MIG/state/$nn.differences ]] && echo "WARN: $nn.differences exists; a verify once failed, see it"; done; done
+    # Volume bookkeeping copied before it was excluded goes to .migrate-aside/volume on its disk.
+    for br in $(branches_of); do
+        for f in "${VOLUME_FILES[@]}"; do
+            for g in "$MIG/mnt/hd-$br"$f; do
+                [[ -e $g ]] || continue
+                sudo mkdir -p "$MIG/mnt/hd-$br/.migrate-aside/volume"; sudo mv "$g" "$MIG/mnt/hd-$br/.migrate-aside/volume/"
+                echo "$br: ${g##*/hd-$br} moved to .migrate-aside/volume (HFS+ bookkeeping, not data)"
+            done
+        done
+    done
     sudo umount "$POOL" 2>/dev/null || true
     for m in $(findmnt -rn -o TARGET | grep "^$MIG/mnt/" | sort -r); do sudo umount "$m"; done
     # The workers ran as root; the logs and state go back to you.
