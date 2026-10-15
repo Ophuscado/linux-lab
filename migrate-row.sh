@@ -650,7 +650,7 @@ status)
         for nn in ${ROW[$row]}; do n=$((n + 1)); grep -qs "^$nn -> " "$MIG/state/placement.txt" && done_n=$((done_n + 1)); done
         printf 'row %s: %d of %d disks copied; workers running: %s\n' "$row" "$done_n" "$n" \
             "$(sudo tmux ls 2>/dev/null | grep -c "^mig-$row-" || true)"
-        [[ -f $MIG/$row.log ]] && tail -n 1 "$MIG/$row.log" | sed 's/^/    /'
+        [[ -f $MIG/$row.log ]] && grep -E "^[0-9]{4}-" "$MIG/$row.log" | tail -n 1 | sed "s/^/    /"
     done
     [[ -f $MIG/state/placement.txt ]] && { echo "placement:"; sed 's/^/    /' "$MIG/state/placement.txt"; }
     echo "pool:"
