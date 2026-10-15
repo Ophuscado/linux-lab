@@ -62,6 +62,11 @@
 #   migrate-row.sh stats [SECONDS]  the pool and each branch: fill, and MB/s read and
 #                                   written per disk over SECONDS (default 5)
 #   migrate-row.sh defer 28 ...     copy these disks last in their row (unstable link)
+#   migrate-row.sh recheck NN ...   after a disk or box fault during copies: files of these
+#                                   sources that exist in the pool are compared by checksum
+#                                   and a copy that differs, or that exists on two branches,
+#                                   is moved aside on its disk (.migrate-aside/), so the next
+#                                   pass rewrites it instead of skipping it. Nothing deleted.
 #   migrate-row.sh finish           when every worker is done: checks all 32 disks are XFS,
 #                                   unmounts the migration pool and mounts; next is
 #                                   snapraid-setup.sh install, mount, first
@@ -534,6 +539,58 @@ pool)
     LOG=/dev/null
     pool_mount && echo "pool mounted at $POOL: $(pool_branches)" || echo "no formatted bay yet"
     ;;
+recheck)
+    # Why: a copy skips files that already exist in the pool (--ignore-existing), so a file
+    # left short by a dying disk, or written twice because a dead branch looked empty, would
+    # be kept as it is. Every suspect copy goes to .migrate-aside/<source>/<path> on the
+    # same disk; the log says which. Sources must be idle (no worker running).
+    shift
+    [[ $# -gt 0 ]] || die "recheck needs source names, e.g. recheck 26 27 02 05 10 13 18 19 20"
+    prepare
+    LOG=$MIG/recheck.log
+    ! sudo tmux ls 2>/dev/null | grep -q '^mig-' || die "workers still run; sudo tmux kill-server first"
+    pool_mount >/dev/null || die "no pool"
+    aside=0
+    # 1. The same path on two branches: the copy on the branch that comes first in the pool
+    #    hides the other. Both are kept; the first one goes aside, the next pass compares.
+    log "recheck: looking for paths present on two branches"
+    seen=$MIG/state/recheck.paths; : >"$seen"; prev=""; prevbr=""
+    for br in $(pool_branches); do
+        sudo find "$MIG/mnt/hd-$br" -xdev -type f ! -path '*/.migrate-aside/*' -printf "$br\t%P\n"
+    done | sort -t$'\t' -k2,2 -s >"$seen"
+    while IFS=$'\t' read -r br path; do
+        [[ $path == "$prev" ]] || { prev=$path; prevbr=$br; continue; }
+        # second branch with the same path: move the earlier one (lower in branch order) aside
+        to="$MIG/mnt/hd-$prevbr/.migrate-aside/dup/$path"
+        sudo mkdir -p "$(dirname "$to")"; sudo mv "$MIG/mnt/hd-$prevbr/$path" "$to"
+        log "recheck: '$path' on $prevbr and $br; the $prevbr copy moved aside"
+        aside=$((aside + 1)); prev=$path; prevbr=$br
+    done < <(cat "$seen"; echo)
+    # 2. Checksum of every file of each source that has a copy in the pool.
+    for nn in "$@"; do
+        [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
+        part=$(part_of "$(disk_of "$nn")") || exit 1
+        [[ $(fstype_of "$part") == "$SRC_FS" ]] || { log "recheck: $nn is not $SRC_FS any more, nothing to compare"; continue; }
+        src=$MIG/mnt/src-$nn
+        mount_at "$nn" "$part" "$src" ro
+        log "recheck: $nn: comparing by checksum every file that is already in the pool"
+        while IFS= read -r path; do
+            [[ -n $path && $path != */ ]] || continue
+            for br in $(pool_branches); do
+                f="$MIG/mnt/hd-$br/$path"
+                [[ -f $f ]] || continue
+                # Each branch copy on its own: one may be whole while another is short.
+                sudo cmp -s "$src/$path" "$f" && continue
+                to="$MIG/mnt/hd-$br/.migrate-aside/$nn/$path"
+                sudo mkdir -p "$(dirname "$to")"; sudo mv "$f" "$to"
+                log "recheck: $nn: '$path' differs from the source; the $br copy moved aside"
+                aside=$((aside + 1))
+            done
+        done < <(sudo rsync -rlc --existing --dry-run --out-format='%n' --filter='-x *' "$src/" "$POOL/" 2>>"$LOG" | grep -v '^\./$' || true)
+        sudo umount "$src"
+    done
+    log "recheck: $aside copies moved aside; the next copy pass rewrites them. Remove .migrate-aside folders when the row is verified."
+    ;;
 finish)
     prepare
     LOG=/dev/null
@@ -680,7 +737,7 @@ status)
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | finish | add NN... | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | recheck NN... | finish | add NN... | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
