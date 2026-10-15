@@ -577,10 +577,14 @@ stats)
     findmnt -n "$POOL" >/dev/null || die "pool not mounted"
     printf 'pool: %s\n' "$(df -h --output=size,used,avail,pcent "$POOL" | tail -n 1)"
     declare -A r0 w0
-    while read -r _ _ d _ _ r _ _ _ w _; do r0[$d]=$r; w0[$d]=$w; done </proc/diskstats
+    # Whole sd disks only (sda, sdaa; not partitions, not nvme/zram/loop).
+    while read -r _ _ d _ _ r _ _ _ w _; do
+        [[ $d == sd* && $d != *[0-9] ]] || continue
+        r0[$d]=$r; w0[$d]=$w
+    done </proc/diskstats
     sleep "$secs"
     while read -r _ _ d _ _ r _ _ _ w _; do
-        [[ -n ${r0[$d]:-} && $d == sd* && $d != *[0-9] ]] || continue
+        [[ $d == sd* && $d != *[0-9] && -n ${r0[$d]:-} ]] || continue
         rd=$(( (r - r0[$d]) * 512 / secs / 1000000 )); wr=$(( (w - w0[$d]) * 512 / secs / 1000000 ))
         ((rd + wr > 0)) || continue
         src=$(findmnt -n -o SOURCE,TARGET -l | grep "^/dev/$d" | grep -oE 'mnt/(hd|src)-[0-9]+' | head -n 1 || true)
