@@ -62,6 +62,9 @@
 #   migrate-row.sh stats [SECONDS]  the pool and each branch: fill, and MB/s read and
 #                                   written per disk over SECONDS (default 5)
 #   migrate-row.sh defer 28 ...     copy these disks last in their row (unstable link)
+#   migrate-row.sh finish           when every worker is done: checks all 32 disks are XFS,
+#                                   unmounts the migration pool and mounts; next is
+#                                   snapraid-setup.sh install, mount, first
 #   migrate-row.sh add 23 ...       format these bays now and add them to the pool (only
 #                                   disks already copied, marked "erase" or found empty;
 #                                   otherwise a worker does it when the pool needs room)
@@ -530,6 +533,19 @@ pool)
     LOG=/dev/null
     pool_mount && echo "pool mounted at $POOL: $(pool_branches)" || echo "no formatted bay yet"
     ;;
+finish)
+    prepare
+    LOG=/dev/null
+    ! sudo tmux ls 2>/dev/null | grep -q '^mig-' && true || die "workers still run: $(sudo tmux ls | grep -o '^mig-[A-D]-[0-9]' | tr '\n' ' ')"
+    left=""
+    for row in A B C D; do for nn in ${ROW[$row]}; do [[ $(disk_state "$nn") == xfs* ]] || left+="$nn "; done; done
+    [[ -z $left ]] || die "not XFS yet: $left(parity disks are formatted by their row's worker at its end; a source still HFS+ was not copied)"
+    for row in A B C D; do for nn in ${ROW[$row]}; do [[ -f $MIG/state/$nn.differences ]] && echo "WARN: $nn.differences exists; a verify once failed, see it"; done; done
+    sudo umount "$POOL" 2>/dev/null || true
+    for m in $(findmnt -rn -o TARGET | grep "^$MIG/mnt/" | sort -r); do sudo umount "$m"; done
+    echo "every disk is XFS; migration mounts released. Logs and placement stay in $MIG."
+    echo "Next: snapraid-setup.sh install, then mount, then first."
+    ;;
 add)
     # Format now, do not wait for a worker to need the room. Refuses a disk that still holds
     # uncopied data; use "erase" first if that is what you want.
@@ -663,7 +679,7 @@ status)
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | add NN... | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | finish | add NN... | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
