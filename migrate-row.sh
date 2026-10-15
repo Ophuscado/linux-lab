@@ -255,7 +255,8 @@ pool_mount() {
         done
         return 0
     fi
-    sudo "$MERGERFS" -o "category.create=$CREATE,moveonenospc=true,minfreespace=$MINFREE,cache.files=off,dropcacheonclose=true,fsname=pool" \
+    # allow_other: a FUSE mount is private to the mounting user (root here) without it.
+    sudo "$MERGERFS" -o "allow_other,category.create=$CREATE,moveonenospc=true,minfreespace=$MINFREE,cache.files=off,dropcacheonclose=true,fsname=pool" \
         "$list" "$POOL"
 }
 

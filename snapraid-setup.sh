@@ -116,7 +116,7 @@ write_fstab() {
         done
         echo "# The pool: every data disk that is mounted. A disk that is absent is simply not in"
         echo "# the pool until the next mount."
-        printf '%s/hd/*  %s  fuse.mergerfs  category.create=pfrd,moveonenospc=true,minfreespace=20G,cache.files=off,dropcacheonclose=true,fsname=pool,nofail%s  0 0\n' "$ROOT" "$POOL" "$reqs"
+        printf '%s/hd/*  %s  fuse.mergerfs  allow_other,category.create=pfrd,moveonenospc=true,minfreespace=20G,cache.files=off,dropcacheonclose=true,fsname=pool,nofail%s  0 0\n' "$ROOT" "$POOL" "$reqs"
         echo "$MARK_END"
     } >"$OUT/fstab.block"
 }
@@ -155,6 +155,10 @@ mount)
     ! findmnt -n "$MIG/pool" >/dev/null || die "the migration pool is mounted; finish the migration first (migrate-row.sh status)"
     ! sudo tmux ls 2>/dev/null | grep -q '^mig-' || die "migration workers are running"
     sudo mount -a
+    # The top folder of every disk and of the pool belongs to you, so new folders can be
+    # made there; the migrated files keep the owner they had on the Mac.
+    owner=${SUDO_USER:-$USER}
+    for n in $(data_names); do findmnt -n "$ROOT/hd/$n" >/dev/null && sudo chown "$owner:$owner" "$ROOT/hd/$n"; done
     echo "mounted:"; findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep -E "$ROOT/(hd|parity)/|$POOL" | sed 's/^/    /'
     ;;
 timers)
