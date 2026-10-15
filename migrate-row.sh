@@ -37,7 +37,8 @@
 #      it is then never copied, is the first bay formatted, and nothing asks.
 #   2. The source is mounted read-only and rsync copies everything into the pool with
 #      owners, times, permissions, hard links and extended attributes (resource forks do
-#      not exist on Linux and are not copied). A file that already exists in the pool under
+#      not exist on Linux and are not copied; neither is the Finder info, which the driver
+#      cannot read for most files). A file that already exists in the pool under
 #      the same path is never overwritten (--ignore-existing); verification then reports it.
 #   3. Verification: every file of the source is looked up in the pool and compared by size
 #      and time (VERIFY=full reads both back and compares checksums; twice the time). Any
@@ -293,7 +294,11 @@ copy_disk() {
     log "$nn>pool: copying $(used_at "$src") bytes from $s; pool has $(pool_avail) free"
     for pass in 1 2 3; do
         rc=0
-        sudo rsync -aHAX --ignore-existing --info=progress2,stats1 --no-inc-recursive "$src/" "$dst/" >>"$LOG" 2>&1 || rc=$?
+        # Extended attributes: all but system.* and the Finder info, which the hfsplus
+        # driver lists on every file and cannot read when empty (1.4 M errors on disk 19);
+        # security.* (SELinux labels) on the XFS side are left alone, not deleted.
+        sudo rsync -aHAX --filter='-x system.*' --filter='-x osx.com.apple.FinderInfo' --filter='-xr security.*' \
+            --ignore-existing --info=progress2,stats1 --no-inc-recursive "$src/" "$dst/" >>"$LOG" 2>&1 || rc=$?
         # 23/24: some files could not be read or vanished; those are listed in the log.
         log "$nn>pool: rsync pass $pass finished with code $rc"
         [[ $rc == 0 ]] && break
