@@ -238,7 +238,14 @@ pool_mount() {
         list+="${list:+:}$MIG/mnt/hd-$mm"
     done
     [[ -n $list ]] || return 1
-    findmnt -n "$POOL" >/dev/null && return 0
+    if findmnt -n "$POOL" >/dev/null; then
+        # Already mounted: add any formatted bay it does not have yet.
+        for mm in $(branches_of); do
+            sudo getfattr -n user.mergerfs.branches --only-values "$POOL/.mergerfs" 2>/dev/null | tr ':' '\n' | grep -qx "$MIG/mnt/hd-$mm=RW" ||
+                sudo setfattr -n user.mergerfs.branches -v "+>$MIG/mnt/hd-$mm" "$POOL/.mergerfs"
+        done
+        return 0
+    fi
     sudo "$MERGERFS" -o "category.create=mfs,moveonenospc=true,minfreespace=$MINFREE,cache.files=off,dropcacheonclose=true,fsname=pool" \
         "$list" "$POOL"
 }
