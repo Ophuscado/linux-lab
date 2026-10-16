@@ -65,8 +65,9 @@
 #   migrate-row.sh stats [SECONDS]  the pool and each branch: fill, and MB/s read and
 #                                   written per disk over SECONDS (default 5)
 #   migrate-row.sh defer 28 ...     copy these disks last in their row (unstable link)
-#   migrate-row.sh recheck NN ...   (MIG_RECHECK_SINCE="YYYY-MM-DD HH:MM" limits it to pool files
-#                                   written since then: minutes instead of a day; in parallel:
+#   migrate-row.sh recheck NN ...   (MIG_RECHECK_SINCE="YYYY-MM-DD HH:MM" and MIG_RECHECK_UNTIL
+#                                   limit it to pool files written in that window, the fault's
+#                                   last minutes: minutes instead of a day; in parallel:
 #                                   one per source, MIG_RECHECK_DUPS=0 on all but the first)
 #                                   after a disk or box fault during copies: files of these
 #                                   sources that exist in the pool are compared by checksum
@@ -592,9 +593,10 @@ recheck)
     if [[ -n ${MIG_RECHECK_SINCE:-} ]]; then
         cand=$MIG/state/recheck.recent; : >"$cand"
         for br in $(pool_branches); do
-            sudo find "$MIG/mnt/hd-$br" -xdev -type f ! -path '*/.migrate-aside/*' -newerct "$MIG_RECHECK_SINCE" -printf "$br\t%P\n"
+            sudo find "$MIG/mnt/hd-$br" -xdev -type f ! -path '*/.migrate-aside/*' -newerct "$MIG_RECHECK_SINCE" \
+                ${MIG_RECHECK_UNTIL:+! -newerct "$MIG_RECHECK_UNTIL"} -printf "$br\t%P\n"
         done >"$cand"
-        log "recheck: $(wc -l <"$cand") pool files created since $MIG_RECHECK_SINCE; comparing those with their sources"
+        log "recheck: $(wc -l <"$cand") pool files written between $MIG_RECHECK_SINCE and ${MIG_RECHECK_UNTIL:-now}; comparing those with their sources"
         for nn in "$@"; do
             [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
             part=$(part_of "$(disk_of "$nn")") || exit 1
