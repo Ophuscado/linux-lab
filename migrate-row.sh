@@ -676,9 +676,10 @@ verify_disk() {
         opts=(-rlnc)
         log "$nn>pool: verifying every file by checksum (reads the source and its copy in full)"
     fi
-    # No --delete: the pool also holds the other sources' files.
+    # No --delete: the pool also holds the other sources' files. Folders are not compared: one
+    # merged from several sources, or written into by other workers, has one time in the pool.
     mapfile -t vx < <(volume_excludes)
-    diff=$(sudo rsync "${opts[@]}" "${vx[@]}" --out-format='%n' "$src/" "$dst/" 2>&1 | grep -v '^\./$' || true)
+    diff=$(sudo rsync "${opts[@]}" "${vx[@]}" --out-format='%n' "$src/" "$dst/" 2>&1 | grep -v -e '^\./$' -e '/$' || true)
     if [[ -n $diff ]]; then
         printf '%s\n' "$diff" >>"$MIG/state/$nn.differences"
         die "$nn>pool: $(wc -l <<<"$diff") files differ or are missing in the pool (a same-named file from another disk?); see $MIG/state/$nn.differences. Source untouched."

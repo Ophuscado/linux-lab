@@ -1,6 +1,6 @@
 #!/bin/bash
 # migrate-row.sh global pool on loop devices: rows C (08 09 10 15) and D (16 17 18 23), one worker each.
-# Expected: six sources verified, each data set once in the pool with its hard links, parity disks formatted last, finish unmounts everything, a rerun is a no-op
+# Expected: six sources verified (folder times are not compared), each data set once in the pool with its hard links, parity disks formatted last, finish unmounts everything, a rerun is a no-op
 set -u
 . "$(dirname "$0")/lib.sh"
 S=$REPO/migrate-row.sh
@@ -31,10 +31,13 @@ mkdir -p home/migrate/state/claim-23
 echo "### add 23 now (marked, with a stale claim), refuse 17 (data) and 16 (parity)"; ./mig.sh add 23 2>&1 | grep -v WARN | tail -n 2; ./mig.sh add 17 2>&1 | grep ERR; ./mig.sh add 16 2>&1 | grep ERR
 echo "### plan C"; ./mig.sh plan C 2>&1 | sed "s|/dev/||g" | grep -v WARN
 mkdir -p home/migrate/state/claim-09; echo 5000000000 >home/migrate/state/claim-09/need; echo "### stale claim on 09 (dead pid, 5 GB reserved) planted"
-echo "### two workers, rows C and D, at once"
+echo "### two workers, rows C and D, at once; a shared folder's time keeps changing in the pool meanwhile"
 timeout 200 ./mig.sh run C >r3/wC.out 2>&1 </dev/null &
+wc=$!
 sleep 2
 timeout 200 ./mig.sh run D >r3/wD.out 2>&1 </dev/null &
+wd=$!
+( while kill -0 $wc 2>/dev/null || kill -0 $wd 2>/dev/null; do touch -c -d '2001-01-01' home/migrate/pool/Library 2>/dev/null; sleep 0.3; done ) &
 wait
 echo "### rounds (log)"; grep -hE 'round:|verified,|formatting|worker finished|ERR|reservation' home/migrate/C.log home/migrate/D.log | cut -c1-120
 echo "### placement"; cat home/migrate/state/placement.txt
