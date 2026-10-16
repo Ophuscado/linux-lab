@@ -208,6 +208,13 @@ tingle at once. The error rate under load afterwards is the proof still to colle
 tingle gone; error counts INFERRED). Rule kept: Mac and boxes on one strip, three pins all
 the way; `libata.force=3.0G` only if errors remain at 6 Gbps.
 
+2026-10-16 update, OBSERVED: with the earth fixed and `libata.force=3.0G` on, four row workers
+ran about two hours without a SATA error. Then hd-15 (box C) stopped answering at about 04:28
+(rsync 11 on row C), IDENTIFY timeouts followed on ata34 and ata28 (04:43-04:46), and hd-15
+still failed reads at 11:26. The earth was not the whole cause; heat or the supply under
+sustained load are the next candidates, and the failing port is in the disk-plan by domain and
+port.
+
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
 
