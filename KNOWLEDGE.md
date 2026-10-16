@@ -275,6 +275,12 @@ in the bay, or controller port 0), not disk 15; it was the trigger of both box C
 Disk 15 holds only copies: no line of placement.txt lists it among the branches of a verified
 source, and a source is formatted only after its verify, which reads the pool without 15.
 
+17:46-17:55, after the operator swapped box C's internal data wires (which ones: UNKNOWN), box C
+alone, `readtest C`: all eight disks link, disk 14 in bay 0 among them, each read at 210 MB/s
+(1.68 GB/s in all, the box's ceiling) with no link error in 9 min. OBSERVED. So bay 0's link
+failure went with the wire swap; a data connector not fully home, reseated by it, is the likely
+cause (INFERRED: a bad cable would have taken its errors to its new bay).
+
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
 
