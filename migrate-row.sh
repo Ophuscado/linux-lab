@@ -200,6 +200,22 @@ host_of() {
     echo "host$((base + port))"
 }
 
+# Does disk $1 answer a read of its first block within 30 s? A port the kernel has disabled keeps
+# the /dev name, so being there is not enough. In the background: a hung read is abandoned.
+disk_answers() {
+    local d pid i
+    d=$(awk -F, -v n="$1" '$14 == n { print $4 }' "$PLAN")
+    [[ -n $d && -e $d ]] || return 1
+    [[ -b $d ]] || return 0 # tests: a plain file stands for the disk
+    ( sudo dd if="$d" of=/dev/null bs=4096 count=1 iflag=direct status=none ) 2>/dev/null &
+    pid=$!
+    for ((i = 0; i < 30; i++)); do
+        kill -0 "$pid" 2>/dev/null || { wait "$pid"; return; }
+        sleep 1
+    done
+    return 1
+}
+
 # Disks of the plan the system does not have now.
 missing_disks() {
     local byid name
@@ -1079,7 +1095,8 @@ status)
     ;;
 rescan)
     # rescan [NN...]: ask the SATA port of each disk (default: every disk of the plan the system
-    # has lost) to look for its disk again, as after a reseat; then wait for it to show up.
+    # has lost) to look for its disk again, as after a reseat or a power fix; then wait until each
+    # answers a read. Name the disabled ones too: they keep their /dev name.
     shift
     prepare
     LOG=$MIG/heal.log
@@ -1091,14 +1108,16 @@ rescan)
         log "rescan: disk $nn, port $h"
         echo '- - -' | sudo tee "$SYS/class/scsi_host/$h/scan" >/dev/null || true
     done
-    for ((i = 0; i < ${MIG_RESCAN_WAIT:-60}; i += 2)); do
-        left=$(for nn in $list; do missing_disks | grep -qx "$nn" && echo "$nn"; done | tr '\n' ' ')
-        [[ -z ${left// /} ]] && break
-        sleep 2
+    sleep 5
+    for ((i = 0; i < ${MIG_RESCAN_WAIT:-60}; i += 5)); do
+        left=""
+        for nn in $list; do disk_answers "$nn" || left+="$nn "; done
+        [[ -z $left ]] && break
+        sleep 5
     done
     for nn in $list; do
-        if missing_disks | grep -qx "$nn"; then echo "$nn: still missing (dmesg tells why; a reboot is the next step)"
-        else echo "$nn: present again as $(readlink -f "$(disk_of "$nn")"); 'good $nn' puts it back in the pool"; fi
+        if disk_answers "$nn"; then echo "$nn: answers again ($(readlink -f "$(awk -F, -v n="$nn" '$14 == n { print $4 }' "$PLAN")")); a pool bay goes back with 'good $nn', a source is copied by its row's worker"
+        else echo "$nn: does not answer (status shows why; a reboot is the next step)"; fi
     done
     ;;
 heal)
