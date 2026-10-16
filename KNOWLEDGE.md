@@ -257,6 +257,17 @@ in which it answers nothing. A weak power contact on 15 fails first at such a mo
 writes to 15 that timed out at 04:27 fit a drive that did not come back. INFERRED. Spin-down
 stays off until the rows are done.
 
+About 15:41 (uptime 6387 s), with 15 reseated and box C's supply off: the eight SATA links went
+down (SStatus 0), 2.6 s later the USB4 link ("SBX disconnected", "Tunnel error") and the box's
+PCI devices went away, and 30 s later the link, the bridge and the controller came back by
+themselves; seven disks attached within 25 s, without a reboot. OBSERVED. So bridge and
+controller do lose power with the box's supply once it stays off a few seconds; at 12:49 it
+was probably back on too soon (INFERRED). Port 0 (disk 15, ata36) still loops on "SATA link
+down (SStatus 1)" on that freshly powered controller, at 1.5 Gbps too: the fault is in 15's
+path, its data cable, its connector or the disk's interface, not a stuck controller. Link power
+states are not involved: SControl 3x0 on every port has IPM 3, partial and slumber disallowed
+(VERIFIED in the log).
+
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
 
