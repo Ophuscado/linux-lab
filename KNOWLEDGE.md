@@ -292,6 +292,10 @@ error reached the filesystem. Disk 13 (ata14, a source being read) had 2. OBSERV
 receiver or connector, or the wire now on its bay (INFERRED). Standing operator decision (16 Oct):
 15 stays in the pool unless it fails in operation; the workers drop a branch that stops taking
 writes (heal), and a short copy it leaves fails its source's verify.
+After libata turned NCQ off on 15 (second burst, about 18:46) the operator saw no further link
+error for 20 minutes. OBSERVED. One command at a time instead of 32 queued 4 MiB writes puts
+less continuous traffic on a marginal link (INFERRED). The flag lasts until the disk is probed
+again (a reboot), when NCQ comes back.
 
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
