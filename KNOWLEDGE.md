@@ -288,7 +288,7 @@ had 11 link errors in the write direction: 32 queued 4 MiB writes frozen with SE
 turned NCQ off on it ("NCQ disabled due to excessive errors"). Every reset recovered; no I/O
 error reached the filesystem. Disk 13 (ata14, a source being read) had 2. OBSERVED. Reads of
 15 were clean in the read test, so the fault shows when the host sends: disk 15's SATA
-receiver or connector, or the wire now on its bay (INFERRED). 15 went out of the pool again.
+receiver or connector, or the wire now on its bay (INFERRED). Next: 15 out of the pool again.
 
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
