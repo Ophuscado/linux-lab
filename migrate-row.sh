@@ -68,6 +68,8 @@
 #   migrate-row.sh heal             try a write on every pool branch; drop (and mark bad) those
 #                                   that fail. Workers do this at each copy and after a failed
 #                                   pass, so a dead disk costs a rerun, not the worker.
+#   migrate-row.sh rescan [NN ...]  look again for disks the system lost (default: all of them),
+#                                   e.g. after a reseat, without a reboot
 #   migrate-row.sh bad 15 ...       take these bays out of the pool by hand (they stay out after
 #                                   a restart); good 15 ... puts them back. Files they held are
 #                                   copied again from the sources, which are still there.
@@ -187,13 +189,30 @@ ata_name() {
         echo "?(domain $dom port $((host - base)))"
 }
 
+# The SCSI host of disk $1, from its domain and port in the plan.
+host_of() {
+    local dom port base h
+    dom=$(awk -F, -v n="$1" '$14 == n { print $1 }' "$PLAN"); port=$(awk -F, -v n="$1" '$14 == n { print $2 }' "$PLAN")
+    [[ -n $dom && -n $port ]] || return 1
+    base=$(for h in "$SYS"/class/scsi_host/host*; do
+        [[ $(readlink -f "$h") == *"/$dom:03:00.0/"* ]] && echo "${h##*host}"; done | sort -n | head -n 1)
+    [[ -n $base ]] || return 1
+    echo "host$((base + port))"
+}
+
+# Disks of the plan the system does not have now.
+missing_disks() {
+    local byid name
+    while IFS=, read -r _ _ _ byid _ _ _ _ _ _ _ _ _ name; do [[ -e $byid ]] || echo "$name"; done < <(tail -n +2 "$PLAN")
+}
+
 # The links: disks of the plan the system no longer has, and SATA trouble since boot per disk.
 link_report() {
     local dom port dev byid name miss="" cnt ata last n=0
     while IFS=, read -r dom port _ byid _ _ _ _ _ _ _ _ _ name; do
         [[ -e $byid ]] || miss+="$name (domain $dom port $port) "
     done < <(tail -n +2 "$PLAN")
-    echo "    missing from the system: ${miss:-none}"
+    echo "    missing from the system: ${miss:-none}${miss:+ ('rescan' looks for them again)}"
     while IFS=$'\t' read -r cnt ata last; do
         echo "    $(ata_name "$ata") ($ata): $cnt link errors since boot, last $last"; n=$((n + 1))
     done < <(kernel_log | grep -E '\] ata[0-9]+(\.[0-9]+)?: .*(BadCRC|Handshk|timeout|failed to IDENTIFY|exception Emask|hard resetting link|link down|limiting SATA link speed)' |
@@ -308,8 +327,9 @@ branches_of() {
         for mm in ${ROW[$row]}; do
             [[ $mm == "${PARITY[$row]}" ]] && continue
             [[ -e $MIG/state/$mm.bad ]] && continue # found dead: out of the pool until 'good'
-            # Type and label only: no mount, so 32 cold disks do not each spin up for a look.
-            part=$(part_of "$(disk_of "$mm")") || exit 1
+            # Type and label only: no mount, so 32 cold disks do not each spin up for a look. A disk
+            # the system has lost is no branch (and no reason to stop: start and every worker ask).
+            part=$(part_of "$(disk_of "$mm" 2>/dev/null)" 2>/dev/null) || continue
             [[ $(fstype_of "$part") == xfs && $(label_of "$part") == "HD_$mm" ]] && echo "$mm"
         done
     done
@@ -992,7 +1012,7 @@ start)
     n=${3:-1}
     [[ $n =~ ^[1-4]$ ]] || die "workers: 1 to 4"
     LOG=$MIG/heal.log
-    if pool_mount >/dev/null 2>&1; then heal_pool || true; fi
+    if pool_mount >/dev/null; then heal_pool || true; fi
     for row in $rows; do
         for i in $(seq 1 "$n"); do
             if sudo tmux has-session -t "mig-$row-$i" 2>/dev/null; then
@@ -1049,6 +1069,30 @@ status)
     echo "mounted:"
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;
+rescan)
+    # rescan [NN...]: ask the SATA port of each disk (default: every disk of the plan the system
+    # has lost) to look for its disk again, as after a reseat; then wait for it to show up.
+    shift
+    prepare
+    LOG=$MIG/heal.log
+    list=${*:-$(missing_disks)}
+    [[ -n $list ]] || { echo "every disk of the plan is present"; exit 0; }
+    for nn in $list; do
+        [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
+        h=$(host_of "$nn") || { echo "$nn: no SATA port found for its domain and port in $PLAN"; continue; }
+        log "rescan: disk $nn, port $h"
+        echo '- - -' | sudo tee "$SYS/class/scsi_host/$h/scan" >/dev/null || true
+    done
+    for ((i = 0; i < ${MIG_RESCAN_WAIT:-60}; i += 2)); do
+        left=$(for nn in $list; do missing_disks | grep -qx "$nn" && echo "$nn"; done | tr '\n' ' ')
+        [[ -z ${left// /} ]] && break
+        sleep 2
+    done
+    for nn in $list; do
+        if missing_disks | grep -qx "$nn"; then echo "$nn: still missing (dmesg tells why; a reboot is the next step)"
+        else echo "$nn: present again as $(readlink -f "$(disk_of "$nn")"); 'good $nn' puts it back in the pool"; fi
+    done
+    ;;
 heal)
     prepare
     LOG=$MIG/heal.log
@@ -1080,7 +1124,7 @@ good)
     done
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | heal | bad NN... | good NN... | recheck NN... | finish | add NN... | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | recheck NN... | finish | add NN... | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
