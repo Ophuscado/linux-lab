@@ -99,6 +99,12 @@
 #                                   disk's read rate now and since the start, and the link and I/O
 #                                   errors since the start by disk; with SECONDS, again every
 #                                   SECONDS until Ctrl-C
+#   migrate-row.sh policy [NAME]    where the pool puts new files: pfrd (default; random,
+#                                   weighted by free space, parallel copies spread over the disks)
+#                                   or mfs (always the emptiest disk: a new or lagging disk catches
+#                                   up, but every copy writes to that one disk at a time). Applied
+#                                   to the mounted pool at once and kept for later mounts; without
+#                                   NAME, shows the live and the kept one
 #   migrate-row.sh extra [PART]     copy disk 33, the external USB HFS+ disk (no label; found as the
 #                                   one HFS+ partition over 10 TB on USB, or PART), into the pool in
 #                                   root's tmux session mig-33, log ~/migrate/33.log. Without
@@ -125,7 +131,8 @@ EMPTY_LIMIT=${MIG_EMPTY_LIMIT:-10000000000} # bytes; under 10 GB is HFS+ metadat
 MINFREE=${MIG_MINFREE:-4G} # mergerfs stops placing new files on a branch below this
 # Where a new file goes: pfrd picks a branch at random, weighted by free space, so parallel
 # streams land on different disks (mfs would send them all to the emptiest one at a time).
-CREATE=${MIG_CREATE:-pfrd}
+# 'policy' changes it and keeps the choice in $MIG/state/create for later mounts and workers.
+CREATE=${MIG_CREATE:-$(cat "$MIG/state/create" 2>/dev/null || echo pfrd)}
 MERGERFS=${MIG_MERGERFS:-mergerfs}
 # HFS+ keeps its own bookkeeping as files in the volume root; each disk has its own, they
 # collide in the pool and are no data. Never copied, never reported by verify.
@@ -1102,6 +1109,24 @@ start)
     echo "Watch: $0 attach ROW [N] (Ctrl-b d to leave); progress: $0 status"
     ;;
 attach) sudo tmux attach -t "mig-${2:-}-${3:-1}" ;;
+policy)
+    if [[ -n ${2:-} ]]; then
+        [[ $2 =~ ^(pfrd|mfs|lfs|lus|rand|ff|epmfs|eppfrd|msppfrd|mspmfs)$ ]] || die "unknown policy $2; pfrd or mfs are the useful ones here"
+        mkdir -p "$MIG/state"
+        echo "$2" >"$MIG/state/create"
+        if findmnt -n "$POOL" >/dev/null; then
+            sudo setfattr -n user.mergerfs.category.create -v "$2" "$POOL/.mergerfs"
+        fi
+        LOG=$MIG/heal.log
+        log "pool: new files placed by $2 from now on"
+    fi
+    echo "kept: $(cat "$MIG/state/create" 2>/dev/null || echo 'pfrd (default)')"
+    if findmnt -n "$POOL" >/dev/null; then
+        echo "live: $(sudo getfattr -n user.mergerfs.category.create --only-values "$POOL/.mergerfs" 2>/dev/null)"
+    else
+        echo "live: pool not mounted"
+    fi
+    ;;
 readtest)
     need_row "${2:-}"
     row=$2; ss=test-$row; st=$MIG/state/readtest-$row
@@ -1289,7 +1314,7 @@ good)
     done
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | recheck NN... | finish | add NN... | erase NN... | defer NN... | readtest ROW [start|check [S]|stop] | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | recheck NN... | finish | add NN... | erase NN... | defer NN... | policy [NAME] | readtest ROW [start|check [S]|stop] | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
