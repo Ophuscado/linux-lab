@@ -91,6 +91,14 @@
 #                                   disks already copied, marked "erase" or found empty;
 #                                   otherwise a worker does it when the pool needs room)
 #   migrate-row.sh mergerfs        build and install mergerfs 2.42.0 (once; Fedora has no package)
+#   migrate-row.sh readtest ROW [start | check [SECONDS] | stop]
+#                                   link test of one box, reads only: start reads every present
+#                                   disk of the row from its beginning at full speed, all at once,
+#                                   in root's tmux session test-ROW, until stop (a new start reads
+#                                   from the beginning again). check (the default) shows each
+#                                   disk's read rate now and since the start, and the link and I/O
+#                                   errors since the start by disk; with SECONDS, again every
+#                                   SECONDS until Ctrl-C
 #   migrate-row.sh extra [PART]     copy disk 33, the external USB HFS+ disk (no label; found as the
 #                                   one HFS+ partition over 10 TB on USB, or PART), into the pool in
 #                                   root's tmux session mig-33, log ~/migrate/33.log. Without
@@ -178,6 +186,8 @@ avail_at() { { df -B1 --output=avail "$1" 2>/dev/null || true; } | tail -n 1 | t
 
 SYS=${MIG_SYS:-/sys}
 kernel_log() { if [[ -n ${MIG_DMESG:-} ]]; then cat "$MIG_DMESG"; else sudo dmesg -T 2>/dev/null || true; fi; }
+# A line of ours in the kernel log, so that a report can start from it.
+kernel_mark() { if [[ -n ${MIG_DMESG:-} ]]; then echo "[$(date)] $1" >>"$MIG_DMESG"; else echo "$1" | sudo tee /dev/kmsg >/dev/null; fi; }
 
 # ataN -> the disk's name in the plan: the disk on the port now, so a disk moved to another bay
 # keeps its name; for a port without a disk, the plan's disk for that domain and port, counted
@@ -1092,6 +1102,72 @@ start)
     echo "Watch: $0 attach ROW [N] (Ctrl-b d to leave); progress: $0 status"
     ;;
 attach) sudo tmux attach -t "mig-${2:-}-${3:-1}" ;;
+readtest)
+    need_row "${2:-}"
+    row=$2; ss=test-$row; st=$MIG/state/readtest-$row
+    mkdir -p "$MIG/state"
+    case ${3:-check} in
+    start)
+        sudo -v
+        if sudo tmux has-session -t "$ss" 2>/dev/null; then
+            sudo tmux capture-pane -p -t "$ss" | grep -q '^read test ended' || die "$ss already runs: '$0 readtest $row' checks, '$0 readtest $row stop' stops it"
+            sudo tmux kill-session -t "$ss"
+        fi
+        cmd=""; : >"$st.disks"
+        for nn in ${ROW[$row]}; do
+            d=$(awk -F, -v n="$nn" '$14 == n { print $4 }' "$PLAN")
+            [[ -n $d && -e $d ]] || { echo "$nn: missing, not read"; continue; }
+            b=$(basename "$(readlink -f "$d")")
+            echo "$nn $b $(awk '{ print $3 }' "$SYS/block/$b/stat")" >>"$st.disks"
+            cmd+="dd if=/dev/$b of=/dev/null bs=4M iflag=direct status=none & "
+        done
+        [[ -s $st.disks ]] || die "no disk of row $row is present"
+        date +%s >"$st.start"; rm -f "$st.last"
+        kernel_mark "migrate-row readtest $row start"
+        sudo tmux new-session -d -s "$ss" "${cmd}wait; echo 'read test ended; press enter'; read"
+        echo "row $row: $(wc -l <"$st.disks") disks being read in root's tmux session $ss"
+        echo "check: $0 readtest $row [SECONDS]   stop: $0 readtest $row stop"
+        ;;
+    check)
+        [[ -f $st.disks ]] || die "no read test of row $row was started"
+        every=${4:-0}
+        [[ $every =~ ^[0-9]+$ ]] || die "check takes seconds between checks"
+        while true; do
+            t0=$(cat "$st.start")
+            if ! sudo tmux has-session -t "$ss" 2>/dev/null; then state=stopped
+            elif sudo tmux capture-pane -p -t "$ss" | grep -q '^read test ended'; then state="ended (every disk read to its end, or the reads failed)"
+            else state=running; fi
+            # A disk the system lost has no counters any more: its last figures stand.
+            declare -A s1=() last=()
+            [[ -f $st.last ]] && while read -r nn v; do last[$nn]=$v; done <"$st.last"
+            while read -r nn b s0; do s1[$nn]=$(awk '{ print $3 }' "$SYS/block/$b/stat" 2>/dev/null || echo "${last[$nn]:-$s0}"); done <"$st.disks"
+            sleep 5
+            now=$(date +%s)
+            echo "$(date '+%T') read test row $row: $state, $(((now - t0) / 60)) min since $(date -d "@$t0" '+%F %T')"
+            : >"$st.last"
+            while read -r nn b s0; do
+                s2=$(awk '{ print $3 }' "$SYS/block/$b/stat" 2>/dev/null || echo "${s1[$nn]}")
+                echo "$nn $s2" >>"$st.last"
+                printf '    %s %-5s %5d MB/s now, %5d MB/s average, %7d GB read%s\n' "$nn" "$b" $(((s2 - s1[$nn]) * 512 / 5000000)) \
+                    $(((s2 - s0) * 512 / (now - t0) / 1000000)) $(((s2 - s0) * 512 / 1000000000)) \
+                    "$([[ -e $SYS/block/$b ]] || echo ', GONE: the system lost this disk')"
+            done <"$st.disks"
+            since=$(mktemp)
+            kernel_log | sed -n "/migrate-row readtest $row start/,\$p" >"$since"
+            echo "links since the start:"
+            # Only this box: the plan's other disks may be unplugged for the test.
+            MIG_DMESG=$since link_report | grep -v '^    missing from the system' | sed 's/since boot/since the start/' || true
+            rm -f "$since"
+            ((every > 0)) || break
+            sleep "$every"
+        done
+        ;;
+    stop)
+        if sudo tmux kill-session -t "$ss" 2>/dev/null; then echo "read test of row $row stopped"; else echo "no read test of row $row runs"; fi
+        ;;
+    *) die "readtest ROW [start | check [SECONDS] | stop]" ;;
+    esac
+    ;;
 extra)
     prepare
     LOG=$MIG/heal.log
@@ -1213,7 +1289,7 @@ good)
     done
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | recheck NN... | finish | add NN... | erase NN... | defer NN... | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | recheck NN... | finish | add NN... | erase NN... | defer NN... | readtest ROW [start|check [S]|stop] | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
