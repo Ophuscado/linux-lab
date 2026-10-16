@@ -30,3 +30,4 @@ Inventory the 32 disks: enclosure, slot, serial, volume, fill · check: disk-inv
 Authorize USB4 devices by udev rule so all four enclosures get tunnels · check: status lists 32 sata disks after a boot with the boxes attached and after replugs · waits: operator runs tbt-kernel.sh authorize on, replugs, reboots once with the boxes on
 ? Filesystem for the data disks · options: XFS on all 32 (one tool set, parity needs it anyway), or ext4 on data and XFS on parity · default: XFS on all
 Magic Mouse and middle-click paste on KDE · check: after ux-fix.sh on and a re-login, a centre click is left or right, a resting finger does not scroll, middle click pastes nothing · waits: operator runs ux-fix.sh on, reports
+Make recheck fast enough to wait for · check: two-row loop test finds the short copy and the double by size in under a second, the flipped byte with VERIFY=full

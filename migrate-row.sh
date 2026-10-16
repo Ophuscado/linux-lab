@@ -65,15 +65,17 @@
 #   migrate-row.sh stats [SECONDS]  the pool and each branch: fill, and MB/s read and
 #                                   written per disk over SECONDS (default 5)
 #   migrate-row.sh defer 28 ...     copy these disks last in their row (unstable link)
-#   migrate-row.sh recheck NN ...   (MIG_RECHECK_SINCE="YYYY-MM-DD HH:MM" and MIG_RECHECK_UNTIL
-#                                   limit it to pool files written in that window, the fault's
-#                                   last minutes: minutes instead of a day; in parallel:
-#                                   one per source, MIG_RECHECK_DUPS=0 on all but the first)
-#                                   after a disk or box fault during copies: files of these
-#                                   sources that exist in the pool are compared by checksum
-#                                   and a copy that differs, or that exists on two branches,
-#                                   is moved aside on its disk (.migrate-aside/), so the next
-#                                   pass rewrites it instead of skipping it. Nothing deleted.
+#   migrate-row.sh recheck NN ...   after a disk or box fault during copies: files of these
+#                                   sources that exist in the pool are compared, and a copy
+#                                   that differs, or that exists on two branches, is moved
+#                                   aside on its disk (.migrate-aside/), so the next pass
+#                                   rewrites it instead of skipping it. Nothing deleted.
+#                                   Whole sources: by checksum, takes a day. With
+#                                   MIG_RECHECK_SINCE="YYYY-MM-DD HH:MM" (and MIG_RECHECK_UNTIL)
+#                                   only the pool files written in that window, the fault's
+#                                   last minutes, by size (VERIFY=quick, the default) or by
+#                                   bytes (VERIFY=full); rows side by side. MIG_RECHECK_DUPS=0
+#                                   skips the two-branch pass (it walks every branch).
 #   migrate-row.sh finish           when every worker is done: checks all 32 disks are XFS,
 #                                   unmounts the migration pool and mounts; next is
 #                                   snapraid-setup.sh install, mount, first
@@ -281,6 +283,84 @@ pool_mount() {
 }
 
 pool_branches() { sudo getfattr -n user.mergerfs.branches --only-values "$POOL/.mergerfs" 2>/dev/null | sed 's|=RW||g; s|[^:]*/hd-||g; s|:| |g'; }
+
+# The row (A-D) a disk belongs to; ? if none.
+row_of() { local r; for r in "${!ROW[@]}"; do [[ " ${ROW[$r]} " == *" $1 "* ]] && { echo "$r"; return; }; done; echo '?'; }
+
+# walk_pool OUT FORMAT [find tests]: every regular file of every pool branch, as find -printf
+# "<branch>FORMAT" records into OUT, in branch order. One walk at a time per row (the
+# enclosure is the bottleneck, as for copying), the rows side by side. Returns 1, after
+# saying which branch, if a walk failed: its files are then missing from OUT.
+walk_pool() {
+    local out=$1 fmt=$2 r br tmp all rc=0; shift 2
+    all=$(pool_branches)
+    tmp=$(mktemp -d "$MIG/state/walk.XXXXXX")
+    for r in A B C D '?'; do
+        (   for br in $all; do
+                [[ $(row_of "$br") == "$r" ]] || continue
+                sudo find "$MIG/mnt/hd-$br" -xdev -type f ! -path '*/.migrate-aside/*' "$@" -printf "$br$fmt" >"$tmp/$br" 2>"$tmp/$br.err" \
+                    || : >"$tmp/$br.failed"
+            done
+        ) &
+    done
+    wait
+    for br in $all; do
+        if [[ -e $tmp/$br.failed ]]; then
+            log "WARN recheck: the walk of hd-$br failed ($(head -n 1 "$tmp/$br.err")); its files are not in this pass"
+            rc=1
+        fi
+        cat "$tmp/$br"
+    done >"$out"
+    rm -rf "$tmp"
+    return $rc
+}
+
+# recheck, one source: the pool files in the candidate list (records "<branch>\t<size>\t<path>\0")
+# whose path exists in the source and whose size differs, or with "full" whose bytes differ,
+# come out as "<branch>\t<path>\0". One process reads the list; no fork per file.
+read -r -d '' RECHECK_PY <<'PY' || true
+import os, stat, sys
+src, cand, mnt, mode = (os.fsencode(a) for a in sys.argv[1:5])
+full = mode == b"full"
+def same(a, b):
+    with open(a, "rb", buffering=0) as fa, open(b, "rb", buffering=0) as fb:
+        while True:
+            x, y = fa.read(1 << 20), fb.read(1 << 20)
+            if x != y:
+                return False
+            if not x:
+                return True
+out = sys.stdout.buffer
+total = checked = differ = unread = 0
+with open(cand, "rb") as fh:
+    records = fh.read().split(b"\0")
+for rec in records:
+    if not rec:
+        continue
+    total += 1
+    br, size, path = rec.split(b"\t", 2)
+    s = os.path.join(src, path)
+    try:
+        st = os.lstat(s)
+    except (FileNotFoundError, NotADirectoryError):
+        continue
+    except OSError as e:
+        sys.stderr.write("cannot read %r: %s\n" % (s, e)); unread += 1
+        continue
+    if not stat.S_ISREG(st.st_mode):
+        continue
+    checked += 1
+    try:
+        bad = st.st_size != int(size) or (full and not same(s, os.path.join(mnt, b"hd-" + br, path)))
+    except OSError as e:
+        sys.stderr.write("cannot compare %r: %s\n" % (s, e)); unread += 1
+        continue
+    if bad:
+        differ += 1
+        out.write(br + b"\t" + path + b"\0")
+sys.stderr.write("%d of %d pool files are in this source; %d differ, %d could not be read\n" % (checked, total, differ, unread))
+sys.exit(3 if unread else 0)
+PY
 
 # Add a freshly formatted bay $1 to the pool.
 pool_add() {
@@ -567,55 +647,73 @@ recheck)
     LOG=$MIG/recheck.log
     ! sudo tmux ls 2>/dev/null | grep -q '^mig-[A-D]-' || die "workers still run; sudo tmux kill-server first"
     pool_mount >/dev/null || die "no pool"
-    aside=0
+    aside=0; incomplete=0
     # 1. The same path on two branches: the copy on the branch that comes first in the pool
     #    hides the other. Both are kept; the first one goes aside, the next pass compares.
     # The two-branch pass is global; several rechecks at once (one per source, in parallel)
     # run it only in one of them: MIG_RECHECK_DUPS=0 in the others.
     if [[ ${MIG_RECHECK_DUPS:-1} == 1 ]]; then
     log "recheck: looking for paths present on two branches"
-    seen=$MIG/state/recheck.paths; : >"$seen"; prev=""; prevbr=""
-    for br in $(pool_branches); do
-        sudo find "$MIG/mnt/hd-$br" -xdev -type f ! -path '*/.migrate-aside/*' -printf "$br\t%P\n"
-    done | sort -t$'\t' -k2,2 -s >"$seen"
-    while IFS=$'\t' read -r br path; do
+    seen=$MIG/state/recheck.paths; prev=""; prevbr=""
+    walk_pool "$seen" '\t%P\0' || incomplete=1
+    while IFS= read -r -d '' rec; do
+        br=${rec%%$'\t'*}; path=${rec#*$'\t'}
         [[ $path == "$prev" ]] || { prev=$path; prevbr=$br; continue; }
         # second branch with the same path: move the earlier one (lower in branch order) aside
         to="$MIG/mnt/hd-$prevbr/.migrate-aside/dup/$path"
         sudo mkdir -p "$(dirname "$to")"; sudo mv "$MIG/mnt/hd-$prevbr/$path" "$to"
         log "recheck: '$path' on $prevbr and $br; the $prevbr copy moved aside"
         aside=$((aside + 1)); prev=$path; prevbr=$br
-    done < <(cat "$seen"; echo)
+    done < <(LC_ALL=C sort -z -s -t$'\t' -k2 "$seen")
     fi
     # 2. Checksum of every file of each source that has a copy in the pool; or, with
-    #    MIG_RECHECK_SINCE="YYYY-MM-DD HH:MM", only the pool files whose inode changed since then (rsync sets the times last, so a
-    #    file finished before SINCE is untouched; a dying disk only leaves short the files it wrote last).
+    #    MIG_RECHECK_SINCE="YYYY-MM-DD HH:MM", only the pool files whose inode changed since then
+    #    (rsync sets the times last, so a file finished before SINCE is untouched; a dying disk
+    #    only leaves short the files it wrote last). That one compares sizes (VERIFY=quick, the
+    #    default: XFS records a size only for data that reached the disk, so a lost write leaves
+    #    a short file) or, with VERIFY=full, bytes. Rows run side by side, a row's sources one
+    #    after the other.
     if [[ -n ${MIG_RECHECK_SINCE:-} ]]; then
-        cand=$MIG/state/recheck.recent; : >"$cand"
-        for br in $(pool_branches); do
-            sudo find "$MIG/mnt/hd-$br" -xdev -type f ! -path '*/.migrate-aside/*' -newerct "$MIG_RECHECK_SINCE" \
-                ${MIG_RECHECK_UNTIL:+! -newerct "$MIG_RECHECK_UNTIL"} -printf "$br\t%P\n"
-        done >"$cand"
-        log "recheck: $(wc -l <"$cand") pool files written between $MIG_RECHECK_SINCE and ${MIG_RECHECK_UNTIL:-now}; comparing those with their sources"
+        cand=$MIG/state/recheck.recent
+        win=(-newerct "$MIG_RECHECK_SINCE"); [[ -z ${MIG_RECHECK_UNTIL:-} ]] || win+=(! -newerct "$MIG_RECHECK_UNTIL")
+        walk_pool "$cand" '\t%s\t%P\0' "${win[@]}" || incomplete=1
+        log "recheck: $(tr -cd '\0' <"$cand" | wc -c) pool files written between $MIG_RECHECK_SINCE and ${MIG_RECHECK_UNTIL:-now}; comparing their $([[ $VERIFY == full ]] && echo bytes || echo sizes) with the sources"
+        declare -A parts chain
         for nn in "$@"; do
             [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
             part=$(part_of "$(disk_of "$nn")") || exit 1
             [[ $(fstype_of "$part") == "$SRC_FS" ]] || { log "recheck: $nn is not $SRC_FS any more, nothing to compare"; continue; }
-            src=$MIG/mnt/src-$nn
-            mount_at "$nn" "$part" "$src" ro
-            while IFS=$'\t' read -r br path; do
-                [[ -n $path && -f $src/$path ]] || continue
-                f="$MIG/mnt/hd-$br/$path"
-                [[ -f $f ]] || continue
-                sudo cmp -s "$src/$path" "$f" && continue
-                to="$MIG/mnt/hd-$br/.migrate-aside/$nn/$path"
-                sudo mkdir -p "$(dirname "$to")"; sudo mv "$f" "$to"
-                log "recheck: $nn: '$path' differs from the source; the $br copy moved aside"
-                aside=$((aside + 1))
-            done <"$cand"
-            sudo umount "$src"
+            parts[$nn]=$part; chain[$(row_of "$nn")]+=" $nn"
         done
+        tmp=$(mktemp -d "$MIG/state/recheck.XXXXXX")
+        for r in "${!chain[@]}"; do
+            (   moved=0
+                for nn in ${chain[$r]}; do
+                    src=$MIG/mnt/src-$nn
+                    mount_at "$nn" "${parts[$nn]}" "$src" ro
+                    rc=0; sudo python3 -I -c "$RECHECK_PY" "$src" "$cand" "$MIG/mnt" "$VERIFY" >"$tmp/bad.$nn" 2>"$tmp/info.$nn" || rc=$?
+                    while IFS= read -r line; do log "recheck: $nn: $line"; done <"$tmp/info.$nn"
+                    [[ $rc == 0 ]] || { log "WARN recheck: $nn: not every file could be checked (see above)"; : >"$tmp/incomplete.$nn"; }
+                    while IFS= read -r -d '' rec; do
+                        br=${rec%%$'\t'*}; path=${rec#*$'\t'}
+                        to="$MIG/mnt/hd-$br/.migrate-aside/$nn/$path"
+                        sudo mkdir -p "$(dirname "$to")"; sudo mv "$MIG/mnt/hd-$br/$path" "$to"
+                        log "recheck: $nn: '$path' differs from the source; the $br copy moved aside"
+                        moved=$((moved + 1))
+                    done <"$tmp/bad.$nn"
+                    sudo umount "$src"
+                done
+                echo "$moved" >"$tmp/done.$r"
+            ) &
+        done
+        wait
+        for r in "${!chain[@]}"; do
+            if [[ -f $tmp/done.$r ]]; then aside=$((aside + $(<"$tmp/done.$r"))); else log "WARN recheck: row $r stopped early; run it again"; incomplete=1; fi
+        done
+        compgen -G "$tmp/incomplete.*" >/dev/null && incomplete=1
+        rm -rf "$tmp"
         log "recheck: $aside copies moved aside; the next copy pass rewrites them. Remove .migrate-aside folders when the row is verified."
+        [[ $incomplete == 0 ]] || { log "WARN recheck: INCOMPLETE, some files were not checked; see the WARN lines"; exit 1; }
         exit 0
     fi
     for nn in "$@"; do
