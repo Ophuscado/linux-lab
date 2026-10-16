@@ -241,6 +241,14 @@ same way ("1st FIS failed", IDENTIFY timeouts). So neither a re-probe of the con
 power cycle of the drives clears it; the one part never power-cycled is the bridge and SATA
 controller, which stay powered from the Mac's port when the box's supply is cycled.
 
+16 Oct, about 15:10 (kernel uptime 4670 s, boot 13:55): box C down again about an hour after the
+workers restarted. ata27 (disk 15, port 0) cycles "SATA link down (SStatus 1)" every 2 s with
+"EH pending after 5 tries, giving up"; the other seven disks of box C reject every command
+(DID_BAD_TARGET). OBSERVED. Disk 15 is the common factor: at 04:27 the first failure was 32
+queued writes to it timing out, now its port is the one that never links. As a pool branch it
+takes about a fifth of all new files. INFERRED: disk 15 or its bay hangs box C's controller under
+write load; boxes B and D run the same controller model without a fault.
+
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
 
