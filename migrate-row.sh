@@ -500,6 +500,38 @@ walk_pool() {
     return $rc
 }
 
+# Flush to disk the pool copies of one source's files (paths relative to the source, "\0"-ended,
+# on stdin): an fsync per file, through the pool to the branch that holds it. On XFS the fsync
+# also commits the file's directory entry, which sits in the same log. Paths the pool lacks
+# (volume files never copied) are counted, not errors.
+read -r -d '' FLUSH_PY <<'PY' || true
+import os, sys
+pool = os.fsencode(sys.argv[1])
+done = absent = failed = 0
+for rel in sys.stdin.buffer.read().split(b"\0"):
+    if not rel:
+        continue
+    try:
+        fd = os.open(os.path.join(pool, rel), os.O_RDONLY | os.O_NOFOLLOW)
+    except FileNotFoundError:
+        absent += 1
+        continue
+    except OSError as e:
+        print("cannot open %s: %s" % (os.fsdecode(rel), e.strerror), file=sys.stderr)
+        failed += 1
+        continue
+    try:
+        os.fsync(fd)
+        done += 1
+    except OSError as e:
+        print("fsync %s: %s" % (os.fsdecode(rel), e.strerror), file=sys.stderr)
+        failed += 1
+    finally:
+        os.close(fd)
+print("%d files flushed, %d not in the pool, %d failed" % (done, absent, failed))
+sys.exit(1 if failed else 0)
+PY
+
 # recheck, one source: the pool files in the candidate list (records "<branch>\t<size>\t<path>\0")
 # whose path exists in the source and whose size differs, or with "full" whose bytes differ,
 # come out as "<branch>\t<path>\0". One process reads the list; no fork per file.
@@ -590,7 +622,7 @@ reserve_room() {
 
 # $1 row, $2 source name: copy the source into the pool.
 copy_disk() {
-    local nn=$2 src dst s pass rc dropped
+    local nn=$2 src dst s pass rc dropped flushed
     src=$MIG/mnt/src-$nn
     dst=$POOL
     s=$(part_of "$(disk_of "$nn")") || exit 1
@@ -622,7 +654,13 @@ copy_disk() {
         [[ $rc == 23 || $rc == 24 ]] || die "$nn>pool: rsync failed (code $rc); see $LOG. Source untouched."
     done
     [[ $rc == 0 ]] || die "$nn>pool: files could not be copied after three passes; see $LOG. Source untouched."
-    sync
+    # Only this source's copies: a global sync also waits for every other writer (the other
+    # workers, disk 33) and held row D for hours on 16 Oct. The source may be formatted once
+    # verified, so its copies must be on disk first.
+    log "$nn>pool: flushing its copies to disk"
+    flushed=$(sudo find "$src" -xdev -type f -printf '%P\0' | sudo python3 -I -c "$FLUSH_PY" "$dst" 2>>"$LOG") ||
+        die "$nn>pool: some copies could not be flushed ($flushed); see $LOG. Source untouched."
+    log "$nn>pool: $flushed"
     log "$nn>pool: copy done; pool has $(pool_avail) free"
 }
 

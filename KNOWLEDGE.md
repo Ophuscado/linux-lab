@@ -40,6 +40,7 @@ recheck before relying on one for anything consequential.
 - [What macOS the m1n1 hypervisor wants](#what-macos-the-m1n1-hypervisor-wants)
 - [Final disk layout: pool and SnapRAID](#final-disk-layout-pool-and-snapraid)
 - [SATA errors in the enclosures were a missing earth](#sata-errors-in-the-enclosures-were-a-missing-earth)
+- [A global sync in a worker waits for every writer](#a-global-sync-in-a-worker-waits-for-every-writer)
 - [rsync --no-inc-recursive copies nothing until the whole tree is listed](#rsync---no-inc-recursive-copies-nothing-until-the-whole-tree-is-listed)
 
 ## Stock kernel has no Apple USB4 host
@@ -300,6 +301,14 @@ again (a reboot), when NCQ comes back.
 millisecond: ata16 (15, a single write without NCQ, `RecovData Handshk`) and ata14 (13, queued
 reads, SError 0). OBSERVED. Two ports at once points at something they share, the controller or
 the box's supply, more than at disk 15 alone (INFERRED).
+
+## A global sync in a worker waits for every writer
+
+2026-10-16, OBSERVED: row D's worker finished rsync pass 1 of disk 19 at 18:53 and was still in
+`sync` (state D) at 21:30, 2 h 36 min later, with 18 GB dirty and 175 MB under writeback, while
+three other workers and disk 33 kept writing. sync(2) flushes and waits for every filesystem,
+so a worker's sync is held by everyone else's writes. Since then a worker fsyncs only its own
+source's copies (one fsync per file through the pool) before verify.
 
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
