@@ -240,7 +240,9 @@ link_report() {
         awk -F'\t' '{ st[$1] = $2; t[$1] = $3 } END { for (a in st) if (st[a] == "disable") print a "\t" t[a] }' | sort -V)
     while IFS=$'\t' read -r cnt ata last; do
         echo "    $(ata_name "$ata") ($ata): $cnt link errors since boot, last $last"; n=$((n + 1))
+    # "link down (SStatus 0" alone is an empty bay at probe time; a disk that drops says more.
     done < <(kernel_log | grep -E '\] ata[0-9]+(\.[0-9]+)?: .*(BadCRC|Handshk|timeout|failed to IDENTIFY|exception Emask|hard resetting link|link down|limiting SATA link speed)' |
+        grep -v 'SATA link down (SStatus 0 ' |
         sed -E 's/^\[([^]]*)\] (ata[0-9]+)[.:].*/\2\t\1/' |
         awk -F'\t' '{ n[$1]++; last[$1] = $2 } END { for (a in n) print n[a] "\t" a "\t" last[a] }' | sort -rn | head -n 12)
     while IFS=$'\t' read -r cnt dev last; do
