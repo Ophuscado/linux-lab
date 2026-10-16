@@ -234,6 +234,13 @@ host is the first FIS ("softreset failed (1st FIS failed)") and the IDENTIFY dat
 controller writes to memory by DMA: the controller or its DMA path through the tunnel is stuck,
 the same for all eight ports, and a reboot resets it (INFERRED).
 
+13:02, box C's PCI devices removed through sysfs (000a:01:00.0): this time the ASM2464 did not
+come back by itself (unlike 11 Oct); a PCI rescan at 13:03 brought bridge and controller back
+and ahci probed cleanly (9 ports, the empty port 6 link down), but the eight disks failed the
+same way ("1st FIS failed", IDENTIFY timeouts). So neither a re-probe of the controller nor a
+power cycle of the drives clears it; the one part never power-cycled is the bridge and SATA
+controller, which stay powered from the Mac's port when the box's supply is cycled.
+
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
 
