@@ -213,6 +213,14 @@ link_report() {
         [[ -e $byid ]] || miss+="$name (domain $dom port $port) "
     done < <(tail -n +2 "$PLAN")
     echo "    missing from the system: ${miss:-none}${miss:+ ('rescan' looks for them again)}"
+    # A port whose disk failed to answer through all of libata's retries is disabled: the disk may
+    # still show in /dev, but every command to it fails at once. "configured for" after it means
+    # the port came back.
+    while IFS=$'\t' read -r ata last; do
+        echo "    $(ata_name "$ata") ($ata): disabled by the kernel since $last; nothing reaches it until 'rescan' or a reboot"; n=$((n + 1))
+    done < <(kernel_log | grep -E '\] ata[0-9]+\.[0-9]+: (disable device|configured for)' |
+        sed -E 's/^\[([^]]*)\] (ata[0-9]+)\.[0-9]+: (disable|configured).*/\2\t\3\t\1/' |
+        awk -F'\t' '{ st[$1] = $2; t[$1] = $3 } END { for (a in st) if (st[a] == "disable") print a "\t" t[a] }' | sort -V)
     while IFS=$'\t' read -r cnt ata last; do
         echo "    $(ata_name "$ata") ($ata): $cnt link errors since boot, last $last"; n=$((n + 1))
     done < <(kernel_log | grep -E '\] ata[0-9]+(\.[0-9]+)?: .*(BadCRC|Handshk|timeout|failed to IDENTIFY|exception Emask|hard resetting link|link down|limiting SATA link speed)' |
