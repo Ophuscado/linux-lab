@@ -642,6 +642,9 @@ run_row() {
 
 # ---- front ------------------------------------------------------------------------------
 
+# A worker's tmux session outlives it: it ends in "worker ended; press enter".
+worker_ended() { sudo tmux capture-pane -p -t "$1" 2>/dev/null | grep -q '^worker ended; press enter'; }
+
 need_row() { [[ -n ${1:-} && -n ${ROW[$1]:-} ]] || die "row must be A, B, C or D"; }
 
 prepare() {
@@ -940,8 +943,13 @@ start)
     [[ $n =~ ^[1-4]$ ]] || die "workers: 1 to 4"
     for i in $(seq 1 "$n"); do
         if sudo tmux has-session -t "mig-$2-$i" 2>/dev/null; then
-            echo "worker mig-$2-$i is already running"
-            continue
+            if worker_ended "mig-$2-$i"; then
+                sudo tmux kill-session -t "mig-$2-$i"
+                echo "worker mig-$2-$i had ended; its session is replaced"
+            else
+                echo "worker mig-$2-$i is already running"
+                continue
+            fi
         fi
         # The worker holds a sleep inhibitor: a suspend would drop the tunnels mid-copy.
         inhibit=""; sudo systemd-inhibit --what=sleep:idle --who=migrate-row --why=probe true 2>/dev/null && inhibit="systemd-inhibit --what=sleep:idle --who=migrate-row --why='row $2 copying'"
@@ -957,15 +965,18 @@ status)
     for row in A B C D; do
         n=0; done_n=0
         for nn in ${ROW[$row]}; do n=$((n + 1)); grep -qs "^$nn -> " "$MIG/state/placement.txt" && done_n=$((done_n + 1)); done
-        # A worker that died leaves its tmux session open ("press enter"); a live copy holds a claim
-        # whose pid exists.
+        # A live copy holds a claim whose pid exists.
+        run=0; ended=0
+        for ss in $(sudo tmux ls -F '#S' 2>/dev/null | grep "^mig-$row-" || true); do
+            if worker_ended "$ss"; then ended=$((ended + 1)); else run=$((run + 1)); fi
+        done
         busy=""
         for nn in ${ROW[$row]}; do
             p=$(cat "$MIG/state/claim-$nn/pid" 2>/dev/null || true)
             [[ -n $p && -d /proc/$p ]] && busy+="$nn "
         done
-        printf 'row %s: %d of %d disks copied; tmux sessions: %s; busy now: %s\n' "$row" "$done_n" "$n" \
-            "$(sudo tmux ls 2>/dev/null | grep -c "^mig-$row-" || true)" "${busy:-none}"
+        printf 'row %s: %d of %d disks copied; workers: %d running, %d ended; busy now: %s\n' "$row" "$done_n" "$n" \
+            "$run" "$ended" "${busy:-none}"
         [[ -f $MIG/$row.log ]] && grep -E "^[0-9]{4}-" "$MIG/$row.log" | tail -n 1 | sed "s/^/    /"
     done
     [[ -f $MIG/state/placement.txt ]] && { echo "placement:"; sed 's/^/    /' "$MIG/state/placement.txt"; }
