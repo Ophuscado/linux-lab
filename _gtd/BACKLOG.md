@@ -6,4 +6,4 @@ Drop the DEBUG cable_info_or commit from the branch once cable handling is settl
 Let the USB4 link to the enclosure use its low-power states, which the log shows as supported on one end only · check: capture shows CLx enabled and idle power with the enclosure attached drops below 27 W
 Four-finger trackpad gestures need a longer swipe than three-finger ones · check: threshold found in KWin source and a local patch or a setting; no setting exists today
 After the migration: data maintenance on the pool: mergerfs.dedup/consolidate/balance (mergerfs-tools), per-disk duperemove (XFS reflinks), xfs_fsr; check: snapraid sync clean afterwards
-List the rsync temp leftovers (.name.XXXXXX) that killed or faulted copies left in the pool and set them aside · check: find -name '.*.??????' shows none outside .migrate-aside, or only real dotfiles
+Find rsync temp files that killed copies left in the pool: temp-like names (.name.XXXXXX) that no source holds; never by name alone, sources hold such files themselves · check: list from a comparison with the sources, nothing moved without a look

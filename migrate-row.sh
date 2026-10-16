@@ -294,7 +294,7 @@ row_of() { local r; for r in "${!ROW[@]}"; do [[ " ${ROW[$r]} " == *" $1 "* ]] &
 walk_pool() {
     local out=$1 fmt=$2 r br tmp all rc=0; shift 2
     all=$(pool_branches)
-    tmp=$(mktemp -d "$MIG/state/walk.XXXXXX")
+    tmp=$(mktemp -d "$MIG/state/walk.XXXXXX"); walktmp=$tmp
     for r in A B C D '?'; do
         (   for br in $all; do
                 [[ $(row_of "$br") == "$r" ]] || continue
@@ -311,7 +311,7 @@ walk_pool() {
         fi
         cat "$tmp/$br"
     done >"$out"
-    rm -rf "$tmp"
+    rm -rf "$tmp"; walktmp=""
     return $rc
 }
 
@@ -643,8 +643,26 @@ recheck)
     # same disk; the log says which. Sources must be idle (no worker running).
     shift
     [[ $# -gt 0 ]] || die "recheck needs source names, e.g. recheck 26 27 02 05 10 13 18 19 20"
+    if [[ $EUID != 0 ]]; then
+        # A long run: as root, so that no sudo ticket runs out under it (a byte compare outlasts
+        # the 5 minutes) and so that Ctrl-C reaches every process of it.
+        envs=(HOME="$HOME" MIG_HOME="$MIG" MIG_PLAN="$PLAN" MIG_SRC_FS="$SRC_FS" MIG_EMPTY_LIMIT="$EMPTY_LIMIT"
+            MIG_MINFREE="$MINFREE" MIG_CREATE="$CREATE" MIG_MERGERFS="$MERGERFS" MIG_WAIT="$WAIT" VERIFY="$VERIFY")
+        for v in MIG_RECHECK_SINCE MIG_RECHECK_UNTIL MIG_RECHECK_DUPS; do [[ -z ${!v+x} ]] || envs+=("$v=${!v}"); done
+        exec sudo env "${envs[@]}" bash "$0" recheck "$@"
+    fi
     prepare
     LOG=$MIG/recheck.log
+    # Ctrl-C (or a closed terminal): stop every process of this run, which the background jobs
+    # would otherwise outlive, and let go of the sources.
+    declare -A parts chain
+    stop() {
+        trap '' INT TERM HUP; kill -TERM 0 2>/dev/null; sleep 1
+        for nn in "${!parts[@]}"; do umount "$MIG/mnt/src-$nn" 2>/dev/null || true; done
+        [[ -z ${walktmp:-} ]] || rm -rf "$walktmp"; [[ -z ${tmp:-} ]] || rm -rf "$tmp"
+        log "recheck: interrupted"; exit 130
+    }
+    trap stop INT TERM HUP
     ! sudo tmux ls 2>/dev/null | grep -q '^mig-[A-D]-' || die "workers still run; sudo tmux kill-server first"
     pool_mount >/dev/null || die "no pool"
     aside=0; incomplete=0
@@ -678,7 +696,6 @@ recheck)
         win=(-newerct "$MIG_RECHECK_SINCE"); [[ -z ${MIG_RECHECK_UNTIL:-} ]] || win+=(! -newerct "$MIG_RECHECK_UNTIL")
         walk_pool "$cand" '\t%s\t%P\0' "${win[@]}" || incomplete=1
         log "recheck: $(tr -cd '\0' <"$cand" | wc -c) pool files written between $MIG_RECHECK_SINCE and ${MIG_RECHECK_UNTIL:-now}; comparing their $([[ $VERIFY == full ]] && echo bytes || echo sizes) with the sources"
-        declare -A parts chain
         for nn in "$@"; do
             [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
             part=$(part_of "$(disk_of "$nn")") || exit 1
