@@ -40,6 +40,7 @@ recheck before relying on one for anything consequential.
 - [What macOS the m1n1 hypervisor wants](#what-macos-the-m1n1-hypervisor-wants)
 - [Final disk layout: pool and SnapRAID](#final-disk-layout-pool-and-snapraid)
 - [SATA errors in the enclosures were a missing earth](#sata-errors-in-the-enclosures-were-a-missing-earth)
+- [rsync --no-inc-recursive copies nothing until the whole tree is listed](#rsync---no-inc-recursive-copies-nothing-until-the-whole-tree-is-listed)
 
 ## Stock kernel has no Apple USB4 host
 7.1.13-402.asahi.fc44: `CONFIG_USB4=y` is the PCI driver only; no Apple code under `drivers/thunderbolt`, no USB4 device-tree nodes (source at tag `asahi-7.1.13-3`). A USB4 partner leaves the port at USB2: `ATCPHY_PIPEHANDLER_STATE_USB4 not implemented; falling back to USB2`. 2026-10-11.
@@ -207,3 +208,13 @@ tingle at once. The error rate under load afterwards is the proof still to colle
 tingle gone; error counts INFERRED). Rule kept: Mac and boxes on one strip, three pins all
 the way; `libata.force=3.0G` only if errors remain at 6 Gbps.
 
+
+## rsync --no-inc-recursive copies nothing until the whole tree is listed
+
+2026-10-16. HD_33 (18 TB HFS+ on USB 2, the Linux hfsplus driver, millions of small git
+clones) ran for hours with `--no-inc-recursive -AX` and had not copied one file: the log
+was still listing `context7/co...`, early in an alphabetic walk of one directory. The flag
+gives an exact progress total at the price of listing everything first, which is cheap on a
+SATA bay and days on a slow disk with many small files. Without it rsync copies as it
+lists. OBSERVED nothing copied after hours; the cause is INFERRED until a restart without
+the flag shows a progress line.
