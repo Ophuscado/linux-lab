@@ -249,6 +249,14 @@ queued writes to it timing out, now its port is the one that never links. As a p
 takes about a fifth of all new files. INFERRED: disk 15 or its bay hangs box C's controller under
 write load; boxes B and D run the same controller model without a fault.
 
+Both failures ran with the disks' standby timer at 1, then 3 idle minutes (`tbt-kernel.sh
+spindown`, all 32 disks; the operator, OBSERVED), and status showed most disks in standby
+during the copy. The pool spreads new files over its branches, so each branch idles for minutes
+and wakes again: many spin-ups an hour, each one the largest current a drive draws and seconds
+in which it answers nothing. A weak power contact on 15 fails first at such a moment; the 32
+writes to 15 that timed out at 04:27 fit a drive that did not come back. INFERRED. Spin-down
+stays off until the rows are done.
+
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
 
