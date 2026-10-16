@@ -50,7 +50,7 @@ clean system, builds and installs the kernel and installs what the measuring scr
 - `ux-fix.sh`: Magic Mouse without false middle clicks or drift scrolls; no middle-click paste.
 - `disk-blink.sh`: make one disk blink to find it in the box.
 - `disk-inventory.sh`: map every enclosure disk to row, slot, serial and volume fill.
-- `migrate-row.sh`: move the four rows of disks from HFS+ into one XFS pool, disk by disk, verified, leaving the parity disks empty.
+- `migrate-row.sh`: move the four rows of disks from HFS+ into one XFS pool, disk by disk, verified, leaving the parity disks empty; a pool disk that stops answering is dropped and the copy goes on.
 - `snapraid-setup.sh`: the final layout after the migration: mounts by label, the mergerfs pool, SnapRAID with four parity disks.
 - `power-dump.sh`: record power sensors, link power states and disk settings before tuning.
 - `netlog.sh`: send kernel messages to a second computer, so a freeze leaves a log.

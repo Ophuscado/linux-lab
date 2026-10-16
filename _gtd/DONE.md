@@ -31,3 +31,4 @@ Authorize USB4 devices by udev rule so all four enclosures get tunnels · check:
 ? Filesystem for the data disks · options: XFS on all 32 (one tool set, parity needs it anyway), or ext4 on data and XFS on parity · default: XFS on all
 Magic Mouse and middle-click paste on KDE · check: after ux-fix.sh on and a re-login, a centre click is left or right, a resting finger does not scroll, middle click pastes nothing · waits: operator runs ux-fix.sh on, reports
 Make recheck fast enough to wait for · check: two-row loop test finds the short copy and the double by size in under a second, the flipped byte with VERIFY=full
+Keep the row workers alive when a pool disk dies · check: loop test with a branch shut down before and during a copy: the worker drops it, finishes, all 18 checksums match, 'good' puts it back

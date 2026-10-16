@@ -65,6 +65,12 @@
 #   migrate-row.sh stats [SECONDS]  the pool and each branch: fill, and MB/s read and
 #                                   written per disk over SECONDS (default 5)
 #   migrate-row.sh defer 28 ...     copy these disks last in their row (unstable link)
+#   migrate-row.sh heal             try a write on every pool branch; drop (and mark bad) those
+#                                   that fail. Workers do this at each copy and after a failed
+#                                   pass, so a dead disk costs a rerun, not the worker.
+#   migrate-row.sh bad 15 ...       take these bays out of the pool by hand (they stay out after
+#                                   a restart); good 15 ... puts them back. Files they held are
+#                                   copied again from the sources, which are still there.
 #   migrate-row.sh recheck NN ...   after a disk or box fault during copies: files of these
 #                                   sources that exist in the pool are compared, and a copy
 #                                   that differs, or that exists on two branches, is moved
@@ -157,8 +163,10 @@ mount_at() {
 }
 
 # Bytes used / available on a mounted filesystem.
-used_at() { df -B1 --output=used "$1" | tail -n 1 | tr -d ' '; }
-avail_at() { df -B1 --output=avail "$1" | tail -n 1 | tr -d ' '; }
+# df looks at every mount to find the one of its argument and exits 1, with an error, if one of
+# them (a dead branch) answers EIO; the number it prints for the argument is still right.
+used_at() { { df -B1 --output=used "$1" 2>/dev/null || true; } | tail -n 1 | tr -d ' '; }
+avail_at() { { df -B1 --output=avail "$1" 2>/dev/null || true; } | tail -n 1 | tr -d ' '; }
 
 # $1 name: "src USED" (still on HFS+), "xfs USED AVAIL" (formatted by us), or "other TYPE".
 # Mounts the volume read-only for the figures and unmounts it again.
@@ -252,6 +260,7 @@ branches_of() {
     for row in $rows; do
         for mm in ${ROW[$row]}; do
             [[ $mm == "${PARITY[$row]}" ]] && continue
+            [[ -e $MIG/state/$mm.bad ]] && continue # found dead: out of the pool until 'good'
             # Type and label only: no mount, so 32 cold disks do not each spin up for a look.
             part=$(part_of "$(disk_of "$mm")") || exit 1
             [[ $(fstype_of "$part") == xfs && $(label_of "$part") == "HD_$mm" ]] && echo "$mm"
@@ -283,6 +292,43 @@ pool_mount() {
 }
 
 pool_branches() { sudo getfattr -n user.mergerfs.branches --only-values "$POOL/.mergerfs" 2>/dev/null | sed 's|=RW||g; s|[^:]*/hd-||g; s|:| |g'; }
+
+# A bay found dead (state/NN.bad) stays out of the pool, also after a restart, until 'good NN'.
+mark_bad() {
+    touch "$MIG/state/$1.bad"
+    sudo setfattr -n user.mergerfs.branches -v "-$MIG/mnt/hd-$1" "$POOL/.mergerfs" 2>/dev/null || true
+    # Detached (lazily: a dead disk hangs a plain umount), so that df and mkdir stop stumbling on it.
+    sudo umount -l "$MIG/mnt/hd-$1" 2>/dev/null || true
+}
+
+# Does branch $1 take a write? A create and remove at its root, 60 s at most (MIG_PROBE): a dead
+# disk leaves the call hanging, so it runs in the background and is abandoned, not waited for.
+# A branch that is not mounted fails too: a write there would land on the system disk.
+branch_ok() {
+    local f="$MIG/mnt/hd-$1/.probe.$$" pid i
+    findmnt -n "$MIG/mnt/hd-$1" >/dev/null || return 1
+    ( sudo sh -c ": >'$f' && rm -f '$f'" ) 2>/dev/null &
+    pid=$!
+    for ((i = 0; i < ${MIG_PROBE:-60}; i++)); do
+        kill -0 "$pid" 2>/dev/null || { wait "$pid"; return; }
+        sleep 1
+    done
+    return 1
+}
+
+# Drop every pool branch that does not take a write. A dead branch fails each create the pool
+# places on it (EIO), so a pass ends with errors for as many files as it got. New files then go
+# to the others, and the files it held are copied again by the next pass (the sources are still
+# there). Returns 0 if a branch was dropped.
+heal_pool() {
+    local br dropped=1
+    for br in $(pool_branches); do
+        branch_ok "$br" && continue
+        log "WARN branch hd-$br does not take a write: out of the pool, marked bad ($MIG/state/$br.bad); 'good $br' puts it back"
+        mark_bad "$br"; dropped=0
+    done
+    return $dropped
+}
 
 # The row (A-D) a disk belongs to; ? if none.
 row_of() { local r; for r in "${!ROW[@]}"; do [[ " ${ROW[$r]} " == *" $1 "* ]] && { echo "$r"; return; }; done; echo '?'; }
@@ -405,7 +451,7 @@ reserve_room() {
 
 # $1 row, $2 source name: copy the source into the pool.
 copy_disk() {
-    local nn=$2 src dst s pass rc
+    local nn=$2 src dst s pass rc dropped
     src=$MIG/mnt/src-$nn
     dst=$POOL
     s=$(part_of "$(disk_of "$nn")") || exit 1
@@ -413,8 +459,10 @@ copy_disk() {
     findmnt -n "$dst" >/dev/null || die "pool is not mounted"
     mount_at "$nn" "$s" "$src" ro
     log "$nn>pool: copying $(used_at "$src") bytes from $s; pool has $(pool_avail) free"
-    for pass in 1 2 3; do
-        rc=0
+    heal_pool || true
+    pass=0
+    while ((pass < 3)); do
+        pass=$((pass + 1)); rc=0
         # Extended attributes: all but system.* and the Apple ones (osx.*: Finder info,
         # quarantine, provenance, Spotlight metadata), which the hfsplus driver lists under
         # truncated names it cannot read back; security.* (SELinux labels) on the XFS side
@@ -425,6 +473,13 @@ copy_disk() {
         # 23/24: some files could not be read or vanished; those are listed in the log.
         log "$nn>pool: rsync pass $pass finished with code $rc"
         [[ $rc == 0 ]] && break
+        # A branch that stopped answering fails the creates placed on it: 23, or 11 when it dies
+        # mid-file. Drop it and run the pass again (a repair does not use up one of the three).
+        dropped=""; heal_pool && dropped=1
+        if [[ -n $dropped ]]; then
+            [[ -n $(pool_branches) ]] || die "$nn>pool: no pool branch takes a write; see $LOG. Source untouched."
+            pass=$((pass - 1)); continue
+        fi
         [[ $rc == 23 || $rc == 24 ]] || die "$nn>pool: rsync failed (code $rc); see $LOG. Source untouched."
     done
     [[ $rc == 0 ]] || die "$nn>pool: files could not be copied after three passes; see $LOG. Source untouched."
@@ -517,6 +572,7 @@ formattable_of() {
     for row in "$1" A B C D; do
         for nn in ${ROW[$row]}; do
             [[ $nn == "${PARITY[$row]}" ]] && continue
+            [[ -e $MIG/state/$nn.bad ]] && continue
             claimed "$nn" && continue
             if [[ -f $MIG/state/$nn.copied ]] && [[ $(disk_state "$nn") == src* ]]; then
                 echo "$nn"
@@ -524,13 +580,14 @@ formattable_of() {
             fi
         done
     done
-    [[ -f $MIG/state/row-$1.started ]] || echo "${ROW[$1]##* }"
+    [[ -f $MIG/state/row-$1.started || -e $MIG/state/${ROW[$1]##* }.bad ]] || echo "${ROW[$1]##* }"
 }
 
 # One worker: rounds until no source is left.
 run_row() {
     local row=$1 src used tgt need line
     pool_mount >/dev/null 2>&1 || true
+    heal_pool || true
     while true; do
         line=$(sources_of "$row" | head -n 1)
         if [[ -z $line ]]; then
@@ -900,8 +957,15 @@ status)
     for row in A B C D; do
         n=0; done_n=0
         for nn in ${ROW[$row]}; do n=$((n + 1)); grep -qs "^$nn -> " "$MIG/state/placement.txt" && done_n=$((done_n + 1)); done
-        printf 'row %s: %d of %d disks copied; workers running: %s\n' "$row" "$done_n" "$n" \
-            "$(sudo tmux ls 2>/dev/null | grep -c "^mig-$row-" || true)"
+        # A worker that died leaves its tmux session open ("press enter"); a live copy holds a claim
+        # whose pid exists.
+        busy=""
+        for nn in ${ROW[$row]}; do
+            p=$(cat "$MIG/state/claim-$nn/pid" 2>/dev/null || true)
+            [[ -n $p && -d /proc/$p ]] && busy+="$nn "
+        done
+        printf 'row %s: %d of %d disks copied; tmux sessions: %s; busy now: %s\n' "$row" "$done_n" "$n" \
+            "$(sudo tmux ls 2>/dev/null | grep -c "^mig-$row-" || true)" "${busy:-none}"
         [[ -f $MIG/$row.log ]] && grep -E "^[0-9]{4}-" "$MIG/$row.log" | tail -n 1 | sed "s/^/    /"
     done
     [[ -f $MIG/state/placement.txt ]] && { echo "placement:"; sed 's/^/    /' "$MIG/state/placement.txt"; }
@@ -911,11 +975,43 @@ status)
     else
         echo "    not mounted"
     fi
+    bad=$(cd "$MIG/state" 2>/dev/null && ls ./*.bad 2>/dev/null | sed 's|^\./||; s|\.bad$||' | tr '\n' ' ' || true)
+    [[ -z $bad ]] || echo "bad (out of the pool, 'good NN' puts one back): $bad"
     echo "mounted:"
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;
+heal)
+    prepare
+    LOG=$MIG/heal.log
+    pool_mount >/dev/null || die "no pool"
+    if heal_pool; then echo "pool now: $(pool_branches)"; else echo "every branch takes a write: $(pool_branches)"; fi
+    ;;
+bad)
+    shift
+    [[ $# -gt 0 ]] || die "bad needs disk names, e.g. bad 15"
+    prepare
+    LOG=$MIG/heal.log
+    for nn in "$@"; do
+        [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
+        mark_bad "$nn"
+        log "disk $nn marked bad: out of the pool until 'good $nn'"
+    done
+    findmnt -n "$POOL" >/dev/null && echo "pool now: $(pool_branches)"
+    ;;
+good)
+    shift
+    [[ $# -gt 0 ]] || die "good needs disk names, e.g. good 15"
+    prepare
+    LOG=$MIG/heal.log
+    pool_mount >/dev/null || die "no pool"
+    for nn in "$@"; do
+        [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
+        rm -f "$MIG/state/$nn.bad"
+        pool_add "$nn"
+    done
+    ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | recheck NN... | finish | add NN... | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | heal | bad NN... | good NN... | recheck NN... | finish | add NN... | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
