@@ -215,6 +215,18 @@ still failed reads at 11:26. The earth was not the whole cause; heat or the supp
 sustained load are the next candidates, and the failing port is in the disk-plan by domain and
 port.
 
+The whole of box C, not one disk (kernel log, boot at 22:46:46 on 15 Oct). 04:27:01 ata32 (09)
+resets; 04:27:20 all 32 queued writes to ata27 (15) time out; then every port of the box in
+turn: the link comes up ("slow to respond", ready=0), the disk never answers IDENTIFY (5, 10,
+30 s), the link drops to 1.5 Gbps, the port is disabled: ata27 04:28:46 (row C's rsync 11 at
+04:28:56), then 31, 32, 30, 29, 35, 34, 28 until 04:46. libata handles the ports of one
+controller one at a time, so a single event reads as a 17-minute cascade. The disks keep their
+/dev names and fail every command (DID_BAD_TARGET). At 12:27 a rescan of the reseated 15 gave
+the same: link up, never ready. OBSERVED. A disk with link but never ready is what logic power
+without spin power looks like: a supply fault for the whole box (its 12 V, the PSU, or the
+feed to the drives), INFERRED. Ports: 15=ata27, 10=28, 08=29, 14=30, 13=31, 09=32, 12=34,
+11=35 on this boot.
+
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
 
