@@ -233,6 +233,7 @@ link_report() {
     # still show in /dev, but every command to it fails at once. "configured for" after it means
     # the port came back.
     while IFS=$'\t' read -r ata last; do
+        [[ -e $SYS/class/ata_port/$ata ]] || continue # the port itself went away (the box re-enumerated)
         echo "    $(ata_name "$ata") ($ata): disabled by the kernel since $last; nothing reaches it until 'rescan' or a reboot"; n=$((n + 1))
     done < <(kernel_log | grep -E '\] ata[0-9]+\.[0-9]+: (disable device|configured for)' |
         sed -E 's/^\[([^]]*)\] (ata[0-9]+)\.[0-9]+: (disable|configured).*/\2\t\3\t\1/' |
