@@ -278,9 +278,10 @@ source, and a source is formatted only after its verify, which reads the pool wi
 
 17:46-17:55, after the operator swapped box C's internal data wires (which ones: UNKNOWN), box C
 alone, `readtest C`: all eight disks link, disk 14 in bay 0 among them, each read at 210 MB/s
-(1.68 GB/s in all, the box's ceiling) with no link error in 9 min. OBSERVED. So bay 0's link
-failure went with the wire swap; a data connector not fully home, reseated by it, is the likely
-cause (INFERRED: a bad cable would have taken its errors to its new bay).
+(1.68 GB/s in all, the box's ceiling) with no link error in 9 min. OBSERVED. The "wire swap"
+was bay 0's cable moved to another port of the controller board (the operator; which port
+UNKNOWN). So bay 0's link failure was the board's port 0 or the cable's seat in it (INFERRED);
+the same kind of fault on another board port fits disk 15's write errors below.
 
 18:15 disk 15 rejoined the pool in its new bay; from about 18:45 its port (ata16 on that boot)
 had 11 link errors in the write direction: 32 queued 4 MiB writes frozen with SError
@@ -288,7 +289,9 @@ had 11 link errors in the write direction: 32 queued 4 MiB writes frozen with SE
 turned NCQ off on it ("NCQ disabled due to excessive errors"). Every reset recovered; no I/O
 error reached the filesystem. Disk 13 (ata14, a source being read) had 2. OBSERVED. Reads of
 15 were clean in the read test, so the fault shows when the host sends: disk 15's SATA
-receiver or connector, or the wire now on its bay (INFERRED). Next: 15 out of the pool again.
+receiver or connector, or the wire now on its bay (INFERRED). Standing operator decision (16 Oct):
+15 stays in the pool unless it fails in operation; the workers drop a branch that stops taking
+writes (heal), and a short copy it leaves fails its source's verify.
 
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
