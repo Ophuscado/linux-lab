@@ -1,3 +1,4 @@
+Find what took box C down on 16 Oct at 04:27: DART, PCIe or AER errors for domain 000a in the saved kernel log of that boot, or none · check: the answer in KNOWLEDGE.md
 Before the migration: nothing that needs a reboot is pending; the kernel stays as it is until the copies are done · check: this line is the agreement; kernel changes go to the backlog until then
 Spin down the USB-A disks with hd-idle · check: hdparm -C reports standby after the idle time
 Eject the enclosure before suspend and attach it again after resume · check: suspend and resume with the enclosure attached, eight disks back, no error in the kernel log

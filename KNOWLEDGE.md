@@ -222,17 +222,17 @@ turn: the link comes up ("slow to respond", ready=0), the disk never answers IDE
 04:28:56), then 31, 32, 30, 29, 35, 34, 28 until 04:46. libata handles the ports of one
 controller one at a time, so a single event reads as a 17-minute cascade. The disks keep their
 /dev names and fail every command (DID_BAD_TARGET). At 12:27 a rescan of the reseated 15 gave
-the same: link up, never ready. OBSERVED. A disk with link but never ready is what logic power
-without spin power looks like: a supply fault for the whole box (its 12 V, the PSU, or the
-feed to the drives), INFERRED. Ports: 15=ata27, 10=28, 08=29, 14=30, 13=31, 09=32, 12=34,
-11=35 on this boot.
+the same: link up, never ready. OBSERVED. Ports: 15=ata27, 10=28, 08=29, 14=30, 13=31, 09=32,
+12=34, 11=35 on this boot.
 
 12:49, box C's supply power-cycled with its USB4 bridge left connected: the eight SATA ports
 stayed (the controller kept power and its PCIe link; no reboot needed), all eight links came up
 at once at 3.0 Gbps, every disk answered with an unknown signature (class 0), stayed not ready
-through 45 s of IDENTIFY, and was detached. A power-on with the link up and no disk ever ready
-is a drive without motor power: the 12 V to box C's drives (PSU, output, harness or plug),
-INFERRED; eight disks failing together rule out the disks.
+through 45 s of IDENTIFY, and was detached. Yet the drives spun up, their LEDs and the fans were
+on and the PSU looked healthy (the operator, OBSERVED): not the supply. What never reaches the
+host is the first FIS ("softreset failed (1st FIS failed)") and the IDENTIFY data, which the AHCI
+controller writes to memory by DMA: the controller or its DMA path through the tunnel is stuck,
+the same for all eight ports, and a reboot resets it (INFERRED).
 
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
