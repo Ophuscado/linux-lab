@@ -249,6 +249,11 @@ mount_branch() {
     local mm=$1 d
     d=$(part_of "$(disk_of "$mm")") || exit 1
     [[ $(fstype_of "$d") == xfs && $(label_of "$d") == "HD_$mm" ]] || die "$mm is not the XFS disk HD_$mm"
+    # A branch directory with nothing mounted on it is a plain folder of the system disk, and a pool
+    # that still lists it writes there. Mounting the bay over files like that would hide them.
+    if ! findmnt -n "$MIG/mnt/hd-$mm" >/dev/null && [[ -n $(sudo ls -A "$MIG/mnt/hd-$mm" 2>/dev/null) ]]; then
+        die "$MIG/mnt/hd-$mm holds files while nothing is mounted there (the pool wrote to the system disk while bay $mm was out). Move them into the pool first: sudo rsync -a --remove-source-files $MIG/mnt/hd-$mm/ $POOL/"
+    fi
     sudo blockdev --setrw "$d"
     mount_at "$mm" "$d" "$MIG/mnt/hd-$mm" rw,noatime
 }
@@ -1017,8 +1022,8 @@ good)
     pool_mount >/dev/null || die "no pool"
     for nn in "$@"; do
         [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
-        rm -f "$MIG/state/$nn.bad"
         pool_add "$nn"
+        rm -f "$MIG/state/$nn.bad"
     done
     ;;
 *)
