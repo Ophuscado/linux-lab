@@ -55,6 +55,7 @@ clean system, builds and installs the kernel and installs what the measuring scr
 - `power-dump.sh`: record power sensors, link power states and disk settings before tuning.
 - `netlog.sh`: send kernel messages to a second computer, so a freeze leaves a log.
 - `KNOWLEDGE.md`: findings that were expensive to obtain, with their evidence.
+- `tests/`: loop-device tests of `migrate-row.sh` and `snapraid-setup.sh`, run as root in a scratch Linux box; each states what it expects.
 - `_gtd/`: the task board.
 
 ## Start here
