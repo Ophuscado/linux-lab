@@ -268,6 +268,13 @@ path, its data cable, its connector or the disk's interface, not a stuck control
 states are not involved: SControl 3x0 on every port has IPM 3, partial and slumber disallowed
 (VERIFIED in the log).
 
+16 Oct evening, disks 14 and 15 swapped bays and the Mac rebooted: disk 15 links in bay 3
+(ata4), disk 14 never links in bay 0 (ata1, 1473 link errors within minutes); the other 31
+disks show no link error. VERIFIED. The fault is bay 0 of box C (its data cable, the connector
+in the bay, or controller port 0), not disk 15; it was the trigger of both box C failures.
+Disk 15 holds only copies: no line of placement.txt lists it among the branches of a verified
+source, and a source is formatted only after its verify, which reads the pool without 15.
+
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
 
