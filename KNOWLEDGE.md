@@ -254,8 +254,9 @@ spindown`, all 32 disks; the operator, OBSERVED), and status showed most disks i
 during the copy. The pool spreads new files over its branches, so each branch idles for minutes
 and wakes again: many spin-ups an hour, each one the largest current a drive draws and seconds
 in which it answers nothing. A weak power contact on 15 fails first at such a moment; the 32
-writes to 15 that timed out at 04:27 fit a drive that did not come back. INFERRED. Spin-down
-stays off until the rows are done.
+writes to 15 that timed out at 04:27 fit a drive that did not come back. INFERRED. At the
+18:11 restart the operator set the timer to 5 minutes (`spindown 5`; why not stated); if box C
+falls over again, the timer goes off before anything else is changed.
 
 About 15:41 (uptime 6387 s), with 15 reseated and box C's supply off: the eight SATA links went
 down (SStatus 0), 2.6 s later the USB4 link ("SBX disconnected", "Tunnel error") and the box's
