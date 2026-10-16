@@ -91,6 +91,11 @@
 #                                   disks already copied, marked "erase" or found empty;
 #                                   otherwise a worker does it when the pool needs room)
 #   migrate-row.sh mergerfs        build and install mergerfs 2.42.0 (once; Fedora has no package)
+#   migrate-row.sh extra [PART]     copy disk 33, the external USB HFS+ disk (no label; found as the
+#                                   one HFS+ partition over 10 TB on USB, or PART), into the pool in
+#                                   root's tmux session mig-33, log ~/migrate/33.log. Without
+#                                   extended attributes (git clones and plain data). Run it again
+#                                   after a reboot: what is already in the pool is skipped
 #   migrate-row.sh erase 07 15 ...  mark disks whose content is not needed: formatted
 #                                   without a copy and without asking
 #
@@ -174,30 +179,53 @@ avail_at() { { df -B1 --output=avail "$1" 2>/dev/null || true; } | tail -n 1 | t
 SYS=${MIG_SYS:-/sys}
 kernel_log() { if [[ -n ${MIG_DMESG:-} ]]; then cat "$MIG_DMESG"; else sudo dmesg -T 2>/dev/null || true; fi; }
 
-# ataN -> the disk's name in the plan, through domain and port counted as disk-inventory.sh does
-# (the port's SCSI host, counted from the controller's first). A port that has lost its disk
-# still resolves: the port stays in sysfs.
+# ataN -> the disk's name in the plan: the disk on the port now, so a disk moved to another bay
+# keeps its name; for a port without a disk, the plan's disk for that domain and port, counted
+# as disk-inventory.sh does (the port's SCSI host, from the controller's first). A port that has
+# lost its disk still resolves: the port stays in sysfs.
 ata_name() {
-    local p dom host base h
+    local p dom host base h blk byid name
     p=$(readlink -f "$SYS/class/ata_port/$1" 2>/dev/null) || { echo '?'; return; }
+    for blk in "${p%/ata_port/*}"/host*/target*/*/block/*; do
+        [[ -e $blk ]] || continue
+        while IFS=, read -r _ _ _ byid _ _ _ _ _ _ _ _ _ name; do
+            [[ $(readlink -f "$byid" 2>/dev/null) == */"${blk##*/}" ]] && { echo "$name"; return; }
+        done < <(tail -n +2 "$PLAN")
+    done
     dom=$(grep -oE '/[0-9a-f]{4}:03:00\.0/' <<<"$p" | tr -d / | cut -d: -f1 || true)
     host=$(ls -d "${p%/ata_port/*}"/host* 2>/dev/null | head -n 1 | grep -oE '[0-9]+$' || true)
     [[ -n $dom && -n $host ]] || { echo '?'; return; }
     base=$(for h in "$SYS"/class/scsi_host/host*; do
         [[ $(readlink -f "$h") == *"/$dom:03:00.0/"* ]] && echo "${h##*host}"; done | sort -n | head -n 1)
-    awk -F, -v d="$dom" -v p="$((host - base))" '$1 == d && $2 == p { print $14 }' "$PLAN" | grep . ||
-        echo "?(domain $dom port $((host - base)))"
+    # No disk on the port now: the plan's disk for it, unless that one sits elsewhere now (moved);
+    # then the box's disks the system lacks are the candidates.
+    read -r byid name < <(awk -F, -v d="$dom" -v p="$((host - base))" '$1 == d && $2 == p { print $4, $14 }' "$PLAN") || true
+    if [[ -n ${name:-} && ! -e $byid ]]; then echo "$name? (no disk on the port now; the plan's disk for it)"; return; fi
+    name=$(awk -F, -v d="$dom" '$1 == d { print $4, $14 }' "$PLAN" | while read -r byid name; do [[ -e $byid ]] || echo "$name"; done | tr '\n' ' ')
+    echo "?(domain $dom port $((host - base)), no disk now; missing from this box: ${name:-none})"
 }
 
-# The SCSI host of disk $1, from its domain and port in the plan.
-host_of() {
-    local dom port base h
-    dom=$(awk -F, -v n="$1" '$14 == n { print $1 }' "$PLAN"); port=$(awk -F, -v n="$1" '$14 == n { print $2 }' "$PLAN")
-    [[ -n $dom && -n $port ]] || return 1
-    base=$(for h in "$SYS"/class/scsi_host/host*; do
-        [[ $(readlink -f "$h") == *"/$dom:03:00.0/"* ]] && echo "${h##*host}"; done | sort -n | head -n 1)
-    [[ -n $base ]] || return 1
-    echo "host$((base + port))"
+# The SCSI hosts a rescan asks for disk $1. A scan resets the port, so ports that hold a disk are
+# left alone: the port that has the disk now, when the system still lists it (a disabled port
+# keeps the /dev name); else every port of its box (the domain in the plan) without a disk, since
+# the disk may have moved bays.
+hosts_of() {
+    local byid dev p dom h
+    byid=$(awk -F, -v n="$1" '$14 == n { print $4 }' "$PLAN")
+    [[ -n $byid ]] || return 1
+    if [[ -e $byid ]]; then
+        dev=$(readlink -f "$byid")
+        h=$(readlink -f "$SYS/block/${dev##*/}" 2>/dev/null | grep -oE '/host[0-9]+/' | head -n 1 | tr -d /) || true
+        [[ -n $h ]] && { echo "$h"; return 0; }
+    fi
+    dom=$(awk -F, -v n="$1" '$14 == n { print $1 }' "$PLAN")
+    [[ -n $dom ]] || return 1
+    for h in "$SYS"/class/scsi_host/host*; do
+        p=$(readlink -f "$h")
+        [[ $p == *"/$dom:03:00.0/"* ]] || continue
+        compgen -G "${p%/scsi_host/*}/target*/*/block/*" >/dev/null && continue
+        echo "${h##*/}"
+    done | sort -V | grep .
 }
 
 # Does disk $1 answer a read of its first block within 30 s? A port the kernel has disabled keeps
@@ -226,7 +254,7 @@ missing_disks() {
 link_report() {
     local dom port dev byid name miss="" cnt ata last n=0
     while IFS=, read -r dom port _ byid _ _ _ _ _ _ _ _ _ name; do
-        [[ -e $byid ]] || miss+="$name (domain $dom port $port) "
+        [[ -e $byid ]] || miss+="$name (domain $dom, port $port in the plan) "
     done < <(tail -n +2 "$PLAN")
     echo "    missing from the system: ${miss:-none}${miss:+ ('rescan' looks for them again)}"
     # A port whose disk failed to answer through all of libata's retries is disabled: the disk may
@@ -1064,6 +1092,28 @@ start)
     echo "Watch: $0 attach ROW [N] (Ctrl-b d to leave); progress: $0 status"
     ;;
 attach) sudo tmux attach -t "mig-${2:-}-${3:-1}" ;;
+extra)
+    prepare
+    LOG=$MIG/heal.log
+    if sudo tmux has-session -t mig-33 2>/dev/null; then
+        worker_ended mig-33 || { echo "disk 33 is already being copied (sudo tmux attach -t mig-33)"; exit 0; }
+        sudo tmux kill-session -t mig-33
+    fi
+    pool_mount >/dev/null || die "no pool"
+    part=${2:-$(for d in $(lsblk -dnpo NAME,TRAN | awk '$2 == "usb" { print $1 }'); do
+        lsblk -bnrpo NAME,FSTYPE,SIZE "$d" | awk -v fs="$SRC_FS" '$2 == fs && $3 > 1e13 { print $1 }'; done)}
+    [[ -n $part && $(wc -l <<<"$part") == 1 ]] || die "want one $SRC_FS partition over 10 TB on a USB disk, found: $(echo ${part:-none})"
+    [[ $(fstype_of "$part") == "$SRC_FS" ]] || die "$part is not $SRC_FS"
+    src=$MIG/mnt/src-33
+    mount_at 33 "$part" "$src" ro
+    mapfile -t vx < <(volume_excludes)
+    inhibit=""; sudo systemd-inhibit --what=sleep:idle --who=migrate-row --why=probe true 2>/dev/null && inhibit="systemd-inhibit --what=sleep:idle --who=migrate-row --why='disk 33 copying'"
+    # rsync goes on as it lists (no --no-inc-recursive: listing millions of small files first takes
+    # days on this disk); exit 23/24 lists in the log what could not be read.
+    sudo tmux new-session -d -s mig-33 "{ $inhibit rsync -aH ${vx[*]@Q} --ignore-existing --info=progress2,stats1 '$src/' '$POOL/'; echo \"rsync finished with code \$?\"; } 2>&1 | tee -a '$MIG/33.log'; echo; echo 'worker ended; press enter'; read"
+    log "disk 33: copying $part to the pool in tmux session mig-33"
+    echo "disk 33 ($part) is being copied in root's tmux session mig-33; log $MIG/33.log"
+    ;;
 status)
     for row in A B C D; do
         n=0; done_n=0
@@ -1082,6 +1132,10 @@ status)
             "$run" "$ended" "${busy:-none}"
         [[ -f $MIG/$row.log ]] && grep -E "^[0-9]{4}-" "$MIG/$row.log" | tail -n 1 | sed "s/^/    /"
     done
+    if sudo tmux has-session -t mig-33 2>/dev/null; then
+        printf 'disk 33 (USB): %s\n' "$(worker_ended mig-33 && echo 'copy ended' || echo 'copying')"
+        sudo tmux capture-pane -p -t mig-33 | tr '\r' '\n' | grep -v -e 'file has vanished' -e 'worker ended' -e '^ *$' | tail -n 1 | sed 's/^/    /' || true
+    fi
     [[ -f $MIG/state/placement.txt ]] && { echo "placement:"; sed 's/^/    /' "$MIG/state/placement.txt"; }
     echo "pool:"
     if findmnt -n "$POOL" >/dev/null; then
@@ -1105,11 +1159,16 @@ rescan)
     LOG=$MIG/heal.log
     list=${*:-$(missing_disks)}
     [[ -n $list ]] || { echo "every disk of the plan is present"; exit 0; }
+    declare -A scanned
     for nn in $list; do
         [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
-        h=$(host_of "$nn") || { echo "$nn: no SATA port found for its domain and port in $PLAN"; continue; }
-        log "rescan: disk $nn, port $h"
-        echo '- - -' | sudo tee "$SYS/class/scsi_host/$h/scan" >/dev/null || true
+        hs=$(hosts_of "$nn") || { echo "$nn: no free SATA port found in its box (domain in $PLAN)"; continue; }
+        log "rescan: disk $nn, ports $(echo $hs)"
+        for h in $hs; do
+            [[ -n ${scanned[$h]:-} ]] && continue
+            scanned[$h]=1
+            echo '- - -' | sudo tee "$SYS/class/scsi_host/$h/scan" >/dev/null || true
+        done
     done
     sleep 5
     for ((i = 0; i < ${MIG_RESCAN_WAIT:-60}; i += 5)); do
@@ -1154,7 +1213,7 @@ good)
     done
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | recheck NN... | finish | add NN... | erase NN... | defer NN... | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | recheck NN... | finish | add NN... | erase NN... | defer NN... | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
