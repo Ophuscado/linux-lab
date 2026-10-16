@@ -227,6 +227,13 @@ without spin power looks like: a supply fault for the whole box (its 12 V, the P
 feed to the drives), INFERRED. Ports: 15=ata27, 10=28, 08=29, 14=30, 13=31, 09=32, 12=34,
 11=35 on this boot.
 
+12:49, box C's supply power-cycled with its USB4 bridge left connected: the eight SATA ports
+stayed (the controller kept power and its PCIe link; no reboot needed), all eight links came up
+at once at 3.0 Gbps, every disk answered with an unknown signature (class 0), stayed not ready
+through 45 s of IDENTIFY, and was detached. A power-on with the link up and no disk ever ready
+is a drive without motor power: the 12 V to box C's drives (PSU, output, harness or plug),
+INFERRED; eight disks failing together rule out the disks.
+
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed
 
