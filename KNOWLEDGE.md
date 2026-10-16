@@ -302,6 +302,16 @@ millisecond: ata16 (15, a single write without NCQ, `RecovData Handshk`) and ata
 reads, SError 0). OBSERVED. Two ports at once points at something they share, the controller or
 the box's supply, more than at disk 15 alone (INFERRED).
 
+16 Oct night, OBSERVED (journal, runs 2400 and 2421 on the panel): after `good 15` at 18:15
+and NCQ off, ata14 (disk 13, a source being read) and ata16 (disk 15, a pool branch being
+written) fail together: 18:46-18:49, 21:13 in the same millisecond, 22:02-22:03 again, then
+five WRITE I/O errors on 15 and 337 READ errors on 13 until 22:07, and at 22:29 all eight
+disks of box C answer every command with DID_BAD_TARGET. Boxes A, B and D log nothing. Two
+bays failing at the same instant point at a part they share (a power lead or splitter, the
+supply, the controller, or heat after 1-3 h of load: the three box C failures of the day all
+came that long into a load), not at disk 15 (INFERRED). With box C out, a lazy umount of hd-15
+stayed in D state (it tears XFS down on the dead disk), as did a global `sync`.
+
 ## A global sync in a worker waits for every writer
 
 2026-10-16, OBSERVED: row D's worker finished rsync pass 1 of disk 19 at 18:53 and was still in

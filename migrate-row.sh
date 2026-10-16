@@ -50,6 +50,9 @@
 # Parent folders with the same name on several sources merge into one folder in the pool,
 # which is what a library spread over disks looks like afterwards.
 # A disk on a flaky link ("defer 28") is copied after everything else in its row.
+# The disks are trusted until one fails: when a pool disk logs a failed write, the files written
+# to it in the 30 minutes before go aside on it (copied again later), and every worker stops;
+# "start" trusts the disks again, after a replug, a reboot or nothing.
 # A worker logs to ~/migrate/<row>.log; state lives in ~/migrate/state/. A stopped or
 # crashed worker is restarted with the same command and continues. Workers run as root
 # inside root's tmux server (one password at "start"), so a copy that takes a day is never
@@ -73,6 +76,10 @@
 #   migrate-row.sh bad 15 ...       take these bays out of the pool by hand (they stay out after
 #                                   a restart); good 15 ... puts them back. Files they held are
 #                                   copied again from the sources, which are still there.
+#   migrate-row.sh aside 15 "2026-10-16 21:33"
+#                                   what a worker does when a pool disk fails a write, by hand (for
+#                                   one no worker saw): files changed on hd-15 since then go aside on
+#                                   it, copied again by the next pass; run it before 'good 15'
 #   migrate-row.sh recheck NN ...   after a disk or box fault during copies: files of these
 #                                   sources that exist in the pool are compared, and a copy
 #                                   that differs, or that exists on two branches, is moved
@@ -438,6 +445,123 @@ mark_bad() {
     sudo setfattr -n user.mergerfs.branches -v "-$MIG/mnt/hd-$1" "$POOL/.mergerfs" 2>/dev/null || true
     # Detached (lazily: a dead disk hangs a plain umount), so that df and mkdir stop stumbling on it.
     sudo umount -l "$MIG/mnt/hd-$1" 2>/dev/null || true
+    uncopy "$1" >/dev/null
+}
+
+# uncopy NN [SINCE]: the sources verified (since SINCE, "YYYY-MM-DD HH:MM:SS") while hd-NN was a pool
+# branch may have copies on it that the pool no longer shows. Not formatted yet: each is a source
+# again, and the next pass copies what the pool lacks. Formatted already: some of its files may
+# exist only on hd-NN, which must stay as it is. Prints the formatted ones.
+uncopy() {
+    local src part
+    while read -r src; do
+        part=$(part_of "$(disk_of "$src" 2>/dev/null)" 2>/dev/null) || part=""
+        if [[ -n $part && $(fstype_of "$part") != "$SRC_FS" ]]; then
+            log "WARN $src was formatted after a verify with hd-$1 as a pool branch: files of $src may exist only on hd-$1. Keep hd-$1 as it is ('good $1' if it is out); never format it"
+            echo "$src"; continue
+        fi
+        [[ ! -f $MIG/state/$src.copied ]] || mv "$MIG/state/$src.copied" "$MIG/state/$src.copied-before-$1-out"
+        echo "$src -> pool  undone $(date '+%F %T'): hd-$1 went out of the pool or lost writes" >>"$MIG/state/placement.txt"
+        if [[ -z $part ]]; then
+            log "WARN $src was verified while hd-$1 was a pool branch and is not found now: it counts as not copied; once back, it is copied and verified anew"
+        else
+            log "WARN $src was verified while hd-$1 was a pool branch: it is a source again, copied and verified anew before it may be formatted"
+        fi
+    done < <(awk -v b="$1" -v since="${2:-0}" '
+        / -> pool / {
+            if ($4 == "undone") { ok[$1] = 0; next }
+            hit = 0
+            for (i = 1; i <= NF; i++) if ($i == "then:") for (j = i + 1; j <= NF; j++) if ($j == b) hit = 1
+            ok[$1] = hit && ($6 " " $7) >= since
+        }
+        END { for (s in ok) if (ok[s]) print s }' "$MIG/state/placement.txt" 2>/dev/null | sort)
+}
+
+# ---- failed writes -----------------------------------------------------------------------------
+# The disks are trusted until one fails a write: the kernel logs "I/O error, dev sdX, ... (WRITE)".
+# rsync has moved on by then (it does not fsync), and the copy keeps the size it was given, so
+# neither a check by size nor one by checksum through the page cache sees the loss. So when a pool
+# branch's disk logs one, a worker (it looks every MIG_WATCH seconds while it copies, and before a
+# verify):
+#   - moves aside on that disk every file changed there since MIG_WRITE_MARGIN minutes (default 30)
+#     before the error, into .migrate-aside/write-error-<time>/ (nothing deleted); the next pass
+#     copies them again;
+#   - makes a source verified since then a source again (uncopy);
+#   - stops every worker and the copy of disk 33 ($MIG/state/stop says why).
+# 'start' (or 'run') trusts the disks again, after a replug, a reboot or nothing: each log line is
+# handled once ($MIG/state/write-errors.seen). A source formatted since then keeps its copies where
+# they are; the stop then says so and nothing is moved.
+WRITE_MARGIN=${MIG_WRITE_MARGIN:-30}
+# The raw kernel log (seconds since boot): its lines do not change between two reads.
+kernel_log_raw() { if [[ -n ${MIG_DMESG:-} ]]; then cat "$MIG_DMESG"; else sudo dmesg 2>/dev/null || true; fi; }
+# A kernel log time stamp ("12345.678901" since boot, or a date) as "YYYY-MM-DD HH:MM:SS".
+stamp_time() {
+    if [[ $1 =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+        date -d "@$(($(date +%s) - $(cut -d. -f1 /proc/uptime) + ${1%.*}))" '+%F %T'
+    else
+        date -d "$1" '+%F %T'
+    fi
+}
+# start and run: the operator goes on, so the disks are trusted again.
+trust_again() { [[ ! -f $MIG/state/stop ]] || { log "the stop is lifted, the disks are trusted again; it said: $(cat "$MIG/state/stop")"; rm -f "$MIG/state/stop"; }; }
+stopped() { [[ ! -f $MIG/state/stop ]] || die "stopped: $(cat "$MIG/state/stop") 'start' trusts the disks again."; }
+check_writes() {
+    local seen=$MIG/state/write-errors.seen lock=$MIG/state/lock-writes new line dev br part disk t since n formatted
+    declare -A brdisk first
+    # One worker at a time; a lock left by a killed worker is taken over.
+    if ! mkdir "$lock" 2>/dev/null; then
+        t=$(cat "$lock/pid" 2>/dev/null || true)
+        if [[ $t =~ ^[1-9][0-9]*$ ]]; then
+            kill -0 "$t" 2>/dev/null && return 0
+        elif [[ -z $(find "$lock" -maxdepth 0 -mmin +10 2>/dev/null) ]]; then
+            return 0 # just taken, its pid not written yet
+        fi
+        rm -rf "$lock"; mkdir "$lock" 2>/dev/null || return 0
+    fi
+    echo $$ >"$lock/pid" || return 0
+    touch "$seen"
+    new=$(kernel_log_raw | grep -E '\] I/O error, dev [a-z0-9]+, .*\(WRITE\)' | grep -vxFf "$seen" || true)
+    if [[ -n $new ]]; then
+        for br in $(pool_branches); do
+            part=$(findmnt -n -o SOURCE "$MIG/mnt/hd-$br" 2>/dev/null) || continue
+            disk=$(lsblk -no PKNAME "$part" 2>/dev/null | head -n 1)
+            brdisk[${disk:-${part#/dev/}}]=$br
+        done
+        while IFS= read -r line; do
+            dev=$(sed -E 's/.*I\/O error, dev ([a-z0-9]+),.*/\1/' <<<"$line")
+            br=${brdisk[$dev]:-}
+            [[ -n $br && -z ${first[$br]:-} ]] || continue
+            t=$(stamp_time "$(sed -E 's/^\[ *([^]]*)\].*/\1/' <<<"$line")") || t=$(date '+%F %T')
+            first[$br]=$t
+            log "WARN hd-$br ($dev) failed a write at $t: $line"
+        done <<<"$new"
+        for br in "${!first[@]}"; do
+            since=$(date -d "${first[$br]} $WRITE_MARGIN minutes ago" '+%F %T')
+            formatted=$(uncopy "$br" "$since")
+            if [[ -n $formatted ]]; then
+                echo "hd-$br failed a write at ${first[$br]}, and $(echo $formatted) was verified and formatted since $since: nothing was moved aside; compare the files on hd-$br changed since $since with care before going on." >"$MIG/state/stop"
+                continue
+            fi
+            n=$(aside_since "$br" "$since")
+            log "WARN hd-$br: $n files changed since $since moved aside on it; the next pass copies them again"
+            echo "hd-$br failed a write at ${first[$br]} ($n files changed there since $since moved aside, copied again by the next pass)." >"$MIG/state/stop"
+        done
+        printf '%s\n' "$new" >>"$seen"
+        if [[ -f $MIG/state/stop ]] && sudo tmux has-session -t mig-33 2>/dev/null; then
+            sudo tmux kill-session -t mig-33; log "WARN the copy of disk 33 stopped ('extra' starts it again)"
+        fi
+    fi
+    rm -rf "$lock"
+}
+# aside_since NN SINCE: move the files changed on hd-NN since SINCE into .migrate-aside on the same
+# disk (a rename: instant, nothing copied or deleted). Prints how many.
+aside_since() {
+    local root=$MIG/mnt/hd-$1 dir n=0 p
+    dir=.migrate-aside/write-error-$(date '+%Y%m%d-%H%M%S')
+    while IFS= read -r -d '' p; do
+        sudo mkdir -p "$root/$dir/$(dirname "$p")" && sudo mv -n "$root/$p" "$root/$dir/$p" && n=$((n + 1))
+    done < <(sudo timeout 900 find "$root" -xdev -type f ! -path '*/.migrate-aside/*' -newerct "$2" -printf '%P\0' 2>/dev/null)
+    echo "$n"
 }
 
 # Does branch $1 take a write? A create and remove at its root, 60 s at most (MIG_PROBE): a dead
@@ -622,7 +746,8 @@ reserve_room() {
 
 # $1 row, $2 source name: copy the source into the pool.
 copy_disk() {
-    local nn=$2 src dst s pass rc dropped flushed
+    local nn=$2 src dst s pass rc dropped flushed rpid i
+    stopped
     src=$MIG/mnt/src-$nn
     dst=$POOL
     s=$(part_of "$(disk_of "$nn")") || exit 1
@@ -640,7 +765,16 @@ copy_disk() {
         # are left alone, not deleted.
         mapfile -t vx < <(volume_excludes)
         sudo rsync -aHAX --filter='-x system.*' --filter='-x osx.*' --filter='-xr security.*' "${vx[@]}" \
-            --ignore-existing --info=progress2,stats1 --no-inc-recursive "$src/" "$dst/" >>"$LOG" 2>&1 || rc=$?
+            --ignore-existing --info=progress2,stats1 --no-inc-recursive "$src/" "$dst/" >>"$LOG" 2>&1 &
+        rpid=$!
+        # While it copies: every MIG_WATCH seconds, a failed write on a pool branch stops it.
+        while [[ -e /proc/$rpid ]]; do
+            for ((i = 0; i < ${MIG_WATCH:-60}; i++)); do [[ -e /proc/$rpid ]] || break; sleep 1; done
+            check_writes
+            [[ ! -f $MIG/state/stop ]] || sudo kill -TERM "$rpid" 2>/dev/null || true
+        done
+        wait "$rpid" || rc=$?
+        stopped
         # 23/24: some files could not be read or vanished; those are listed in the log.
         log "$nn>pool: rsync pass $pass finished with code $rc"
         [[ $rc == 0 ]] && break
@@ -669,6 +803,7 @@ verify_disk() {
     local row=$1 nn=$2 src dst diff opts
     src=$MIG/mnt/src-$nn
     dst=$POOL
+    check_writes; stopped
     if [[ $VERIFY == quick ]]; then
         opts=(-rln --times --size-only)
         log "$nn>pool: verifying by size and time"
@@ -1111,6 +1246,7 @@ run)
     need_row "${2:-}"
     prepare
     LOG=$MIG/$2.log
+    trust_again
     log "row $2: worker start (VERIFY=$VERIFY)"
     run_row "$2"
     ;;
@@ -1123,6 +1259,7 @@ start)
     n=${3:-1}
     [[ $n =~ ^[1-4]$ ]] || die "workers: 1 to 4"
     LOG=$MIG/heal.log
+    trust_again
     if pool_mount >/dev/null; then heal_pool || true; fi
     for row in $rows; do
         for i in $(seq 1 "$n"); do
@@ -1257,7 +1394,7 @@ extra)
 status)
     for row in A B C D; do
         n=0; done_n=0
-        for nn in ${ROW[$row]}; do n=$((n + 1)); grep -qs "^$nn -> " "$MIG/state/placement.txt" && done_n=$((done_n + 1)); done
+        for nn in ${ROW[$row]}; do n=$((n + 1)); grep -s "^$nn -> " "$MIG/state/placement.txt" | tail -n 1 | grep -qv ' undone ' && done_n=$((done_n + 1)); done
         # A live copy holds a claim whose pid exists.
         run=0; ended=0
         for ss in $(sudo tmux ls -F '#S' 2>/dev/null | grep "^mig-$row-" || true); do
@@ -1286,6 +1423,7 @@ status)
     fi
     bad=$(cd "$MIG/state" 2>/dev/null && ls ./*.bad 2>/dev/null | sed 's|^\./||; s|\.bad$||' | tr '\n' ' ' || true)
     [[ -z $bad ]] || echo "bad (out of the pool, 'good NN' puts one back): $bad"
+    [[ ! -f $MIG/state/stop ]] || echo "STOPPED: $(cat "$MIG/state/stop")"
     echo "links:"
     link_report
     echo "mounted:"
@@ -1341,6 +1479,19 @@ bad)
     done
     findmnt -n "$POOL" >/dev/null && echo "pool now: $(pool_branches)"
     ;;
+aside)
+    # aside NN "YYYY-MM-DD HH:MM": by hand, what a worker does when NN fails a write (check_writes),
+    # for a failure no worker saw: the files changed on hd-NN since then go aside on it, copied
+    # again by the next pass, and sources verified since then are copied and verified again.
+    [[ $# == 3 && $2 =~ ^[0-3][0-9]$ ]] || die "aside needs a disk and a time, e.g. aside 15 \"2026-10-16 21:33\""
+    since=$(date -d "$3" '+%F %T') || die "not a time: $3"
+    prepare
+    LOG=$MIG/heal.log
+    mount_branch "$2"
+    formatted=$(uncopy "$2" "$since")
+    [[ -z $formatted ]] || die "$(echo $formatted) verified and formatted since $since with hd-$2 as a branch: nothing moved; their files may exist only on hd-$2"
+    log "aside: hd-$2: $(aside_since "$2" "$since") files changed since $since moved aside on it; the next pass copies them again"
+    ;;
 good)
     shift
     [[ $# -gt 0 ]] || die "good needs disk names, e.g. good 15"
@@ -1354,7 +1505,7 @@ good)
     done
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | recheck NN... | finish | add NN... | erase NN... | defer NN... | policy [NAME] | readtest ROW [start|check [S]|stop] | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | aside NN TIME | recheck NN... | finish | add NN... | erase NN... | defer NN... | policy [NAME] | readtest ROW [start|check [S]|stop] | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
