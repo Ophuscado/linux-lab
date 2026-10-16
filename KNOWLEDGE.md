@@ -296,6 +296,10 @@ After libata turned NCQ off on 15 (second burst, about 18:46) the operator saw n
 error for 20 minutes. OBSERVED. One command at a time instead of 32 queued 4 MiB writes puts
 less continuous traffic on a marginal link (INFERRED). The flag lasts until the disk is probed
 again (a reboot), when NCQ comes back.
+21:13:08 (uptime 11030 s) both box C ports with a working disk under load reset in the same
+millisecond: ata16 (15, a single write without NCQ, `RecovData Handshk`) and ata14 (13, queued
+reads, SError 0). OBSERVED. Two ports at once points at something they share, the controller or
+the box's supply, more than at disk 15 alone (INFERRED).
 
 
 ## rsync --no-inc-recursive copies nothing until the whole tree is listed

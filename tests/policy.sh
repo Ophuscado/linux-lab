@@ -1,7 +1,7 @@
 #!/bin/bash
 # policy switches where the pool puts new files, on the live mount and for later mounts and
 # workers (which re-apply the policy when they find the pool mounted).
-# Expected: live mfs after "policy mfs"; still mfs after "pool" on the mounted pool and after a fresh mount; pfrd after "policy pfrd"; a new file lands on the emptier branch under mfs
+# Expected: live mfs after "policy mfs"; status says new files by mfs; still mfs after "pool" on the mounted pool and after a fresh mount; pfrd after "policy pfrd"; a new file lands on the emptier branch under mfs
 set -u
 . "$(dirname "$0")/lib.sh"
 S=$REPO/migrate-row.sh
@@ -23,5 +23,6 @@ head -c 1500M /dev/zero >"$H/hd-23/filler"   # 23 is now the fuller branch
 ./mig.sh pool 2>&1 | tail -n 1; echo "after pool on the mounted pool: $(getfattr -n user.mergerfs.category.create --only-values "$P/.mergerfs")"
 umount "$P"; ./mig.sh pool >/dev/null 2>&1; echo "after a fresh mount: $(getfattr -n user.mergerfs.category.create --only-values "$P/.mergerfs")"
 for i in 1 2 3; do echo x >"$P/new$i"; done; echo "new files on: $(cd "$H" && ls -d hd-*/new* | cut -d/ -f1 | sort | uniq -c | tr -s ' ' | tr '\n' ' ')"
+./mig.sh status 2>&1 | grep -oE 'new files by [a-z]+'
 ./mig.sh policy pfrd 2>&1 | grep -E '^live'
 umount "$P" 2>/dev/null; for m in $(findmnt -rn -o TARGET | grep "$T" | sort -r); do umount "$m" 2>/dev/null; done; losetup -D

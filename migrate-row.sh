@@ -1240,7 +1240,8 @@ status)
     [[ -f $MIG/state/placement.txt ]] && { echo "placement:"; sed 's/^/    /' "$MIG/state/placement.txt"; }
     echo "pool:"
     if findmnt -n "$POOL" >/dev/null; then
-        printf '    %s: %s free, branches %s\n' "$POOL" "$(df -h --output=avail "$POOL" | tail -n 1 | tr -d ' ')" "$(pool_branches)"
+        printf '    %s: %s free, branches %s, new files by %s\n' "$POOL" "$(df -h --output=avail "$POOL" | tail -n 1 | tr -d ' ')" \
+            "$(pool_branches)" "$(sudo getfattr -n user.mergerfs.category.create --only-values "$POOL/.mergerfs" 2>/dev/null || echo '?')"
     else
         echo "    not mounted"
     fi
