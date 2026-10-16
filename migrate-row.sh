@@ -97,7 +97,8 @@
 #
 # Test hooks: MIG_PLAN, MIG_HOME, MIG_SRC_FS (filesystem type of the sources, hfsplus),
 # MIG_EMPTY_LIMIT (bytes), MIG_MINFREE (mergerfs minfreespace), MIG_MERGERFS (binary),
-# MIG_WAIT (seconds between looks at a full pool).
+# MIG_WAIT (seconds between looks at a full pool), MIG_PROBE (seconds a branch gets to take a
+# write), MIG_SYS (a sysfs root) and MIG_DMESG (a file read instead of the kernel log).
 
 set -euo pipefail
 
@@ -167,6 +168,47 @@ mount_at() {
 # them (a dead branch) answers EIO; the number it prints for the argument is still right.
 used_at() { { df -B1 --output=used "$1" 2>/dev/null || true; } | tail -n 1 | tr -d ' '; }
 avail_at() { { df -B1 --output=avail "$1" 2>/dev/null || true; } | tail -n 1 | tr -d ' '; }
+
+SYS=${MIG_SYS:-/sys}
+kernel_log() { if [[ -n ${MIG_DMESG:-} ]]; then cat "$MIG_DMESG"; else sudo dmesg -T 2>/dev/null || true; fi; }
+
+# ataN -> the disk's name in the plan, through domain and port counted as disk-inventory.sh does
+# (the port's SCSI host, counted from the controller's first). A port that has lost its disk
+# still resolves: the port stays in sysfs.
+ata_name() {
+    local p dom host base h
+    p=$(readlink -f "$SYS/class/ata_port/$1" 2>/dev/null) || { echo '?'; return; }
+    dom=$(grep -oE '/[0-9a-f]{4}:03:00\.0/' <<<"$p" | tr -d / | cut -d: -f1 || true)
+    host=$(ls -d "${p%/ata_port/*}"/host* 2>/dev/null | head -n 1 | grep -oE '[0-9]+$' || true)
+    [[ -n $dom && -n $host ]] || { echo '?'; return; }
+    base=$(for h in "$SYS"/class/scsi_host/host*; do
+        [[ $(readlink -f "$h") == *"/$dom:03:00.0/"* ]] && echo "${h##*host}"; done | sort -n | head -n 1)
+    awk -F, -v d="$dom" -v p="$((host - base))" '$1 == d && $2 == p { print $14 }' "$PLAN" | grep . ||
+        echo "?(domain $dom port $((host - base)))"
+}
+
+# The links: disks of the plan the system no longer has, and SATA trouble since boot per disk.
+link_report() {
+    local dom port dev byid name miss="" cnt ata last n=0
+    while IFS=, read -r dom port _ byid _ _ _ _ _ _ _ _ _ name; do
+        [[ -e $byid ]] || miss+="$name (domain $dom port $port) "
+    done < <(tail -n +2 "$PLAN")
+    echo "    missing from the system: ${miss:-none}"
+    while IFS=$'\t' read -r cnt ata last; do
+        echo "    $(ata_name "$ata") ($ata): $cnt link errors since boot, last $last"; n=$((n + 1))
+    done < <(kernel_log | grep -E '\] ata[0-9]+(\.[0-9]+)?: .*(BadCRC|Handshk|timeout|failed to IDENTIFY|exception Emask|hard resetting link|link down|limiting SATA link speed)' |
+        sed -E 's/^\[([^]]*)\] (ata[0-9]+)[.:].*/\2\t\1/' |
+        awk -F'\t' '{ n[$1]++; last[$1] = $2 } END { for (a in n) print n[a] "\t" a "\t" last[a] }' | sort -rn | head -n 12)
+    while IFS=$'\t' read -r cnt dev last; do
+        name="$dev (no disk has that name now)"
+        while IFS=, read -r dom port _ byid _; do
+            [[ $(readlink -f "$byid" 2>/dev/null) == "/dev/$dev" ]] && name="$(awk -F, -v b="$byid" '$4 == b { print $14 }' "$PLAN") ($dev)"
+        done < <(tail -n +2 "$PLAN")
+        echo "    $name: $cnt I/O errors since boot, last $last"; n=$((n + 1))
+    done < <(kernel_log | grep -E '\] I/O error, dev sd[a-z]+' | sed -E 's/^\[([^]]*)\] I\/O error, dev (sd[a-z]+).*/\2\t\1/' |
+        awk -F'\t' '{ n[$1]++; last[$1] = $2 } END { for (a in n) print n[a] "\t" a "\t" last[a] }' | sort -rn | head -n 12)
+    ((n > 0)) || echo "    no SATA link or I/O errors since boot"
+}
 
 # $1 name: "src USED" (still on HFS+), "xfs USED AVAIL" (formatted by us), or "other TYPE".
 # Mounts the volume read-only for the figures and unmounts it again.
@@ -942,28 +984,37 @@ run)
     run_row "$2"
     ;;
 start)
-    need_row "${2:-}"
+    # start [ROW|all] [N]: without a row, every row. A worker that ended (an error, a dead disk)
+    # gets a fresh one, a running one is left alone; dead pool branches are dropped first.
+    rows=${2:-all}
+    if [[ $rows == all ]]; then rows="A B C D"; else need_row "$rows"; fi
     prepare
     n=${3:-1}
     [[ $n =~ ^[1-4]$ ]] || die "workers: 1 to 4"
-    for i in $(seq 1 "$n"); do
-        if sudo tmux has-session -t "mig-$2-$i" 2>/dev/null; then
-            if worker_ended "mig-$2-$i"; then
-                sudo tmux kill-session -t "mig-$2-$i"
-                echo "worker mig-$2-$i had ended; its session is replaced"
-            else
-                echo "worker mig-$2-$i is already running"
-                continue
+    LOG=$MIG/heal.log
+    if pool_mount >/dev/null 2>&1; then heal_pool || true; fi
+    for row in $rows; do
+        for i in $(seq 1 "$n"); do
+            if sudo tmux has-session -t "mig-$row-$i" 2>/dev/null; then
+                if worker_ended "mig-$row-$i"; then
+                    sudo tmux kill-session -t "mig-$row-$i"
+                    echo "worker mig-$row-$i had ended; its session is replaced"
+                else
+                    echo "worker mig-$row-$i is already running"
+                    continue
+                fi
             fi
-        fi
-        # The worker holds a sleep inhibitor: a suspend would drop the tunnels mid-copy.
-        inhibit=""; sudo systemd-inhibit --what=sleep:idle --who=migrate-row --why=probe true 2>/dev/null && inhibit="systemd-inhibit --what=sleep:idle --who=migrate-row --why='row $2 copying'"
-        # The inner shell is root's: HOME and the hooks are passed on explicitly.
-        sudo tmux new-session -d -s "mig-$2-$i" "HOME='$HOME' MIG_HOME='$MIG' MIG_PLAN='$PLAN' MIG_MERGERFS='$MERGERFS' MIG_SRC_FS='$SRC_FS' MIG_EMPTY_LIMIT='$EMPTY_LIMIT' MIG_MINFREE='$MINFREE' MIG_WAIT='$WAIT' VERIFY=$VERIFY $inhibit '$0' run $2; echo; echo 'worker ended; press enter'; read"
-        echo "row $2 worker $i started in tmux session mig-$2-$i (root's tmux)"
-        [[ $i == 1 && $n -gt 1 ]] && sleep 20 # let the first one take the confirmation prompt
+            # The worker holds a sleep inhibitor: a suspend would drop the tunnels mid-copy.
+            inhibit=""; sudo systemd-inhibit --what=sleep:idle --who=migrate-row --why=probe true 2>/dev/null && inhibit="systemd-inhibit --what=sleep:idle --who=migrate-row --why='row $row copying'"
+            # The inner shell is root's: HOME and the hooks are passed on explicitly.
+            sudo tmux new-session -d -s "mig-$row-$i" "HOME='$HOME' MIG_HOME='$MIG' MIG_PLAN='$PLAN' MIG_MERGERFS='$MERGERFS' MIG_SRC_FS='$SRC_FS' MIG_EMPTY_LIMIT='$EMPTY_LIMIT' MIG_MINFREE='$MINFREE' MIG_WAIT='$WAIT' VERIFY=$VERIFY $inhibit '$0' run $row; echo; echo 'worker ended; press enter'; read"
+            echo "row $row worker $i started in tmux session mig-$row-$i (root's tmux)"
+            [[ $i == 1 && $n -gt 1 ]] && sleep 20 # let the first one take the confirmation prompt
+        done
     done
-    echo "Watch: $0 attach $2 [N] (Ctrl-b d to leave); progress: $0 status"
+    bad=$(cd "$MIG/state" 2>/dev/null && ls ./*.bad 2>/dev/null | sed 's|^\./||; s|\.bad$||' | tr '\n' ' ' || true)
+    [[ -z $bad ]] || echo "out of the pool (bad): $bad- 'good NN' puts one back once it answers"
+    echo "Watch: $0 attach ROW [N] (Ctrl-b d to leave); progress: $0 status"
     ;;
 attach) sudo tmux attach -t "mig-${2:-}-${3:-1}" ;;
 status)
@@ -993,6 +1044,8 @@ status)
     fi
     bad=$(cd "$MIG/state" 2>/dev/null && ls ./*.bad 2>/dev/null | sed 's|^\./||; s|\.bad$||' | tr '\n' ' ' || true)
     [[ -z $bad ]] || echo "bad (out of the pool, 'good NN' puts one back): $bad"
+    echo "links:"
+    link_report
     echo "mounted:"
     findmnt -n -o TARGET,SOURCE,SIZE,USED -l | grep "$MIG/mnt" | sed 's/^/    /' || true
     ;;

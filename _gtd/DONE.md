@@ -32,3 +32,4 @@ Authorize USB4 devices by udev rule so all four enclosures get tunnels · check:
 Magic Mouse and middle-click paste on KDE · check: after ux-fix.sh on and a re-login, a centre click is left or right, a resting finger does not scroll, middle click pastes nothing · waits: operator runs ux-fix.sh on, reports
 Make recheck fast enough to wait for · check: two-row loop test finds the short copy and the double by size in under a second, the flipped byte with VERIFY=full
 Keep the row workers alive when a pool disk dies · check: loop test with a branch shut down before and during a copy: the worker drops it, finishes, all 18 checksums match, 'good' puts it back
+One command restarts every ended or missing worker, one shows the dropped disks and link errors · check: loop test, start with no row replaces the ended D worker and starts the rest; status lists a missing disk and maps ata ports to disk names on a fake sysfs
