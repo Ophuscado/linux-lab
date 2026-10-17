@@ -43,6 +43,7 @@ recheck before relying on one for anything consequential.
 - [SATA errors in the enclosures were a missing earth](#sata-errors-in-the-enclosures-were-a-missing-earth)
 - [A global sync in a worker waits for every writer](#a-global-sync-in-a-worker-waits-for-every-writer)
 - [rsync --no-inc-recursive copies nothing until the whole tree is listed](#rsync---no-inc-recursive-copies-nothing-until-the-whole-tree-is-listed)
+- [Box C at 04:27 on 16 Oct, and every lost write since 14 Oct](#box-c-at-0427-on-16-oct-and-every-lost-write-since-14-oct)
 
 ## Standing operator decisions
 Kept here so a resumed session does not re-ask them; each was stated by the operator.
@@ -339,3 +340,32 @@ gives an exact progress total at the price of listing everything first, which is
 SATA bay and days on a slow disk with many small files. Without it rsync copies as it
 lists. OBSERVED nothing copied after hours; the cause is INFERRED until a restart without
 the flag shows a progress line.
+
+## Box C at 04:27 on 16 Oct, and every lost write since 14 Oct
+2026-10-17, from the journal (panel runs 2407 and 2550). VERIFIED.
+
+The boot of 15 Oct 22:46 (journal boot -6 on 17 Oct) holds no DART, AER, PCIe or tunnel error
+for domain 000a (box C) at all: AER was enabled on its root port and stayed silent. The failure
+shows only at the SATA level (queued commands timing out, IDENTIFY failing), then XFS on
+disk 15 (sdaa1): writeback errors on two inodes, one at offsets 114.85 to 115.01 GB, the log
+write failing, the filesystem shut down at 04:28:56. Box C's SATA controller is a Realtek
+`10ec:9100` behind the ASM2464's switch (`1b21:2463`). After the PCI rescan at 13:03 its link
+came up at 2.5 GT/s x1, limiting it to 2 Gb/s for eight disks; it is capable of 8 GT/s x2. The
+boot-time speed of that link is not in the log lines read.
+
+Failed writes, per boot, device and minute, since 14 Oct (writeback errors, XFS log errors and
+shutdowns, failed WRITE commands):
+
+| when | device | what it was |
+|---|---|---|
+| 15 Oct 02:32-02:40 | sdk | box C's pool disk; window rechecked by bytes on 16 Oct, 0 differ |
+| 15 Oct 18:41 | sda10 | the USB exFAT disk, not the pool |
+| 16 Oct 03:25, 03:51 | sdb11 | the operator's USB backup disk, not the pool |
+| 16 Oct 04:28-04:29 | sdaa, sdaa1 | 15; XFS shut down; never rechecked |
+| 16 Oct 12:08 | sdaa | 15, one command; its XFS was shut down since 04:28, no file data |
+| 16 Oct 14:16 | sdaa, sdaa1 | 15 (in the pool since 14:03); never rechecked |
+| 16 Oct 22:03 | sdp, sdp1 | 15; set aside on 17 Oct (`aside 15` since 21:33, 4373 files) |
+
+15 came back into the pool at 18:15 on 16 Oct and again on 17 Oct, and a copy skips a path
+the pool already has, so its files from 04:28 and 14:16 count as copied until they are set
+aside too (INFERRED: which paths, if any, lost bytes is not known; a size check cannot tell).
