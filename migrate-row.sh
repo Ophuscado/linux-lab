@@ -165,12 +165,31 @@ log() { printf '%s %s\n' "$(date '+%F %T')" "$*" | tee -a "$LOG" >&2; }
 # ---- disks ------------------------------------------------------------------------------
 
 # $1 name (two digits): the disk's /dev/disk/by-id path from the plan file.
+BYID=${MIG_BYID:-/dev/disk/by-id}
+# Disk $1's /dev/disk/by-id link now: the plan's own (disk-inventory.sh took the ata- name), else
+# one that ends in the disk's serial. Behind a SAS card udev names a SATA disk scsi-SATA_<model>_<serial>
+# (and wwn-), and its ata- name does not exist; a disk moved between boxes keeps its serial. Empty
+# when the system does not have the disk.
+link_of() {
+    local byid serial l
+    IFS=, read -r byid serial < <(awk -F, -v n="$1" '$14 == n { print $4 "," $5; exit }' "$PLAN") || return 0
+    if [[ -n $byid && -e $byid ]]; then echo "$byid"; return 0; fi
+    [[ -n $serial ]] || return 0
+    for l in "$BYID"/*_"$serial"; do
+        [[ -e $l ]] && { echo "$l"; return 0; }
+    done
+    return 0
+}
+# The plan's names, one per line.
+plan_names() { tail -n +2 "$PLAN" | cut -d, -f14; }
+
 disk_of() {
     local d
     d=$(awk -F, -v n="$1" '$14 == n { print $4 }' "$PLAN")
     [[ -n $d ]] || die "disk $1 is not in $PLAN"
     [[ $(wc -l <<<"$d") == 1 ]] || die "disk $1 appears more than once in $PLAN; run disk-inventory.sh again"
-    [[ -b $d ]] || die "disk $1 ($d) is not present"
+    d=$(link_of "$1")
+    [[ -n $d && -b $d ]] || die "disk $1 ($(awk -F, -v n="$1" '$14 == n { print $4 }' "$PLAN"), serial $(awk -F, -v n="$1" '$14 == n { print $5 }' "$PLAN")) is not present"
     echo "$d"
 }
 
@@ -213,9 +232,10 @@ ata_name() {
     p=$(readlink -f "$SYS/class/ata_port/$1" 2>/dev/null) || { echo '?'; return; }
     for blk in "${p%/ata_port/*}"/host*/target*/*/block/*; do
         [[ -e $blk ]] || continue
-        while IFS=, read -r _ _ _ byid _ _ _ _ _ _ _ _ _ name; do
-            [[ $(readlink -f "$byid" 2>/dev/null) == */"${blk##*/}" ]] && { echo "$name"; return; }
-        done < <(tail -n +2 "$PLAN")
+        while read -r name; do
+            byid=$(link_of "$name")
+            [[ -n $byid && $(readlink -f "$byid") == */"${blk##*/}" ]] && { echo "$name"; return; }
+        done < <(plan_names)
     done
     dom=$(grep -oE '/[0-9a-f]{4}:03:00\.0/' <<<"$p" | tr -d / | cut -d: -f1 || true)
     host=$(ls -d "${p%/ata_port/*}"/host* 2>/dev/null | head -n 1 | grep -oE '[0-9]+$' || true)
@@ -224,32 +244,38 @@ ata_name() {
         [[ $(readlink -f "$h") == *"/$dom:03:00.0/"* ]] && echo "${h##*host}"; done | sort -n | head -n 1)
     # No disk on the port now: the plan's disk for it, unless that one sits elsewhere now (moved);
     # then the box's disks the system lacks are the candidates.
-    read -r byid name < <(awk -F, -v d="$dom" -v p="$((host - base))" '$1 == d && $2 == p { print $4, $14 }' "$PLAN") || true
-    if [[ -n ${name:-} && ! -e $byid ]]; then echo "$name? (no disk on the port now; the plan's disk for it)"; return; fi
-    name=$(awk -F, -v d="$dom" '$1 == d { print $4, $14 }' "$PLAN" | while read -r byid name; do [[ -e $byid ]] || echo "$name"; done | tr '\n' ' ')
+    name=$(awk -F, -v d="$dom" -v p="$((host - base))" '$1 == d && $2 == p { print $14 }' "$PLAN") || true
+    if [[ -n ${name:-} && -z $(link_of "$name") ]]; then echo "$name? (no disk on the port now; the plan's disk for it)"; return; fi
+    name=$(awk -F, -v d="$dom" '$1 == d { print $14 }' "$PLAN" | while read -r name; do [[ -n $(link_of "$name") ]] || echo "$name"; done | tr '\n' ' ')
     echo "?(domain $dom port $((host - base)), no disk now; missing from this box: ${name:-none})"
 }
 
 # The SCSI hosts a rescan asks for disk $1. A scan resets the port, so ports that hold a disk are
 # left alone: the port that has the disk now, when the system still lists it (a disabled port
 # keeps the /dev name); else every port of its box (the domain in the plan) without a disk, since
-# the disk may have moved bays.
+# the disk may have moved bays; else, for a disk moved behind a SAS card, that card's hosts.
 hosts_of() {
     local byid dev p dom h
-    byid=$(awk -F, -v n="$1" '$14 == n { print $4 }' "$PLAN")
-    [[ -n $byid ]] || return 1
-    if [[ -e $byid ]]; then
+    grep -q ",$1\$" "$PLAN" || return 1
+    byid=$(link_of "$1")
+    if [[ -n $byid ]]; then
         dev=$(readlink -f "$byid")
         h=$(readlink -f "$SYS/block/${dev##*/}" 2>/dev/null | grep -oE '/host[0-9]+/' | head -n 1 | tr -d /) || true
         [[ -n $h ]] && { echo "$h"; return 0; }
     fi
     dom=$(awk -F, -v n="$1" '$14 == n { print $1 }' "$PLAN")
     [[ -n $dom ]] || return 1
-    for h in "$SYS"/class/scsi_host/host*; do
+    p=$(for h in "$SYS"/class/scsi_host/host*; do
         p=$(readlink -f "$h")
         [[ $p == *"/$dom:03:00.0/"* ]] || continue
         compgen -G "${p%/scsi_host/*}/target*/*/block/*" >/dev/null && continue
         echo "${h##*/}"
+    done | sort -V)
+    [[ -n $p ]] && { echo "$p"; return 0; }
+    # Behind a SAS card a disk has no port of its own: the card's host is scanned, which adds what
+    # is new and leaves the disks it has alone.
+    for h in "$SYS"/class/scsi_host/host*; do
+        [[ $(cat "$h/proc_name" 2>/dev/null) == mpt3sas ]] && echo "${h##*/}"
     done | sort -V | grep .
 }
 
@@ -257,8 +283,8 @@ hosts_of() {
 # the /dev name, so being there is not enough. In the background: a hung read is abandoned.
 disk_answers() {
     local d pid i
-    d=$(awk -F, -v n="$1" '$14 == n { print $4 }' "$PLAN")
-    [[ -n $d && -e $d ]] || return 1
+    d=$(link_of "$1")
+    [[ -n $d ]] || return 1
     [[ -b $d ]] || return 0 # tests: a plain file stands for the disk
     ( sudo dd if="$d" of=/dev/null bs=4096 count=1 iflag=direct status=none ) 2>/dev/null &
     pid=$!
@@ -271,15 +297,15 @@ disk_answers() {
 
 # Disks of the plan the system does not have now.
 missing_disks() {
-    local byid name
-    while IFS=, read -r _ _ _ byid _ _ _ _ _ _ _ _ _ name; do [[ -e $byid ]] || echo "$name"; done < <(tail -n +2 "$PLAN")
+    local name
+    while read -r name; do [[ -n $(link_of "$name") ]] || echo "$name"; done < <(plan_names)
 }
 
 # The links: disks of the plan the system no longer has, and SATA trouble since boot per disk.
 link_report() {
-    local dom port dev byid name miss="" cnt ata last n=0
-    while IFS=, read -r dom port _ byid _ _ _ _ _ _ _ _ _ name; do
-        [[ -e $byid ]] || miss+="$name (domain $dom, port $port in the plan) "
+    local dom port dev byid name nn miss="" cnt ata last n=0
+    while IFS=, read -r dom port _ _ _ _ _ _ _ _ _ _ _ name; do
+        [[ -n $(link_of "$name") ]] || miss+="$name (domain $dom, port $port in the plan) "
     done < <(tail -n +2 "$PLAN")
     echo "    missing from the system: ${miss:-none}${miss:+ ('rescan' looks for them again)}"
     # A port whose disk failed to answer through all of libata's retries is disabled: the disk may
@@ -299,14 +325,27 @@ link_report() {
         sed -E 's/^\[([^]]*)\] (ata[0-9]+)[.:].*/\2\t\1/' |
         awk -F'\t' '{ n[$1]++; last[$1] = $2 } END { for (a in n) print n[a] "\t" a "\t" last[a] }' | sort -rn | head -n 12)
     while IFS=$'\t' read -r cnt dev last; do
-        name="$dev (no disk has that name now)"
-        while IFS=, read -r dom port _ byid _; do
-            [[ $(readlink -f "$byid" 2>/dev/null) == "/dev/$dev" ]] && name="$(awk -F, -v b="$byid" '$4 == b { print $14 }' "$PLAN") ($dev)"
-        done < <(tail -n +2 "$PLAN")
-        echo "    $name: $cnt I/O errors since boot, last $last"; n=$((n + 1))
+        echo "    $(name_of_dev "$dev"): $cnt I/O errors since boot, last $last"; n=$((n + 1))
     done < <(kernel_log | grep -E '\] I/O error, dev sd[a-z]+' | sed -E 's/^\[([^]]*)\] I\/O error, dev (sd[a-z]+).*/\2\t\1/' |
         awk -F'\t' '{ n[$1]++; last[$1] = $2 } END { for (a in n) print n[a] "\t" a "\t" last[a] }' | sort -rn | head -n 12)
-    ((n > 0)) || echo "    no SATA link or I/O errors since boot"
+    # Commands the disk failed, also those retried with success: the SCSI layer logs them for any
+    # disk, including one behind a SAS card, which has no ataN port and no libata lines.
+    while IFS=$'\t' read -r cnt dev last; do
+        echo "    $(name_of_dev "$dev"): $cnt failed commands since boot, last $last"; n=$((n + 1))
+    done < <(kernel_log | grep -E '\] sd [0-9:]+: \[[a-z][a-z0-9]*\] tag#[0-9]+ FAILED Result' |
+        sed -E 's/^\[([^]]*)\] sd [0-9:]+: \[([a-z][a-z0-9]*)\].*/\2\t\1/' |
+        awk -F'\t' '{ n[$1]++; last[$1] = $2 } END { for (a in n) print n[a] "\t" a "\t" last[a] }' | sort -rn | head -n 12)
+    ((n > 0)) || echo "    no SATA link, I/O or command errors since boot"
+}
+
+# sdX -> "NN (sdX)", the plan's name of the disk that has that /dev name now.
+name_of_dev() {
+    local nn byid
+    while read -r nn; do
+        byid=$(link_of "$nn")
+        [[ -n $byid && $(readlink -f "$byid") == "/dev/$1" ]] && { echo "$nn ($1)"; return; }
+    done < <(plan_names)
+    echo "$1 (no disk has that name now)"
 }
 
 # $1 name: "src USED" (still on HFS+), "xfs USED AVAIL" (formatted by us), or "other TYPE".
@@ -1318,8 +1357,8 @@ readtest)
         fi
         cmd=""; : >"$st.disks"
         for nn in ${ROW[$row]}; do
-            d=$(awk -F, -v n="$nn" '$14 == n { print $4 }' "$PLAN")
-            [[ -n $d && -e $d ]] || { echo "$nn: missing, not read"; continue; }
+            d=$(link_of "$nn")
+            [[ -n $d ]] || { echo "$nn: missing, not read"; continue; }
             b=$(basename "$(readlink -f "$d")")
             echo "$nn $b $(awk '{ print $3 }' "$SYS/block/$b/stat")" >>"$st.disks"
             cmd+="dd if=/dev/$b of=/dev/null bs=4M iflag=direct status=none & "
@@ -1459,7 +1498,7 @@ rescan)
         sleep 5
     done
     for nn in $list; do
-        if disk_answers "$nn"; then echo "$nn: answers again ($(readlink -f "$(awk -F, -v n="$nn" '$14 == n { print $4 }' "$PLAN")")); a pool bay goes back with 'good $nn', a source is copied by its row's worker"
+        if disk_answers "$nn"; then echo "$nn: answers again ($(readlink -f "$(link_of "$nn")")); a pool bay goes back with 'good $nn', a source is copied by its row's worker"
         else echo "$nn: does not answer (status shows why; a reboot is the next step)"; fi
     done
     ;;
