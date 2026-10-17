@@ -43,7 +43,7 @@ echo "### rounds (log)"; grep -hE 'round:|verified,|formatting|worker finished|E
 echo "### placement"; cat home/migrate/state/placement.txt
 echo "### content: every data set present exactly once"
 H=$T/home/migrate/mnt
-for n in 08 09 10 16 17 18; do echo "files of $n in pool: $(find $H/hd-*/ -name "*_$n.*" -type f | wc -l) (3 expected) hardlinks: $(stat -c %h $H/hd-*/Library/hard_$n.txt 2>/dev/null | tr "\n" " ")"; done
+for n in 08 09 10 16 17 18; do echo "files of $n in pool: $(find $H/hd-*/ -name "*_$n.*" -type f | wc -l) (2 expected: big_NN.bin, hard_NN.txt) hardlinks: $(stat -c %h $H/hd-*/Library/hard_$n.txt 2>/dev/null | tr "\n" " ")"; done
 echo "pool: $(ls "$T/home/migrate/pool/Library" | wc -l) entries in Library; $(find "$T/home/migrate/pool" -type f | wc -l) files; branches: $(getfattr -n user.mergerfs.branches --only-values $T/home/migrate/pool/.mergerfs | sed 's|=RW||g; s|[^:]*/hd-||g')"
 for n in 08 16; do echo "parity $n: $(blkid -p -s TYPE -o value "${D[$n]}p1")"; done
 echo "### status"; ./mig.sh status 2>&1 | grep -v WARN | head -8
