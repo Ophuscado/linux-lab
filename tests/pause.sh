@@ -1,6 +1,6 @@
 #!/bin/bash
 # pause, resume and rest on a worker in root's tmux (start D), copying slowly.
-# Expected: pause stops every process of the row (all in state T) and the pool stops growing; status
+# Expected: status shows the copy's progress line; pause stops every process of the row (all in state T) and the pool stops growing; status
 # says paused; resume lets it finish: 17 and 18 verified, 18 of 18 checksums; rest 3 (seconds here) on a
 # stand-in worker: paused (T) after 2 s, status shows the rest; after 9 s D paused and resumed at least twice;
 # rest off leaves nothing paused and the stand-in running (S).
@@ -31,6 +31,8 @@ sed -e 's|\[A\]="24 25 26 27 28 29 30 31"|[A]=""|; s|\[B\]="00 01 02 03 04 05 06
 ./mig.sh add 23 22 2>&1 | tail -n 1
 ./mig.sh start D 2>&1 | grep -E 'started|ERR'
 for i in $(seq 60); do grep -q '18>pool: copying' home/migrate/D.log 2>/dev/null && break; sleep 1; done; sleep 3
+for i in $(seq 30); do [ -s home/migrate/state/progress-D ] && break; sleep 1; done
+echo "### status while copying: $(./mig.sh status 2>&1 | grep -E '^    copying' | cut -c1-90)"
 echo "### pause D"
 ./mig.sh pause D 2>&1 | cut -c21-120
 sleep 1

@@ -886,6 +886,8 @@ copy_disk() {
         while [[ -e /proc/$rpid ]]; do
             for ((i = 0; i < ${MIG_WATCH:-60}; i++)); do [[ -e /proc/$rpid ]] || break; sleep 1; done
             check_writes
+            # rsync's last progress line, for status and for a reader without a terminal.
+            tail -c 600 "$LOG" 2>/dev/null | tr '\r' '\n' | grep -a '%' | tail -n 1 | tr -s ' ' >"$MIG/state/progress-$1" || true
             [[ ! -f $MIG/state/stop ]] || sudo kill -TERM "$rpid" 2>/dev/null || true
         done
         wait "$rpid" || rc=$?
@@ -1390,7 +1392,7 @@ start)
             # The worker holds a sleep inhibitor: a suspend would drop the tunnels mid-copy.
             inhibit=""; sudo systemd-inhibit --what=sleep:idle --who=migrate-row --why=probe true 2>/dev/null && inhibit="systemd-inhibit --what=sleep:idle --who=migrate-row --why='row $row copying'"
             # The inner shell is root's: HOME and the hooks are passed on explicitly.
-            sudo tmux new-session -d -s "mig-$row-$i" "HOME='$HOME' MIG_HOME='$MIG' MIG_PLAN='$PLAN' MIG_MERGERFS='$MERGERFS' MIG_SRC_FS='$SRC_FS' MIG_EMPTY_LIMIT='$EMPTY_LIMIT' MIG_MINFREE='$MINFREE' MIG_WAIT='$WAIT' VERIFY=$VERIFY $inhibit '$0' run $row; echo; echo 'worker ended; press enter'; read"
+            sudo tmux new-session -d -s "mig-$row-$i" "HOME='$HOME' MIG_HOME='$MIG' MIG_PLAN='$PLAN' MIG_MERGERFS='$MERGERFS' MIG_SRC_FS='$SRC_FS' MIG_EMPTY_LIMIT='$EMPTY_LIMIT' MIG_MINFREE='$MINFREE' MIG_WAIT='$WAIT' MIG_WATCH='${MIG_WATCH:-60}' MIG_WRITE_MARGIN='$WRITE_MARGIN' VERIFY=$VERIFY $inhibit '$0' run $row; echo; echo 'worker ended; press enter'; read"
             echo "row $row worker $i started in tmux session mig-$row-$i (root's tmux)"
             [[ $i == 1 && $n -gt 1 ]] && sleep 20 # let the first one take the confirmation prompt
         done
@@ -1571,6 +1573,7 @@ status)
         printf 'row %s: %d of %d disks copied; workers: %d running, %d ended; busy now: %s\n' "$row" "$done_n" "$n" \
             "$run" "$ended" "${busy:-none}"
         [[ -f $MIG/$row.log ]] && grep -E "^[0-9]{4}-" "$MIG/$row.log" | tail -n 1 | sed "s/^/    /"
+        if [[ -n $busy && -s $MIG/state/progress-$row ]]; then echo "    copying: $(cat "$MIG/state/progress-$row") ($(date -r "$MIG/state/progress-$row" '+%T'))"; fi
     done
     if sudo tmux has-session -t mig-33 2>/dev/null; then
         printf 'disk 33 (USB): %s\n' "$(worker_ended mig-33 && echo 'copy ended' || echo 'copying')"
