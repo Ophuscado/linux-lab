@@ -44,6 +44,7 @@ recheck before relying on one for anything consequential.
 - [A global sync in a worker waits for every writer](#a-global-sync-in-a-worker-waits-for-every-writer)
 - [rsync --no-inc-recursive copies nothing until the whole tree is listed](#rsync---no-inc-recursive-copies-nothing-until-the-whole-tree-is-listed)
 - [Box C at 04:27 on 16 Oct, and every lost write since 14 Oct](#box-c-at-0427-on-16-oct-and-every-lost-write-since-14-oct)
+- [Where the disks sit since 17 Oct](#where-the-disks-sit-since-17-oct)
 - [The M424 24-bay box and this Mac](#the-m424-24-bay-box-and-this-mac)
 
 ## Standing operator decisions
@@ -372,6 +373,22 @@ shutdowns, failed WRITE commands):
 15 came back into the pool at 18:15 on 16 Oct and again on 17 Oct, and a copy skips a path
 the pool already has, so its files from 04:28 and 14:16 count as copied until they are set
 aside too (INFERRED: which paths, if any, lost bytes is not known; a size check cannot tell).
+
+## Where the disks sit since 17 Oct
+2026-10-17 13:53 boot, VERIFIED (panel run 2571, each disk found by serial, its PCI domain now).
+The operator moved disks between boxes, so a row in migrate-row.sh (a set of disk names) is no
+longer one box. The domain of a box is the Mac port its cable is in, not the box itself.
+
+| domain | disks |
+|---|---|
+| 0008 | 00 08 09 10 11 12 16 24: the four parity disks and four of row C; box C, the one that failed, per the operator; no pool branch |
+| 0009 | 13 17 18 19 20 21 22 23 (pool branch 23) |
+| 000a | 01 02 03 04 05 06 07 15 (pool branches 04 07 15) |
+| 000b | 14 25 26 27 28 29 30 31 (pool branch 31) |
+
+So row A reads box 000b, row B 000a, row D 0009, and row C box 0008 for 09 to 12, then 13 (0009)
+and 14 (000b); every parity disk sits in 0008 and is read last in its row. The plan's domain and
+port columns still give the old places; names follow the disks by serial.
 
 ## The M424 24-bay box and this Mac
 2026-10-17, considered as the replacement of the home-made boxes. From the seller's pages and
