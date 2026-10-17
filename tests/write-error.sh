@@ -8,6 +8,7 @@
 #  2b. aside 23 by hand: 0 files moved
 #  3. run again (trusts the disks): the stop is lifted, the old lines are not handled again, 18 and 17 are
 #     copied and verified, 18 of 18 checksums match in the pool, the moved files stay on hd-23 under .migrate-aside
+#  5. aside 23 with an end time moves only the file changed inside the window (a), not the later one (b)
 #  4. bad 23 after both were formatted: the warning that their files may exist only on 23
 set -u
 . "$(dirname "$0")/lib.sh"
@@ -53,6 +54,10 @@ timeout 250 ./mig.sh run D >home/w2.out 2>&1 </dev/null; echo "worker exit $?"
 grep -hE 'lifted|round:|verified,|WARN|worker finished' home/migrate/D.log | tail -n 7 | cut -c21-200
 (cd home/migrate/pool && sha256sum Library/*/*.bin 2>&1) | sort >pool.sha; sort hashes.txt >src.sha
 echo "files in pool: $(grep -c bin pool.sha); matching the sources: $(comm -12 pool.sha src.sha | wc -l); still aside on hd-23: $(find home/migrate/mnt/hd-23/.migrate-aside -type f | wc -l)"
+echo "### 5: aside with an end time: only the file changed inside the window moves"
+H=home/migrate/mnt/hd-23; mkdir -p "$H/win"; t0=$(date '+%F %T'); sleep 1; echo a >"$H/win/a"; sleep 2; t1=$(date '+%F %T'); sleep 1; echo b >"$H/win/b"
+./mig.sh aside 23 "$t0" "$t1" 2>&1 | grep -E 'aside:|ERR' | cut -c21-200
+echo "left in place: $(ls "$H/win" | tr '\n' ' ')moved: $(find "$H/.migrate-aside" -path '*/win/*' -type f -printf '%f ')"
 echo "### 4: bad 23 after the formats"
 ./mig.sh bad 23 2>&1 | grep -E 'WARN' | cut -c21-200
 umount "$T/home/migrate/pool" 2>/dev/null; for m in $(findmnt -rn -o TARGET | grep "$T" | sort -r); do umount "$m" 2>/dev/null; done; losetup -D

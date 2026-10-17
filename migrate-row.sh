@@ -76,10 +76,11 @@
 #   migrate-row.sh bad 15 ...       take these bays out of the pool by hand (they stay out after
 #                                   a restart); good 15 ... puts them back. Files they held are
 #                                   copied again from the sources, which are still there.
-#   migrate-row.sh aside 15 "2026-10-16 21:33"
+#   migrate-row.sh aside 15 "2026-10-16 21:33" ["2026-10-16 22:10"]
 #                                   what a worker does when a pool disk fails a write, by hand (for
-#                                   one no worker saw): files changed on hd-15 since then go aside on
-#                                   it, copied again by the next pass; run it before 'good 15'
+#                                   one no worker saw): files changed on hd-15 since then (and not
+#                                   after the second time) go aside on it, copied again by the next
+#                                   pass; run it before 'good 15'
 #   migrate-row.sh recheck NN ...   after a disk or box fault during copies: files of these
 #                                   sources that exist in the pool are compared, and a copy
 #                                   that differs, or that exists on two branches, is moved
@@ -553,14 +554,15 @@ check_writes() {
     fi
     rm -rf "$lock"
 }
-# aside_since NN SINCE: move the files changed on hd-NN since SINCE into .migrate-aside on the same
-# disk (a rename: instant, nothing copied or deleted). Prints how many.
+# aside_since NN SINCE [UNTIL]: move the files changed on hd-NN since SINCE (and not after UNTIL)
+# into .migrate-aside on the same disk (a rename: instant, nothing copied or deleted). Prints how many.
 aside_since() {
-    local root=$MIG/mnt/hd-$1 dir n=0 p
+    local root=$MIG/mnt/hd-$1 dir n=0 p bound=()
     dir=.migrate-aside/write-error-$(date '+%Y%m%d-%H%M%S')
+    [[ -z ${3:-} ]] || bound=(! -newerct "$3")
     while IFS= read -r -d '' p; do
         sudo mkdir -p "$root/$dir/$(dirname "$p")" && sudo mv -n "$root/$p" "$root/$dir/$p" && n=$((n + 1))
-    done < <(sudo timeout 900 find "$root" -xdev -type f ! -path '*/.migrate-aside/*' -newerct "$2" -printf '%P\0' 2>/dev/null)
+    done < <(sudo timeout 900 find "$root" -xdev -type f ! -path '*/.migrate-aside/*' -newerct "$2" "${bound[@]}" -printf '%P\0' 2>/dev/null)
     echo "$n"
 }
 
@@ -1480,17 +1482,19 @@ bad)
     findmnt -n "$POOL" >/dev/null && echo "pool now: $(pool_branches)"
     ;;
 aside)
-    # aside NN "YYYY-MM-DD HH:MM": by hand, what a worker does when NN fails a write (check_writes),
-    # for a failure no worker saw: the files changed on hd-NN since then go aside on it, copied
-    # again by the next pass, and sources verified since then are copied and verified again.
-    [[ $# == 3 && $2 =~ ^[0-3][0-9]$ ]] || die "aside needs a disk and a time, e.g. aside 15 \"2026-10-16 21:33\""
+    # aside NN "YYYY-MM-DD HH:MM" ["YYYY-MM-DD HH:MM"]: by hand, what a worker does when NN fails a
+    # write (check_writes), for a failure no worker saw: the files changed on hd-NN since then (and
+    # not after the second time, for an old failure while copies go on) go aside on it, copied again
+    # by the next pass, and sources verified since then are copied and verified again.
+    [[ ($# == 3 || $# == 4) && $2 =~ ^[0-3][0-9]$ ]] || die "aside needs a disk and a time, e.g. aside 15 \"2026-10-16 21:33\" [\"2026-10-16 22:10\"]"
     since=$(date -d "$3" '+%F %T') || die "not a time: $3"
+    upto=""; [[ -z ${4:-} ]] || upto=$(date -d "$4" '+%F %T') || die "not a time: $4"
     prepare
     LOG=$MIG/heal.log
     mount_branch "$2"
     formatted=$(uncopy "$2" "$since")
     [[ -z $formatted ]] || die "$(echo $formatted) verified and formatted since $since with hd-$2 as a branch: nothing moved; their files may exist only on hd-$2"
-    log "aside: hd-$2: $(aside_since "$2" "$since") files changed since $since moved aside on it; the next pass copies them again"
+    log "aside: hd-$2: $(aside_since "$2" "$since" "$upto") files changed since $since${upto:+ and not after $upto} moved aside on it; the next pass copies them again"
     ;;
 good)
     shift
@@ -1505,7 +1509,7 @@ good)
     done
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | aside NN TIME | recheck NN... | finish | add NN... | erase NN... | defer NN... | policy [NAME] | readtest ROW [start|check [S]|stop] | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | aside NN TIME [TIME] | recheck NN... | finish | add NN... | erase NN... | defer NN... | policy [NAME] | readtest ROW [start|check [S]|stop] | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
