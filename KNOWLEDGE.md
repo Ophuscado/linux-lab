@@ -58,6 +58,8 @@ Kept here so a resumed session does not re-ask them; each was stated by the oper
 - 2026-10-16: 15 stays in the pool unless it fails in operation (it did at 22:03, went out with `bad 15`, and came back on 17 Oct after `aside 15`).
 - 2026-10-17, for the long run until the M424 boxes arrive: a big fan in front of all disks and air conditioning in the room; disks 13 and 15 swapped bays; the four parity disks (24, 00, 08, 16) moved into box C, so box C is read last (each row copies its parity disk last); resume every row with every branch, 15 included, one reader per row; spin-down after 10 idle minutes.
 - 2026-10-17: two M424 boxes are bought to replace the home-made ones (returns are cheap; other boxes cost three times as much per 8 bays); see [The M424 24-bay box and this Mac](#the-m424-24-bay-box-and-this-mac).
+- 2026-10-17: home backup with restic, as on the operator's servers (not borg): manual for now, later once an hour while the disk is connected, with a run lock; kept like Time Machine; up to 80 % of the disk; the password file is the operator's to write.
+- 2026-10-17: eager mode wanted (verified disks join the pool soon, to spread writes and heat); restart rows on new script versions rather than leave old code running.
 - 2026-10-17: every disk is trusted after a replug or a reboot ("consider all disks valid") until one fails; then the workers warn and stop, and `start` trusts them again. A file whose write failed is still set aside and copied again, which is about the data, not the disk.
 
 ## Stock kernel has no Apple USB4 host
@@ -460,3 +462,10 @@ measured); a fault rarer than that, or one that damages part of a file outside t
 passes. `VERIFY=full` compares every byte at about twice the read time. A copy that differs holds
 its source (`NN.mismatch`) and stops every worker. Checked on loop disks (tests/eager.sh: 8 bytes
 changed in a copy, same size and time, found).
+
+The home backup moved to restic on 17 Oct (the operator's choice, as on the servers), after the
+rsync mirror ran at 1.5 MB/s: restic writes large pack files one after another, which a shingled
+disk takes at its sequential speed, and later runs write only what changed. Checked with restic
+0.18.0 on a loop disk: first run, an incremental one, exclusions (caches, trash, ~/migrate, the
+password file, CACHEDIR.TAG folders), the run lock, a missing disk, thinning down to the newest
+backup at a 2 % limit. Not run on the Mac yet.
