@@ -107,6 +107,10 @@
 #                                   disk's read rate now and since the start, and the link and I/O
 #                                   errors since the start by disk; with SECONDS, again every
 #                                   SECONDS until Ctrl-C
+#   migrate-row.sh pause ROW... | all   stop a row's worker where it is; resume ROW... | all
+#                                   goes on (33: the copy of disk 33)
+#   migrate-row.sh rest 15 | off    the rows take turns to rest, one at a time, 15 minutes each:
+#                                   every box rests 15 minutes an hour (cooler, 25 % slower)
 #   migrate-row.sh policy [NAME]    where the pool puts new files: pfrd (default; random,
 #                                   weighted by free space, parallel copies spread over the disks)
 #                                   or mfs (always the emptiest disk: a new or lagging disk catches
@@ -515,6 +519,39 @@ uncopy() {
             ok[$1] = hit && ($6 " " $7) >= since
         }
         END { for (s in ok) if (ok[s]) print s }' "$MIG/state/placement.txt" 2>/dev/null | sort)
+}
+
+# ---- pauses -------------------------------------------------------------------------------------
+# A row's processes: everything under its tmux sessions (mig-A-1..., or mig-33 for disk 33),
+# parents before children. Not the pane's own shell: tmux continues a pane process that stops. And
+# sudo watches the command it runs (use_pty) and mirrors a stop of it onto itself, so a pause
+# stops parents first and a resume continues children first: the command runs again before sudo
+# can look at it, and sudo never sees it stopped.
+row_pids() {
+    local ss pp
+    for ss in $(sudo tmux ls -F '#S' 2>/dev/null | grep -E "^mig-$1(-[0-9]+)?\$" || true); do
+        pp=$(sudo tmux list-panes -t "$ss" -F '#{pane_pid}' 2>/dev/null) || continue
+        ps -eo pid=,ppid= | awk -v root="$pp" '
+            { kids[$2] = kids[$2] " " $1 }
+            END { q[1] = root; h = 1; t = 1
+                  while (h <= t) { p = q[h++]; if (p != root) print p; m = split(kids[p], c, " "); for (i = 1; i <= m; i++) q[++t] = c[i] } }'
+    done
+}
+pause_row() {
+    local pids
+    pids=$(row_pids "$1")
+    [[ -n $pids ]] || { echo "row $1: no worker runs"; return 0; }
+    sudo kill -STOP $pids 2>/dev/null || true
+    date '+%F %T' >"$MIG/state/paused-$1"
+    log "row $1 paused: $(wc -l <<<"$pids") processes stopped"
+}
+resume_row() {
+    local pids
+    pids=$(row_pids "$1" | tac)
+    rm -f "$MIG/state/paused-$1"
+    [[ -n $pids ]] || return 0
+    sudo kill -CONT $pids 2>/dev/null || true
+    log "row $1 resumed"
 }
 
 # ---- failed writes -----------------------------------------------------------------------------
@@ -1326,6 +1363,54 @@ start)
     echo "Watch: $0 attach ROW [N] (Ctrl-b d to leave); progress: $0 status"
     ;;
 attach) sudo tmux attach -t "mig-${2:-}-${3:-1}" ;;
+pause | resume)
+    # pause ROW... | all: stop a row's worker where it is (rsync mid-file included), resume goes on.
+    # 33 is the copy of disk 33. Nothing times out meanwhile; a paused worker does not watch for
+    # failed writes, the others do.
+    cmd=$1; shift
+    [[ $# -gt 0 ]] || die "$cmd needs rows, e.g. $cmd A, $cmd A C, $cmd all (33: disk 33)"
+    LOG=$MIG/heal.log; mkdir -p "$MIG/state"
+    rows=$*; [[ $rows == all ]] && rows="A B C D 33"
+    for r in $rows; do
+        [[ $r =~ ^([ABCD]|33)$ ]] || die "$r is not a row (A, B, C, D) or 33"
+        if [[ $cmd == pause ]]; then pause_row "$r"; else resume_row "$r"; fi
+    done
+    ;;
+rest)
+    # rest MINUTES | off: the rows take turns to rest, one at a time, MINUTES each (15: every box
+    # rests 15 minutes an hour, the copies run 25 % slower), in root's tmux session mig-rest.
+    # off ends it and resumes every row.
+    LOG=$MIG/heal.log; mkdir -p "$MIG/state"
+    case ${2:-} in
+    off)
+        sudo tmux kill-session -t mig-rest 2>/dev/null || true
+        rm -f "$MIG/state/rest"
+        for r in A B C D 33; do [[ -f $MIG/state/paused-$r ]] && resume_row "$r"; done
+        log "rest: off, every row runs"
+        ;;
+    '' | *[!0-9]*) die "rest MINUTES (e.g. rest 15) or rest off" ;;
+    *)
+        sudo tmux kill-session -t mig-rest 2>/dev/null || true
+        echo "$2" >"$MIG/state/rest"
+        sudo tmux new-session -d -s mig-rest "HOME='$HOME' MIG_HOME='$MIG' MIG_PLAN='$PLAN' MIG_REST_UNIT='${MIG_REST_UNIT:-60}' '$0' rest-loop $2"
+        log "rest: rows take turns, $2 minutes each, in tmux session mig-rest"
+        ;;
+    esac
+    ;;
+rest-loop)
+    # The turns themselves (started by 'rest'): a row with no worker is skipped at once.
+    LOG=$MIG/heal.log
+    trap 'resume_row "${r:-}"; exit 0' INT TERM HUP
+    while true; do
+        for r in A B C D; do
+            [[ -n $(row_pids "$r") ]] || continue
+            pause_row "$r"
+            sleep $(($2 * ${MIG_REST_UNIT:-60}))
+            resume_row "$r"
+        done
+        sleep 1
+    done
+    ;;
 policy)
     if [[ -n ${2:-} ]]; then
         [[ $2 =~ ^(pfrd|mfs|lfs|lus|rand|ff|epmfs|eppfrd|msppfrd|mspmfs)$ ]] || die "unknown policy $2; pfrd or mfs are the useful ones here"
@@ -1465,6 +1550,10 @@ status)
     bad=$(cd "$MIG/state" 2>/dev/null && ls ./*.bad 2>/dev/null | sed 's|^\./||; s|\.bad$||' | tr '\n' ' ' || true)
     [[ -z $bad ]] || echo "bad (out of the pool, 'good NN' puts one back): $bad"
     [[ ! -f $MIG/state/stop ]] || echo "STOPPED: $(cat "$MIG/state/stop")"
+    if [[ -f $MIG/state/rest ]]; then echo "rest: the rows take turns, $(cat "$MIG/state/rest") minutes each ('rest off' ends it)"; fi
+    for r in A B C D 33; do
+        if [[ -f $MIG/state/paused-$r ]]; then echo "paused: row $r since $(cat "$MIG/state/paused-$r") ('resume $r')"; fi
+    done
     echo "links:"
     link_report
     echo "mounted:"
@@ -1548,7 +1637,7 @@ good)
     done
     ;;
 *)
-    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | aside NN TIME [TIME] | recheck NN... | finish | add NN... | erase NN... | defer NN... | policy [NAME] | readtest ROW [start|check [S]|stop] | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
+    echo "usage: $0 {plan ROW | start ROW [N] | run ROW | attach ROW [N] | status | stats [S] | pool | rescan [NN...] | heal | bad NN... | good NN... | aside NN TIME [TIME] | recheck NN... | finish | add NN... | erase NN... | defer NN... | pause ROW... | resume ROW... | rest MIN|off | policy [NAME] | readtest ROW [start|check [S]|stop] | extra [PART] | mergerfs}   ROW = A, B, C or D" >&2
     exit 2
     ;;
 esac
