@@ -46,6 +46,7 @@ recheck before relying on one for anything consequential.
 - [Box C at 04:27 on 16 Oct, and every lost write since 14 Oct](#box-c-at-0427-on-16-oct-and-every-lost-write-since-14-oct)
 - [Where the disks sit since 17 Oct](#where-the-disks-sit-since-17-oct)
 - [The M424 24-bay box and this Mac](#the-m424-24-bay-box-and-this-mac)
+- [The backup disk and the hangs in state D](#the-backup-disk-and-the-hangs-in-state-d)
 
 ## Standing operator decisions
 Kept here so a resumed session does not re-ask them; each was stated by the operator.
@@ -406,3 +407,19 @@ was USB4. The current cables (1 m) are passive and rated for 80 Gb/s (EUDO `0x26
 passive). In Thunderbolt 3 mode the 20 Gb/s bit depends on the TBT cable speed the port controller
 reports being exactly 3 ("10 and 20 Gbps"), the kind of check patch 0001 had to fix for USB4.
 Asahi's own USB4 series (30 Aug 2026) has no PCIe tunnels yet, so nobody else runs this path.
+
+## The backup disk and the hangs in state D
+2026-10-17, panel request 413 (disk-check.sh), VERIFIED: WD Game Drive, `WDC WD50NMZW-59A8NS1`,
+5 TB, 5400 rpm, 4K physical sectors, on USB at 5 Gb/s through `usb-storage` (not UAS: one command
+at a time). SMART passed: no reallocated, pending or uncorrectable sector, no CRC error, no error
+logged; 20,967 power-on hours, 51,300 load cycles, 44 °C. Reads of 8 MiB at the start, middle and
+end: 71-74 MB/s. No kernel line about it since boot. Besides BACKUP (exFAT, 926 GB) and
+BACKUP (ext4) (3.5 TB) it holds eight 23 GB HFS+ volumes named macOS_*.
+
+So the three hangs (rsync of the home folder stuck in D at blk_mq_get_tag and vfs_utimes, a global
+sync waiting 3 h, shutdown blocked; 27.5 GB dirty system-wide on 16 Oct) were not damage but
+writeback: a slow disk behind a queue of one, and Linux's page cache letting gigabytes of
+unwritten data pile up for it, so every writer, sync and shutdown waited with it. A 5 TB 2.5" WD
+drive is shingled (SMR, INFERRED from the model), which makes long random writes slower still.
+Two backups ran into the same folder at once. Fix: `settings.sh usb-cap on` (at most 256 MiB
+unwritten per USB disk, strict) and `backup-home.sh` (one run at a time, lowest priority).
