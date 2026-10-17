@@ -62,7 +62,7 @@
 #   migrate-row.sh plan A           what the row holds and what the first round would do
 #   migrate-row.sh start A [N]      run N workers (default 1) in root's tmux sessions mig-A-1..N
 #   migrate-row.sh run A            one worker in this terminal
-#   migrate-row.sh status           every row: disks copied, workers, pool, mounts
+#   migrate-row.sh status           every row: disks copied, workers, pool, mounts (sudo shows it all)
 #   migrate-row.sh attach A [N]     watch a worker (Ctrl-b d to leave it running)
 #   migrate-row.sh pool             mount the pool without copying (after a reboot)
 #   migrate-row.sh stats [SECONDS]  the pool and each branch: fill, and MB/s read and
@@ -135,6 +135,10 @@
 
 set -euo pipefail
 
+# 'sudo ./migrate-row.sh ...' works on the invoking user's migration, not on root's home.
+if [[ $EUID == 0 && -n ${SUDO_USER:-} && $SUDO_USER != root ]] && h=$(getent passwd "$SUDO_USER" | cut -d: -f6) && [[ -d $h ]]; then
+    HOME=$h
+fi
 PLAN=${MIG_PLAN:-$HOME/disk-plan.csv}
 MIG=${MIG_HOME:-$HOME/migrate}
 SRC_FS=${MIG_SRC_FS:-hfsplus}
@@ -1557,6 +1561,10 @@ extra)
     echo "disk 33 ($part) is being copied in root's tmux session mig-33; log $MIG/33.log"
     ;;
 status)
+    # The workers, disk 33, the pool branches and the kernel log are root's: without sudo they would read as none.
+    if [[ $EUID != 0 ]] && ! sudo -v 2>/dev/null; then
+        echo "WARN: sudo cannot ask for a password here, so workers, disk 33, pool branches and kernel errors are missing below; for all of it: sudo $0 status"
+    fi
     for row in A B C D; do
         n=0; done_n=0
         for nn in ${ROW[$row]}; do n=$((n + 1)); grep -s "^$nn -> " "$MIG/state/placement.txt" | tail -n 1 | grep -qv ' undone ' && done_n=$((done_n + 1)); done
