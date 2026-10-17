@@ -122,6 +122,15 @@
 #                                   held when files that macOS keeps compressed (Linux reads them
 #                                   as empty, and so are their copies) are listed in
 #                                   state/NN.compressed (uncompressed size, path)
+#   migrate-row.sh sample 26 ...    read back a sample of a verified source's copies from their
+#                                   disks (2000 files, MIG_SAMPLE) and compare them with the source;
+#                                   done anyway before any format. A copy that differs holds the
+#                                   source and stops every worker
+#   migrate-row.sh restart A ... | all   end these rows' workers cleanly (rsync first, so no partly
+#                                   written file stays behind) and start them again with this
+#                                   version of the script; what is in the pool is skipped. A row
+#                                   past its copy (flushing or verifying) is left alone: that step
+#                                   would start over ('restart force D' does it anyway)
 #   migrate-row.sh policy [NAME]    where the pool puts new files: pfrd (default; random,
 #                                   weighted by free space, parallel copies spread over the disks)
 #                                   or mfs (always the emptiest disk: a new or lagging disk catches
@@ -409,9 +418,9 @@ format_target() {
         log "$mm: already XFS"
         return 0
     fi
-    [[ ! -f $MIG/state/$mm.held ]] || die "$mm is held: its HFS+-compressed files ($MIG/state/$mm.compressed) exist only on it; copy them from macOS, then 'rescued $mm'"
-    if [[ -f $MIG/state/$mm.copied ]] && ! compressed_scan "$mm"; then
-        die "$mm is not formatted: it holds HFS+-compressed files, or the scan for them failed; see $LOG"
+    [[ ! -f $MIG/state/$mm.held ]] || die "$mm is held: $(held_why "$mm")"
+    if [[ -f $MIG/state/$mm.copied ]] && ! fit_to_format "$mm"; then
+        die "$mm is not formatted: its HFS+-compressed files or its sample check stand in the way; see $LOG"
     fi
     if [[ ! -f $MIG/state/$mm.copied ]]; then
         echo
@@ -813,6 +822,110 @@ compressed_scan() {
     return 1
 }
 
+# A sample of a verified source's copies read back from their disks, not from memory: files picked
+# at random, half by count and half by size, compared in 1 MiB pieces at the start, the end and
+# three random places, both sides' cached pages dropped first, the copy read on its branch
+# (user.mergerfs.fullpath). stdin: "size path\0" of the source's non-empty files (relative to
+# argv[1]); argv[2] the pool, argv[3] how many files. Prints MISMATCH/MISSING lines and a summary;
+# exit 1 when a copy differs or is missing, 2 when the check itself could not read something.
+read -r -d '' SAMPLE_PY <<'PY' || true
+import bisect, os, random, sys
+src, pool, k = os.fsencode(sys.argv[1]), os.fsencode(sys.argv[2]), int(sys.argv[3])
+entries = []
+for rec in sys.stdin.buffer.read().split(b"\0"):
+    if rec:
+        size, _, rel = rec.partition(b" ")
+        entries.append((int(size), rel))
+rnd = random.SystemRandom()
+pick = set()
+if entries:
+    n = min(k, len(entries))
+    pick.update(rnd.sample(range(len(entries)), max(1, n // 2)))
+    cum, c = [], 0
+    for size, _ in entries:
+        c += size
+        cum.append(c)
+    for _ in range(n - n // 2):
+        pick.add(bisect.bisect_right(cum, rnd.randrange(c)))
+PIECE = 1 << 20
+files = read = bad = errors = 0
+for i in sorted(pick):
+    size, rel = entries[i]
+    name = os.fsdecode(rel)
+    try:
+        os.stat(os.path.join(pool, rel))
+    except FileNotFoundError:
+        print("MISSING %s" % name)
+        bad += 1
+        continue
+    try:
+        real = os.getxattr(os.path.join(pool, rel), "user.mergerfs.fullpath")
+        with open(os.path.join(src, rel), "rb", buffering=0) as a, open(real, "rb", buffering=0) as b:
+            for f in (a, b):
+                os.posix_fadvise(f.fileno(), 0, 0, os.POSIX_FADV_DONTNEED)
+            if os.fstat(b.fileno()).st_size != size:
+                print("MISMATCH %s (size)" % name)
+                bad += 1
+                continue
+            for off in sorted({0, max(0, size - PIECE)} | {rnd.randrange(size) for _ in range(3)}):
+                x, y = os.pread(a.fileno(), PIECE, off), os.pread(b.fileno(), PIECE, off)
+                read += len(x)
+                if x != y:
+                    print("MISMATCH %s (at byte %d)" % (name, off))
+                    bad += 1
+                    break
+        files += 1
+    except OSError as e:
+        print("cannot compare %s: %s" % (name, e), file=sys.stderr)
+        errors += 1
+print("sample check: %d of %d files compared, %d MiB each side, %d differ or are missing, %d not readable"
+      % (files, len(entries), read >> 20, bad, errors))
+sys.exit(1 if bad else 2 if errors else 0)
+PY
+# sample_check NN: true when the sample check of NN's copies passed (kept as state/NN.sampled).
+# A copy that differs means the write path corrupts data without any error: NN is held, its
+# differences listed in state/NN.mismatch, and every worker stops.
+sample_check() {
+    local nn=$1 src=$MIG/mnt/src-$1 part mounted="" out rc=0 f prune=()
+    [[ -f $MIG/state/$nn.sampled ]] && return 0
+    [[ -f $MIG/state/$nn.copied ]] && ! grep -q '^copied to the pool' "$MIG/state/$nn.copied" && return 0
+    [[ ! -s $MIG/state/$nn.mismatch ]] || return 1
+    findmnt -n "$POOL" >/dev/null || pool_mount >/dev/null || return 1
+    if ! findmnt -n "$src" >/dev/null; then
+        part=$(part_of "$(disk_of "$nn")") || return 1
+        [[ $(fstype_of "$part") == "$SRC_FS" ]] || return 1
+        mount_at "$nn" "$part" "$src" ro
+        mounted=1
+    fi
+    for f in "${VOLUME_FILES[@]}"; do prune+=(-path "$src$f" -o); done
+    out=$(sudo find "$src" -xdev \( "${prune[@]}" -false \) -prune -o -type f -size +0 -printf '%s %P\0' |
+        sudo python3 -I -c "$SAMPLE_PY" "$src" "$POOL" "${MIG_SAMPLE:-2000}" 2>>"$LOG") || rc=$?
+    [[ -z $mounted ]] || sudo umount "$src"
+    case $rc in
+    0)
+        echo "$(tail -n 1 <<<"$out") $(date '+%F %T')" >"$MIG/state/$nn.sampled"
+        log "$nn: $(tail -n 1 <<<"$out")"
+        ;;
+    1)
+        grep -E '^(MISMATCH|MISSING) ' <<<"$out" >"$MIG/state/$nn.mismatch"
+        [[ ! -f $MIG/state/$nn.copied ]] || mv "$MIG/state/$nn.copied" "$MIG/state/$nn.held"
+        echo "the sample check of $nn found copies that differ from the source, with no error from any disk ($(tail -n 1 <<<"$out"); list in $MIG/state/$nn.mismatch): data may be corrupted on its way to the pool; $nn is held, nothing formats it." >"$MIG/state/stop"
+        log "WARN $nn: $(tail -n 1 <<<"$out"); $nn held, every worker stops; see $MIG/state/$nn.mismatch"
+        ;;
+    *) log "WARN $nn: the sample check could not finish ($(tail -n 1 <<<"$out")); $nn is not formatted until it passes" ;;
+    esac
+    ((rc == 0))
+}
+# fit_to_format NN: what a copied source must pass before it is formatted.
+fit_to_format() { compressed_scan "$1" && sample_check "$1"; }
+held_why() {
+    if [[ -s $MIG/state/$1.mismatch ]]; then
+        echo "$(wc -l <"$MIG/state/$1.mismatch") of its copies differ from the source with no disk error ($MIG/state/$1.mismatch); nothing formats it until that is understood"
+    else
+        echo "$(wc -l <"$MIG/state/$1.compressed" 2>/dev/null || echo '?') HFS+-compressed files Linux reads as empty ($MIG/state/$1.compressed); copy them from macOS, then 'rescued $1'"
+    fi
+}
+
 # Flush to disk the pool copies of one source's files (paths relative to the source, "\0"-ended,
 # on stdin): an fsync per file, through the pool to the branch that holds it. On XFS the fsync
 # also commits the file's directory entry, which sits in the same log. Paths the pool lacks
@@ -1014,7 +1127,7 @@ verify_disk() {
     nsrc=$(sudo find "$src" -xdev -type f | wc -l)
     echo "copied to the pool by worker $row, $nsrc files, verified $VERIFY $(date '+%F %T')" >"$MIG/state/$nn.copied"
     echo "$nn -> pool  $nsrc files  $(date '+%F %T')  branches then: $(pool_branches)" >>"$MIG/state/placement.txt"
-    if compressed_scan "$nn"; then
+    if fit_to_format "$nn"; then
         log "$nn>pool: verified, $nsrc files. $nn may now be formatted and join the pool."
     else
         log "$nn>pool: verified, $nsrc files; $nn is not formatted for now (see the WARN above)."
@@ -1082,7 +1195,7 @@ formattable_of() {
             [[ $nn == "${PARITY[$row]}" ]] && continue
             [[ -e $MIG/state/$nn.bad ]] && continue
             claimed "$nn" && continue
-            if [[ -f $MIG/state/$nn.copied ]] && [[ $(disk_state "$nn") == src* ]] && compressed_scan "$nn"; then
+            if [[ -f $MIG/state/$nn.copied ]] && [[ $(disk_state "$nn") == src* ]] && fit_to_format "$nn"; then
                 echo "$nn"
                 return
             fi
@@ -1108,7 +1221,7 @@ eager_round() {
             age=$(($(date +%s) - age))
             ((age >= WRITE_MARGIN * 60)) || continue
             claim "$nn" || continue
-            if [[ $(disk_state "$nn") == src* ]] && compressed_scan "$nn"; then
+            if [[ $(disk_state "$nn") == src* ]] && fit_to_format "$nn"; then
                 check_writes # once more, right before the erase
                 if [[ ! -f $MIG/state/stop && -f $MIG/state/$nn.copied ]]; then
                     log "eager: $nn joins the pool, no failed write in the $((age / 60)) minutes since: $(cat "$MIG/state/$nn.copied")"
@@ -1170,7 +1283,7 @@ run_row() {
     # Every copied bay of the row that is still HFS+ joins the pool now, so the row ends complete.
     for src in ${ROW[$row]}; do
         [[ $src == "${PARITY[$row]}" ]] && continue
-        if [[ -f $MIG/state/$src.copied && $(disk_state "$src") == src* ]] && compressed_scan "$src" && claim "$src"; then
+        if [[ -f $MIG/state/$src.copied && $(disk_state "$src") == src* ]] && fit_to_format "$src" && claim "$src"; then
             format_target "$src"
             pool_add "$src"
             release "$src"
@@ -1397,7 +1510,7 @@ add)
     for nn in "$@"; do
         [[ $nn =~ ^[0-3][0-9]$ && -n $(disk_of "$nn" 2>/dev/null) ]] || die "$nn is not a disk in $PLAN"
         for row in A B C D; do [[ $nn == "${PARITY[$row]}" ]] && die "$nn is a parity disk; it is formatted last by its row's worker"; done
-        [[ ! -f $MIG/state/$nn.held ]] || die "$nn is held: its HFS+-compressed files ($MIG/state/$nn.compressed) exist only on it; copy them from macOS, then 'rescued $nn'"
+        [[ ! -f $MIG/state/$nn.held ]] || die "$nn is held: $(held_why "$nn")"
         [[ -f $MIG/state/$nn.copied ]] || [[ $(disk_state "$nn") == xfs* ]] || die "$nn holds data this script has not copied; 'erase $nn' first if its content is not needed"
         claim "$nn" || die "$nn is claimed by a worker; try later"
         format_target "$nn"
@@ -1608,6 +1721,48 @@ eager-loop)
         sleep "${MIG_EAGER_EVERY:-300}"
     done
     ;;
+sample)
+    shift
+    [[ $# -gt 0 ]] || die "sample needs disk names, e.g. sample 26"
+    LOG=$MIG/heal.log
+    for nn in "$@"; do
+        [[ -f $MIG/state/$nn.copied || -f $MIG/state/$nn.held ]] || die "$nn is not a verified copy"
+        if sample_check "$nn"; then echo "$nn: $(cat "$MIG/state/$nn.sampled")"; else echo "$nn: $(tail -n 1 "$LOG" | cut -c21-)"; fi
+    done
+    ;;
+restart)
+    shift
+    force=""; [[ ${1:-} == force ]] && { force=1; shift; }
+    [[ $# -gt 0 ]] || die "restart needs rows, e.g. restart A C, or restart all"
+    rows=$*; [[ $rows == all ]] && rows="A B C D"
+    LOG=$MIG/heal.log
+    [[ ! -f $MIG/state/stop ]] || die "a stop stands: $(cat "$MIG/state/stop") 'start' lifts it and starts the rows"
+    again=""
+    for r in $rows; do
+        need_row "$r"
+        pids=$(row_pids "$r")
+        if [[ -z $pids ]]; then
+            again+="$r "
+            continue
+        fi
+        last=$(grep -E '^[0-9]{4}-' "$MIG/$r.log" 2>/dev/null | tail -n 1)
+        if [[ -z $force && $last =~ \>pool:\ (flushing|verifying|copy\ done) ]]; then
+            echo "row $r: left alone, past its copy (${last:20}); 'restart $r' once it is verified, or 'restart force $r'"
+            continue
+        fi
+        # Children first, so each rsync gets its TERM and removes its partly written file; a
+        # paused row gets its CONT after the TERM, which is delivered then.
+        tac <<<"$pids" | xargs -r sudo kill -TERM 2>/dev/null || true
+        tac <<<"$pids" | xargs -r sudo kill -CONT 2>/dev/null || true
+        rm -f "$MIG/state/paused-$r"
+        for _ in $(seq 60); do [[ -z $(row_pids "$r") ]] && break; sleep 1; done
+        left=$(row_pids "$r" | xargs -r ps -o pid=,comm= -p 2>/dev/null | tr -s ' ' | paste -sd, -)
+        [[ -z $left ]] || die "row $r: still running after 60 s: $left; nothing started"
+        log "row $r: worker ended for a restart (it was at: ${last:20})"
+        again+="$r "
+    done
+    for r in $again; do "$0" start "$r" | grep -v '^Watch:' || true; done
+    ;;
 rescued)
     # The operator copied a held source's compressed files from macOS, or decided they are not needed.
     shift
@@ -1615,6 +1770,7 @@ rescued)
     LOG=$MIG/heal.log
     for nn in "$@"; do
         [[ -f $MIG/state/$nn.held ]] || die "$nn is not held"
+        [[ ! -s $MIG/state/$nn.mismatch ]] || die "$nn is held for copies that differ from the source, not for compressed files: $(held_why "$nn")"
         echo "$(date '+%F %T') signed off by the operator" >"$MIG/state/$nn.rescued"
         mv "$MIG/state/$nn.held" "$MIG/state/$nn.copied"
         log "rescued: $nn's HFS+-compressed files ($MIG/state/$nn.compressed) signed off; $nn may be formatted"
@@ -1772,7 +1928,7 @@ status)
     for f in "$MIG"/state/*.held; do
         [[ -e $f ]] || continue
         nn=$(basename "$f" .held)
-        echo "held: $nn, $(wc -l <"$MIG/state/$nn.compressed") HFS+-compressed files read as empty here ($MIG/state/$nn.compressed); copy them from macOS, then 'rescued $nn'"
+        echo "held: $nn, $(held_why "$nn")"
     done
     for r in A B C D 33; do
         if [[ -f $MIG/state/paused-$r ]]; then echo "paused: row $r since $(cat "$MIG/state/paused-$r") ('resume $r')"; fi

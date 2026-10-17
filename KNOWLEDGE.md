@@ -48,6 +48,7 @@ recheck before relying on one for anything consequential.
 - [The M424 24-bay box and this Mac](#the-m424-24-bay-box-and-this-mac)
 - [The backup disk and the hangs in state D](#the-backup-disk-and-the-hangs-in-state-d)
 - [HFS+ compression: files Linux reads as empty](#hfs-compression-files-linux-reads-as-empty)
+- [Silent corruption and the sample check](#silent-corruption-and-the-sample-check)
 
 ## Standing operator decisions
 Kept here so a resumed session does not re-ask them; each was stated by the operator.
@@ -443,3 +444,19 @@ such a file is empty, its copy too, and size-and-time verification passes. Since
 `osx.com.apple.decmpfs`, with their real size) and holds the source (`NN.held`): nothing formats it
 until `rescued NN`. Whether any of the 32 disks holds such files is UNKNOWN until each is scanned
 (at its verify, or before its format for one verified earlier, as 26).
+
+## Silent corruption and the sample check
+2026-10-17. The quick verify compares every file's name, size and time, never its bytes; the
+flush and the kernel-log check catch writes that fail with an error. What none of them catches
+is data changed on its way with no error at all: a disk returning wrong data, or memory written
+to the wrong place by DMA. The second is the risk specific to this machine: the Thunderbolt PCIe
+tunnel, its address offset and its IOMMU path are out-of-tree work never run anywhere else (see
+"The tunneled port offsets DMA addresses"). So before a source is formatted, `migrate-row.sh`
+reads back 2000 of its files (half picked by count, half by size; 1 MiB at the start, the end and
+three random places), each side's cached pages dropped first and the copy read on its branch, and
+compares them with the source. Odds of catching a fault that damages a fraction f of files on one
+disk: 1-(1-f)^2000, so 86 % at 1 in 1000 and 99.995 % at 1 in 200, per disk (computed, not
+measured); a fault rarer than that, or one that damages part of a file outside the pieces read,
+passes. `VERIFY=full` compares every byte at about twice the read time. A copy that differs holds
+its source (`NN.mismatch`) and stops every worker. Checked on loop disks (tests/eager.sh: 8 bytes
+changed in a copy, same size and time, found).
