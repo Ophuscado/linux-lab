@@ -47,6 +47,7 @@ recheck before relying on one for anything consequential.
 - [Where the disks sit since 17 Oct](#where-the-disks-sit-since-17-oct)
 - [The M424 24-bay box and this Mac](#the-m424-24-bay-box-and-this-mac)
 - [The backup disk and the hangs in state D](#the-backup-disk-and-the-hangs-in-state-d)
+- [HFS+ compression: files Linux reads as empty](#hfs-compression-files-linux-reads-as-empty)
 
 ## Standing operator decisions
 Kept here so a resumed session does not re-ask them; each was stated by the operator.
@@ -423,3 +424,22 @@ unwritten data pile up for it, so every writer, sync and shutdown waited with it
 drive is shingled (SMR, INFERRED from the model), which makes long random writes slower still.
 Two backups ran into the same folder at once. Fix: `settings.sh usb-cap on` (at most 256 MiB
 unwritten per USB disk, strict) and `backup-home.sh` (one run at a time, lowest priority).
+
+With the cap on (panel request 416, 17 Oct, VERIFIED): the backup ran, 340 MB in 417 files after
+14 min with 94,392 files listed; over 20 s the disk was 97 % busy for 29.6 MB written in 60
+requests (1.5 MB/s), rsync's writer in D at `wait_on_buffer` (ext4 metadata), nothing else
+waiting on it (4.6 GB dirty system-wide were the migration's). Small files on this disk go at its
+own pace, which is slow; the machine no longer waits for it.
+
+## HFS+ compression: files Linux reads as empty
+2026-10-17, from the hfsplus driver in the 7.1 tree (`fs/hfsplus`), VERIFIED by reading the
+source, not run on the Mac: the driver has no decompression code at all, a file's size is its data
+fork's, and attributes outside the user/trusted/security/system namespaces are listed with the
+prefix `osx.` and read back by that name (`hfsplus_osx_getxattr`). macOS keeps a compressed file's
+data in the attribute `com.apple.decmpfs` (header `fpmc`, type, uncompressed size) or in the
+resource fork and leaves the data fork empty (INFERRED from how macOS stores them), so under Linux
+such a file is empty, its copy too, and size-and-time verification passes. Since 17 Oct
+`migrate-row.sh` lists them per source in `state/NN.compressed` (empty files carrying
+`osx.com.apple.decmpfs`, with their real size) and holds the source (`NN.held`): nothing formats it
+until `rescued NN`. Whether any of the 32 disks holds such files is UNKNOWN until each is scanned
+(at its verify, or before its format for one verified earlier, as 26).

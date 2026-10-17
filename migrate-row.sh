@@ -111,6 +111,17 @@
 #                                   goes on (33: the copy of disk 33)
 #   migrate-row.sh rest 15 | off    the rows take turns to rest, one at a time, 15 minutes each:
 #                                   every box rests 15 minutes an hour (cooler, 25 % slower)
+#   migrate-row.sh eager on | off   format each verified source and add it to the pool as soon as
+#                                   30 minutes (MIG_WRITE_MARGIN) have passed since its verify
+#                                   without a failed write on any pool disk, instead of when the
+#                                   pool needs the room; in root's tmux session mig-eager, which
+#                                   'start' brings back after a reboot. Parity disks and held
+#                                   sources are never formatted by it
+#   migrate-row.sh rescued 10 ...   the HFS+-compressed files of a held source were copied from
+#                                   macOS (or are not needed): it may be formatted now. A source is
+#                                   held when files that macOS keeps compressed (Linux reads them
+#                                   as empty, and so are their copies) are listed in
+#                                   state/NN.compressed (uncompressed size, path)
 #   migrate-row.sh policy [NAME]    where the pool puts new files: pfrd (default; random,
 #                                   weighted by free space, parallel copies spread over the disks)
 #                                   or mfs (always the emptiest disk: a new or lagging disk catches
@@ -398,6 +409,10 @@ format_target() {
         log "$mm: already XFS"
         return 0
     fi
+    [[ ! -f $MIG/state/$mm.held ]] || die "$mm is held: its HFS+-compressed files ($MIG/state/$mm.compressed) exist only on it; copy them from macOS, then 'rescued $mm'"
+    if [[ -f $MIG/state/$mm.copied ]] && ! compressed_scan "$mm"; then
+        die "$mm is not formatted: it holds HFS+-compressed files, or the scan for them failed; see $LOG"
+    fi
     if [[ ! -f $MIG/state/$mm.copied ]]; then
         echo
         echo "About to ERASE disk $mm: $dev"
@@ -510,6 +525,7 @@ uncopy() {
             echo "$src"; continue
         fi
         [[ ! -f $MIG/state/$src.copied ]] || mv "$MIG/state/$src.copied" "$MIG/state/$src.copied-before-$1-out"
+        [[ ! -f $MIG/state/$src.held ]] || mv "$MIG/state/$src.held" "$MIG/state/$src.held-before-$1-out"
         echo "$src -> pool  undone $(date '+%F %T'): hd-$1 went out of the pool or lost writes" >>"$MIG/state/placement.txt"
         if [[ -z $part ]]; then
             log "WARN $src was verified while hd-$1 was a pool branch and is not found now: it counts as not copied; once back, it is copied and verified anew"
@@ -743,6 +759,60 @@ walk_pool() {
     return $rc
 }
 
+# HFS+ compression: macOS keeps such a file's data in the attribute com.apple.decmpfs or in the
+# resource fork; the Linux driver does not decompress, shows the file as empty and lists the
+# attribute as osx.com.apple.decmpfs. Paths of empty files on stdin ("\0"-ended, relative to
+# argv[1]); prints "uncompressed size<TAB>path" for each compressed one (-1: header unknown).
+DECMPFS=${MIG_DECMPFS:-osx.com.apple.decmpfs}
+read -r -d '' DECMPFS_PY <<'PY' || true
+import errno, os, struct, sys
+root = os.fsencode(sys.argv[1])
+bad = 0
+for rel in sys.stdin.buffer.read().split(b"\0"):
+    if not rel:
+        continue
+    try:
+        v = os.getxattr(os.path.join(root, rel), sys.argv[2], follow_symlinks=False)
+    except OSError as e:
+        if e.errno in (errno.ENODATA, errno.EOPNOTSUPP):
+            continue
+        print("cannot read the attributes of %s: %s" % (os.fsdecode(rel), e.strerror), file=sys.stderr)
+        bad += 1
+        continue
+    size = struct.unpack_from("<Q", v, 8)[0] if len(v) >= 16 and v[:4] == b"fpmc" else -1
+    sys.stdout.buffer.write(b"%d\t%s\n" % (size, rel))
+sys.exit(1 if bad else 0)
+PY
+# compressed_scan NN: true when source NN holds no HFS+-compressed file (or 'rescued NN' signed
+# them off). Scanned once, the list kept as state/NN.compressed; a source with such files is held:
+# its .copied becomes .held, so nothing formats it, also a worker started before this check.
+compressed_scan() {
+    local nn=$1 list=$MIG/state/$1.compressed src=$MIG/mnt/src-$1 part mounted=""
+    [[ -f $MIG/state/$nn.rescued ]] && return 0
+    # Marked by 'erase' or found empty: nothing of it is kept anyway.
+    [[ -f $MIG/state/$nn.copied ]] && ! grep -q '^copied to the pool' "$MIG/state/$nn.copied" && return 0
+    if [[ ! -f $list ]]; then
+        if ! findmnt -n "$src" >/dev/null; then
+            part=$(part_of "$(disk_of "$nn")") || return 1
+            [[ $(fstype_of "$part") == "$SRC_FS" ]] || return 1
+            mount_at "$nn" "$part" "$src" ro
+            mounted=1
+        fi
+        if sudo find "$src" -xdev -type f -size 0 -printf '%P\0' | sudo python3 -I -c "$DECMPFS_PY" "$src" "$DECMPFS" >"$list.tmp" 2>>"$LOG"; then
+            mv "$list.tmp" "$list"
+        else
+            rm -f "$list.tmp"
+            log "WARN $nn: the scan for HFS+-compressed files failed (see above); $nn is not formatted until it passes"
+        fi
+        [[ -z $mounted ]] || sudo umount "$src"
+        [[ -f $list ]] || return 1
+        [[ ! -s $list ]] || log "WARN $nn: $(wc -l <"$list") files are HFS+-compressed: Linux reads them as empty, so their copies in the pool are empty too; listed in $list. $nn is held: copy them from macOS, then 'rescued $nn'"
+    fi
+    [[ -s $list ]] || return 0
+    [[ ! -f $MIG/state/$nn.copied ]] || mv "$MIG/state/$nn.copied" "$MIG/state/$nn.held"
+    return 1
+}
+
 # Flush to disk the pool copies of one source's files (paths relative to the source, "\0"-ended,
 # on stdin): an fsync per file, through the pool to the branch that holds it. On XFS the fsync
 # also commits the file's directory entry, which sits in the same log. Paths the pool lacks
@@ -942,10 +1012,14 @@ verify_disk() {
     fi
     local nsrc
     nsrc=$(sudo find "$src" -xdev -type f | wc -l)
-    sudo umount "$src"
     echo "copied to the pool by worker $row, $nsrc files, verified $VERIFY $(date '+%F %T')" >"$MIG/state/$nn.copied"
     echo "$nn -> pool  $nsrc files  $(date '+%F %T')  branches then: $(pool_branches)" >>"$MIG/state/placement.txt"
-    log "$nn>pool: verified, $nsrc files. $nn may now be formatted and join the pool."
+    if compressed_scan "$nn"; then
+        log "$nn>pool: verified, $nsrc files. $nn may now be formatted and join the pool."
+    else
+        log "$nn>pool: verified, $nsrc files; $nn is not formatted for now (see the WARN above)."
+    fi
+    sudo umount "$src"
 }
 
 # ---- the scheduler ----------------------------------------------------------------------
@@ -980,7 +1054,7 @@ others_claimed() {
 sources_of() {
     local nn st
     for nn in ${ROW[$1]}; do
-        [[ -f $MIG/state/$nn.copied ]] && continue
+        [[ -f $MIG/state/$nn.copied || -f $MIG/state/$nn.held ]] && continue
         claimed "$nn" && continue
         st=$(disk_state "$nn")
         [[ $st == src* ]] || continue
@@ -1008,13 +1082,50 @@ formattable_of() {
             [[ $nn == "${PARITY[$row]}" ]] && continue
             [[ -e $MIG/state/$nn.bad ]] && continue
             claimed "$nn" && continue
-            if [[ -f $MIG/state/$nn.copied ]] && [[ $(disk_state "$nn") == src* ]]; then
+            if [[ -f $MIG/state/$nn.copied ]] && [[ $(disk_state "$nn") == src* ]] && compressed_scan "$nn"; then
                 echo "$nn"
                 return
             fi
         done
     done
     [[ -f $MIG/state/row-$1.started || -e $MIG/state/${ROW[$1]##* }.bad ]] || echo "${ROW[$1]##* }"
+}
+
+# eager_round: every verified source still HFS+ (not a parity disk, not held, not bad, not in use)
+# whose verify is WRITE_MARGIN minutes old is formatted and joins the pool. The margin: a failed
+# write sends aside what its disk took in the WRITE_MARGIN minutes before it, and makes a source
+# verified since then a source again; once that time has passed without one, no later failure
+# can reach this source's copies (each was flushed before the verify). Nothing while the disks
+# are not trusted (a stop, an aside pending).
+eager_round() {
+    local row nn age
+    check_writes
+    [[ ! -f $MIG/state/stop && ! -s $MIG/state/aside-pending ]] || return 0
+    for row in A B C D; do
+        for nn in ${ROW[$row]}; do
+            [[ $nn != "${PARITY[$row]}" && -f $MIG/state/$nn.copied && ! -e $MIG/state/$nn.bad ]] || continue
+            age=$(stat -c %Y "$MIG/state/$nn.copied" 2>/dev/null) || continue # made a source again meanwhile
+            age=$(($(date +%s) - age))
+            ((age >= WRITE_MARGIN * 60)) || continue
+            claim "$nn" || continue
+            if [[ $(disk_state "$nn") == src* ]] && compressed_scan "$nn"; then
+                check_writes # once more, right before the erase
+                if [[ ! -f $MIG/state/stop && -f $MIG/state/$nn.copied ]]; then
+                    log "eager: $nn joins the pool, no failed write in the $((age / 60)) minutes since: $(cat "$MIG/state/$nn.copied")"
+                    format_target "$nn"
+                    pool_add "$nn"
+                fi
+            fi
+            release "$nn"
+        done
+    done
+}
+eager_running() { sudo tmux has-session -t mig-eager 2>/dev/null && ! sudo tmux capture-pane -p -t mig-eager 2>/dev/null | grep -q '^eager loop ended'; }
+# The loop is inside a round (a format may be under way) while its pid is in state/eager-busy.
+eager_busy() { local p; p=$(cat "$MIG/state/eager-busy" 2>/dev/null) && [[ $p =~ ^[1-9][0-9]*$ ]] && sudo kill -0 "$p" 2>/dev/null; }
+eager_loop_start() {
+    sudo tmux kill-session -t mig-eager 2>/dev/null || true
+    sudo tmux new-session -d -s mig-eager "HOME='$HOME' MIG_HOME='$MIG' MIG_PLAN='$PLAN' MIG_MERGERFS='$MERGERFS' MIG_SRC_FS='$SRC_FS' MIG_MINFREE='$MINFREE' MIG_WRITE_MARGIN='$WRITE_MARGIN' MIG_DECMPFS='$DECMPFS' MIG_EAGER_EVERY='${MIG_EAGER_EVERY:-300}' '$0' eager-loop; echo; echo 'eager loop ended; press enter'; read"
 }
 
 # One worker: rounds until no source is left.
@@ -1059,7 +1170,7 @@ run_row() {
     # Every copied bay of the row that is still HFS+ joins the pool now, so the row ends complete.
     for src in ${ROW[$row]}; do
         [[ $src == "${PARITY[$row]}" ]] && continue
-        if [[ -f $MIG/state/$src.copied && $(disk_state "$src") == src* ]] && claim "$src"; then
+        if [[ -f $MIG/state/$src.copied && $(disk_state "$src") == src* ]] && compressed_scan "$src" && claim "$src"; then
             format_target "$src"
             pool_add "$src"
             release "$src"
@@ -1286,6 +1397,7 @@ add)
     for nn in "$@"; do
         [[ $nn =~ ^[0-3][0-9]$ && -n $(disk_of "$nn" 2>/dev/null) ]] || die "$nn is not a disk in $PLAN"
         for row in A B C D; do [[ $nn == "${PARITY[$row]}" ]] && die "$nn is a parity disk; it is formatted last by its row's worker"; done
+        [[ ! -f $MIG/state/$nn.held ]] || die "$nn is held: its HFS+-compressed files ($MIG/state/$nn.compressed) exist only on it; copy them from macOS, then 'rescued $nn'"
         [[ -f $MIG/state/$nn.copied ]] || [[ $(disk_state "$nn") == xfs* ]] || die "$nn holds data this script has not copied; 'erase $nn' first if its content is not needed"
         claim "$nn" || die "$nn is claimed by a worker; try later"
         format_target "$nn"
@@ -1401,6 +1513,10 @@ start)
             [[ $i == 1 && $n -gt 1 ]] && sleep 20 # let the first one take the confirmation prompt
         done
     done
+    if [[ -f $MIG/state/eager ]] && ! eager_running; then
+        eager_loop_start
+        echo "eager: its loop started again in tmux session mig-eager"
+    fi
     bad=$(cd "$MIG/state" 2>/dev/null && ls ./*.bad 2>/dev/null | sed 's|^\./||; s|\.bad$||' | tr '\n' ' ' || true)
     [[ -z $bad ]] || echo "out of the pool (bad): $bad- 'good NN' puts one back once it answers"
     echo "Watch: $0 attach ROW [N] (Ctrl-b d to leave); progress: $0 status"
@@ -1452,6 +1568,56 @@ rest-loop)
             resume_row "$r"
         done
         sleep 1
+    done
+    ;;
+eager)
+    LOG=$MIG/heal.log; mkdir -p "$MIG/state"
+    case ${2:-} in
+    on)
+        prepare
+        touch "$MIG/state/eager"
+        if eager_running; then echo "eager: on already, its loop runs in tmux session mig-eager"; exit 0; fi
+        eager_loop_start
+        log "eager: on; a verified source joins the pool $WRITE_MARGIN minutes after its verify (tmux session mig-eager)"
+        echo "eager: on; verified sources join the pool $WRITE_MARGIN minutes after their verify, in root's tmux session mig-eager; log $LOG"
+        ;;
+    off)
+        rm -f "$MIG/state/eager"
+        # Never killed inside a round: a format cut in half leaves a disk neither HFS+ nor ours.
+        if eager_busy; then
+            echo "eager: off; its loop ends after the round it is in"
+        else
+            sudo tmux kill-session -t mig-eager 2>/dev/null || true
+        fi
+        log "eager: off; verified sources join the pool when it needs the room, or when their row ends"
+        ;;
+    *) die "eager on | off" ;;
+    esac
+    ;;
+eager-loop)
+    # The rounds themselves (started by 'eager on' and 'start'); MIG_EAGER_ROUNDS ends it (tests).
+    LOG=$MIG/heal.log
+    pool_mount >/dev/null 2>&1 || true
+    i=0
+    while [[ -f $MIG/state/eager ]]; do
+        echo $$ >"$MIG/state/eager-busy"
+        eager_round
+        rm -f "$MIG/state/eager-busy"
+        i=$((i + 1))
+        [[ -z ${MIG_EAGER_ROUNDS:-} || $i -lt $MIG_EAGER_ROUNDS ]] || break
+        sleep "${MIG_EAGER_EVERY:-300}"
+    done
+    ;;
+rescued)
+    # The operator copied a held source's compressed files from macOS, or decided they are not needed.
+    shift
+    [[ $# -gt 0 ]] || die "rescued needs disk names, e.g. rescued 10"
+    LOG=$MIG/heal.log
+    for nn in "$@"; do
+        [[ -f $MIG/state/$nn.held ]] || die "$nn is not held"
+        echo "$(date '+%F %T') signed off by the operator" >"$MIG/state/$nn.rescued"
+        mv "$MIG/state/$nn.held" "$MIG/state/$nn.copied"
+        log "rescued: $nn's HFS+-compressed files ($MIG/state/$nn.compressed) signed off; $nn may be formatted"
     done
     ;;
 policy)
@@ -1600,6 +1766,14 @@ status)
     [[ ! -f $MIG/state/stop ]] || echo "STOPPED: $(cat "$MIG/state/stop")"
     if [[ -s $MIG/state/aside-pending ]]; then echo "aside pending (at 'start' or 'good NN', once the disk answers): $(awk -F'\t' '{ print $1 " since " $2 ($3 == "" ? "" : " until " $3) }' "$MIG/state/aside-pending" | paste -sd, -)"; fi
     if [[ -f $MIG/state/rest ]]; then echo "rest: the rows take turns, $(cat "$MIG/state/rest") minutes each ('rest off' ends it)"; fi
+    if [[ -f $MIG/state/eager ]]; then
+        echo "eager: on, verified sources join the pool $WRITE_MARGIN minutes after their verify; $(eager_running && echo 'loop running' || echo "its loop is NOT running ('eager on' starts it)")"
+    fi
+    for f in "$MIG"/state/*.held; do
+        [[ -e $f ]] || continue
+        nn=$(basename "$f" .held)
+        echo "held: $nn, $(wc -l <"$MIG/state/$nn.compressed") HFS+-compressed files read as empty here ($MIG/state/$nn.compressed); copy them from macOS, then 'rescued $nn'"
+    done
     for r in A B C D 33; do
         if [[ -f $MIG/state/paused-$r ]]; then echo "paused: row $r since $(cat "$MIG/state/paused-$r") ('resume $r')"; fi
     done
