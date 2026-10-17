@@ -52,6 +52,7 @@ Kept here so a resumed session does not re-ask them; each was stated by the oper
 - 2026-10-14: 07, 15, 23 and 31 (old parity, migrated before) and 04 (empty) hold nothing needed and were erased without a copy; one global pool, even spread; quick verify by size and time, not checksums; one read stream per box.
 - 2026-10-14: the kernel stays as it is until the copies are done (agreed before the migration): a new kernel or a stock boot mid-migration puts the enclosures and the running copies at risk. Lines that need the stock kernel or a new one wait in the backlog.
 - 2026-10-16: 15 stays in the pool unless it fails in operation (it did at 22:03, went out with `bad 15`, and came back on 17 Oct after `aside 15`).
+- 2026-10-17: two M424 boxes are bought to replace the home-made ones (returns are cheap; other boxes cost three times as much per 8 bays); see [The M424 24-bay box and this Mac](#the-m424-24-bay-box-and-this-mac).
 - 2026-10-17: every disk is trusted after a replug or a reboot ("consider all disks valid") until one fails; then the workers warn and stop, and `start` trusts them again. A file whose write failed is still set aside and copied again, which is about the data, not the disk.
 
 ## Stock kernel has no Apple USB4 host
@@ -130,7 +131,7 @@ GitHub answers "have" for commits of the whole fork network, so with `push.negot
 Operator report, 2026-10-11: the stock 7.1.13 kernel, booted while the trial kernel's device trees were installed, hung and did not detect a USB keyboard; the trial kernel on the same device trees was fine. The device trees are part of `m1n1/boot.bin` (built by `update-m1n1` from whatever `/boot/dtb` points at), so there is one set per boot, not one per GRUB entry, and a raw dtb loaded by GRUB would miss m1n1's fix-ups. Fedora's `10-devicetree.install` assumes a newer device tree is always safe for an older kernel; that does not hold between Asahi 7.1 and `asahi-wip-7.2`. Cause, from the journal of the hung boot (it ran on the first trial device trees, before the PCIe nodes existed): the stock display driver logs `apple-dcp 2289c00000.dcp: ... Failed to created PIODMA iommu child device` and then dereferences NULL in `apple_rtkit_start_ep` from `dcp_start`, so the graphical boot never comes up. Decision: `tbt-kernel.sh try` and `stock` switch the default kernel and the device trees together and there is no one-shot boot any more; `install` leaves whichever of the two was active.
 
 ## What is inside the enclosure
-macOS, 2026-10-11: root port, then ASMedia `1b21:2463` upstream and downstream bridges, then one Realtek `10ec:9100` AHCI controller (class 010601) with eight 18 TB SATA disks. So Linux needs nothing beyond the PCIe host: the stock `ahci` driver covers the rest.
+macOS, 2026-10-11: root port, then ASMedia `1b21:2463` upstream and downstream bridges, then one Realtek `10ec:9100` AHCI controller (class 010601) with eight 18 TB SATA disks. So Linux needs nothing beyond the PCIe host: the stock `ahci` driver covers the rest. Physically (the operator, 2026-10-17): the ASM2464PD sits on a vertical board that takes the USB-C cable from outside, with the 9-port SATA controller attached behind it (Linux: "9/9 ports implemented", PCIe 8 GT/s x2); how the two connect is not known. The SATA wires inside are about 15 cm; the USB-C cables to the Mac are 1 m.
 
 ## No backport to 7.1
 Superseded on 2026-10-11 by [The 7.1 backport](#the-71-backport): the GPU driver is missing on 7.2, which changed the weighing.
@@ -383,7 +384,7 @@ SAS3008 driver, INFERRED). A SAS version without Thunderbolt looks the same.
 On this Mac, VERIFIED: the running kernel has `mpt3sas` (`CONFIG_SCSI_MPT3SAS=m`, 16K pages),
 and the `tbt/7.1` source has the whole Thunderbolt 3 path (tipd's TBT alternate mode, the PHY's
 TBT mode, the TBT2/3 cable information in `thunderbolt/apple.c`), never run here: every box so far
-was USB4. The current cables are passive and rated for 80 Gb/s (EUDO `0x2687e000`: speed 4, type
+was USB4. The current cables (1 m) are passive and rated for 80 Gb/s (EUDO `0x2687e000`: speed 4, type
 passive). In Thunderbolt 3 mode the 20 Gb/s bit depends on the TBT cable speed the port controller
 reports being exactly 3 ("10 and 20 Gbps"), the kind of check patch 0001 had to fix for USB4.
 Asahi's own USB4 series (30 Aug 2026) has no PCIe tunnels yet, so nobody else runs this path.
