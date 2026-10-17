@@ -44,6 +44,7 @@ recheck before relying on one for anything consequential.
 - [A global sync in a worker waits for every writer](#a-global-sync-in-a-worker-waits-for-every-writer)
 - [rsync --no-inc-recursive copies nothing until the whole tree is listed](#rsync---no-inc-recursive-copies-nothing-until-the-whole-tree-is-listed)
 - [Box C at 04:27 on 16 Oct, and every lost write since 14 Oct](#box-c-at-0427-on-16-oct-and-every-lost-write-since-14-oct)
+- [The M424 24-bay box and this Mac](#the-m424-24-bay-box-and-this-mac)
 
 ## Standing operator decisions
 Kept here so a resumed session does not re-ask them; each was stated by the operator.
@@ -369,3 +370,20 @@ shutdowns, failed WRITE commands):
 15 came back into the pool at 18:15 on 16 Oct and again on 17 Oct, and a copy skips a path
 the pool already has, so its files from 04:28 and 14:16 count as copied until they are set
 aside too (INFERRED: which paths, if any, lost bytes is not known; a size check cannot tell).
+
+## The M424 24-bay box and this Mac
+2026-10-17, considered as the replacement of the home-made boxes. From the seller's pages and
+buyers' answers the operator sent (OBSERVED there, not here): Windows lists the Thunderbolt
+version as a "Thunderbolt 3 device router" (an Intel bridge, not an ASM2464); a buyer who opened
+it found an LSI SAS3008 card in pass-through mode; a 12G SAS expander backplane from a server,
+22 Gb/s through Thunderbolt 3, a 550 W CRPS supply (800 W option) with spin-up in groups of six
+a second apart, three 120 mm fans; "Apple systems cannot be used" (macOS on Apple Silicon has no
+SAS3008 driver, INFERRED). A SAS version without Thunderbolt looks the same.
+
+On this Mac, VERIFIED: the running kernel has `mpt3sas` (`CONFIG_SCSI_MPT3SAS=m`, 16K pages),
+and the `tbt/7.1` source has the whole Thunderbolt 3 path (tipd's TBT alternate mode, the PHY's
+TBT mode, the TBT2/3 cable information in `thunderbolt/apple.c`), never run here: every box so far
+was USB4. The current cables are passive and rated for 80 Gb/s (EUDO `0x2687e000`: speed 4, type
+passive). In Thunderbolt 3 mode the 20 Gb/s bit depends on the TBT cable speed the port controller
+reports being exactly 3 ("10 and 20 Gbps"), the kind of check patch 0001 had to fix for USB4.
+Asahi's own USB4 series (30 Aug 2026) has no PCIe tunnels yet, so nobody else runs this path.
