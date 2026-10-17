@@ -66,6 +66,7 @@ clean system, builds and installs the kernel and installs what the measuring scr
 - `bt-sync.sh`: give Linux the Bluetooth pairings macOS made, replacing stale Linux ones.
 - `ux-fix.sh`: Magic Mouse without false middle clicks or drift scrolls; no middle-click paste.
 - `disk-blink.sh`: make one disk blink to find it in the box.
+- `disk-check.sh`: read-only health check of one disk, for a USB disk that hangs: link, SMART, kernel lines, three timed reads, a short self-test.
 - `disk-inventory.sh`: map every enclosure disk to row, slot, serial and volume fill.
 - `migrate-row.sh`: move the four rows of disks from HFS+ into one XFS pool, disk by disk, verified, leaving the parity disks empty; a pool disk that stops answering is dropped and the copy goes on; `extra` copies the external USB disk 33 the same way; `readtest` checks one box's links by reading all its disks at once; `policy` switches where new files go (pfrd spreads them, mfs fills the emptiest disk first); `pause`, `resume` and `rest 15` stop rows, or let them take turns to rest, so the boxes cool.
 - `settings.sh`: install or remove the lab's machine settings in one go (Thunderbolt authorize, disk spin-down, the desktop fixes, SnapRAID timers once set up); `sleep-hook` ejects the boxes around suspend (off by default, untested).
