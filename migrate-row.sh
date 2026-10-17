@@ -211,8 +211,9 @@ label_of() { sudo blkid -p -s LABEL -o value "$1" 2>/dev/null || true; }
 
 # Mount $2 (partition) at $3, options $4; nothing if already there.
 mount_at() {
-    sudo mkdir -p "$3"
+    # Mounted already: done (a mkdir on the mount point of a dead disk would fail with EIO).
     findmnt -n "$3" >/dev/null && return 0
+    sudo mkdir -p "$3"
     sudo mount -o "$4" "$2" "$3"
 }
 
@@ -580,7 +581,10 @@ stamp_time() {
     fi
 }
 # start and run: the operator goes on, so the disks are trusted again.
-trust_again() { [[ ! -f $MIG/state/stop ]] || { log "the stop is lifted, the disks are trusted again; it said: $(cat "$MIG/state/stop")"; rm -f "$MIG/state/stop"; }; }
+trust_again() {
+    run_pending_asides
+    [[ ! -f $MIG/state/stop ]] || { log "the stop is lifted, the disks are trusted again; it said: $(cat "$MIG/state/stop")"; rm -f "$MIG/state/stop"; }
+}
 stopped() { [[ ! -f $MIG/state/stop ]] || die "stopped: $(cat "$MIG/state/stop") 'start' trusts the disks again."; }
 check_writes() {
     local seen=$MIG/state/write-errors.seen lock=$MIG/state/lock-writes new line dev br part disk t since n formatted
@@ -619,9 +623,16 @@ check_writes() {
                 echo "hd-$br failed a write at ${first[$br]}, and $(echo $formatted) was verified and formatted since $since: nothing was moved aside; compare the files on hd-$br changed since $since with care before going on." >"$MIG/state/stop"
                 continue
             fi
-            n=$(aside_since "$br" "$since")
-            log "WARN hd-$br: $n files changed since $since moved aside on it; the next pass copies them again"
-            echo "hd-$br failed a write at ${first[$br]} ($n files changed there since $since moved aside, copied again by the next pass)." >"$MIG/state/stop"
+            if n=$(aside_since "$br" "$since"); then
+                log "WARN hd-$br: $n files changed since $since moved aside on it; the next pass copies them again"
+                echo "hd-$br failed a write at ${first[$br]} ($n files changed there since $since moved aside, copied again by the next pass)." >"$MIG/state/stop"
+            else
+                # The disk does not answer (the usual case when a box falls over): what is left goes
+                # aside when it answers again, at 'start' or 'good', before anything trusts it.
+                printf '%s\t%s\t\n' "$br" "$since" >>"$MIG/state/aside-pending"
+                log "WARN hd-$br: its walk failed ($n files moved aside); the rest of what changed there since $since goes aside at 'start' or 'good $br'"
+                echo "hd-$br failed a write at ${first[$br]} and does not answer: its files changed since $since go aside at 'start' or 'good $br', when it answers again ('bad $br' goes on without it)." >"$MIG/state/stop"
+            fi
         done
         printf '%s\n' "$new" >>"$seen"
         if [[ -f $MIG/state/stop ]] && sudo tmux has-session -t mig-33 2>/dev/null; then
@@ -631,15 +642,41 @@ check_writes() {
     rm -rf "$lock"
 }
 # aside_since NN SINCE [UNTIL]: move the files changed on hd-NN since SINCE (and not after UNTIL)
-# into .migrate-aside on the same disk (a rename: instant, nothing copied or deleted). Prints how many.
+# into .migrate-aside on the same disk (a rename: instant, nothing copied or deleted). Prints how
+# many; fails when the walk of the disk failed (a dead disk), whatever it moved.
 aside_since() {
-    local root=$MIG/mnt/hd-$1 dir n=0 p bound=()
+    local root=$MIG/mnt/hd-$1 dir n=0 p bound=() list rc=0
     dir=.migrate-aside/write-error-$(date '+%Y%m%d-%H%M%S')
     [[ -z ${3:-} ]] || bound=(! -newerct "$3")
+    list=$(mktemp)
+    findmnt -n "$root" >/dev/null || rc=1
+    ((rc)) || sudo timeout 900 find "$root" -xdev -type f ! -path '*/.migrate-aside/*' -newerct "$2" "${bound[@]}" -printf '%P\0' >"$list" 2>/dev/null || rc=1
     while IFS= read -r -d '' p; do
         sudo mkdir -p "$root/$dir/$(dirname "$p")" && sudo mv -n "$root/$p" "$root/$dir/$p" && n=$((n + 1))
-    done < <(sudo timeout 900 find "$root" -xdev -type f ! -path '*/.migrate-aside/*' -newerct "$2" "${bound[@]}" -printf '%P\0' 2>/dev/null)
+    done <"$list"
+    rm -f "$list"
     echo "$n"
+    return $rc
+}
+
+# The asides a dead disk could not take (state/aside-pending, "NN<TAB>SINCE[<TAB>UNTIL]"), done once it answers:
+# by 'start' and 'run' for every bay in the pool, by 'good NN' for that one. A bay out of the pool
+# keeps its line. Dies when the disk still does not answer: nothing may trust it before.
+run_pending_asides() {
+    local f=$MIG/state/aside-pending br since upto n line
+    [[ -s $f ]] || return 0
+    while IFS= read -r line; do
+        IFS=$'\t' read -r br since upto <<<"$line"
+        [[ -n ${1:-} && $br != "$1" ]] && continue
+        [[ -z ${1:-} && -e $MIG/state/$br.bad ]] && continue
+        [[ -n $(link_of "$br") ]] || die "disk $br is not present: what changed on it since $since is not trusted yet. 'bad $br' goes on without it."
+        mount_branch "$br"
+        n=$(aside_since "$br" "$since" "$upto") || die "hd-$br still does not answer (its walk failed, $n files moved aside): what changed there since $since is not trusted yet. 'bad $br' goes on without it."
+        log "aside: hd-$br: $n files changed since $since${upto:+ and not after $upto} moved aside on it, after its failed write; the next pass copies them again"
+        grep -vxF "$line" "$f" >"$f.tmp" || true
+        mv "$f.tmp" "$f"
+    done < <(cat "$f")
+    [[ -s $f ]] || rm -f "$f"
 }
 
 # Does branch $1 take a write? A create and remove at its root, 60 s at most (MIG_PROBE): a dead
@@ -1550,6 +1587,7 @@ status)
     bad=$(cd "$MIG/state" 2>/dev/null && ls ./*.bad 2>/dev/null | sed 's|^\./||; s|\.bad$||' | tr '\n' ' ' || true)
     [[ -z $bad ]] || echo "bad (out of the pool, 'good NN' puts one back): $bad"
     [[ ! -f $MIG/state/stop ]] || echo "STOPPED: $(cat "$MIG/state/stop")"
+    if [[ -s $MIG/state/aside-pending ]]; then echo "aside pending (at 'start' or 'good NN', once the disk answers): $(awk -F'\t' '{ print $1 " since " $2 ($3 == "" ? "" : " until " $3) }' "$MIG/state/aside-pending" | paste -sd, -)"; fi
     if [[ -f $MIG/state/rest ]]; then echo "rest: the rows take turns, $(cat "$MIG/state/rest") minutes each ('rest off' ends it)"; fi
     for r in A B C D 33; do
         if [[ -f $MIG/state/paused-$r ]]; then echo "paused: row $r since $(cat "$MIG/state/paused-$r") ('resume $r')"; fi
@@ -1619,10 +1657,16 @@ aside)
     upto=""; [[ -z ${4:-} ]] || upto=$(date -d "$4" '+%F %T') || die "not a time: $4"
     prepare
     LOG=$MIG/heal.log
-    mount_branch "$2"
     formatted=$(uncopy "$2" "$since")
     [[ -z $formatted ]] || die "$(echo $formatted) verified and formatted since $since with hd-$2 as a branch: nothing moved; their files may exist only on hd-$2"
-    log "aside: hd-$2: $(aside_since "$2" "$since" "$upto") files changed since $since${upto:+ and not after $upto} moved aside on it; the next pass copies them again"
+    # A disk that is missing or does not answer gets the aside later, at 'start' or 'good', before
+    # anything trusts it again.
+    if [[ -n $(link_of "$2") ]] && (mount_branch "$2") && n=$(aside_since "$2" "$since" "$upto"); then
+        log "aside: hd-$2: $n files changed since $since${upto:+ and not after $upto} moved aside on it; the next pass copies them again"
+    else
+        printf '%s\t%s\t%s\n' "$2" "$since" "$upto" >>"$MIG/state/aside-pending"
+        log "aside: hd-$2 does not answer: what changed there since $since${upto:+ and not after $upto} goes aside at 'start' or 'good $2', once it answers"
+    fi
     ;;
 good)
     shift
@@ -1632,6 +1676,7 @@ good)
     pool_mount >/dev/null || die "no pool"
     for nn in "$@"; do
         [[ $nn =~ ^[0-3][0-9]$ ]] || die "$nn is not a disk name"
+        run_pending_asides "$nn"
         pool_add "$nn"
         rm -f "$MIG/state/$nn.bad"
     done
