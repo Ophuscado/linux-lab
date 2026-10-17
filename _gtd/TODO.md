@@ -2,14 +2,8 @@
 Find what took box C down on 16 Oct at 04:27: DART, PCIe or AER errors for domain 000a in the saved kernel log of that boot, or none · check: the answer in KNOWLEDGE.md
 Handle names the Linux hfsplus driver cannot read (emoji and other non-BMP characters, shown as ??): list them per source in state/NN.unreadable from rsync's "file has vanished" lines, let verify pass on the rest, never format such a source automatically · check: loop test with an emoji-named file: listed, source kept, row goes on
 Rescue the unreadable names from macOS before their source is formatted: copy only the listed files with macOS rsync onto a pool disk mounted there, or decide they are expendable (git issue templates) · check: each NN.unreadable list empty or signed off by the operator
-Before the migration: nothing that needs a reboot is pending; the kernel stays as it is until the copies are done · check: this line is the agreement; kernel changes go to the backlog until then
-Spin down the USB-A disks with hd-idle · check: hdparm -C reports standby after the idle time
-Eject the enclosure before suspend and attach it again after resume · check: suspend and resume with the enclosure attached, eight disks back, no error in the kernel log
-Confirm the Bluetooth-after-suspend fault and pick a mitigation · check: journal shows hci0 command tx timeout after resume
-Ship the settings above as one installer of udev rules and systemd units, with an uninstall · check: settings hold after a reboot and a replug; uninstall leaves no file behind
-Survive pulling an enclosure without eject · check: unplug with disks attached leaves the system running and a replug brings them back; run it with netconsole to the second Mac so a freeze leaves a log
-Reproduce the replug freeze with netconsole attached · check: ten eject, unplug, replug rounds without a freeze, or the log of one
-Power down the Thunderbolt PCIe controllers that have no tunnel, if the power dump shows they cost power · check: ps_atcN_pcie off in the power-domain summary with nothing attached and on with a tunnel, idle power lower
-Load a model larger than the GPU memory the driver reports · check: all layers on the GPU, no allocation failure
+Find rsync temp files that killed copies left in the pool: temp-like names (.name.XXXXXX) that no source holds; never by name alone, sources hold such files themselves · check: list from a comparison with the sources, nothing moved without a look
+? Delete ~/migrate/strays-15 (20 GB the pool wrote onto the system disk while bay 15 was unmounted on 16 Oct; copies of intact sources) · options: delete once those sources are verified, or keep · default: delete after the verify
+? Keep NCQ off on disk 15 across reboots (queue depth 1 set by the script when it mounts 15), as libata did on its own on 16 Oct, after which its link errors stopped · options: set it (fewer link errors, slower writes to 15), or let libata turn it off again after the first errors · default: let libata do it
 Set up SnapRAID over the four rows once the data is on XFS · check: snapraid sync completes and snapraid check reports no error
 ? Map the migrated files' owner 501:20 (the Mac user) to your Linux user once the copies are done · options: chown -R --from=501:20 on every data disk (metadata only, hours), or leave the Mac owner · default: map

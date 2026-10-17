@@ -3,6 +3,7 @@
 Costly discoveries and standing decisions. Each entry carries its evidence and date;
 recheck before relying on one for anything consequential.
 
+- [Standing operator decisions](#standing-operator-decisions)
 - [Stock kernel has no Apple USB4 host](#stock-kernel-has-no-apple-usb4-host)
 - [Trial tree and its limits](#trial-tree-and-its-limits)
 - [Cable speed 4 broke link training](#cable-speed-4-broke-link-training)
@@ -42,6 +43,14 @@ recheck before relying on one for anything consequential.
 - [SATA errors in the enclosures were a missing earth](#sata-errors-in-the-enclosures-were-a-missing-earth)
 - [A global sync in a worker waits for every writer](#a-global-sync-in-a-worker-waits-for-every-writer)
 - [rsync --no-inc-recursive copies nothing until the whole tree is listed](#rsync---no-inc-recursive-copies-nothing-until-the-whole-tree-is-listed)
+
+## Standing operator decisions
+Kept here so a resumed session does not re-ask them; each was stated by the operator.
+- 2026-10-13: the Linux root gets 3.5 TB; see [Sizes when installing again](#sizes-when-installing-again).
+- 2026-10-14: 07, 15, 23 and 31 (old parity, migrated before) and 04 (empty) hold nothing needed and were erased without a copy; one global pool, even spread; quick verify by size and time, not checksums; one read stream per box.
+- 2026-10-14: the kernel stays as it is until the copies are done (agreed before the migration): a new kernel or a stock boot mid-migration puts the enclosures and the running copies at risk. Lines that need the stock kernel or a new one wait in the backlog.
+- 2026-10-16: 15 stays in the pool unless it fails in operation (it did at 22:03, went out with `bad 15`, and came back on 17 Oct after `aside 15`).
+- 2026-10-17: every disk is trusted after a replug or a reboot ("consider all disks valid") until one fails; then the workers warn and stop, and `start` trusts them again. A file whose write failed is still set aside and copied again, which is about the data, not the disk.
 
 ## Stock kernel has no Apple USB4 host
 7.1.13-402.asahi.fc44: `CONFIG_USB4=y` is the PCI driver only; no Apple code under `drivers/thunderbolt`, no USB4 device-tree nodes (source at tag `asahi-7.1.13-3`). A USB4 partner leaves the port at USB2: `ATCPHY_PIPEHANDLER_STATE_USB4 not implemented; falling back to USB2`. 2026-10-11.

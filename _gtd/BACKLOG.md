@@ -1,3 +1,21 @@
+After the migration: data maintenance on the pool: mergerfs.dedup/consolidate/balance (mergerfs-tools), per-disk duperemove (XFS reflinks), xfs_fsr; check: snapraid sync clean afterwards
+Capture a stock-kernel boot dump and compare with the trial one · check: differences listed in KNOWLEDGE.md or none found · waits: operator runs boot-dump.sh on both kernels and attaches the two files
+Tune the enclosure disks from the power dump and bench: scheduler, read-ahead, SATA link power, spin-down time · check: bench no slower than before, disks report standby after the idle time, idle power in the dump lower · waits: operator runs tbt-kernel.sh spindown 30, and status after the disks sat idle that long
+Measure what the idle Thunderbolt controllers cost · check: idle power on the stock kernel beside the 21 W of the trial kernel, in KNOWLEDGE.md · waits: operator runs tbt-kernel.sh stock, reboots, runs power-dump.sh and boot-dump.sh, then tbt-kernel.sh try and reboots
+Spin down the USB-A disks with hd-idle · check: hdparm -C reports standby after the idle time
+Power down the Thunderbolt PCIe controllers that have no tunnel, if the power dump shows they cost power · check: ps_atcN_pcie off in the power-domain summary with nothing attached and on with a tunnel, idle power lower
+Send kernel messages to the second Mac over the network with netconsole · check: a test line written on the Mac Studio shows on the MacBook · waits: operator runs netlog.sh listen on the MacBook, then netlog.sh on and test on the Mac Studio
+Recover a stuck box without a reboot: its supply off until the kernel logs the Thunderbolt device as disconnected, then on (box C came back so at 15:41) · check: the box's disks attach again · waits: operator says what was done at 15:41, supply off only or the USB-C cable too
+Eject the enclosure before suspend and attach it again after resume · check: suspend and resume with the enclosure attached, eight disks back, no error in the kernel log
+Confirm the Bluetooth-after-suspend fault and pick a mitigation · check: journal shows hci0 command tx timeout after resume
+Ship the settings above as one installer of udev rules and systemd units, with an uninstall · check: settings hold after a reboot and a replug; uninstall leaves no file behind
+Survive pulling an enclosure without eject · check: unplug with disks attached leaves the system running and a replug brings them back; run it with netconsole to the second Mac so a freeze leaves a log
+Reproduce the replug freeze with netconsole attached · check: ten eject, unplug, replug rounds without a freeze, or the log of one
+Tune llama.cpp matrix shaders and work-group sizes for this GPU, which gets generic settings today · check: tokens per second up on the same model, same generated text · waits: operator runs llama-sweep.sh with the model and attaches the file
+Run llama.cpp on Mesa main built beside the system one and loaded with VK_DRIVER_FILES · check: one llama-bench table per Mesa, same generated text · waits: operator runs mesa-side.sh build base, then llama-bench.sh through mesa-side.sh run base
+Try the third-party Honeykrisp cooperative-matrix series (omacom/mesa pull requests 3 to 6), not reviewed upstream · check: operator tests pass and one llama-bench table with it · waits: operator runs mesa-side.sh build coopmat, llama-sweep.sh test and llama-bench.sh through mesa-side.sh run coopmat
+Compare Vulkan in Linux with Metal in macOS on the same model and llama.cpp commit · check: both llama-bench files, ratio per test in KNOWLEDGE.md · waits: operator runs llama-bench.sh in macOS with LLAMA_REF=f2cc7282ce0042641df55e0e563b75e824e2b647 and the same model file
+Load a model larger than the GPU memory the driver reports · check: all layers on the GPU, no allocation failure
 ? Report the two driver bugs to Asahi in the operator's own words, disclosing LLM use · options: report, or keep local · default: operator decides later
 Re-check asahi-wip-7.2 for the GPU driver being re-enabled and move the fixes over · check: DRM_ASAHI no longer depends on BROKEN at the new base
 Install m1n1 1.9.9 for unique router IDs before attaching several enclosures · check: each domain's unique_id differs
@@ -5,9 +23,6 @@ Install m1n1 1.9.9 for unique router IDs before attaching several enclosures · 
 Drop the DEBUG cable_info_or commit from the branch once cable handling is settled · check: branch builds and links without it
 Let the USB4 link to the enclosure use its low-power states, which the log shows as supported on one end only · check: capture shows CLx enabled and idle power with the enclosure attached drops below 27 W
 Four-finger trackpad gestures need a longer swipe than three-finger ones · check: threshold found in KWin source and a local patch or a setting; no setting exists today
-After the migration: data maintenance on the pool: mergerfs.dedup/consolidate/balance (mergerfs-tools), per-disk duperemove (XFS reflinks), xfs_fsr; check: snapraid sync clean afterwards
-Find rsync temp files that killed copies left in the pool: temp-like names (.name.XXXXXX) that no source holds; never by name alone, sources hold such files themselves · check: list from a comparison with the sources, nothing moved without a look
 ? Let the row copies start at once instead of after a full listing (drop --no-inc-recursive from migrate-row.sh) · options: drop it (progress total grows as the listing goes, a restart copies at once), or keep it (exact total, listing first) · default: keep
 ? Power-cycle a box from the script when its controller stops answering (today only an unplug or a reboot does it) · options: power the ASM2464 board from the box supply and put each box on a switchable plug the script drives, or keep it manual · default: manual
-? Delete ~/migrate/strays-15 (20 GB the pool wrote onto the system disk while bay 15 was unmounted on 16 Oct; copies of intact sources) · options: delete once those sources are verified, or keep · default: delete after the verify
-? Keep NCQ off on disk 15 across reboots (queue depth 1 set by the script when it mounts 15), as libata did on its own on 16 Oct, after which its link errors stopped · options: set it (fewer link errors, slower writes to 15), or let libata turn it off again after the first errors · default: let libata do it
+Keep a macOS 13.5 volume for tracing under the m1n1 hypervisor · check: that volume reports ProductVersion 13.5 · waits: operator installs exactly 13.5 into the volume "macOS 13"

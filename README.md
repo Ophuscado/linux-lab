@@ -1,7 +1,24 @@
 # asahi-usb4-lab
 
-Getting USB4/Thunderbolt storage enclosures to work under Fedora Asahi Remix on an
-Apple Mac Studio (M2 Ultra, 2023). Personal lab work, not an Asahi Linux project.
+An Apple Mac Studio (M2 Ultra, 2023) under Fedora Asahi Remix as storage server and
+workstation: four home-made 8-bay USB4 disk boxes, their 32 disks in one pool with
+SnapRAID, the GPU for llama.cpp. Personal lab work, not an Asahi Linux project.
+
+## Goals
+
+1. USB4/Thunderbolt disk boxes on Linux (ASM2464, PCIe over Thunderbolt): `tbt-kernel.sh`.
+2. The 32 disks from HFS+ into one XFS mergerfs pool, every copy verified before its source
+   is formatted: `migrate-row.sh`.
+3. SnapRAID over the pool, four parity disks, nightly sync and weekly scrub: `snapraid-setup.sh`.
+4. A quiet, efficient machine: idle disks and controllers powered down, suspend and replug
+   without a freeze: `settings.sh`, `power-dump.sh`, `netlog.sh`.
+5. llama.cpp on the GPU (Vulkan) close to what Metal does in macOS: `llama-bench.sh`,
+   `llama-sweep.sh`, `mesa-side.sh`.
+6. The desktop as comfortable as macOS: Magic Mouse, no middle-click paste, Bluetooth pairings
+   shared with macOS: `ux-fix.sh`, `bt-sync.sh`.
+
+Where each stands: `_gtd/` (DOING is what runs or waits now, TODO the current sprint, the
+migration); standing decisions and findings: `KNOWLEDGE.md`.
 
 The diagnosis, scripts and kernel patches here were produced with an LLM assistant
 (Claude) and tested on one machine. Asahi Linux does not accept LLM-assisted
@@ -51,6 +68,7 @@ clean system, builds and installs the kernel and installs what the measuring scr
 - `disk-blink.sh`: make one disk blink to find it in the box.
 - `disk-inventory.sh`: map every enclosure disk to row, slot, serial and volume fill.
 - `migrate-row.sh`: move the four rows of disks from HFS+ into one XFS pool, disk by disk, verified, leaving the parity disks empty; a pool disk that stops answering is dropped and the copy goes on; `extra` copies the external USB disk 33 the same way; `readtest` checks one box's links by reading all its disks at once; `policy` switches where new files go (pfrd spreads them, mfs fills the emptiest disk first).
+- `settings.sh`: install or remove the lab's machine settings in one go (Thunderbolt authorize, disk spin-down, the desktop fixes, SnapRAID timers once set up); `sleep-hook` ejects the boxes around suspend (off by default, untested).
 - `snapraid-setup.sh`: the final layout after the migration: mounts by label, the mergerfs pool, SnapRAID with four parity disks.
 - `power-dump.sh`: record power sensors, link power states and disk settings before tuning.
 - `netlog.sh`: send kernel messages to a second computer, so a freeze leaves a log.
