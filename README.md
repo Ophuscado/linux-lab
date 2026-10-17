@@ -73,6 +73,7 @@ clean system, builds and installs the kernel and installs what the measuring scr
 - `settings.sh`: install or remove the lab's machine settings in one go (Thunderbolt authorize, disk spin-down, the desktop fixes, a cap on unwritten data per USB disk, SnapRAID timers once set up); `sleep-hook` ejects the boxes around suspend (off by default, untested).
 - `snapraid-setup.sh`: the final layout after the migration: mounts by label, the mergerfs pool, SnapRAID with four parity disks.
 - `power-dump.sh`: record power sensors, link power states and disk settings before tuning.
+- `system-audit.sh`: one read-only look at the whole machine (boot, failed units and errors, CPU, memory, heat, storage health, network, desktop, compatibility layers, security, updates) into `~/migrate/audit/`.
 - `netlog.sh`: send kernel messages to a second computer, so a freeze leaves a log.
 - `KNOWLEDGE.md`: findings that were expensive to obtain, with their evidence.
 - `tests/`: loop-device tests of `migrate-row.sh` and `snapraid-setup.sh`, run as root in a scratch Linux box; each states what it expects.
