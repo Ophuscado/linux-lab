@@ -144,7 +144,8 @@ INPUT=("$MM|PointerAccelerationProfile|1" "$MM|PointerAcceleration|-0.125" "$MM|
 kin() { local g; read -ra g <<<"$1"; local a=(); for x in "${g[@]:0:3}"; do a+=(--group "$x"); done
     [[ ${#g[@]} -gt 3 ]] && a+=(--group "${1#* * * }"); kreadconfig6 --file kcminputrc "${a[@]}" --key "$2"; }
 kout() { local g; read -ra g <<<"$1"; local a=(); for x in "${g[@]:0:3}"; do a+=(--group "$x"); done
-    [[ ${#g[@]} -gt 3 ]] && a+=(--group "${1#* * * }"); kwriteconfig6 --notify --file kcminputrc "${a[@]}" --key "$2" "${@:3}"; }
+    [[ ${#g[@]} -gt 3 ]] && a+=(--group "${1#* * * }"); local v=(-- "$3"); [[ $3 == --delete ]] && v=(--delete)
+    kwriteconfig6 --notify --file kcminputrc "${a[@]}" --key "$2" "${v[@]}"; }  # --: values such as -0.125 are no options
 # input_live: the running KWin takes the pointer settings now (it rereads kcminputrc only per device).
 input_live() {
     local e n
