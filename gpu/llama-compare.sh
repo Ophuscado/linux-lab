@@ -23,7 +23,7 @@ done
 export AGX_CLUSTER_OFF=1 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1
 export GGML_VK_WT_M=256,128,64,,32,32 GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_MAX_COLS=16
 # Rows per workgroup as llama-run.sh sets them; ROWS=N for every model instead.
-rows() { [[ -n ${ROWS:-} ]] && { echo "$ROWS"; return; }; case $1 in qwen | llama2) echo 4 ;; gemma) echo 2 ;; *) echo 1 ;; esac; }
+rows() { [[ -n ${ROWS:-} ]] && { echo "$ROWS"; return; }; case $1 in qwen) echo 4 ;; gemma) echo 2 ;; *) echo 1 ;; esac; }
 
 exec 9>"$HOME/.cache/linux-lab-gpu.lock"; flock 9
 want=" $* "

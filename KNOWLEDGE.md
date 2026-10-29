@@ -91,15 +91,17 @@ and in two M424 Thunderbolt 3 boxes since 22 Oct.
 ## GPU: llama.cpp on Vulkan against Metal
 
 The same Mac Studio and llama.cpp commit (2280f0f): Metal and Vulkan through MoltenVK on macOS 15.8.1, Vulkan through
-Honeykrisp on Linux with the six patches of `src-patches/llama.cpp/honeykrisp` and the settings of `gpu/llama-run.sh`.
-Tokens per second, prompt (pp512) / generation (tg128); flash attention on, all layers on the GPU, the mean of 3 runs
-or more (Linux: run 4664, 29 Oct; macOS: 27-28 Oct, details under [Metal on this machine](#metal-on-this-machine)).
+Honeykrisp on Linux with the six patches of `src-patches/llama.cpp/honeykrisp` and the settings of `gpu/llama-run.sh`
+(Linux measured with `gpu/llama-compare.sh`, the same tests and flags as `macos/collect.sh`). Flash attention on, all
+layers on the GPU, the mean of 2-5 runs. More tables under [Metal and Honeykrisp in detail](#metal-and-honeykrisp-in-detail).
 
-| Model | Metal (macOS) | Vulkan via MoltenVK (macOS) | Vulkan via Honeykrisp (Linux) |
+| Tokens/s, pp512 / pp2048 / tg128 | Metal | Vulkan via MoltenVK | Vulkan via Honeykrisp |
 |---|---|---|---|
-| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 763 / 69.4 |
-| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 820 / 70.4 |
-| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 448 / 34.2 |
+| Llama 2 7B Q4_0 | 1517 / 1538 / 120.4 | 788 / 836 / 59.9 | 762 / 803 / 68.7 |
+| GPT-OSS 20B Q8_0 | 1944 / 2146 / 124.5 | 992 / 1221 / 82.7 | 819 / 1160 / 71.6 |
+| GPT-OSS 120B Q4_K | 1001 / 1300 / 94.2 | - | 390 / 656 / 50.1 |
+| Gemma 4 26B-A4B Q4_K | 2100 / 2338 / 95.2 | - | 709 / 907 / 39.9 |
+| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 1817 / 67.8 | 422 / 574 / 24.8 | 449 / 681 / 34.2 |
 
 ### Where the generation gap is
 
@@ -118,6 +120,10 @@ or more (Linux: run 4664, 29 Oct; macOS: 27-28 Oct, details under [Metal on this
   launching many small workgroups is the limit. The f16 matrix-vector streams 475 GB/s, below what memory gives
   (INFERRED: its shape). Metal's matrix-vector figures re-read a 117 MB matrix partly held in the 96 MB system cache,
   an upper bound; Metal's own read bandwidth is not measured yet.
+- VERIFIED, 29 Oct: generation over a long context. With the ~4,000-token prompt of the speculation test, Llama 2
+  generates 24.7 t/s on Honeykrisp against 68.7 in tg128 (36 %), Metal 90.4 against 120.4 (75 %); Gemma 20.2 against
+  69.3 on Metal. Attention over the cache is a second gap beside the launch cost (INFERRED: flash attention with the
+  q8_0 cache, not traced yet).
 - VERIFIED, 25 Oct: the GPU runs at its full 1398 MHz (one dependent multiply-add 1.57 ns, Metal 1.39).
 
 ### What moved Honeykrisp forward
@@ -149,47 +155,44 @@ or more (Linux: run 4664, 29 Oct; macOS: 27-28 Oct, details under [Metal on this
   command behind `asahi.busy_stats=1` (built, waits for the next reboot). KDE's GPU sensor only enumerates PCI GPUs,
   so it needs a backend for platform GPUs reading these lines (read in ksystemstats).
 
-### Metal on this machine
+### Metal and Honeykrisp in detail
 
-macOS 15.8.1, llama.cpp 2280f0f with Metal, 27-28 Oct, VERIFIED (`results/macos/macos-15`, runs `20261027-234455` to
+Metal: macOS 15.8.1, llama.cpp 2280f0f, 27-28 Oct, VERIFIED (`results/macos/macos-15`, runs `20261027-234455` to
 `20261028-025200`; each figure the median of 3-5 runs, which agree within 2 %). Flash attention on, all layers on the
 GPU, batch 2048.
 
-| model (file) | pp512 | pp2048 | tg128 |
-|---|---|---|---|
-| Llama 2 7B Q4_0 (3.6 GiB) | 1517 | 1538 | 120.4 |
-| GPT-OSS 20B Q8_0 (12.3 GiB) | 1944 | 2146 | 124.5 |
-| GPT-OSS 120B Q4_K (58.7 GiB) | 1001 | 1300 | 94.2 |
-| Gemma 4 26B-A4B Q4_K (15.8 GiB) | 2100 | 2338 | 95.2 |
-| Qwen3-Coder-Next 80B-A3B Q8_0 (80.4 GiB) | 1535 | 1817 | 67.8 |
+Model files: Llama 2 3.6 GiB, GPT-OSS 20B 12.3, GPT-OSS 120B 58.7, Gemma 4 15.8, Qwen3-Coder-Next 80.4. Linux:
+`var/compare-20261029-133010` (run 4697; Llama 2 at 1 row from `compare-20261029-132759`).
 
-Tokens per second against batch size (llama-bench, one prompt of N tokens; the speed a speculative step pays to
-verify N tokens):
+Tokens per second against batch size, Metal / Honeykrisp (llama-bench, one prompt of N tokens: the speed a speculative
+step pays to verify N tokens):
 
-| N | 1 | 2 | 4 | 8 | 9 | 12 | 16 | 24 | 32 | 48 | 64 | 128 | 512 |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Llama 2 | 119 | 179 | 352 | 680 | 529 | 696 | 906 | 631 | 836 | 838 | 1116 | 1326 | 1518 |
-| GPT-OSS 20B | 118 | 182 | 268 | 333 | 348 | 376 | 388 | 386 | 514 | 669 | 860 | 1219 | 1947 |
-| GPT-OSS 120B | 88 | 128 | 181 | 223 | 234 | 251 | 259 | 251 | 248 | 320 | 410 | 543 | 998 |
-| Gemma 4 | 91 | 146 | 231 | 334 | 328 | 367 | 414 | 370 | 548 | 717 | 884 | 1355 | 2099 |
-| Qwen3-Coder-Next | 64 | 101 | 149 | 206 | 204 | 226 | 242 | 214 | 377 | 504 | 626 | 932 | 1536 |
+| N | 1 | 2 | 4 | 8 | 9 | 16 | 24 | 32 | 64 | 128 | 512 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Llama 2 | 119 / 71 | 179 / 96 | 352 / 145 | 680 / 171 | 529 / 167 | 906 / 153 | 631 / 112 | 836 / 149 | 1116 / 298 | 1326 / 493 | 1518 / 764 |
+| GPT-OSS 20B | 118 / 73 | 182 / 92 | 268 / 122 | 333 / 150 | 348 / 150 | 388 / 163 | 386 / 110 | 514 / 127 | 860 / 166 | 1219 / 350 | 1947 / 821 |
+| GPT-OSS 120B | 88 / 51 | 128 / 64 | 181 / 85 | 223 / 103 | 234 / 104 | 259 / 111 | 251 / 72 | 248 / 83 | 410 / 108 | 543 / 162 | 998 / 389 |
+| Gemma 4 | 91 / 41 | 146 / 66 | 231 / 102 | 334 / 135 | 328 / 137 | 414 / 149 | 370 / 99 | 548 / 119 | 884 / 175 | 1355 / 342 | 2099 / 712 |
+| Qwen3-Coder-Next | 64 / 36 | 101 / 53 | 149 / 80 | 206 / 100 | 204 / 96 | 242 / 98 | 214 / 84 | 377 / 102 | 626 / 156 | 932 / 210 | 1536 / 446 |
 
-Metal has no cliff past 8 tokens (Honeykrisp had one until honeykrisp 0002/0003); its dip is at 24.
+Both dip at 24 tokens. The gap widens from about 2x at one token to 4-5x at 64, where Metal keeps climbing and
+Honeykrisp's matrix-vector path has stopped paying: verification batches are where Metal pulls furthest ahead.
+Llama 2 at 4 rows a workgroup instead of 1 drops to 24-76 t/s at 2-16 tokens: dense models stay at 1 row.
 
 Speculative decoding through llama-server (`macos/spec-req.py`: rename a variable in `gpu/llama-run.sh`, greedy, 1500
-tokens), t/s (drafted/accepted):
+tokens), t/s, Metal / Honeykrisp:
 
 | model | none | ngram-mod 64 | ngram-mod 128 | MTP head |
 |---|---|---|---|---|
-| Llama 2 | 90.4 | 383 (1518/1329) | 405 (1775/1339) | - |
-| GPT-OSS 20B | 108 | 279 (1140/1094) | 304 (1212/1102) | - |
-| GPT-OSS 120B | 79.9 | 142 (1080/968) | 151 (1336/974) | - |
-| Gemma 4 | 69.3 | 68.6 (1818/166) | 65.0 (3498/158) | 115 (1248/1083) |
-| Qwen3-Coder-Next | 59.5 | 204 (1488/1266) | 216 (1874/1275) | - |
+| Llama 2 | 90.4 / 24.7 | 383 / 132 | 405 / 155 | - |
+| GPT-OSS 20B | 108 / 52.0 | 279 / 66.1 | 304 / 69.2 | - |
+| GPT-OSS 120B | 79.9 / 36.6 | 142 / 43.3 | 151 / 45.1 | - |
+| Gemma 4 | 69.3 / 20.2 | 68.6 / 19.2 | 65.0 / 19.1 | 115 / 32.2 |
+| Qwen3-Coder-Next | 59.5 / 30.1 | 204 / 55.7 | 216 / 70.2 | - |
 
-Within a run every setting gives the same text hash except Gemma's (INFERRED: batched verification rounds
-differently there); the text changes between runs because the script being edited changed. Linux on a similar Qwen
-code edit: 30 none, 55-59 with ngram-mod 128.
+The script being edited changed between the macOS and the Linux runs, so the texts differ (same request, similar
+length); within a run every setting gives the same text except on Gemma and GPT-OSS, whose batched verification rounds
+differently (INFERRED). Flash-Next (Linux only): 17.7 none, 37.2 / 48.3 ngram-mod, 29.5 MTP.
 
 What Metal's graph work is worth (tg128 and pp512 with each optimisation switched off, against the default):
 
