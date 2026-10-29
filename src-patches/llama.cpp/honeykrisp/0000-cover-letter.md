@@ -1,38 +1,44 @@
-vulkan: Honeykrisp (Asahi Linux) on an M2 Ultra, measured against Metal on the same machine
+Follow-up for issue 10982: Honeykrisp against Metal on the same M2 Ultra
 
-Six patches on 2280f0f for llama.cpp's Vulkan backend on Apple GPUs under Mesa's Honeykrisp driver, from one Mac
-Studio (M2 Ultra, 76 GPU cores, 192 GB). Every setting is off or unchanged unless its environment variable is set,
-except 0002 and 0006, which only take paths that were taken before when the variable is unset or the pattern absent.
+Hi again! Since my last comment I booted macOS on the same Mac Studio (M2 Ultra, 76 GPU cores, 192 GB) and ran the
+same llama.cpp commit (2280f0f) with Metal, and with the Vulkan backend through MoltenVK. That gives a direct
+comparison on identical hardware, so I'm sharing the numbers in case they help.
 
-1. Matmul tile sizes and warptiles settable (`GGML_VK_MM_SIZES`, `GGML_VK_MMID_SIZES`, `GGML_VK_WT_S/M/L`).
-   The medium tile at 256 threads, 128x64, gives prompts +12-23 % (Qwen3-Coder-Next Q8 pp2048 672 -> 780 t/s,
-   Llama 2 7B Q4_0 pp512 620 -> 762, Gemma 4 Q4_K +16 %); every MUL_MAT and MUL_MAT_ID test passes.
-2. The MUL_MAT_ID matrix-vector token limit settable (`GGML_VK_MMV_ID_MAX`); offset id views stay on the matmul
-   path, which fixes an abort on `allow_misalign || misalign_bytes == 0` (955/955 MUL_MAT_ID pass).
-3. Matrix-vector pipelines up to 16 columns (`GGML_VK_MMV_MAX_COLS`): a 9-token Qwen batch 37 -> 107 t/s, which is
-   what a speculative step verifies; ngram-mod drafts on a code edit take Qwen from 30 to 55-59 t/s.
-4. Rows per workgroup and the workgroup size settable (`GGML_VK_RM_STDQ`, `GGML_VK_RM_KQ`, `GGML_VK_DMMV_WG`).
-5. q4_0 and q8_0 matrix-vector in ggml-metal's layout (`GGML_VK_MMV_SIMD=1`, mul_mat_vec_simd.comp): one
-   4096x14336 step q4_0 81 -> 68 us, q8_0 160 -> 128 us; generation Llama 2 65.1 -> 69.7, Qwen 33.6 -> 34.8,
-   GPT-OSS 20B 70.2 -> 70.9 t/s; 388/388 q4_0/q8_0 MUL_MAT and MUL_MAT_ID tests pass on the GPU.
-6. RMS_NORM + SCALE fused (Metal fuses it too; 72 pairs a Qwen token). Correct, no measurable gain.
+**Tokens per second, prompt (pp512) / generation (tg128)**
 
-The same machine under macOS 15 (llama.cpp 2280f0f, tokens/s, pp512 / tg128):
-
-| model | Metal | Vulkan through MoltenVK | Honeykrisp with this series |
+| Model | Metal (macOS) | Vulkan via MoltenVK (macOS) | Vulkan via Honeykrisp (Linux) |
 |---|---|---|---|
 | Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 762 / 69.7 |
-| GPT-OSS 20B | 1944 / 124.5 | 992 / 82.7 | 747 / 70.9 |
+| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 747 / 70.9 |
 | Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 488 / 34.8 |
 
-Where the remaining generation gap is, measured on this machine:
+Linux figures are the best I measured between 26 and 29 Oct with the tweaks below, on Honeykrisp built from Mesa's
+26.3 development tree with a third-party cooperative-matrix and compiler series and
+`HK_PERFTEST=designedusccdmbarrier`; macOS figures are medians of 3-5 runs on macOS 15.8.1. Flash attention
+on, all layers on the GPU.
 
-- Not fusion: a Qwen token is 1805 Vulkan launches against 1996 Metal dispatches (703 of them concurrent);
-  ggml-vulkan fuses as much as ggml-metal, and its fusion is worth +40 % here (24.7 t/s with it off).
-- The cost of a dependent launch: 4.0-4.2 us under Honeykrisp (with `HK_PERFTEST=designedusccdmbarrier`) against
-  2.27 us on Metal; a Qwen token averages ~16 us a launch on Vulkan and ~7.4 on Metal.
-- Memory: a grid-stride read reaches 610-655 GB/s from 64 MB to 1 GB under Honeykrisp; one vec4 per invocation
-  only ~290 GB/s (65,536 workgroups for 256 MB); the f16 matrix-vector streams at 475 GB/s.
+**What I take from it**
 
-All raw data (Metal, MoltenVK, per-op timings, Metal's fusion ablation, the encoded graphs) and the scripts:
-https://github.com/Ophuscado/linux-lab (results/macos, gpu/, KNOWLEDGE.md).
+- Vulkan on macOS is no faster than Vulkan on Linux, so most of the gap to Metal is in the Vulkan backend's shaders
+  and graph on this GPU, not in Mesa or the kernel.
+- It isn't fusion: a Qwen token is 1805 Vulkan launches against 1996 Metal dispatches, and the Vulkan backend already
+  fuses as much as Metal does. Turning fusion off drops Qwen to 24.7 t/s, so it's worth +40 % here.
+- It's the cost of each dependent launch: about 4 us under Honeykrisp against 2.3 us on Metal (a microbenchmark that
+  chains small dispatches). Averaged over a Qwen token it is ~16 us per launch on Vulkan and ~7.4 us on Metal, where
+  about a third of the dispatches also run concurrently.
+- Memory isn't the limit: a simple read shader gets 610-655 GB/s under Honeykrisp, but only ~290 GB/s when the grid
+  has one workgroup per small slice, so many-small-workgroup shaders pay for launching them.
+
+**Changes I tried on Linux** (a small patch series, all opt-in through environment variables)
+
+- Medium matmul tile at 256 threads, 128x64: prompts +12-23 % (Qwen pp2048 672 to 780 t/s).
+- The matrix-vector path for batches of 9-64 tokens instead of stopping at 8: a 9-token Qwen batch goes from 37 to
+  107 t/s, which is what makes speculative decoding pay (a code edit with ngram-mod drafts: 30 to 55-59 t/s).
+- A q4_0/q8_0 matrix-vector shader laid out like Metal's kernel_mul_mv: one 4096x14336 step 81 to 68 us (q4_0) and
+  160 to 128 us (q8_0); generation +7 % on Llama 2, +4 % on Qwen. All MUL_MAT and MUL_MAT_ID tests pass.
+
+Two of these look worth proposing on their own, and I'm happy to open pull requests if that's welcome: a fix for an
+abort in MUL_MAT_ID with offset expert-id views, and the 256-thread tile as Honeykrisp's default.
+
+Everything is public, with the raw data (Metal and MoltenVK runs, per-op timings, Metal's fusion ablation, the
+encoded graphs) and the scripts: https://github.com/Ophuscado/linux-lab (`results/macos`, `gpu/`, `KNOWLEDGE.md`).
