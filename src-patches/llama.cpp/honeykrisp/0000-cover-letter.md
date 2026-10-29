@@ -27,4 +27,10 @@ Same settings on both systems: flash attention on, all layers on the GPU, the wh
 
 Two of these look worth proposing on their own, and I'm happy to open pull requests if that's welcome: a fix for an abort in MUL_MAT_ID with offset expert-id views, and the 256-thread tile as Honeykrisp's default.
 
-Everything is public, with the raw data (Metal and MoltenVK runs, per-op timings, Metal's fusion ablation, the encoded graphs) and the scripts: https://github.com/Ophuscado/linux-lab (`results/macos`, `gpu/`, `KNOWLEDGE.md`).
+Everything is public, with the raw data and the scripts:
+
+- The numbers above and how they were measured: https://github.com/Ophuscado/linux-lab/blob/master/KNOWLEDGE.md#gpu-llamacpp-on-vulkan-against-metal
+- Every Metal result (llama-bench for five models, the 1-512 batch curve, speculative decoding, the fusion ablation, per-op timings): https://github.com/Ophuscado/linux-lab/blob/master/KNOWLEDGE.md#metal-on-this-machine
+- The raw macOS runs (Metal and MoltenVK JSON, per-op timings, Metal's encoded graphs): https://github.com/Ophuscado/linux-lab/tree/master/results/macos
+- The patches: https://github.com/Ophuscado/linux-lab/tree/master/src-patches/llama.cpp/honeykrisp
+- The launch and bandwidth microbenchmarks (Vulkan and Metal): https://github.com/Ophuscado/linux-lab/tree/master/gpu/vk-chain

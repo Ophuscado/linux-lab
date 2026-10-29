@@ -90,70 +90,64 @@ and in two M424 Thunderbolt 3 boxes since 22 Oct.
 
 ## GPU: llama.cpp on Vulkan against Metal
 
-Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK on macOS 15. Settings in use:
-`gpu/llama-run.sh`.
+The same Mac Studio and llama.cpp commit (2280f0f): Metal and Vulkan through MoltenVK on macOS 15.8.1, Vulkan through
+Honeykrisp on Linux with the six patches of `src-patches/llama.cpp/honeykrisp` and the settings of `gpu/llama-run.sh`.
+Tokens per second, prompt (pp512) / generation (tg128); flash attention on, all layers on the GPU, the mean of 3 runs
+or more (Linux: run 4664, 29 Oct; macOS: 27-28 Oct, details under [Metal on this machine](#metal-on-this-machine)).
 
-| tokens/s | Metal pp512 / tg128 | Vulkan on MoltenVK | Honeykrisp, Linux |
+| Model | Metal (macOS) | Vulkan via MoltenVK (macOS) | Vulkan via Honeykrisp (Linux) |
 |---|---|---|---|
 | Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 763 / 69.4 |
-| GPT-OSS 20B | 1944 / 124.5 | 992 / 82.7 | 820 / 70.4 |
-| Qwen3-Coder-Next Q8 | 1535 / 67.8 | 422 / 24.8 | 448 / 34.2 |
+| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 820 / 70.4 |
+| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 448 / 34.2 |
 
-The Linux column: one session on 29 Oct (run 4664), the six-patch series and `gpu/llama-run.sh`'s settings.
+### Where the generation gap is
 
-- 29 Oct, VERIFIED, one 4096x14336 matrix-vector (test-backend-ops perf, µs): f16 Metal 143, MoltenVK 161, Linux
-  247; q4_0 37 / 100 / 81 (68 with `GGML_VK_MMV_SIMD=1`, honeykrisp 0005, at 8 rows a workgroup); q8_0 57.5 / 90 /
-  160 (126-128 with either the new shader or 4 rows). Generation with the new shader: Llama 2 65.1 to 69.7 (4 rows),
-  Qwen 33.6 to 34.8 (4 rows), GPT-OSS 70.2 to 70.9. Plain f16 streams at 475 GB/s on Linux against 820 on Metal and
-  730 through MoltenVK, so part of the gap is below llama.cpp: memory bandwidth reached on Linux (INFERRED; open).
-- 28 Oct, VERIFIED: Metal's graph optimisations are worth 5-16 % of generation on Llama 2 and GPT-OSS and 28 % on
-  Gemma and Qwen, fusion alone 22-25 % there (table below); prompts move 3-8 %.
-- 28 Oct: MoltenVK runs llama.cpp's Vulkan backend no faster than Honeykrisp, so most of the 2-3x lies in the Vulkan
-  shaders and graph, not in Mesa or the kernel (INFERRED).
-- 25 Oct, VERIFIED: a launch that waits on the previous one costs 4.0-4.2 µs (Metal 2.27); Qwen issues 1878 launches a
-  token, so ~10 of its ~33 ms are fixed launch cost. Without the wait bit in the barrier word, Llama 2 generates
-  94.6 t/s (Metal's public 94) but results are wrong: the gap is the serialization of dependent launches.
-  `HK_PERFTEST=designedusccdmbarrier` (word 0x17f) is the cheapest correct one: +7-9 % generation.
-- 25 Oct: the GPU runs at its full 1398 MHz (one dependent multiply-add 1.57 ns, Metal 1.39); small matrix-vectors are
-  latency-bound, not bandwidth-bound.
-- 26 Oct, VERIFIED, driver: agxperf (coopmat Mesa plus a third-party compiler series) with bit 47 on local loads only
-  (on stores it breaks ARGMAX) and clustering off: prompts +17 %, generation +1-3 %, all 21303 operator tests pass.
-- 26 Oct, VERIFIED, prompts: the medium matmul tile at 256 threads and 128x64 (`GGML_VK_WT_M`, honeykrisp 0001):
-  +12-23 % (Qwen pp2048 672 to 780).
-- 26 Oct, VERIFIED, batches of 9-64 tokens: the matrix-vector path stopped at 8 columns, so a 9-token batch ran 4x
-  slower than 8. Raising the limit to 64 for MoE layers and 16 for dense ones (0002, 0003) takes a 9-token Qwen batch
-  from 37 to 107 t/s. Speculation with ngram-mod drafts of up to 128 tokens: a Qwen code edit 30 to 55-59 t/s, same
-  text. MTP heads speed Gemma and Flash-Next up but change the text.
-- 26 Oct: rows per workgroup best at 2 for the MoE models, 1 for GPT-OSS and dense ones; the integer-dot path is
-  slower.
-- 26 Oct: llama.cpp fails to read a model from the mergerfs pool ("read error: Bad address"); models load from
-  `~/Projects/_llm`.
-- 29 Oct, VERIFIED on the new kernel: every GPU client has `drm-driver: asahi`, `drm-engine-render/compute` and
-  `drm-total/shared-memory` lines (17 files at boot), memory correct, busy time always 0 ns, also for a client
-  saturating the GPU for 5 s. The firmware stamps a command's start and end only when its microsequence carries
-  Timestamp ops, which the driver adds only for user timestamp queries; patch 3 adds them for every command behind
-  `asahi.busy_stats=1` (not yet built). The Rust DRM abstraction had lacked a `show_fdinfo` hook and the GEM file
-  operations did not set it (`src-patches/linux/asahi-fdinfo`). KDE's GPU sensor needs a ksystemstats backend
-  reading these lines (INFERRED).
-- 29 Oct, VERIFIED, one Qwen3-Coder-Next token op by op (Vulkan per-op logger, cell 89059, against Metal's encoded
-  graph of 28 Oct): Vulkan issues 1805 launches a token, Metal 1996 dispatches, 703 of them marked concurrent with
-  the one before. Vulkan already fuses as much or more (RMS_NORM+MUL, +ROPE, +SET_ROWS, multi-add, the MoE top-k,
-  SSM_CONV+SILU, MUL_MAT+ADD, MUL_MAT_ID+MUL); Metal fuses two things Vulkan does not, RMS_NORM+SCALE (72 a token)
-  and GATED_DELTA_NET+CPY (36), worth ~0.5 ms of ~29 (INFERRED from ~4.5 µs a launch). So Metal's 22 % from fusion
-  is fusion against Metal's own unfused graph, not against Vulkan's: the gap is the cost of a dependent launch
-  (~16 µs a launch on average in a Vulkan token against ~7.4 on Metal) and how many launches overlap, not their
-  number.
-- 29 Oct, VERIFIED (run 4622): with all of ggml-vulkan's fusion off, Qwen generates 24.7 t/s against 34.6 with it,
-  so fusion is worth +40 % here (Metal's own: +28 %). Fusing RMS_NORM+SCALE too (honeykrisp 0006, every RMS_NORM
-  test passing on the GPU) left Qwen at 34.6 against 34.8 before: within run-to-run noise.
-- 29 Oct, VERIFIED, read bandwidth (`vk-chain.sh bw`): 610-655 GB/s from 64 MB to 1 GB when 1216 workgroups walk the
-  buffer, the same on both memory types and on the system Mesa and agxperf; ~290 GB/s when the grid has one vec4 per
-  invocation (65,536 workgroups for 256 MB): workgroup launch rate, not memory, caps that form. 16 MB reaches 550
-  (system) to 996 GB/s (agxperf), from the cache. So DRAM gives about 80 % of the M2 Ultra's 800 GB/s here, and
-  the f16 matrix-vector at 475 GB/s is below even that: its shape, not the memory (INFERRED). Metal's own read
-  bandwidth on this machine is not measured yet; its matrix-vector figures repeat a 117 MB matrix that partly sits
-  in the 96 MB system cache, so they are an upper bound.
+- VERIFIED, 28 Oct: Vulkan through MoltenVK is no faster than Honeykrisp, so most of the 2-3x lies in llama.cpp's
+  Vulkan shaders and graph on this GPU, not in Mesa or the kernel (INFERRED from that).
+- VERIFIED, 29 Oct: not fusion. A Qwen token is 1805 Vulkan launches against 1996 Metal dispatches (703 of them
+  concurrent with the one before); ggml-vulkan fuses as much as ggml-metal, and switching its fusion off drops Qwen
+  from 34.6 to 24.7 t/s (+40 % from fusion; Metal's own: +28 %). Metal fuses only RMS_NORM+SCALE (now honeykrisp
+  0006: no measurable gain) and GATED_DELTA_NET+CPY (36 a token) beyond it.
+- VERIFIED, 25 Oct: the cost of a dependent launch. One that waits on the previous costs 4.0-4.2 µs under Honeykrisp
+  (`vk-chain`) against 2.27 on Metal; over a Qwen token the average is ~16 µs a launch on Vulkan and ~7.4 on Metal.
+  Without the wait bit in the barrier word Llama 2 generates 94.6 t/s (Metal 120) but results are wrong;
+  `HK_PERFTEST=designedusccdmbarrier` (word 0x17f) is the cheapest correct word, +7-9 % generation.
+- VERIFIED, 29 Oct: not memory. A grid-stride read reaches 610-655 GB/s from 64 MB to 1 GB (`vk-chain.sh bw`), the same
+  on both memory types and both Mesas; one vec4 per invocation (65,536 workgroups for 256 MB) only ~290 GB/s:
+  launching many small workgroups is the limit. The f16 matrix-vector streams 475 GB/s, below what memory gives
+  (INFERRED: its shape). Metal's matrix-vector figures re-read a 117 MB matrix partly held in the 96 MB system cache,
+  an upper bound; Metal's own read bandwidth is not measured yet.
+- VERIFIED, 25 Oct: the GPU runs at its full 1398 MHz (one dependent multiply-add 1.57 ns, Metal 1.39).
+
+### What moved Honeykrisp forward
+
+- One 4096x14336 matrix-vector (test-backend-ops perf, µs), Metal / MoltenVK / Honeykrisp: f16 143 / 161 / 247; q4_0
+  37 / 100 / 81, 68 with the Metal-layout shader (`GGML_VK_MMV_SIMD=1`, 0005, 8 rows a workgroup); q8_0 57.5 / 90 /
+  160, 126-128 with that shader or 4 rows. Generation with the shader: Llama 2 65.1 to 69.7, Qwen 33.6 to 34.8,
+  GPT-OSS 70.2 to 70.9 t/s.
+- Prompts: the medium matmul tile at 256 threads, 128x64 (`GGML_VK_WT_M`, 0001), +12-23 % (Qwen pp2048 672 to 780).
+- Batches of 9-64 tokens: the matrix-vector path stopped at 8 columns, so 9 tokens ran 4x slower than 8; raising the
+  limit to 64 for MoE layers and 16 for dense ones (0002, 0003) takes a 9-token Qwen batch from 37 to 107 t/s, and
+  speculation with ngram-mod drafts of up to 128 tokens a Qwen code edit from 30 to 55-59 t/s, same text. MTP heads
+  speed Gemma and Flash-Next up but change the text. 0002 also keeps offset expert-id views off the matrix-vector
+  path, which aborted (`allow_misalign || misalign_bytes == 0`).
+- Rows per workgroup: 4 for Qwen, 2 for Gemma, 1 for GPT-OSS and dense models with the shader on; the integer-dot
+  path is slower.
+- Driver: agxperf (coopmat Mesa plus a third-party compiler series) with bit 47 on local loads only (on stores it
+  breaks ARGMAX) and clustering off: prompts +17 %, generation +1-3 %, all 21303 operator tests pass.
+- llama.cpp cannot read a model from the mergerfs pool ("read error: Bad address"); models load from `~/Projects/_llm`.
 - Benchmarks take `~/.cache/linux-lab-gpu.lock` (flock): two runs sharing the GPU halve each other.
+
+### GPU usage per client
+
+- VERIFIED, 29 Oct: every GPU client has `drm-driver: asahi`, `drm-engine-render/compute` and
+  `drm-total/shared-memory` fdinfo lines on the new kernel, memory correct, busy time 0 ns even for a client
+  saturating the GPU. The Rust DRM abstraction had lacked a `show_fdinfo` hook and the GEM file operations did not set
+  it (`src-patches/linux/asahi-fdinfo` 0001-0002). The firmware stamps a command's start and end only when its
+  microsequence carries Timestamp ops, which the driver adds only for user timestamp queries; 0003 adds them for every
+  command behind `asahi.busy_stats=1` (built, waits for the next reboot). KDE's GPU sensor only enumerates PCI GPUs,
+  so it needs a backend for platform GPUs reading these lines (read in ksystemstats).
 
 ### Metal on this machine
 
