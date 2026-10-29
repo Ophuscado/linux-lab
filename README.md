@@ -28,9 +28,11 @@ its own. The findings and their evidence are in [`KNOWLEDGE.md`](KNOWLEDGE.md).
 
 | Tokens/s, pp512 / tg128 | Metal | Vulkan via MoltenVK | Vulkan via Honeykrisp |
 |---|---|---|---|
-| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 763 / 69.4 |
-| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 820 / 70.4 |
-| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 448 / 34.2 |
+| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 762 / 68.7 |
+| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 819 / 71.6 |
+| GPT-OSS 120B Q4_K | 1001 / 94.2 | - | 390 / 50.1 |
+| Gemma 4 26B-A4B Q4_K | 2100 / 95.2 | - | 709 / 39.9 |
+| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 449 / 34.2 |
 
 **GPU usage per program** (`src-patches/linux/asahi-fdinfo`)
 - fdinfo lines for the Rust `asahi` driver, through a `show_fdinfo` hook the Rust DRM layer lacked; memory works, busy
