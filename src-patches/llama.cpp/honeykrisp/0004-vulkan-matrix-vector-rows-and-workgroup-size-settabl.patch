@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Mon, 26 Oct 2026 23:56:06 +0000
-Subject: [PATCH 4/5] vulkan: matrix-vector rows and workgroup size settable
+Subject: [PATCH 4/6] vulkan: matrix-vector rows and workgroup size settable
 
 GGML_VK_RM_STDQ and GGML_VK_RM_KQ set the rows per workgroup of the matrix-vector shaders for the standard and the K quants, GGML_VK_DMMV_WG=large|subgroup the workgroup size for every shape, and GGML_VK_FORCE_INT_DOT tries the integer-dot path on a driver that does not report it as accelerated. Any of them prints the values used to stderr.
 

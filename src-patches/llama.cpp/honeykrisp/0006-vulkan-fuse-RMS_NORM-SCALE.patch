@@ -1,0 +1,194 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Thu, 29 Oct 2026 08:14:48 +0000
+Subject: [PATCH 6/6] vulkan: fuse RMS_NORM + SCALE
+
+A SCALE without bias that follows an RMS_NORM rides in the norm's unused
+param2, so the pair is one launch. Qwen3-Coder-Next issues 72 such pairs
+a generated token (the q/k norms of its linear-attention layers); Metal
+fuses them too. A SCALE with a bias, or by 0 (param2's "none"), is left
+alone.
+
+test-backend-ops: RMS_NORM_SCALE cases at the model's shape and with a
+bias and a zero scale; the existing RMS_NORM_SCALE, RMS_NORM, ADD_RMS_NORM
+and RMS_NORM_MUL_* cases pass.
+---
+ ggml/src/ggml-vulkan/ggml-vulkan-types.h      |  1 +
+ ggml/src/ggml-vulkan/ggml-vulkan.cpp          | 29 ++++++++++++-
+ .../ggml-vulkan/vulkan-shaders/rms_norm.comp  |  3 +-
+ .../vulkan-shaders/rms_norm_partials.comp     |  3 +-
+ tests/test-backend-ops.cpp                    | 43 +++++++++++++++++++
+ 5 files changed, 75 insertions(+), 4 deletions(-)
+
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan-types.h b/ggml/src/ggml-vulkan/ggml-vulkan-types.h
+index 88d0f3a37..7b43adc11 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan-types.h
++++ b/ggml/src/ggml-vulkan/ggml-vulkan-types.h
+@@ -635,6 +635,7 @@ enum rms_norm_mode {
+     RMS_NORM_MUL_ROPE,
+     RMS_NORM_MUL_ROPE_VIEW_SET_ROWS,
+     RMS_NORM_VIEW_SET_ROWS,
++    RMS_NORM_SCALE,
+     RMS_NORM_COUNT,
+ };
+ 
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index 723824795..2dc155b32 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -11073,7 +11073,10 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
+     ggml_tensor * dst;
+     const ggml_tensor * src1;
+ 
+-    if (ctx->fused_rms_norm_mode != RMS_NORM_COUNT) {
++    if (ctx->fused_rms_norm_mode == RMS_NORM_SCALE) {
++        dst = cgraph->nodes[node_idx + 1];
++        src1 = src0;
++    } else if (ctx->fused_rms_norm_mode != RMS_NORM_COUNT) {
+         ggml_tensor * mul = cgraph->nodes[node_idx + 1];
+         dst = mul;
+         src1 = mul->src[0] == rms ? mul->src[1] : mul->src[0];
+@@ -11084,6 +11087,9 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
+ 
+     const uint32_t num_partials = ctx->do_add_rms_partials ? ggml_vk_rms_num_partials(ctx, dst) : 0;
+     vk_op_binary_push_constants bin = ggml_vk_rms_norm_push_constants(src0, src1, dst, op_params[0], num_partials);
++    if (ctx->fused_rms_norm_mode == RMS_NORM_SCALE) {
++        memcpy(&bin.param2, (const float *) dst->op_params + 0, sizeof(float));
++    }
+ 
+     if (ctx->fused_rms_norm_mode == RMS_NORM_MUL_ROPE ||
+         ctx->fused_rms_norm_mode == RMS_NORM_MUL_ROPE_VIEW_SET_ROWS) {
+@@ -11166,7 +11172,8 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
+                 ggml_vk_subbuffer(ctx, buf[6], offset[6]),
+             }, pc, elements);
+     } else {
+-        GGML_ASSERT(ctx->fused_rms_norm_mode == RMS_NORM_MUL || ctx->fused_rms_norm_mode == RMS_NORM_COUNT);
++        GGML_ASSERT(ctx->fused_rms_norm_mode == RMS_NORM_MUL || ctx->fused_rms_norm_mode == RMS_NORM_SCALE ||
++                    ctx->fused_rms_norm_mode == RMS_NORM_COUNT);
+         ggml_vk_op_f32<vk_op_binary_push_constants>(ctx, subctx, src0, src1, nullptr, nullptr, dst, GGML_OP_RMS_NORM, std::move(bin));
+     }
+ 
+@@ -13752,6 +13759,18 @@ bool ggml_vk_can_fuse(const ggml_backend_vk_context * ctx, const struct ggml_cgr
+         return false;
+     }
+ 
++    if (ops.size() == 2 && ops.begin()[0] == GGML_OP_RMS_NORM && ops.begin()[1] == GGML_OP_SCALE) {
++        // The scale rides in the norm's param2, so: a plain factor (no bias), not 0 (0 means none there), and the
++        // scaled tensor written as the norm writes its own result.
++        const ggml_tensor *rms_norm = cgraph->nodes[node_idx];
++        const ggml_tensor *scale = cgraph->nodes[node_idx + 1];
++        float s, b;
++        memcpy(&s, (const float *) scale->op_params + 0, sizeof(float));
++        memcpy(&b, (const float *) scale->op_params + 1, sizeof(float));
++        return rms_norm->type == GGML_TYPE_F32 && scale->type == GGML_TYPE_F32 && b == 0.0f && s != 0.0f &&
++               ggml_are_same_shape(rms_norm, scale) && ggml_is_contiguous(rms_norm) && ggml_is_contiguous(scale);
++    }
++
+     if ((ops.size() == 2 || ops.size() == 3 || ops.size() == 4) &&
+         ops.begin()[0] == GGML_OP_RMS_NORM && ops.begin()[1] == GGML_OP_MUL) {
+         // additional constraints specific to this fusion
+@@ -14671,6 +14690,12 @@ static ggml_status ggml_backend_vk_graph_compute(ggml_backend_t backend, ggml_cg
+                 ctx->fused_rms_norm_mode = RMS_NORM_VIEW_SET_ROWS;
+                 fusion_string = "RMS_NORM_VIEW_SET_ROWS";
+                 std::fill_n(op_srcs_fused_elementwise, 3, false);
++            } else if (ggml_vk_can_fuse(ctx, cgraph, i, { GGML_OP_RMS_NORM, GGML_OP_SCALE })) {
++                ctx->num_additional_fused_ops = 1;
++                ctx->fused_rms_norm_mode = RMS_NORM_SCALE;
++                fusion_string = "RMS_NORM_SCALE";
++                op_srcs_fused_elementwise[0] = true;
++                op_srcs_fused_elementwise[1] = true;
+             } else if (ggml_vk_can_fuse(ctx, cgraph, i, { GGML_OP_RMS_NORM, GGML_OP_MUL })) {
+                 ctx->num_additional_fused_ops = 1;
+                 ctx->fused_rms_norm_mode = RMS_NORM_MUL;
+diff --git a/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm.comp b/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm.comp
+index 314c8e565..c69d6a595 100644
+--- a/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm.comp
++++ b/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm.comp
+@@ -101,7 +101,8 @@ void rms_norm(uint num_iters) {
+             sum = sumsh[0];
+ 
+             const FLOAT_TYPE mean = sum / FLOAT_TYPE(ncols);
+-            const FLOAT_TYPE scale = inversesqrt(mean + FLOAT_TYPE(p.param1));
++            // param2: a fused SCALE's factor (0 when there is none).
++            const FLOAT_TYPE scale = inversesqrt(mean + FLOAT_TYPE(p.param1)) * (p.param2 != 0.0f ? FLOAT_TYPE(p.param2) : FLOAT_TYPE(1.0f));
+ 
+             if (do_multiply) {
+                 if (ncols > p.ne10) {
+diff --git a/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm_partials.comp b/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm_partials.comp
+index cf7ab21f2..67780d9fc 100644
+--- a/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm_partials.comp
++++ b/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm_partials.comp
+@@ -59,7 +59,8 @@ void main() {
+     }
+ 
+     const FLOAT_TYPE mean = sum / FLOAT_TYPE(ncols);
+-    const FLOAT_TYPE scale = inversesqrt(mean + FLOAT_TYPE(p.param1));
++    // param2: a fused SCALE's factor (0 when there is none).
++    const FLOAT_TYPE scale = inversesqrt(mean + FLOAT_TYPE(p.param1)) * (p.param2 != 0.0f ? FLOAT_TYPE(p.param2) : FLOAT_TYPE(1.0f));
+ 
+     if (do_multiply) {
+         if (ncols > p.ne10) {
+diff --git a/tests/test-backend-ops.cpp b/tests/test-backend-ops.cpp
+index fe3a67c64..b7ce747fd 100644
+--- a/tests/test-backend-ops.cpp
++++ b/tests/test-backend-ops.cpp
+@@ -3989,6 +3989,43 @@ struct test_rms_norm_back : public test_case {
+ };
+ 
+ // GGML_OP_RMS_NORM + GGML_OP_MUL + GGML_OP_ADD (+ GGML_OP_MUL)
++// GGML_OP_RMS_NORM + GGML_OP_SCALE (fused by the Vulkan backend when the scale has no bias)
++struct test_rms_norm_scale : public test_case {
++    const std::array<int64_t, 4> ne;
++    const float eps;
++    const float scale;
++    const float bias;
++
++    std::string op_desc(ggml_tensor * t) override {
++        GGML_UNUSED(t);
++        return "RMS_NORM_SCALE";
++    }
++
++    bool run_whole_graph() override { return true; }
++
++    std::string vars() override {
++        return VARS_TO_STR4(ne, eps, scale, bias);
++    }
++
++    test_rms_norm_scale(std::array<int64_t, 4> ne = {128, 16, 1, 1}, float eps = 1e-6f, float scale = 0.25f, float bias = 0.0f)
++        : ne(ne), eps(eps), scale(scale), bias(bias) {}
++
++    ggml_tensor * build_graph(ggml_context * ctx) override {
++        ggml_tensor * a = ggml_new_tensor(ctx, GGML_TYPE_F32, 4, ne.data());
++        ggml_set_name(a, "a");
++        ggml_tensor * n = ggml_rms_norm(ctx, a, eps);
++        ggml_tensor * out = bias == 0.0f ? ggml_scale(ctx, n, scale) : ggml_scale_bias(ctx, n, scale, bias);
++        ggml_set_name(out, "out");
++        return out;
++    }
++
++    void initialize_tensors(ggml_context * ctx) override {
++        for (ggml_tensor * t = ggml_get_first_tensor(ctx); t != NULL; t = ggml_get_next_tensor(ctx, t)) {
++            init_tensor_uniform(t, -10.f, 10.f);
++        }
++    }
++};
++
+ struct test_rms_norm_mul_add : public test_case {
+     const ggml_type type;
+     const std::array<int64_t, 4> ne;
+@@ -10897,6 +10934,12 @@ static std::vector<std::unique_ptr<test_case>> make_test_cases_eval() {
+         test_cases.emplace_back(new test_rms_norm_mul_rope({ 128, 4, 3, 1 }, 1e-6f, false, true, false, GGML_ROPE_TYPE_NORMAL, false, false, set_rows_type));
+     }
+ 
++    for (std::array<int64_t, 4> ne : { std::array<int64_t, 4>{ 128, 16, 1, 1 }, { 64, 5, 4, 3 }, { 1025, 3, 2, 1 } }) {
++        test_cases.emplace_back(new test_rms_norm_scale(ne, 1e-6f, 0.25f, 0.0f));
++        test_cases.emplace_back(new test_rms_norm_scale(ne, 1e-6f, -3.0f, 0.0f));
++        test_cases.emplace_back(new test_rms_norm_scale(ne, 1e-6f, 0.25f, 1.5f));   // with a bias: not fused
++        test_cases.emplace_back(new test_rms_norm_scale(ne, 1e-6f, 0.0f, 0.0f));    // a zero scale: not fused
++    }
+     for (float eps : { 0.0f, 1e-6f, 1e-4f, 1e-1f, 1.0f }) {
+         for (uint32_t n : { 64, 1025 }) {
+             test_cases.emplace_back(new test_rms_norm_mul_add(GGML_TYPE_F32, { n, 5, 4, 3 }, eps, false));
+-- 
+2.43.0
+
