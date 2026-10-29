@@ -5,3 +5,4 @@ var/
 __pycache__/
 gpu/vk-chain/vk-chain
 gpu/vk-chain/*.spv
+*.kate-swp
