@@ -17,6 +17,8 @@ Findings that took work to reach, with dates (2026) and how sure they are: VERIF
 
 Standing choices, with the reason when one was given.
 
+- 29 Oct: text meant to be pasted elsewhere (issue comments, pull requests, cover letters) keeps each paragraph and
+  list item on one line: GitHub turns every line break in a comment into a visible one.
 - 29 Oct: the repository is published with a fresh history; device identifiers may appear, Apple's compiled code
   (the runs' `private/`) stays out.
 - 26 Oct: kernel work stays a disclosed branch of the Ophuscado/linux fork; anyone may cherry-pick it; a submission
