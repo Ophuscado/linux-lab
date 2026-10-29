@@ -111,7 +111,7 @@ while IFS='|' read -r name file mtp; do
         mkdir -p "$(dirname "$dst")"
         echo "$name: copying $f ($((size >> 30)) GiB)"
         # Direct I/O in 64 MiB writes: through the page cache, under the dirty-page cap usb-cap sets for USB disks,
-        # cp at idle priority wrote this disk at 1 MiB/s (cell 4409, link at 5 Gb/s).
+        # cp at idle priority wrote this disk at 1 MiB/s (link at 5 Gb/s).
         t0=$(date +%s)
         dd if="$src" of="$dst.part" bs=64M oflag=direct conv=fsync status=none && mv "$dst.part" "$dst"
         echo "  $(( size / 1048576 / ( $(date +%s) - t0 + 1 ) )) MiB/s"

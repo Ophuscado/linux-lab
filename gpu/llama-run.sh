@@ -10,13 +10,13 @@
 #            GGML_VK_MMV_SIMD=1): Llama 2 65.1 to 69.7 t/s, Qwen 33.6 to 34.8; a build without 0005 ignores it
 #   batch    -ub/-b 8192: prompts 593 to 676 on Qwen
 #   tiles    the medium matmul tile at 256 threads, 128x64 (src-patches/llama.cpp/honeykrisp): prompts +12-23%
-#            (Qwen 596 to 680, Gemma 770 to 905 at pp2048; cells 4280, 4285)
+#            (Qwen 596 to 680, Gemma 770 to 905 at pp2048)
 #   experts  MoE layers on the matrix-vector path up to 64 tokens, not 8 (src-patches/llama.cpp/honeykrisp): batches
-#            of 9-64 tokens +12-42% on Qwen (cell 4362); dense layers on it up to 16 tokens, not 8
-#            (src-patches/llama.cpp/honeykrisp): 9-16 token batches 2-4x (Qwen 9 tokens 37 to 107 t/s; cell 4381)
+#            of 9-64 tokens +12-42% on Qwen; dense layers on it up to 16 tokens, not 8
+#            (src-patches/llama.cpp/honeykrisp): 9-16 token batches 2-4x (Qwen 9 tokens 37 to 107 t/s)
 #   drafts   ngram-mod speculation (Qwen code edit: none 30, default 64-token drafts 46-49, 128-token 55 t/s); Gemma 4 with its MTP head as well (+74%); Flash-Next
 #            with its MTP head alone (+40%). MTP answers can differ from plain decoding (batched verification)
-# LLAMA_CLUSTER=1 turns clustering on (against off: prompts +4-14%, generation -4 to -10%; cell 4241), for prompt-heavy work.
+# LLAMA_CLUSTER=1 turns clustering on (against off: prompts +4-14%, generation -4 to -10%), for prompt-heavy work.
 # Arguments after the model go to llama-server as they are.
 set -euo pipefail
 
@@ -33,11 +33,11 @@ mkdir -p "$CACHE"
 model=${1:-qwen}; [[ $# -gt 0 ]] && shift
 draft=() rows=2
 case $model in
-qwen) M=$LLM/Qwen3-Coder-Next/UD-Q8_K_XL/model.gguf  # drafts up to 128: +13% over the default 64 (cell 4361)
+qwen) M=$LLM/Qwen3-Coder-Next/UD-Q8_K_XL/model.gguf  # drafts up to 128: +13% over the default 64
     rows=4 draft=(--spec-type ngram-mod --spec-ngram-mod-n-max 128 --spec-ngram-mod-n-min 96) ;;
 gemma) M=$LLM/Gemma-4-26B-A4B-Instruct/UD-Q4_K_XL/model.gguf
     draft=(--spec-type draft-mtp,ngram-mod -md "$LLM/Gemma-4-26B-A4B-Instruct/mtp-Q8_0.gguf" -ngld 99) ;;
-flash) M=$LLM/Qwen3.8-Flash-Next/UD-Q4_K_XL/model.gguf  # MTP alone beats MTP with ngram-mod here (cell 4265)
+flash) M=$LLM/Qwen3.8-Flash-Next/UD-Q4_K_XL/model.gguf  # MTP alone beats MTP with ngram-mod here
     draft=(--spec-type draft-mtp -md "$LLM/Qwen3.8-Flash-Next/mtp-Q4_K_M.gguf" -ngld 99) ;;
 gpt) M=$LLM/GPT-OSS-20B/UD-Q8_K_XL/model.gguf; rows=1; draft=(--spec-type ngram-mod) ;;
 gpt120) M=$LLM/GPT-OSS-120B/UD-Q4_K_XL/model.gguf; rows=1; draft=(--spec-type ngram-mod) ;;

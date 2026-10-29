@@ -44,7 +44,7 @@ set -euo pipefail
 
 REPO=${LAB_REPO:-https://github.com/Ophuscado/linux-lab}
 LAB=${LAB:-$HOME/linux-lab}
-# The kernel work, in the lab's kernel/ since 27 Oct (the linux-patches repository before).
+# The kernel work: kernel/.
 KLAB=${KLAB:-$LAB/kernel}
 SNAPDIR=lab-snapshots
 TOP=${LAB_TOP:-}

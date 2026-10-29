@@ -23,10 +23,6 @@ Confirm the Bluetooth-after-suspend fault and pick a mitigation · check: journa
 Check settings.sh install on the Mac: every setting holds after a reboot and a replug, uninstall leaves no file behind · check: settings.sh status before and after a reboot, ls of the files it owns after uninstall
 Survive pulling an enclosure without eject · check: unplug with disks attached leaves the system running and a replug brings them back; run it with netconsole to the second Mac so a freeze leaves a log
 Reproduce the replug freeze with netconsole attached · check: ten eject, unplug, replug rounds without a freeze, or the log of one
-Tune llama.cpp matrix shaders and work-group sizes for this GPU, which gets generic settings today · check: tokens per second up on the same model, same generated text · waits: operator runs llama-sweep.sh with the model and attaches the file
-Run llama.cpp on Mesa main built beside the system one and loaded with VK_DRIVER_FILES · check: one llama-bench table per Mesa, same generated text · waits: operator runs mesa-side.sh build base, then llama-bench.sh through mesa-side.sh run base
-Try the third-party Honeykrisp cooperative-matrix series (omacom/mesa pull requests 3 to 6), not reviewed upstream · check: operator tests pass and one llama-bench table with it · waits: operator runs mesa-side.sh build coopmat, llama-sweep.sh test and llama-bench.sh through mesa-side.sh run coopmat
-Compare Vulkan in Linux with Metal in macOS on the same model and llama.cpp commit · check: both llama-bench files, ratio per test in KNOWLEDGE.md · waits: operator runs llama-bench.sh in macOS with LLAMA_REF=f2cc7282ce0042641df55e0e563b75e824e2b647 and the same model file
 Load a model larger than the GPU memory the driver reports · check: all layers on the GPU, no allocation failure
 ? Report the two driver bugs to Asahi in the operator's own words, disclosing LLM use · options: report, or keep local · default: operator decides later
 Re-check asahi-wip-7.2 for the GPU driver being re-enabled and move the fixes over · check: DRM_ASAHI no longer depends on BROKEN at the new base

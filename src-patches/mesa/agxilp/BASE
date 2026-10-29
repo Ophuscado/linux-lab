@@ -1,6 +1,0 @@
-# xingjianll's first two commits (pressure scheduler headroom, post-RA ILP scheduler) without bit 47.
-UPSTREAM=https://github.com/omacom/mesa
-BASE=795ae42a71c8889dd3b629d03a3aeb657501f20f  # coopmat series, pull request 6
-FORK=
-BRANCH=agxilp
-CLONE=build/mesa-side/src-agxilp

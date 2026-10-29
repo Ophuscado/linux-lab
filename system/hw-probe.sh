@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# hardware/probe.sh: this Mac as Linux sees it, into one folder, for comparison with macos/collect.sh and for
+# hw-probe.sh: this Mac as Linux sees it, into one folder, for comparison with macos/collect.sh and for
 # later driver work without the machine at hand: the device tree, PCI and USB topology, Thunderbolt, the GPU
 # through Vulkan, CPU frequencies and idle states, sensors, power domains, kernel config and modules.
 # Values that identify the machine (serial numbers, MAC addresses, UUIDs of disks and boards) are left out.
 #
-#   hardware/probe.sh [OUT]     default var/probe/<host>-<kernel>-<date>; with sudo when it can (lspci's
+#   system/hw-probe.sh [OUT]     default var/probe/<host>-<kernel>-<date>; with sudo when it can (lspci's
 #                               capabilities, the kernel log); prints the folder
 set -uo pipefail
 LAB=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)

@@ -19,20 +19,19 @@
 #            stores, and more headroom in the pressure scheduler so local loads cluster
 #            (src-patches/mesa/agxperf: his three commits rebased onto the coopmat commit, and ours, the AGX_BIT47 switch)
 #            AGX_BIT47 (0 off, 1 loads and stores, 2 loads, 3 stores) chooses where bit 47 is set
-#   agxilp   agxperf without bit 47, which breaks ARGMAX on the M2 Ultra (src-patches/mesa/agxilp: his first two commits);
-#            AGX_NO_ILP_SCHED=1 and AGX_CLUSTER_OFF=1 switch its two changes off at run time
+#            AGX_NO_ILP_SCHED=1 and AGX_CLUSTER_OFF=1 switch its scheduler changes off at run time
 #   next     the series as its pull request stands on 25 Oct (9323171c), newer than coopmat's 795ae42a71
 #   nextperf next with the agxperf compiler changes (if the patch still applies)
 # The series was read only as far as: what it touches (the asahi driver, nir, spirv, the
 # Vulkan runtime, tests) and that its build files add sources only. Treat its results as
-# unproven until the operator tests pass: mesa-side.sh run coopmat ./llama-sweep.sh test
+# unproven until llama.cpp's operator tests pass: mesa-side.sh run coopmat test-backend-ops
 #
 #   mesa-side.sh deps                   only install the build packages (dnf)
 #   mesa-side.sh build base|coopmat|agxperf  install packages, fetch, build, install under
 #                                       build/mesa-side/<name>
 #   mesa-side.sh check base|coopmat     what the driver reports
 #   mesa-side.sh run base|coopmat CMD   run CMD with that driver; llama-bench.sh and
-#                                       llama-sweep.sh add the name to their output file
+#                                       llama-bench.sh adds the name to its output file
 #   mesa-side.sh remove                 delete build/mesa-side (the packages stay)
 #
 # A faulting GPU program can take the desktop's rendering down with it until a reboot:
@@ -62,9 +61,9 @@ die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
 commit_of() {
     case $1 in
     base) echo "$BASE" ;;
-    coopmat | agxperf | agxilp) echo "$COOPMAT" ;;
+    coopmat | agxperf) echo "$COOPMAT" ;;
     next | nextperf) echo "$NEXT" ;;
-    *) die "name must be base, coopmat, agxperf, agxilp, next or nextperf" ;;
+    *) die "name must be base, coopmat, agxperf, next or nextperf" ;;
     esac
 }
 
@@ -97,10 +96,10 @@ stage_build() {
         git -C "$src" remote add origin "$REPO"
     fi
     cd "$src"
-    # agxperf, nextperf and agxilp: a series of src-patches/mesa (xingjianll's commits, ours after them) applied
+    # agxperf and nextperf: a series of src-patches/mesa (xingjianll's commits, ours after them) applied
     # with git am on the pinned commit. .lab-state names what the tree holds, so a changed series is applied again.
     local series="" want
-    case $name in agxperf | nextperf) series=agxperf ;; agxilp) series=agxilp ;; esac
+    case $name in agxperf | nextperf) series=agxperf ;; esac
     want=$sha
     [[ -z $series ]] || want="$sha $(cat "$LAB/src-patches/mesa/$series"/[0-9][0-9][0-9][0-9]-*.patch | sha256sum | cut -c1-16)"
     if [[ $(cat .lab-state 2>/dev/null) != "$want" ]]; then
@@ -165,7 +164,7 @@ remove)
     echo "removed $ROOT"
     ;;
 *)
-    echo "usage: $0 {deps | build NAME | check NAME | run NAME COMMAND... | remove}, NAME base, coopmat, agxperf or agxilp" >&2
+    echo "usage: $0 {deps | build NAME | check NAME | run NAME COMMAND... | remove}, NAME base, coopmat, agxperf, next or nextperf" >&2
     exit 2
     ;;
 esac

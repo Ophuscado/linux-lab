@@ -108,7 +108,7 @@ GRID=${XDG_DATA_HOME:-$HOME/.local/share}/kwin-wayland/tabbox/linux-lab-grid
 HERE=$(cd "$(dirname "$0")" && pwd)
 kwin_key() { kwriteconfig6 --file kwinrc --group Wayland --key EnablePrimarySelection "$@"; }
 # KWin rereads its settings and loads or unloads scripts. dbus-send, since this Fedora has no
-# qdbus6 (cell 81413); every KWin change made here before 18 Oct was written without this call
+# qdbus6; every KWin change made here before 18 Oct was written without this call
 # reaching KWin, so it waited for the next login.
 kwin_reconfigure() {
     dbus-send --session --type=method_call --dest=org.kde.KWin /KWin org.kde.KWin.reconfigure 2>/dev/null ||
@@ -346,7 +346,7 @@ windows() {
 KEYTAB=${XDG_DATA_HOME:-$HOME/.local/share}/konsole/linux-lab.keytab
 konsole_keys() {
     local base prof f
-    # Konsole builds its layouts into the program (cell 81429: no /usr/share/konsole/default.keytab),
+    # Konsole builds its layouts into the program (no /usr/share/konsole/default.keytab),
     # so the lab keeps a copy of its default one.
     base=${KONSOLE_KEYTAB_BASE:-/usr/share/konsole/default.keytab}
     [[ -r $base ]] || base=$(cd "$(dirname "$0")" && pwd)/konsole-default.keytab
