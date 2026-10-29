@@ -48,9 +48,12 @@ its own. The findings and their evidence are in [`KNOWLEDGE.md`](KNOWLEDGE.md).
   48 disks, both boxes full: 864 TB (786 TiB).
 
 **Desktop** ([`desktop/`](desktop/), `src-patches/linux/hid-*`)
-- Magic Mouse without scrolling from a resting finger, Magic Keyboard Fn shortcuts, the KDE task switcher bug traced to
-  libplasma, a Qt style that keeps the wheel off unfocused controls, the WhiteSur look, macOS's colour profile for the
-  TV, Bluetooth pairings from macOS.
+- Magic Mouse and Trackpad as smooth as on my macOS settings, or better: the pointer speed measured from macOS (0.875,
+  no acceleration), key repeat and scrolling matched, and no scrolling from a finger resting on the mouse. Still to
+  come: a screen zoom from a tap (two fingers on the mouse, three on the trackpad), and the Magic Keyboard's Fn
+  shortcuts (built, not yet tried).
+- The KDE task switcher bug traced to libplasma, a Qt style that keeps the wheel off unfocused controls, the WhiteSur
+  look, macOS's colour profile for the TV, Bluetooth pairings from macOS.
 
 ## Layout
 
