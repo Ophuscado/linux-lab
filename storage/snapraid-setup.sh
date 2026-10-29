@@ -19,7 +19,7 @@
 # Only disks whose label carries XFS today are written into the conf and fstab (HD_33, still
 # HFS+ while it is copied, comes in when 'install' runs again after its format).
 #
-#   snapraid-setup.sh conf      write snapraid.conf and the fstab block to ./out/ and show them
+#   snapraid-setup.sh conf      write snapraid.conf and the fstab block to var/snapraid/ and show them
 #   snapraid-setup.sh install   put them in place: /etc/snapraid.conf, the fstab block
 #                               (between marker lines, replaced on rerun), the mount points
 #   snapraid-setup.sh mount     mount everything (after the migration; refuses while it runs)
@@ -60,7 +60,7 @@ ETC=${SR_ETC:-/etc}
 UNITS=${SR_UNITS:-/etc/systemd/system}
 CONTENT=${SR_CONTENT:-/var/snapraid}
 MIG=${SR_MIG:-$UHOME/migrate}
-OUT=${SR_OUT:-$PWD/out}
+OUT=${SR_OUT:-$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)/var/snapraid}  # ignored by git
 
 PARITY="24 00 08 16"              # one per box: A B C D
 CONTENT_DISKS="25 01 09 17"       # four data disks spread over the boxes carry a content copy too

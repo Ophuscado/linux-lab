@@ -25,6 +25,11 @@
 #   ux-fix.sh wheel on|off        the mouse wheel over a combo box, spin box or slider without the
 #                                 keyboard focus scrolls the page instead of changing it (a style
 #                                 BreezeNoWheel, Breeze with that one change, built from qt-nowheel/)
+#   ux-fix.sh input on|off        pointer and keys as on macOS 15 (results/macos/macos-15): the
+#                                 Magic Mouse flat at 0.875 (macOS: acceleration off, scaling
+#                                 0.875; 43339 points for 49012 counts in its mouse-move log),
+#                                 the trackpad flat, natural scrolling off, key repeat after
+#                                 250 ms at 30 a second (hidutil: 250 ms, 33.3 ms); live
 #   ux-fix.sh show                what is in force
 #
 # Run as yourself, not under sudo (the KDE settings are yours); the mouse part asks sudo itself.
@@ -130,6 +135,45 @@ show() {
     echo "konsole tabs: $(kreadconfig6 --file konsolerc --group TabBar --key TabBarUseUserStyleSheet --default false)"
     echo "switcher: $(kreadconfig6 --file kwinrc --group TabBox --key LayoutName --default thumbnail_grid)"
     echo "wheel: widget style $(kreadconfig6 --file kdeglobals --group KDE --key widgetStyle --default Breeze), BreezeNoWheel $([[ -f $(nowheel_so) ]] && echo installed || echo 'not installed')"
+}
+
+# The settings input sets: kcminputrc group, key, value. KWin's own names for the devices.
+MM='Libinput 76 803 Magic Mouse' TP='Libinput 76 613 Apple Inc. Magic Trackpad'
+INPUT=("$MM|PointerAccelerationProfile|1" "$MM|PointerAcceleration|-0.125" "$MM|NaturalScroll|false"
+    "$TP|PointerAccelerationProfile|1" "$TP|NaturalScroll|false" "Keyboard|RepeatDelay|250" "Keyboard|RepeatRate|30")
+kin() { local g; read -ra g <<<"$1"; local a=(); for x in "${g[@]:0:3}"; do a+=(--group "$x"); done
+    [[ ${#g[@]} -gt 3 ]] && a+=(--group "${1#* * * }"); kreadconfig6 --file kcminputrc "${a[@]}" --key "$2"; }
+kout() { local g; read -ra g <<<"$1"; local a=(); for x in "${g[@]:0:3}"; do a+=(--group "$x"); done
+    [[ ${#g[@]} -gt 3 ]] && a+=(--group "${1#* * * }"); kwriteconfig6 --notify --file kcminputrc "${a[@]}" --key "$2" "${@:3}"; }
+# input_live: the running KWin takes the pointer settings now (it rereads kcminputrc only per device).
+input_live() {
+    local e n
+    for e in $(busctl --user get-property org.kde.KWin /org/kde/KWin/InputDevice org.kde.KWin.InputDeviceManager devicesSysNames 2>/dev/null | grep -o '"event[0-9]*"' | tr -d '"'); do
+        n=$(busctl --user get-property org.kde.KWin "/org/kde/KWin/InputDevice/$e" org.kde.KWin.InputDevice name | cut -d'"' -f2)
+        local g; case $n in "Magic Mouse") g=$MM ;; "Apple Inc. Magic Trackpad") g=$TP ;; *) continue ;; esac
+        busctl --user set-property org.kde.KWin "/org/kde/KWin/InputDevice/$e" org.kde.KWin.InputDevice pointerAccelerationProfileFlat b "$([[ $(kin "$g" PointerAccelerationProfile) == 1 ]] && echo true || echo false)"
+        local acc nat; acc=$(kin "$g" PointerAcceleration); nat=$(kin "$g" NaturalScroll)
+        busctl --user set-property org.kde.KWin "/org/kde/KWin/InputDevice/$e" org.kde.KWin.InputDevice pointerAcceleration d "${acc:-0}"
+        busctl --user set-property org.kde.KWin "/org/kde/KWin/InputDevice/$e" org.kde.KWin.InputDevice naturalScroll b "${nat:-false}"
+    done
+}
+input() {
+    local i g k v
+    mkdir -p "$STATE"
+    case ${1:-} in
+    on)
+        [[ -f $STATE/kcminputrc.input.before ]] || for i in "${INPUT[@]}"; do IFS='|' read -r g k v <<<"$i"; echo "$g|$k|$(kin "$g" "$k")"; done >"$STATE/kcminputrc.input.before"
+        for i in "${INPUT[@]}"; do IFS='|' read -r g k v <<<"$i"; kout "$g" "$k" "$v"; done
+        ;;
+    off)
+        [[ -f $STATE/kcminputrc.input.before ]] || die "nothing to put back: input on was not run"
+        while IFS='|' read -r g k v; do if [[ -n $v ]]; then kout "$g" "$k" "$v"; else kout "$g" "$k" --delete; fi; done <"$STATE/kcminputrc.input.before"
+        rm -f "$STATE/kcminputrc.input.before"
+        ;;
+    *) die "input on|off" ;;
+    esac
+    input_live
+    for i in "${INPUT[@]}"; do IFS='|' read -r g k v <<<"$i"; echo "${g#Libinput 76 [0-9]* } $k=$(kin "$g" "$k")"; done
 }
 
 # Where Qt loads styles from: its own plugin folder, as qtpaths6 reports it.
@@ -433,6 +477,7 @@ off)
     show
     ;;
 keyboard) keyboard "${2:-}" ;;
+input) input "${2:-}" ;;
 launchers) launchers "${2:-}" ;;
 animations)
     case ${2:-} in
@@ -477,7 +522,7 @@ switcher) switcher "${2:-}" ;;
 wheel) wheel "${2:-}" ;;
 show) show ;;
 *)
-    echo "usage: $0 {on [SPEED] | off | keyboard on|off | launchers off|on | animations F|off | borderless on|off | solo on|off | windows on [WxH]|off | edge-delay MS|off | konsole-tabs on|off | konsole-keys on|off | switcher on|off | wheel on|off | show}" >&2
+    echo "usage: $0 {on [SPEED] | off | keyboard on|off | input on|off | launchers off|on | animations F|off | borderless on|off | solo on|off | windows on [WxH]|off | edge-delay MS|off | konsole-tabs on|off | konsole-keys on|off | switcher on|off | wheel on|off | show}" >&2
     exit 2
     ;;
 esac
