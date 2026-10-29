@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # llama-run.sh [qwen | gemma | flash | gpt | gpt120 | MODEL.gguf]: llama.cpp's server on 127.0.0.1:8088 with the settings measured
-# fastest and correct on this M2 Ultra (KNOWLEDGE.md, "Where a generated token goes on Honeykrisp", 25-26 Oct):
+# fastest and correct on this M2 Ultra (KNOWLEDGE.md, "GPU: llama.cpp on Vulkan against Metal"):
 #   driver   mesa-side.sh's agxperf (coopmat + the Asahi compiler changes, bit 47 on local loads), clustering off:
 #            prompts +17% over coopmat, generation the same or better, all 21303 operator tests pass; coopmat if
 #            agxperf is not built, the system driver if neither is

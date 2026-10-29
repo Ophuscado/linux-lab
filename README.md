@@ -2,7 +2,7 @@
 
 A personal lab for improving Linux support on an Apple Mac Studio with M2 Ultra (2023, `j475d`). My machine runs
 Fedora Asahi Remix, and this repository is what it takes to make it a complete Linux machine: kernel work for Thunderbolt/USB4 storage and the Neural Engine, GPU compute for local language models
-measured against macOS on the same hardware, a 32-disk storage server, and a desktop close to macOS.
+measured against macOS on the same hardware, a 33-disk storage server, and a desktop close to macOS.
 
 Everything here is tested on that one machine. It is a layer on top of upstream projects (Asahi Linux, Mesa,
 llama.cpp, omarchy-ane): changes are kept as patch series against pinned upstream commits, so each can be rebuilt,
@@ -27,16 +27,18 @@ What works on my machine today, with where its code and evidence live. Dates are
   (29 Oct). Prepared as a pull request to omarchy-ane with its receipt.
 
 **llama.cpp on the GPU: Vulkan (Honeykrisp) against Metal** (`src-patches/llama.cpp/honeykrisp`, `src-patches/mesa`, `gpu/`)
-- Matrix tile sizes for this GPU: prompt processing +16-23 %; Qwen3-Coder-Next Q8 at 2048 tokens 672 -> 780 t/s.
+- Matrix tile sizes for this GPU: prompt processing +12-23 %; Qwen3-Coder-Next Q8 at 2048 tokens 672 -> 780 t/s.
 - Batches of 9-64 tokens: the matrix-vector path is used beyond its fixed 8-column limit (settable, then 16
   columns); a 9-token Qwen batch 37 -> 107 t/s, which makes speculative decoding pay: a code edit with n-gram drafts
   30 -> 55-59 t/s.
 - A MUL_MAT_ID abort with offset tensors found and fixed (955/955 tests pass).
 - Mesa compiler series (load-only bit 47 on `lload`, an ILP scheduler from another contributor) built and measured.
-- Measured against Metal on the same machine (27-28 Oct): llama.cpp's Vulkan backend through MoltenVK on macOS is
-  no faster than Honeykrisp on Linux; one generation matrix-vector takes 37 us on Metal and 100 us as the Vulkan shader.
-  Metal's graph fusion is worth 22-25 % of generation on Qwen and Gemma. The gap is in the Vulkan shaders and graph,
-  not in Mesa or the kernel.
+- A q4_0/q8_0 matrix-vector shader laid out like Metal's kernels (opt-in, `GGML_VK_MMV_SIMD=1`): one 4096x14336
+  step 81 -> 68 us (q4_0) and 160 -> 128 us (q8_0); generation +5 % on Llama 2, +2 % on Qwen.
+- Measured against Metal on the same machine (27-29 Oct): llama.cpp's Vulkan backend through MoltenVK on macOS is
+  no faster than Honeykrisp on Linux, so most of the 2-3x gap is in the Vulkan shaders and graph; Metal's graph
+  fusion is worth 22-25 % of generation on Qwen and Gemma. Plain f16 streams at 475 GB/s on Linux against 820 on
+  Metal, a part of the gap below llama.cpp still open.
 
 **GPU usage per client** (`src-patches/linux/asahi-fdinfo`)
 - `drm-engine-*` and `drm-memory-*` fdinfo lines for the Rust `asahi` driver, through a `show_fdinfo` hook in the
@@ -50,8 +52,9 @@ What works on my machine today, with where its code and evidence live. Dates are
   network addresses are replaced. The runs of 27-28 Oct under macOS 13, 14 and 15 are in `results/macos/`.
 
 **Storage server** (`storage/`, `migrate-row.sh`)
-- My 32 disks (about 360 TB) moved from HFS+ to XFS in place, disk by disk, each copy verified by size and time and by
-  reading samples back; files macOS keeps compressed (which Linux reads as empty) detected and held.
+- My 33 disks of 18 TB (about 360 TB of data; 32 in four enclosures, one on USB) moved from HFS+ to XFS in place,
+  disk by disk, each copy verified by size and time and by reading samples back; files macOS keeps compressed
+  (which Linux reads as empty) detected and held. The last disk is still copying.
 - One mergerfs pool over the data disks, SnapRAID with four parity disks, mounts by label that tolerate an absent
   disk, nightly sync and weekly scrub timers.
 
