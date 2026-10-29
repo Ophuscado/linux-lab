@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# apps.sh: the programs this machine should have, by group: what the owner's Mac had
+# apps.sh: the programs this machine should have, by group: what the operator's Mac had
 # (Homebrew formulae and casks, Apple's own apps) and what stands in for it here. Fedora's own
 # aarch64 packages first (native, updated with the system), Flathub when Fedora has none,
 # a language's own installer (npm, cargo, pip) last.

@@ -68,7 +68,7 @@ BRANCH=tbt/7.1
 COMMIT=9d460b403164694c0f6a1a6ca1038d6a79dfc167
 SUFFIX=-tbtwip
 KEEP=/var/lib/tbt-kernel/previous
-# The owner's kernel tree (18 Oct; before, ~/src/linux-asahi-tbt), named both
+# The operator's kernel tree (18 Oct; before, ~/src/linux-asahi-tbt), named both
 # ~/Projects/asahi-linux-tbt and ~/Projects/linux-asahi-tbt: the one that exists.
 if [[ -z ${SRC:-} ]]; then
     for SRC in "$HOME/Projects/linux-lab/src/linux" "$HOME/Projects/linux-asahi-tbt" "$HOME/Projects/asahi-linux-tbt"; do [[ -d $SRC/.git ]] && break; done

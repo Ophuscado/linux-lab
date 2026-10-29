@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # snapraid-setup.sh: the final layout of the disks after the migration: mounts by label, one
 # mergerfs pool over the data disks, one SnapRAID array with 4 parity disks (6 at most, by the
-# owner's 26 Oct decision, as the two 24-bay boxes fill: about one parity per 8 data disks).
+# operator's 26 Oct decision, as the two 24-bay boxes fill: about one parity per 8 data disks).
 #
 # Layout (ROOT is /mnt):
 #   /mnt/data/NN     data disk HD_NN, XFS, by label           28 of them (/mnt/hd/NN before 28 Oct)
@@ -13,7 +13,7 @@
 # may fail); content files on the root filesystem and on four data disks spread over the boxes:
 # SnapRAID wants one more copy than parity levels, each on a different disk, and rewrites every
 # copy at every sync, so a copy on all disks would only slow syncs.
-# Why 4: SnapRAID's table gives 4 parity for 22-28 data disks and 5 for 29-35 (the owner's
+# Why 4: SnapRAID's table gives 4 parity for 22-28 data disks and 5 for 29-35 (the operator's
 # rule: about one per 8). A whole 24-bay box failing is beyond any parity count: SnapRAID covers
 # disks, the boxes' power and controllers are covered by keeping them on and watched.
 # Only disks whose label carries XFS today are written into the conf and fstab (HD_33, still
@@ -67,7 +67,7 @@ CONTENT_DISKS="25 01 09 17"       # four data disks spread over the boxes carry 
 # mergerfs does not create new files on a disk with less free than this: headroom for SnapRAID,
 # whose parity holds every file rounded up to whole blocks (see 'need'), and for XFS, which
 # fragments when nearly full. 20G before 28 Oct.
-# 900G leaves 15.5 TB of each 16.4 TB disk to the pool (owner, 28 Oct); raise it when 'need' says so.
+# 900G leaves 15.5 TB of each 16.4 TB disk to the pool (operator, 28 Oct); raise it when 'need' says so.
 MINFREE=${SR_MINFREE:-900G}
 MARK_BEGIN="# snapraid-setup.sh begin"
 MARK_END="# snapraid-setup.sh end"

@@ -12,7 +12,7 @@
 # collected in macOS. "bt-sync.sh status" shows what both sides know, without keys.
 # "bt-sync.sh names" gives each device Linux shows only by its address a name: the one macOS
 # stored, else the Apple product its Modalias names (the product IDs of the kernel's hid-ids.h).
-# The owner, 18 Oct: keyboard and trackpad showed their addresses; macOS's list held only the
+# The operator, 18 Oct: keyboard and trackpad showed their addresses; macOS's list held only the
 # mouse (cell 81565). It is BlueZ's own alias, kept in its info file, set over D-Bus.
 # Afterwards do not pair these devices in Linux again: a new pairing
 # on either side replaces the key in the device, and the other system loses it.

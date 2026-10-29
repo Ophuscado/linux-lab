@@ -19,7 +19,7 @@
 #                                  prefs in a marked block of user.js; the profile's chrome folder
 #                                  and user.js before are kept and put back by off. Firefox reads
 #                                  both at its start only, so it may run meanwhile
-#   theme.sh firefox-prefs on|off|diff  the owner's Firefox choices (firefox-prefs.js) in a marked
+#   theme.sh firefox-prefs on|off|diff  the operator's Firefox choices (firefox-prefs.js) in a marked
 #                                  block of the default profile's user.js, or out of it; diff shows
 #                                  each beside the value the profile has now
 #   theme.sh autohide on|off       Firefox's toolbars hide until the pointer reaches the top
@@ -202,7 +202,7 @@ apply() {
     light) laf=com.github.vinceliuice.WhiteSur ;;
     dark) laf=com.github.vinceliuice.WhiteSur-dark ;;
     off)
-        # KDE's own look, whatever was in use before (the owner, 18 Oct: only WhiteSur and
+        # KDE's own look, whatever was in use before (the operator, 18 Oct: only WhiteSur and
         # what KDE ships stay on this machine).
         plasma-apply-lookandfeel -a org.kde.breeze.desktop
         for k in $KEEP; do kwriteconfig6 --notify --file kdeglobals --group "${k%%:*}" --key "${k#*:}" --delete; done
@@ -289,7 +289,7 @@ firefox() {
     *) die "firefox on|off" ;;
     esac
 }
-# The owner's Firefox choices, beside the theme's block in user.js and as independent of it.
+# The operator's Firefox choices, beside the theme's block in user.js and as independent of it.
 FF_PREFS=$(cd "$(dirname "$0")" && pwd)/firefox-prefs.js
 firefox_prefs() {
     local p

@@ -16,7 +16,7 @@
 #   settings.sh scrub on|off             a monthly btrfs scrub of the system disk
 #   settings.sh quiet-services on|off    the services this Mac does not use, off
 #   settings.sh flathub on|off           the Flathub app repository
-#   settings.sh quiet-net on|off         no calls home the owner did not choose (below)
+#   settings.sh quiet-net on|off         no calls home the operator did not choose (below)
 #   settings.sh firefox-quiet on|off     Firefox without telemetry, studies and ads (below)
 #   settings.sh noatime on|off           noatime on the system disk's / and /home (btrfs)
 #
@@ -67,7 +67,7 @@
 #                                                 the Fedora KDE image brings them for VMs); ABRT
 #                                                 keeps collecting crashes but sends none on its own
 #                                                 (abrt-auto-reporting disabled: you review first).
-#                                                 dnf's countme stays, the owner's choice
+#                                                 dnf's countme stays, the operator's choice
 #   Firefox quiet    this script                  an enterprise policy: no telemetry, no studies
 #                                                 (Normandy), no Pocket, no sponsored tiles,
 #                                                 stories or suggestions, no AI chatbot sidebar;
@@ -364,7 +364,7 @@ print(json.dumps({"_written_by": "linux-lab settings.sh firefox-quiet on; remove
                   "policies": base}, indent=2, sort_keys=True))
 '
 # noatime on the system disk's btrfs mounts (/ and /home): no metadata write for every file read, which on a
-# copy-on-write filesystem also means less churn in its trees and snapshots. Access times are lost (the owner
+# copy-on-write filesystem also means less churn in its trees and snapshots. Access times are lost (the operator
 # does not use them, 28 Oct). The fstab lines are edited in place; off takes the word out again. Both remount now.
 noatime() {
     local f=/etc/fstab

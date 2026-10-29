@@ -5,7 +5,7 @@
 # name differs only there and one with a literal '?'.
 # Expected: pass 1 ends with code 24, the three names are listed in state/17.unreadable, pass 2 ends
 # with code 0; after the verify the two tracked files are written back from git under their real names
-# (the untracked one stays behind); 17 is not held (such names are expendable, owner 18 Oct); every
+# (the untracked one stays behind); 17 is not held (such names are expendable, operator 18 Oct); every
 # file but the untracked one in the pool with its content; the sample check passes and the worker
 # formats 17 into the pool; it exits 0. 'restore 17' after the format writes nothing again and keeps the record.
 set -u
