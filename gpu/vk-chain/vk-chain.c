@@ -5,7 +5,7 @@
 // none (free), submits, waits, and prints microseconds per launch (best of REPEAT).
 // Usage: vk-chain [COUNT=1500] [ELEMENTS=4096] [REPEAT=20] [SHADER=add] [MODE ITERS]; SHADER.spv next to
 // the binary; MODE and ITERS are the specialization constants of reduce.spv (0 barriers, 1 subgroup).
-// VKCHAIN_ALT=1 alternates two pipelines of the same shader launch by launch, VKCHAIN_REBIND=1 binds
+// VKCHAIN_MEMTYPE / VKCHAIN_MEMTYPES pick or list the memory type. VKCHAIN_ALT=1 alternates two pipelines of the same shader launch by launch, VKCHAIN_REBIND=1 binds
 // the descriptor set and pushes the constants again before every launch: what ggml does per op.
 #include <vulkan/vulkan.h>
 #include <stdio.h>
@@ -57,6 +57,11 @@ int main(int argc, char **argv) {
     VkMemoryRequirements mr; vkGetBufferMemoryRequirements(dev, buf, &mr);
     VkPhysicalDeviceMemoryProperties mp; vkGetPhysicalDeviceMemoryProperties(pd, &mp);
     uint32_t mt = 0; while (mt < mp.memoryTypeCount && !((mr.memoryTypeBits >> mt & 1) && (mp.memoryTypes[mt].propertyFlags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT))) mt++;
+    // VKCHAIN_MEMTYPE=N: that memory type instead of the first device-local one; VKCHAIN_MEMTYPES=1 lists them.
+    if (getenv("VKCHAIN_MEMTYPES")) for (uint32_t k = 0; k < mp.memoryTypeCount; k++)
+        printf("memory type %u: heap %u flags 0x%x%s\n", k, mp.memoryTypes[k].heapIndex, mp.memoryTypes[k].propertyFlags, (mr.memoryTypeBits >> k & 1) ? "" : " (not for this buffer)");
+    if (getenv("VKCHAIN_MEMTYPE")) mt = atoi(getenv("VKCHAIN_MEMTYPE"));
+    if (mt >= mp.memoryTypeCount || !(mr.memoryTypeBits >> mt & 1)) { fprintf(stderr, "memory type %u not usable for this buffer\n", mt); return 1; }
     VkDeviceMemory mem; CK(vkAllocateMemory(dev, &(VkMemoryAllocateInfo){ VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO, .allocationSize = mr.size, .memoryTypeIndex = mt }, NULL, &mem));
     CK(vkBindBufferMemory(dev, buf, mem, 0));
 

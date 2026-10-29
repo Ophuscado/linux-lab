@@ -9,7 +9,7 @@ HERE=$(cd "$(dirname "$0")" && pwd); SIDE=${MESA_SIDE:-$HERE/../../build/mesa-si
 [[ -n ${MESA_SIDE:-} || -d $SIDE || ! -d $HOME/src/mesa-side ]] || SIDE=$HOME/src/mesa-side
 case ${1:-run} in
 build)
-    for sh in add reduce chase fat dot addk q8dot; do
+    for sh in add reduce chase fat dot addk q8dot read; do
         if command -v glslc >/dev/null; then glslc -O --target-env=vulkan1.2 "$HERE/$sh.comp" -o "$HERE/$sh.spv"
         else glslangValidator -V --target-env vulkan1.2 "$HERE/$sh.comp" -o "$HERE/$sh.spv" | grep -v "^/\?.*\.comp$" || true; [[ -s $HERE/$sh.spv ]] || { echo "$sh.comp did not compile" >&2; exit 1; }; fi
     done
@@ -105,5 +105,22 @@ groups)
     for n in 262144 4194304; do for g in 8 32 76 152 304 608 1024 4096; do
         env ${e[@]+"${e[@]}"} VKCHAIN_GROUPS=$g "$HERE/vk-chain" 1500 $n 10 addk | awk -v g=$g -v n=$n '/^(free|chain)/ { printf "%5d KB, %4d workgroups: %-5s %7.2f us\n", n * 4 / 1024, g, $1, $2 }'
     done; done ;;
-*) echo "usage: $0 build | run [COUNT] [ELEMENTS] | barriers [ICD] | latency [ICD] | clock [ICD] | switch [ICD] | dot [ICD] | masks ICD MASK... | groups [ICD]" >&2; exit 2 ;;
+bw)
+    # bw [ICD]: read bandwidth, GB/s, from 1 MB (caches) to 1 GB (memory), in back-to-back launches with no barrier, at
+    # one vec4 per invocation and with 1216 workgroups walking the buffer (16 per GPU core); then the 256 MB case on every
+    # memory type the buffer may use. Plain f16 matrix-vector work streamed at 475 GB/s here and 820 on Metal (29 Oct).
+    [[ -x $HERE/vk-chain ]] || "$0" build
+    e=(); [[ -z ${2:-} ]] || e=(VK_DRIVER_FILES="$2")
+    gbs() { awk -v n="$1" '/^free/ { printf "%8.1f GB/s (%.1f us)", n * 4 / ($2 * 1000), $2 }'; }
+    for mb in 1 16 64 256 1024; do
+        n=$((mb * 262144)) c=$(( mb >= 256 ? 20 : 200 ))
+        a=$(env ${e[@]+"${e[@]}"} "$HERE/vk-chain" $c $n 5 read | gbs $n)
+        b=$(env ${e[@]+"${e[@]}"} VKCHAIN_GROUPS=1216 "$HERE/vk-chain" $c $n 5 read | gbs $n)
+        printf '%5d MB: one vec4 each %s   1216 groups %s\n' "$mb" "$a" "$b"
+    done
+    env ${e[@]+"${e[@]}"} VKCHAIN_MEMTYPES=1 "$HERE/vk-chain" 1 1024 1 read | grep '^memory type' | while read -r _ _ k _; do
+        k=${k%:}; r=$(env ${e[@]+"${e[@]}"} VKCHAIN_MEMTYPE=$k "$HERE/vk-chain" 20 67108864 5 read 2>&1 | gbs 67108864)
+        printf '256 MB on memory type %s: %s\n' "$k" "${r:-not usable}"
+    done ;;
+*) echo "usage: $0 build | run [COUNT] [ELEMENTS] | barriers [ICD] | latency [ICD] | clock [ICD] | switch [ICD] | dot [ICD] | masks ICD MASK... | groups [ICD] | bw [ICD]" >&2; exit 2 ;;
 esac

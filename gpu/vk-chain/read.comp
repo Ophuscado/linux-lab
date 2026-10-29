@@ -1,0 +1,13 @@
+#version 450
+// Read bandwidth: every invocation sums vec4s of the buffer, a grid-stride walk, so consecutive invocations read
+// consecutive 16 bytes; nothing is written unless the sum hits an impossible value (keeps the loads alive).
+layout(local_size_x = 256) in;
+layout(std430, binding = 0) buffer B { vec4 v[]; };
+layout(constant_id = 7) const uint VARIANT = 0;
+layout(push_constant) uniform P { uint n; } p;
+void main() {
+    uint nv = p.n / 4, stride = gl_NumWorkGroups.x * 256u;
+    vec4 s = vec4(0.0);
+    for (uint i = gl_GlobalInvocationID.x; i < nv; i += stride) s += v[i];
+    if (s.x == 1.2345e-37) v[0] = s;
+}
