@@ -43,7 +43,8 @@ KCONFIG=${MAGICMOUSE_CONFIG:-/boot/config-$REL}
 # The operator's tree, named both ~/Projects/asahi-linux-tbt and ~/Projects/linux-asahi-tbt
 # (18 Oct); the one that exists is used.
 if [[ -z ${SRC:-} ]]; then
-    for SRC in "$HOME/Projects/linux-lab/src/linux" "$HOME/Projects/linux-asahi-tbt" "$HOME/Projects/asahi-linux-tbt"; do [[ -d $SRC/.git ]] && break; done
+    UHOME=$(getent passwd "${SUDO_USER:-$(id -un)}" | cut -d: -f6); UHOME=${UHOME:-$HOME}  # the invoking user's, also under sudo
+    for SRC in "$(dirname "$(readlink -f "$0")")/../src/linux" "$UHOME/Projects/linux-asahi-tbt" "$UHOME/Projects/asahi-linux-tbt"; do [[ -d $SRC/.git ]] && break; done
 fi
 # Else the tree the running kernel was installed from (modules_install links it as build).
 if [[ ! -d $SRC/.git ]] && b=$(readlink -f "/usr/lib/modules/$REL/build") && [[ -d $b/.git ]]; then SRC=$b; fi

@@ -21,7 +21,8 @@ set -euo pipefail
 REL=${APPLEKBD_REL:-$(uname -r)}
 KCONFIG=${APPLEKBD_CONFIG:-/boot/config-$REL}
 if [[ -z ${SRC:-} ]]; then
-    for SRC in "$HOME/Projects/linux-lab/src/linux" "$HOME/Projects/linux-asahi-tbt" "$HOME/Projects/asahi-linux-tbt"; do [[ -e $SRC/.git ]] && break; done
+    UHOME=$(getent passwd "${SUDO_USER:-$(id -un)}" | cut -d: -f6); UHOME=${UHOME:-$HOME}  # the invoking user's, also under sudo
+    for SRC in "$(dirname "$(readlink -f "$0")")/../src/linux" "$UHOME/Projects/linux-asahi-tbt" "$UHOME/Projects/asahi-linux-tbt"; do [[ -e $SRC/.git ]] && break; done
 fi
 HERE=$(cd "$(dirname "$0")" && pwd)
 PATCH=$HERE/../src-patches/linux/hid-apple/0001-HID-apple-Optional-Fn-shortcuts-on-F-C-P-and-D.patch

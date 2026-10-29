@@ -68,10 +68,13 @@ BRANCH=tbt/7.1
 COMMIT=9d460b403164694c0f6a1a6ca1038d6a79dfc167
 SUFFIX=-tbtwip
 KEEP=/var/lib/tbt-kernel/previous
-# The operator's kernel tree (18 Oct; before, ~/src/linux-asahi-tbt), named both
-# ~/Projects/asahi-linux-tbt and ~/Projects/linux-asahi-tbt: the one that exists.
+# The kernel tree: src/linux beside this repository (since 27 Oct), else the operator's older trees
+# ~/Projects/linux-asahi-tbt or ~/Projects/asahi-linux-tbt, the first that exists. Under sudo the home is the
+# invoking user's, not root's (29 Oct: 'sudo tbt-kernel.sh install' looked in /root and found no build).
+UHOME=$(getent passwd "${SUDO_USER:-$(id -un)}" | cut -d: -f6); UHOME=${UHOME:-$HOME}
 if [[ -z ${SRC:-} ]]; then
-    for SRC in "$HOME/Projects/linux-lab/src/linux" "$HOME/Projects/linux-asahi-tbt" "$HOME/Projects/asahi-linux-tbt"; do [[ -d $SRC/.git ]] && break; done
+    for SRC in "$HERE/../src/linux" "$UHOME/Projects/linux-asahi-tbt" "$UHOME/Projects/asahi-linux-tbt"; do [[ -d $SRC/.git ]] && break; done
+    SRC=$(cd "$SRC" 2>/dev/null && pwd || echo "$SRC")
 fi
 ESP_MNT=/run/tbt-esp
 KOJI=https://kojipkgs.fedoraproject.org/packages/m1n1
