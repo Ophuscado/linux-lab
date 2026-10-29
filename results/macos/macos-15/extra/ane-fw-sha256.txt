@@ -1,0 +1,6 @@
+9fc12ac68b7649ecaf36b6cb7322d96b2b37b04109f5d96fe76f8f1635a553db  /System/Volumes/Preboot/<uuid>/restore/Firmware/ane/t602x_ane0_fw_selene_rc4x.im4p
+13a7cea557a5593d4ff7d31a26157bc9663944383be6bb4435954da130a97b6b  /System/Volumes/Preboot/<uuid>/restore/Firmware/ane/t602x_ane1_fw_selene_rc4x.im4p
+8836ce16969ad7583be12abc1015448003214b6721ef8a46876049542a75ead0  /System/Volumes/Preboot/<uuid>/restore/Firmware/ane/t602x_ane0_fw_selene_rc4x.im4p
+76ae4e44e100a89842a129d1615e30232d2d4317aac8e231d98efa8e8e7e0161  /System/Volumes/Preboot/<uuid>/restore/Firmware/ane/t602x_ane1_fw_selene_rc4x.im4p
+b50f08c0075df930893fb8feb0b143b66eb4cc4775cac38974e5575927661541  /System/Volumes/Preboot/<uuid>/restore/Firmware/ane/t602x_ane0_fw_selene_rc4x.im4p
+b580fbb23a78ff25220f7999c305abbd4024c847be53fb2736b34faabaeea6d6  /System/Volumes/Preboot/<uuid>/restore/Firmware/ane/t602x_ane1_fw_selene_rc4x.im4p

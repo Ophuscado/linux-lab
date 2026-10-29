@@ -1,0 +1,64 @@
+System-wide power settings:
+Currently in use:
+ standby              0
+ Sleep On Power Button 1
+ autorestart          0
+ powernap             1
+ networkoversleep     0
+ disksleep            10
+ sleep                1 (sleep prevented by runningboardd, powerd)
+ ttyskeepawake        1
+ displaysleep         10
+ tcpkeepalive         1
+ lowpowermode         0
+ womp                 0
+AC Power:
+ Sleep On Power Button 1
+ lowpowermode         0
+ standby              0
+ ttyskeepawake        1
+ powernap             1
+ displaysleep         10
+ womp                 0
+ networkoversleep     0
+ sleep                1
+ tcpkeepalive         1
+ autorestart          0
+ disksleep            10
+Capabilities for AC Power:
+ displaysleep
+ disksleep
+ sleep
+ womp
+ autorestart
+ standby
+ powernap
+ ttyskeepawake
+ tcpkeepalive
+ lowpowermode
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded
+2026-10-27 23:37:03 +0000 
+Assertion status system-wide:
+   BackgroundTask                 0
+   ApplePushServiceTask           0
+   UserIsActive                   1
+   PreventUserIdleDisplaySleep    0
+   PreventSystemSleep             0
+   ExternalMedia                  1
+   PreventUserIdleSystemSleep     1
+   NetworkClientActive            0
+Listed by owning process:
+   pid 156(runningboardd): [0x000004400001822d] 00:32:49 PreventUserIdleSystemSleep named: "xpcservice<com.apple.amp.devicesui([osservice<com.apple.Finder(501)>:452])(501)>{vt hash: 0}:1681156-463-1141:File Coordination Claim <uuid>(FinishTask)"  
+	Created for PID: 1681. 
+   pid 94(powerd): [0x0000000f0001802d] 00:50:43 PreventUserIdleSystemSleep named: "Powerd - Prevent sleep while display is on"  
+   pid 94(powerd): [0x0000002800088134] 00:50:18 ExternalMedia named: "com.apple.powermanagement.externalmediamounted"  
+   pid 150(WindowServer): [0x0000001300098050] 00:00:06 UserIsActive named: "com.apple.iohideventsystem.queue.tickle serviceID:100001510 service:AppleMultitouchDevice product:Magic Mouse eventType:17"  
+	Timeout will fire in 593 secs Action=TimeoutActionRelease
+Kernel Assertions: 0x24=USB,THNDR
+   id=616  level=255 0x20=THNDR mod= description=acio2 owner=AppleThunderboltHALType5
+   id=629  level=255 0x4=USB creat= description=com.apple.usb.externaldevice.08100000 owner=Game Drive
+   id=630  level=255 0x4=USB creat= description=com.apple.usb.externaldevice.04200000 owner=Ultra USB 3.0
+   id=637  level=255 0x4=USB creat= description=com.apple.usb.externaldevice.05100000 owner=iPad
+   id=638  level=255 0x4=USB creat= description=com.apple.usb.externaldevice.03100000 owner=ASM246X series

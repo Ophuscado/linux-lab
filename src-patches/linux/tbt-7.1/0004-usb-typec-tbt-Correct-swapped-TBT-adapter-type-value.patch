@@ -1,0 +1,101 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Sven Peter <sven@kernel.org>
+Date: Thu, 20 Aug 2026 20:37:25 +0200
+Subject: [PATCH 04/10] usb: typec: tbt: Correct swapped TBT adapter type
+ values
+
+Table F-10 of the USB Type-C Cable and Connector Specification R2.5 on
+page 412 defines bit 16 of the TBT3 Device Discover Mode VDO as 0 = TBT3
+Adapter and 1 = TBT2 Legacy Adapter. Linux has those two swapped since
+their original introduction in commit ca469c292edc ("usb: typec: Add
+definitions for Thunderbolt 3 Alternate Mode").
+
+ChromiumOS EC's include/usb_pd_tbt.h has them the correct way around
+and references the USB Type-C ECN "Thunderbolt 3 Compatibility Updates"
+as fixing an error where they were originally swapped which is presumably
+where the wrong order originally came from.
+
+I've also confirmed the correct mapping with an Apple Thunderbolt 3
+to Thunderbolt 2 adapter which does set bit 16 in that VDO.
+
+Swap the two values and update all users. Also rename the old defines
+so that no user accidentally ends up with an inverted value.
+No functional change.
+
+Link: https://usb.org/document-library/usb-type-cr-cable-and-connector-specification-release-25
+Link: https://chromium.googlesource.com/chromiumos/platform/ec/+/db93814b6e73c8545d23714fe0674c10814d901a/include/usb_pd_tbt.h#90
+Signed-off-by: Sven Peter <sven@kernel.org>
+---
+I ran into this when bringing up thunderbolt for Apple Silicon SoCs and
+was very confused why the condition for "tbt2 adapter" vs "tbt3 adapter"
+seemed to be backwards.
+I think the qcom pmic_glink_altmode.c actually has a bug there that was
+hidden and/or caused by the wrong values: It used to always set
+TBT_ADAPTER_TBT3 which sounds plausible but actually claims to be a
+legacy TBT2 adapter on the wire. I don't have the hardware or know the
+intention there though.
+The other users look correct to me since they just pass the value
+through.
+
+(cherry picked from commit c6fc927844815e3cf7b4aa6f6f16f334367d9fd5)
+---
+ drivers/platform/chrome/cros_ec_typec.c | 2 +-
+ drivers/soc/qcom/pmic_glink_altmode.c   | 2 +-
+ drivers/usb/typec/mux/intel_pmc_mux.c   | 2 +-
+ include/linux/usb/typec_tbt.h           | 4 ++--
+ 4 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
+index c0806c562b..79968edc16 100644
+--- a/drivers/platform/chrome/cros_ec_typec.c
++++ b/drivers/platform/chrome/cros_ec_typec.c
+@@ -586,7 +586,7 @@ static int cros_typec_enable_tbt(struct cros_typec_data *typec,
+ 	data.device_mode = TBT_MODE;
+ 
+ 	if (pd_ctrl->control_flags & USB_PD_CTRL_TBT_LEGACY_ADAPTER)
+-		data.device_mode = TBT_SET_ADAPTER(TBT_ADAPTER_TBT3);
++		data.device_mode = TBT_SET_ADAPTER(TBT_ADAPTER_TYPE_TBT2_LEGACY);
+ 
+ 	/* Cable Discover Mode VDO */
+ 	data.cable_mode = TBT_MODE;
+diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+index 619bad2c27..8d4f54c160 100644
+--- a/drivers/soc/qcom/pmic_glink_altmode.c
++++ b/drivers/soc/qcom/pmic_glink_altmode.c
+@@ -215,7 +215,7 @@ static void pmic_glink_altmode_enable_tbt(struct pmic_glink_altmode *altmode,
+ 
+ 	/* Device Discover Mode VDO */
+ 	tbt_data.device_mode = TBT_MODE;
+-	tbt_data.device_mode |= TBT_SET_ADAPTER(TBT_ADAPTER_TBT3);
++	tbt_data.device_mode |= TBT_SET_ADAPTER(TBT_ADAPTER_TYPE_TBT2_LEGACY);
+ 
+ 	/* Cable Discover Mode VDO */
+ 	tbt_data.cable_mode = TBT_MODE;
+diff --git a/drivers/usb/typec/mux/intel_pmc_mux.c b/drivers/usb/typec/mux/intel_pmc_mux.c
+index 1698428654..45bd0515de 100644
+--- a/drivers/usb/typec/mux/intel_pmc_mux.c
++++ b/drivers/usb/typec/mux/intel_pmc_mux.c
+@@ -345,7 +345,7 @@ pmc_usb_mux_tbt(struct pmc_usb_port *port, struct typec_mux_state *state)
+ 	req.mode_data = (port->orientation - 1) << PMC_USB_ALTMODE_ORI_SHIFT;
+ 	req.mode_data |= (port->role - 1) << PMC_USB_ALTMODE_UFP_SHIFT;
+ 
+-	if (TBT_ADAPTER(data->device_mode) == TBT_ADAPTER_TBT3)
++	if (TBT_ADAPTER(data->device_mode) == TBT_ADAPTER_TYPE_TBT2_LEGACY)
+ 		req.mode_data |= PMC_USB_ALTMODE_TBT_TYPE;
+ 
+ 	if (data->cable_mode & TBT_CABLE_OPTICAL)
+diff --git a/include/linux/usb/typec_tbt.h b/include/linux/usb/typec_tbt.h
+index 0b570f1b8b..7bdf3795ae 100644
+--- a/include/linux/usb/typec_tbt.h
++++ b/include/linux/usb/typec_tbt.h
+@@ -27,8 +27,8 @@ struct typec_thunderbolt_data {
+ /* TBT3 Device Discover Mode VDO bits */
+ #define TBT_MODE			BIT(0)
+ #define TBT_ADAPTER(_vdo_)		FIELD_GET(BIT(16), _vdo_)
+-#define   TBT_ADAPTER_LEGACY		0
+-#define   TBT_ADAPTER_TBT3		1
++#define   TBT_ADAPTER_TYPE_TBT3		0
++#define   TBT_ADAPTER_TYPE_TBT2_LEGACY	1
+ #define TBT_INTEL_SPECIFIC_B0		BIT(26)
+ #define TBT_VENDOR_SPECIFIC_B0		BIT(30)
+ #define TBT_VENDOR_SPECIFIC_B1		BIT(31)

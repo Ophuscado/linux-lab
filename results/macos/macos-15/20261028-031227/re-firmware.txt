@@ -1,0 +1,14 @@
+997032e930aba78e2a8bfd38687e188574498c317d03bb55378ece8b07aea9a5  17024762  /System/Library/Extensions/AppleAfterburner.kext/Contents/Resources/live_2.62_0x01_primary_ec00.bin
+2621a8d0da73565045d29b954901343f8c46518fc322538d358167b74a60c8ef  17024762  /System/Library/Extensions/AppleAfterburner.kext/Contents/Resources/live_2.62_0x01_primary_ec01.bin
+cdaab109a270643aefa080797f0a292b055d2174b4f8327daa040a0d8a6fdff8  17024762  /System/Library/Extensions/AppleAfterburner.kext/Contents/Resources/live_2.62_0x01_secondary_ec00.bin
+f4d0b67725a1cc1bb576a3f848b385840d39e5aeca37f35b9b7c1ce4aca4fbfb  17024762  /System/Library/Extensions/AppleAfterburner.kext/Contents/Resources/live_2.62_0x01_secondary_ec01.bin
+3cbffbc19c2c69d0dfc5e2e8f713ce7919208a2ff47fa85325e86772d5287825  19144428  /System/Library/Extensions/AppleAfterburner.kext/Contents/Resources/live_2.63_0x01_primary.bin
+5eefab8ea66597dd894754e722501840d8a4e72a0b24c9eb0573397132d9d80e  19144428  /System/Library/Extensions/AppleAfterburner.kext/Contents/Resources/live_2.63_0x01_secondary.bin
+da5fb8ffa6a9b455e5097d4369ae3548e6055eecdf5965b6c0cb4c79942c529f  1187865  /System/Volumes/Preboot/<uuid>/restore/Firmware/AOP/aopfw-mac13gaop.im4p
+162972c84bef7a3473d5d58420ddca8a06a21cee237c2201c1021aa8abe55117  1327129  /System/Volumes/Preboot/<uuid>/restore/Firmware/AOP/aopfw-mac13jaop.im4p
+33b57080b3dda06928463955f8c37ff0b12472a99c1a2684f7bfa230874dc9f9  1458201  /System/Volumes/Preboot/<uuid>/restore/Firmware/AOP/aopfw-mac14gaop.im4p
+a39ad595148075a5014937ecf99cfea6e65bbe8d6200ade46651c1db5a4d28c3  1458201  /System/Volumes/Preboot/<uuid>/restore/Firmware/AOP/aopfw-mac14jaop.im4p
+a67a128ed80f0a4eb24a0581b764757ada1c2dd02f2d30ca88edc77d98aa460c  1855513  /System/Volumes/Preboot/<uuid>/restore/Firmware/AOP/aopfw-mac15gaop.im4p
+d4a588de1627d8b44c7127683fb288d9786a282ed117a33467dbc7860a3d480f  676381  /System/Volumes/Preboot/<uuid>/restore/Firmware/J293_InputDevice.im4p
+c87b54c465fc4d16fc8cbe7be812c3d12843033cb870fbe1e520104d66140642  90893  /System/Volumes/Preboot/<uuid>/restore/Firmware/J293_Multitouch.im4p
+4823c0a824cf2d57f3885dc5053720930cbdcf583e70710eb4544ae199829435  222982  /System/Volumes/Preboot/<uuid>/restore/Firmware/J313_InputDevice.im4p

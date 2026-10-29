@@ -1,0 +1,6 @@
+# The USB4/Thunderbolt PCIe tunnel on the stock Fedora Asahi kernel's source.
+UPSTREAM=https://github.com/AsahiLinux/linux
+BASE=94fb23346d522edf53722357c426a3e58030beea  # tag asahi-7.1.13-3
+FORK=https://github.com/Ophuscado/linux
+BRANCH=tbt/7.1
+CLONE=src/linux

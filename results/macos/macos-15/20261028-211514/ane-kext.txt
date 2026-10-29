@@ -1,0 +1,6 @@
+total 16
+drwxr-xr-x  5 root  wheel   160 Sep 23 02:33 .
+drwxr-xr-x@ 3 root  wheel    96 Sep 23 02:33 ..
+-rw-r--r--  1 root  wheel  2882 Sep 23 02:33 Info.plist
+drwxr-xr-x  3 root  wheel    96 Sep 23 02:33 _CodeSignature
+-rw-r--r--  3 root  wheel   545 Sep 23 02:33 version.plist

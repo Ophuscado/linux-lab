@@ -1,0 +1,67 @@
+System-wide power settings:
+Currently in use:
+ standby              0
+ Sleep On Power Button 1
+ autorestart          0
+ powernap             1
+ networkoversleep     0
+ disksleep            10
+ sleep                1 (sleep prevented by powerd, runningboardd)
+ ttyskeepawake        1
+ displaysleep         10
+ tcpkeepalive         1
+ lowpowermode         0
+ womp                 0
+AC Power:
+ Sleep On Power Button 1
+ lowpowermode         0
+ standby              0
+ ttyskeepawake        1
+ powernap             1
+ displaysleep         10
+ womp                 0
+ networkoversleep     0
+ sleep                1
+ tcpkeepalive         1
+ autorestart          0
+ disksleep            10
+Capabilities for AC Power:
+ displaysleep
+ disksleep
+ sleep
+ womp
+ autorestart
+ standby
+ powernap
+ ttyskeepawake
+ tcpkeepalive
+ lowpowermode
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded
+2026-10-28 21:33:01 +0000 
+Assertion status system-wide:
+   BackgroundTask                 0
+   ApplePushServiceTask           0
+   UserIsActive                   1
+   PreventUserIdleDisplaySleep    0
+   PreventSystemSleep             0
+   ExternalMedia                  1
+   PreventUserIdleSystemSleep     1
+   NetworkClientActive            0
+Listed by owning process:
+   pid 88(powerd): [0x0000000e0001804d] 00:10:28 PreventUserIdleSystemSleep named: "Powerd - Prevent sleep while display is on"  
+   pid 88(powerd): [0x00000028000881a9] 00:10:02 ExternalMedia named: "com.apple.powermanagement.externalmediamounted"  
+   pid 148(runningboardd): [0x0000028b00018362] 00:00:01 PreventUserIdleSystemSleep named: "osservice<com.apple.helpd(501)>148-2061-1520:com.apple.CFNetwork.StorageDB"  
+	Created for PID: 2061. 
+   pid 143(WindowServer): [0x000000140009808f] 00:00:27 UserIsActive named: "com.apple.iohideventsystem.queue.tickle serviceID:1000013b4 service:AppleUserHIDEventService product:Magic Mouse eventType:17"  
+	Timeout will fire in 573 secs Action=TimeoutActionRelease
+Kernel Assertions: 0x2c=USB,BT-HID,THNDR
+   id=508  level=255 0x20=THNDR mod= description=acio2 owner=AppleThunderboltHALType5
+   id=509  level=255 0x20=THNDR mod= description=acio0 owner=AppleThunderboltHALType5
+   id=522  level=255 0x4=USB creat= description=com.apple.usb.externaldevice.08100000 owner=Game Drive
+   id=523  level=255 0x4=USB creat= description=com.apple.usb.externaldevice.04200000 owner=Ultra USB 3.0
+   id=529  level=255 0x8=BT-HID creat= description=com.apple.driver.IOBluetoothHIDDriver owner=IOBluetoothHIDDriver
+   id=531  level=255 0x8=BT-HID creat= description=com.apple.driver.IOBluetoothHIDDriver owner=AppleHSBluetoothDevice
+   id=534  level=255 0x8=BT-HID creat= description=com.apple.driver.IOBluetoothHIDDriver owner=AppleHSBluetoothDevice
+   id=546  level=255 0x4=USB creat= description=com.apple.usb.externaldevice.03100000 owner=iPad

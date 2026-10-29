@@ -1,0 +1,17 @@
+name Apple M2 Ultra
+architecture applegpu_g14d
+registryID 4294968503 (not stable across boots)
+lowPower 0 headless 0 removable 0 unifiedMemory 1
+families: Apple1 Apple2 Apple3 Apple4 Apple5 Apple6 Apple7 Apple8 Mac2 Common3 Metal3
+maxThreadsPerThreadgroup 1024x1024x1024
+maxThreadgroupMemoryLength 32768
+maxBufferLength 115964116992
+recommendedMaxWorkingSetSize 154618822656
+currentAllocatedSize 65536
+maxTransferRate 0
+argumentBuffersSupport 1 readWriteTextureSupport 2 raytracing 1 32bitFloatFiltering 1 32bitMSAA 1 bcTextures 1 dynamicLibraries 1 functionPointers 1
+sparseTileSizeInBytes 16384
+maxArgumentBufferSamplerCount 1024
+counter sampling: atStageBoundary 1 atDrawBoundary 0 atDispatchBoundary 0 atBlitBoundary 0
+counter set timestamp: GPUTimestamp
+timestamps: cpu 6906542752750 -> 6907044645416, gpu 6906542752750 -> 6907044645416 (gpu ticks per cpu ns 1.000000)

@@ -1,0 +1,14 @@
+    -A | --show-all              Enables all samplers and displays all the
+                                 available information for each sampler.
+
+    -s | --samplers <samplers>   comma separated list of samplers and sampler groups
+    -t | --wakeup-cost <N>       assume package idle wakeups have a CPU time
+                                 cost of N us when using hybrid sort orders
+                                 using idle wakeups with time-based metrics
+
+    --unhide-info <samplers>     comma separated list of samplers to unhide (backwards compatibility)
+
+The following samplers are supported by --samplers:
+
+and the following sampler groups are supported by --samplers:
+

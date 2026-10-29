@@ -1,0 +1,44 @@
+#version 450
+// A lean q8_0 matrix-vector in ggml's data layout, one token: rows of 34-byte blocks (f16 scale, 32 int8),
+// read as 16-bit words as ggml does; the f32 vector after the matrix, the outputs after that.
+// 128 threads and 2 rows per workgroup: two threads per block of a row, 16 values each, then a subgroup
+// sum and one shared-memory sum. k = ITERS. Launch with VKCHAIN_GROUPS = rows / 2.
+#extension GL_EXT_shader_16bit_storage : require
+#extension GL_EXT_shader_explicit_arithmetic_types_int16 : enable
+#extension GL_KHR_shader_subgroup_arithmetic : enable
+layout(local_size_x = 128) in;
+layout(constant_id = 0) const uint MODE = 0;
+layout(constant_id = 1) const uint ITERS = 2048;
+layout(constant_id = 7) const uint VARIANT = 0;
+layout(std430, binding = 0) buffer B { uint16_t q[]; };
+layout(push_constant) uniform P { uint n; } p;
+shared float sh[2][32];
+void main() {
+    const uint k = ITERS, nb = k / 32, words = p.n * 2;            // p.n counts floats: 2 words each
+    const uint m = (words - 2 * k - 64) / (nb * 17);              // rows that fit before the vector
+    const uint vb = m * nb * 17 + (m * nb * 17) % 2;              // vector start (word, even)
+    const uint t = gl_LocalInvocationID.x, r0 = gl_WorkGroupID.x * 2;
+    float acc[2] = { 0.0, 0.0 };
+    for (uint j = 0; j < 2; j++) {
+        uint r = min(r0 + j, m - 1);
+        for (uint blk = t / 2; blk < nb; blk += 64) {
+            uint base = (r * nb + blk) * 17, hf = t & 1u;
+            float d = unpackHalf2x16(uint(q[base])).x, s = 0.0;
+            for (uint w = 0; w < 8; w++) {
+                uint v = uint(q[base + 1 + hf * 8 + w]), col = blk * 32 + hf * 16 + w * 2;
+                float b0 = uintBitsToFloat(uint(q[vb + 2 * col]) | (uint(q[vb + 2 * col + 1]) << 16));
+                float b1 = uintBitsToFloat(uint(q[vb + 2 * col + 2]) | (uint(q[vb + 2 * col + 3]) << 16));
+                s += float(bitfieldExtract(int(v), 0, 8)) * b0 + float(bitfieldExtract(int(v), 8, 8)) * b1;
+            }
+            acc[j] += d * s;
+        }
+        acc[j] = subgroupAdd(acc[j]);
+    }
+    if (gl_SubgroupInvocationID == 0) { sh[0][gl_SubgroupID] = acc[0]; sh[1][gl_SubgroupID] = acc[1]; }
+    barrier();
+    if (t < 2) {
+        float s = 0.0; for (uint i = 0; i < gl_NumSubgroups; i++) s += sh[t][i];
+        uint o = vb + 2 * k + 2 * (r0 + t); uint u = floatBitsToUint(s);
+        q[o] = uint16_t(u & 0xffffu); q[o + 1] = uint16_t(u >> 16);
+    }
+}

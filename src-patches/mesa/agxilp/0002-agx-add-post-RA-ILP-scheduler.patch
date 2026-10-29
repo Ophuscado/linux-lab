@@ -1,0 +1,490 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: xingjianll <4396kevinliu@gmail.com>
+Date: Thu, 18 Jun 2026 13:43:51 -0400
+Subject: [PATCH 2/2] agx: add post-RA ILP scheduler
+
+---
+ src/asahi/compiler/agx_compile.c      |   4 +
+ src/asahi/compiler/agx_compiler.h     |   1 +
+ src/asahi/compiler/agx_schedule_ilp.c | 432 ++++++++++++++++++++++++++
+ src/asahi/compiler/meson.build        |   1 +
+ 4 files changed, 438 insertions(+)
+ create mode 100644 src/asahi/compiler/agx_schedule_ilp.c
+
+diff --git a/src/asahi/compiler/agx_compile.c b/src/asahi/compiler/agx_compile.c
+index 102a64cc94b..6b9808fd3e4 100644
+--- a/src/asahi/compiler/agx_compile.c
++++ b/src/asahi/compiler/agx_compile.c
+@@ -3584,6 +3584,10 @@ agx_compile_function_nir(nir_shader *nir, nir_function_impl *impl,
+    AGX_PASS(ctx, agx_ra);
+    agx_lower_64bit_postra(ctx);
+ 
++   /* Post-RA ILP scheduling: reorder to hide latency before waits are placed. */
++   if (likely(!(agx_compiler_debug & AGX_DBG_NOSCHED)))
++      AGX_PASS(ctx, agx_schedule_ilp);
++
+    if (ctx->scratch_size_B > 0) {
+       /* Apple always allocate 40 more bytes in the entrypoint and align to 4. */
+       uint64_t stack_size = align(DIV_ROUND_UP(ctx->scratch_size_B, 4) + 10, 4);
+diff --git a/src/asahi/compiler/agx_compiler.h b/src/asahi/compiler/agx_compiler.h
+index 977aed9edbf..7b480ee24e0 100644
+--- a/src/asahi/compiler/agx_compiler.h
++++ b/src/asahi/compiler/agx_compiler.h
+@@ -1039,6 +1039,7 @@ void agx_reindex_ssa(agx_context *ctx);
+ void agx_ra(agx_context *ctx);
+ void agx_lower_64bit_postra(agx_context *ctx);
+ void agx_insert_waits(agx_context *ctx);
++void agx_schedule_ilp(agx_context *ctx);
+ void agx_opt_empty_else(agx_context *ctx);
+ void agx_opt_register_cache(agx_context *ctx);
+ void agx_opt_break_if(agx_context *ctx);
+diff --git a/src/asahi/compiler/agx_schedule_ilp.c b/src/asahi/compiler/agx_schedule_ilp.c
+new file mode 100644
+index 00000000000..5fe66d0a0b7
+--- /dev/null
++++ b/src/asahi/compiler/agx_schedule_ilp.c
+@@ -0,0 +1,432 @@
++/*
++ * Copyright 2026 Alyssa Rosenzweig
++ * SPDX-License-Identifier: MIT
++ */
++
++/*
++ * Post-RA instruction-level-parallelism scheduler.
++ *
++ * A faithful-in-spirit port of ACO's post-RA ILP scheduler
++ * (src/amd/compiler/aco_scheduler_ilp.cpp): a forward list scheduler that
++ * reorders the already-register-allocated instruction stream to hide latency
++ * -- issue long-latency loads early and fill their shadows with independent
++ * ALU -- without changing register assignment (it cannot: registers are fixed
++ * post-RA, so this only reorders, never repacks).
++ *
++ * It is built correctness-first. We construct the full post-RA dependency DAG
++ * for each block:
++ *   - register hazards on physical registers: read-after-write, write-after-
++ *     write, write-after-read,
++ *   - memory ops are non-reorderable (like ACO's can_reorder, which is true
++ *     only for ALU): they are chained in program order so load runs (clauses)
++ *     stay intact and only ALU floats around them,
++ *   - anything we don't model (control flow, barriers, coverage, preload,
++ *     spill/fill touching memory-class registers) is a hard wall.
++ * Any topological order of that DAG is a legal schedule, so we are free to pick
++ * a latency-minimising one. agx_insert_waits runs after us and re-derives the
++ * scoreboard waits for the new order, so async-load correctness is preserved.
++ *
++ * To keep clauses tight (ACO's collect_clause_dependencies), the selection
++ * heuristic schedules a load's address chain ahead of the consumers, so all the
++ * loads in a run become ready together and issue back-to-back rather than being
++ * split by ALU.
++ *
++ * The instruction latencies come from the in-tree G13 cycle model in
++ * agx_performance.c (FFMA/IADD ~2, IMAD ~3, transcendentals ~5-6); async
++ * memory loads, which that table does not cover, are modelled as high-latency
++ * so the scheduler hoists them.
++ *
++ * Disable with AGX_NO_ILP_SCHED=1.
++ */
++
++#include "util/u_dynarray.h"
++#include "agx_compiler.h"
++#include "agx_opcodes.h"
++#include <limits.h>
++#include <stdlib.h>
++
++/* Latency (cycles until the result is readable) and issue cost (throughput) of
++ * an instruction, for the scheduling heuristic. Loads are async and not in the
++ * ALU timing table, so we give them a deliberately high latency to pull them
++ * early; the absolute numbers matter less than loads >> ALU. */
++static void
++instr_timing(const agx_instr *I, unsigned *latency, unsigned *tp)
++{
++   enum agx_schedule_class cls = agx_opcodes_info[I->op].schedule_class;
++
++   if (I->op == AGX_OPCODE_LOCAL_LOAD) {
++      *latency = 30; /* threadgroup memory */
++      *tp = 1;
++      return;
++   }
++   if (cls == AGX_SCHEDULE_CLASS_LOAD) {
++      *latency = 200; /* device memory */
++      *tp = 1;
++      return;
++   }
++
++   /* ALU, roughly from the G13 cycle model in agx_performance.c. */
++   *tp = 1;
++   switch (I->op) {
++   case AGX_OPCODE_IMAD:
++   case AGX_OPCODE_BFI:
++   case AGX_OPCODE_BFEIL:
++   case AGX_OPCODE_EXTR:
++   case AGX_OPCODE_ASR:
++      *latency = 3;
++      *tp = 2;
++      break;
++   case AGX_OPCODE_RCP:
++   case AGX_OPCODE_LOG2:
++   case AGX_OPCODE_EXP2:
++      *latency = 5;
++      *tp = 3;
++      break;
++   case AGX_OPCODE_RSQRT:
++   case AGX_OPCODE_SRSQRT:
++      *latency = 6;
++      *tp = 4;
++      break;
++   default:
++      *latency = 2;
++      break;
++   }
++}
++
++static bool
++is_load(const agx_instr *I)
++{
++   return agx_opcodes_info[I->op].schedule_class == AGX_SCHEDULE_CLASS_LOAD;
++}
++
++/*
++ * Whether an instruction may be reordered by this pass. We only move pure ALU
++ * and the modelled memory ops (load/store/atomic), and only when all their
++ * operands are ordinary GPRs. Everything else -- control flow, barriers,
++ * coverage/preload, and anything touching a memory-class (spill) register -- is
++ * treated as a hard wall, so the pass stays correct without modelling it.
++ */
++static bool
++is_reorderable(const agx_instr *I)
++{
++   enum agx_schedule_class cls = agx_opcodes_info[I->op].schedule_class;
++   bool modelled = agx_is_alu(I) || cls == AGX_SCHEDULE_CLASS_LOAD ||
++                   cls == AGX_SCHEDULE_CLASS_STORE ||
++                   cls == AGX_SCHEDULE_CLASS_ATOMIC;
++   if (!modelled)
++      return false;
++
++   agx_foreach_src(I, s) {
++      if (I->src[s].type == AGX_INDEX_REGISTER && I->src[s].memory)
++         return false;
++   }
++   agx_foreach_dest(I, d) {
++      if (I->dest[d].type == AGX_INDEX_REGISTER && I->dest[d].memory)
++         return false;
++   }
++   return true;
++}
++
++struct ilp_node {
++   agx_instr *instr;
++   int indeg;                  /* unscheduled predecessors */
++   struct util_dynarray succs; /* successor node indices (int) */
++   struct util_dynarray preds; /* predecessor node indices (int) */
++   unsigned latency;
++   unsigned tp;
++   bool is_load;
++   bool feeds_load; /* transitive ancestor of a load (its address chain) */
++   bool done;
++};
++
++struct ilp_ctx {
++   struct ilp_node *nodes;
++   unsigned n;
++
++   /* Register hazard tracking over the GPR file (16-bit units). */
++   int last_writer[AGX_NUM_REGS];     /* node that last wrote reg, or -1 */
++   struct util_dynarray readers[AGX_NUM_REGS]; /* readers since last write */
++
++   /* Memory ops are non-reorderable (kept in program order) like ACO's
++    * can_reorder: only ALU floats. last_mem chains them; last_wall is a hard
++    * barrier. (node indices, or -1) */
++   int last_mem;
++   int last_wall;
++   struct util_dynarray since_wall; /* nodes since the last wall */
++
++   /* Cycle at which each GPR becomes readable, during scheduling. */
++   unsigned ready_time[AGX_NUM_REGS];
++};
++
++static void
++add_edge(struct ilp_ctx *c, int parent, int child)
++{
++   if (parent < 0 || parent == child)
++      return;
++   util_dynarray_append_typed(&c->nodes[parent].succs, int, child);
++   util_dynarray_append_typed(&c->nodes[child].preds, int, parent);
++   c->nodes[child].indeg++;
++}
++
++/* Mark every transitive ancestor of a load as feeds_load (its address chain),
++ * by walking predecessors back from each load. */
++static void
++mark_load_feeders(struct ilp_ctx *c, void *memctx)
++{
++   struct util_dynarray work;
++   util_dynarray_init(&work, memctx);
++   for (unsigned i = 0; i < c->n; i++)
++      if (c->nodes[i].is_load)
++         util_dynarray_append_typed(&work, int, (int)i);
++
++   while (util_dynarray_num_elements(&work, int)) {
++      int i = util_dynarray_pop(&work, int);
++      util_dynarray_foreach(&c->nodes[i].preds, int, p) {
++         if (!c->nodes[*p].feeds_load) {
++            c->nodes[*p].feeds_load = true;
++            util_dynarray_append_typed(&work, int, *p);
++         }
++      }
++   }
++}
++
++/* GPR registers touched by an operand, [base, base+size). */
++static void
++build_block(agx_context *ctx, agx_block *block, void *memctx, struct ilp_ctx *c)
++{
++   for (unsigned r = 0; r < AGX_NUM_REGS; r++) {
++      c->last_writer[r] = -1;
++      util_dynarray_init(&c->readers[r], memctx);
++   }
++   c->last_mem = c->last_wall = -1;
++   util_dynarray_init(&c->since_wall, memctx);
++
++   for (unsigned i = 0; i < c->n; i++) {
++      struct ilp_node *node = &c->nodes[i];
++      agx_instr *I = node->instr;
++      bool wall = !is_reorderable(I);
++
++      /* Stay after the most recent wall. */
++      add_edge(c, c->last_wall, i);
++
++      /* Register hazards: read-after-write and write-after-read/write. */
++      agx_foreach_src(I, s) {
++         if (I->src[s].type != AGX_INDEX_REGISTER || I->src[s].memory)
++            continue;
++         unsigned base = I->src[s].value, sz = agx_index_size_16(I->src[s]);
++         for (unsigned r = base; r < base + sz && r < AGX_NUM_REGS; r++)
++            add_edge(c, c->last_writer[r], i); /* RAW */
++      }
++      agx_foreach_dest(I, d) {
++         if (I->dest[d].type != AGX_INDEX_REGISTER || I->dest[d].memory)
++            continue;
++         unsigned base = I->dest[d].value, sz = agx_index_size_16(I->dest[d]);
++         for (unsigned r = base; r < base + sz && r < AGX_NUM_REGS; r++) {
++            add_edge(c, c->last_writer[r], i); /* WAW */
++            util_dynarray_foreach(&c->readers[r], int, rd)
++               add_edge(c, *rd, i); /* WAR */
++         }
++      }
++
++      /* Memory ops are non-reorderable: chain each to the previous one so they
++       * keep program order (this is what stops the load run being split).
++       * Only ALU floats around them. */
++      enum agx_schedule_class cls = agx_opcodes_info[I->op].schedule_class;
++      bool is_mem = cls == AGX_SCHEDULE_CLASS_LOAD ||
++                    cls == AGX_SCHEDULE_CLASS_STORE ||
++                    cls == AGX_SCHEDULE_CLASS_ATOMIC;
++      if (is_mem)
++         add_edge(c, c->last_mem, i);
++
++      /* A wall depends on everything since the previous wall. */
++      if (wall) {
++         util_dynarray_foreach(&c->since_wall, int, p)
++            add_edge(c, *p, i);
++      }
++
++      /* Commit this node's effects to the trackers. */
++      agx_foreach_dest(I, d) {
++         if (I->dest[d].type != AGX_INDEX_REGISTER || I->dest[d].memory)
++            continue;
++         unsigned base = I->dest[d].value, sz = agx_index_size_16(I->dest[d]);
++         for (unsigned r = base; r < base + sz && r < AGX_NUM_REGS; r++) {
++            c->last_writer[r] = i;
++            util_dynarray_clear(&c->readers[r]);
++         }
++      }
++      agx_foreach_src(I, s) {
++         if (I->src[s].type != AGX_INDEX_REGISTER || I->src[s].memory)
++            continue;
++         unsigned base = I->src[s].value, sz = agx_index_size_16(I->src[s]);
++         for (unsigned r = base; r < base + sz && r < AGX_NUM_REGS; r++)
++            util_dynarray_append_typed(&c->readers[r], int, i);
++      }
++
++      if (is_mem)
++         c->last_mem = i;
++
++      if (wall) {
++         c->last_wall = i;
++         c->last_mem = -1;
++         util_dynarray_clear(&c->since_wall);
++      }
++      util_dynarray_append_typed(&c->since_wall, int, i);
++   }
++}
++
++/* Cycles the instruction would stall waiting on its GPR inputs at time `now`. */
++static unsigned
++input_stall(struct ilp_ctx *c, const agx_instr *I, unsigned now)
++{
++   unsigned stall = 0;
++   agx_foreach_src(I, s) {
++      if (I->src[s].type != AGX_INDEX_REGISTER || I->src[s].memory)
++         continue;
++      unsigned base = I->src[s].value, sz = agx_index_size_16(I->src[s]);
++      for (unsigned r = base; r < base + sz && r < AGX_NUM_REGS; r++) {
++         if (c->ready_time[r] > now)
++            stall = MAX2(stall, c->ready_time[r] - now);
++      }
++   }
++   return stall;
++}
++
++static void
++schedule_block(agx_context *ctx, agx_block *block, void *memctx)
++{
++   /* Snapshot the reorderable region (before logical_end). */
++   unsigned n = 0;
++   agx_foreach_instr_in_block(block, I) {
++      if (instr_after_logical_end(I))
++         break;
++      n++;
++   }
++   if (n < 2)
++      return;
++
++   struct ilp_ctx c = {0};
++   c.n = n;
++   c.nodes = calloc(n, sizeof(struct ilp_node));
++
++   {
++      unsigned i = 0;
++      agx_foreach_instr_in_block(block, I) {
++         if (instr_after_logical_end(I))
++            break;
++         struct ilp_node *node = &c.nodes[i];
++         node->instr = I;
++         node->is_load = is_load(I) || I->op == AGX_OPCODE_LOCAL_LOAD;
++         instr_timing(I, &node->latency, &node->tp);
++         util_dynarray_init(&node->succs, memctx);
++         util_dynarray_init(&node->preds, memctx);
++         i++;
++      }
++   }
++
++   build_block(ctx, block, memctx, &c);
++   mark_load_feeders(&c, memctx);
++
++   /* Forward list-schedule: at each step pick the ready node that stalls the
++    * least on its inputs (so loads, whose results aren't needed yet, go early
++    * and their consumers are deferred), preferring to continue a run of loads. */
++   memset(c.ready_time, 0, sizeof(c.ready_time));
++   struct util_dynarray ready;
++   util_dynarray_init(&ready, memctx);
++   for (unsigned i = 0; i < n; i++)
++      if (c.nodes[i].indeg == 0)
++         util_dynarray_append_typed(&ready, int, i);
++
++   agx_instr **order = calloc(n, sizeof(agx_instr *));
++   unsigned scheduled = 0, now = 0;
++   bool last_was_load = false;
++
++   while (scheduled < n) {
++      assert(util_dynarray_num_elements(&ready, int) > 0);
++
++      int best = -1, best_slot = -1, best_tier = INT_MAX;
++      unsigned best_stall = UINT_MAX;
++
++      int *r = util_dynarray_begin(&ready);
++      unsigned nready = util_dynarray_num_elements(&ready, int);
++      for (unsigned k = 0; k < nready; k++) {
++         struct ilp_node *node = &c.nodes[r[k]];
++         unsigned stall = input_stall(&c, node->instr, now);
++
++         /* Priority tiers (lower = first), keeping load clauses intact:
++          *  0  continue an open load clause (last emitted was a load),
++          *  1  ALU feeding a load (address chains) -- schedule the whole
++          *     clause's deps before the clause, like collect_clause_deps,
++          *  2  start a load clause,
++          *  3  everything else (consumers). */
++         int tier;
++         if (last_was_load && node->is_load)
++            tier = 0;
++         else if (node->feeds_load && !node->is_load)
++            tier = 1;
++         else if (node->is_load)
++            tier = 2;
++         else
++            tier = 3;
++
++         bool better = best < 0 || tier < best_tier ||
++                       (tier == best_tier && stall < best_stall) ||
++                       (tier == best_tier && stall == best_stall &&
++                        r[k] < best);
++         if (better) {
++            best = r[k];
++            best_slot = k;
++            best_tier = tier;
++            best_stall = stall;
++         }
++      }
++
++      struct ilp_node *node = &c.nodes[best];
++      order[scheduled++] = node->instr;
++      node->done = true;
++      now += node->tp;
++
++      agx_foreach_dest(node->instr, d) {
++         if (node->instr->dest[d].type != AGX_INDEX_REGISTER ||
++             node->instr->dest[d].memory)
++            continue;
++         unsigned base = node->instr->dest[d].value;
++         unsigned sz = agx_index_size_16(node->instr->dest[d]);
++         for (unsigned reg = base; reg < base + sz && reg < AGX_NUM_REGS; reg++)
++            c.ready_time[reg] = now + node->latency;
++      }
++      last_was_load = node->is_load;
++
++      /* Remove `best` from the ready list (swap with last). */
++      r[best_slot] = r[nready - 1];
++      ready.size -= sizeof(int);
++
++      util_dynarray_foreach(&node->succs, int, succ) {
++         if (--c.nodes[*succ].indeg == 0)
++            util_dynarray_append_typed(&ready, int, *succ);
++      }
++   }
++
++   /* Rewrite the block in the scheduled order (post-logical-end stays). */
++   for (int i = (int)n - 1; i >= 0; i--) {
++      agx_remove_instruction(order[i]);
++      list_add(&order[i]->link, &block->instructions);
++   }
++
++   free(order);
++   free(c.nodes);
++}
++
++void
++agx_schedule_ilp(agx_context *ctx)
++{
++   if (getenv("AGX_NO_ILP_SCHED"))
++      return;
++
++   void *memctx = ralloc_context(ctx);
++
++   agx_foreach_block(ctx, block) {
++      schedule_block(ctx, block, memctx);
++   }
++
++   ralloc_free(memctx);
++}
+diff --git a/src/asahi/compiler/meson.build b/src/asahi/compiler/meson.build
+index 1b163a00016..bfec34350a3 100644
+--- a/src/asahi/compiler/meson.build
++++ b/src/asahi/compiler/meson.build
+@@ -31,6 +31,7 @@ libasahi_agx_files = files(
+   'agx_performance.c',
+   'agx_print.c',
+   'agx_pressure_schedule.c',
++  'agx_schedule_ilp.c',
+   'agx_ir.c',
+   'agx_opt_cse.c',
+   'agx_opt_break_if.c',

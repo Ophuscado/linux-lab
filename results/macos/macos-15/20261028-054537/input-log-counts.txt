@@ -1,0 +1,69 @@
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-idle: 0 HID reports, 0 touches, 0 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-move: 324 HID reports, 0 touches, 585 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-rest-move: 662 HID reports, 626 touches, 1036 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-scroll: 471 HID reports, 460 touches, 1542 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-flick: 587 HID reports, 510 touches, 1030 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-hscroll: 441 HID reports, 420 touches, 1814 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-swipe2: 297 HID reports, 545 touches, 411 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-tap1: 109 HID reports, 92 touches, 1 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-tap2: 135 HID reports, 216 touches, 18 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-click: 390 HID reports, 378 touches, 473 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+tp-move: 1 HID reports, 519 touches, 1378 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+tp-tap: 1 HID reports, 141 touches, 152 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+tp-click: 1 HID reports, 235 touches, 445 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+tp-scroll: 1 HID reports, 508 touches, 1370 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+tp-pinch: 0 HID reports, 610 touches, 1191 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+tp-rotate: 1 HID reports, 468 touches, 1387 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+tp-swipe3: 1 HID reports, 728 touches, 592 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+tp-swipe4: 1 HID reports, 1112 touches, 594 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+tp-palm: 1 HID reports, 952 touches, 1237 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+tp-drag: 1 HID reports, 479 touches, 1301 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+kb-frow: 188 HID reports, 152 touches, 257 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+kb-fn: 250 HID reports, 309 touches, 126 events
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+kb-mods: 32 HID reports, 0 touches, 0 events

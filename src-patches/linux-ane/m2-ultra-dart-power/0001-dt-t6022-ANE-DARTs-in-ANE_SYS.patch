@@ -1,0 +1,113 @@
+From de95afc5a7c5b3147aa3e076e2c0aae1ae2dd7ee Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Thu, 29 Oct 2026 01:53:48 +0000
+Subject: [PATCH] dt: t6022 ANE DARTs in ANE_SYS
+
+On a J475d the shipped t6022-ane overlay panicked the boot with an
+asynchronous SError in apple_dart_probe: dart0 in pmp, dart1/2 in ANE_CPU.
+macOS's IORegistry on the same machine gives dart-ane0 (all three windows)
+power gate 0x1fb, ANE-SYS-DART, under ANE_SYS (pmgr 0x260). With the three
+DARTs in ANE_SYS the machine boots, the DARTs initialize and the smoke
+fixture runs 20/20 bit-exact (receipts/2026-10-29-t6022-j475d-ane-sys).
+Only t6022-ane.dts changes; t6020/t6021 keep the shared values.
+---
+ packaging/dt/t6022-ane.dts                    | 28 +++++++++++
+ .../2026-10-29-t6022-j475d-ane-sys/README.md  | 47 +++++++++++++++++++
+ 2 files changed, 75 insertions(+)
+ create mode 100644 receipts/2026-10-29-t6022-j475d-ane-sys/README.md
+
+diff --git a/packaging/dt/t6022-ane.dts b/packaging/dt/t6022-ane.dts
+index 5a35969..d2b31d0 100644
+--- a/packaging/dt/t6022-ane.dts
++++ b/packaging/dt/t6022-ane.dts
+@@ -36,6 +36,34 @@
+ 			ane@284000000 {
+ 				compatible = "apple,t6022-ane";
+ 			};
++
++			/*
++			 * The three DARTs take their power from ANE_SYS (pmgr 0x260) on
++			 * T6022. In the live macOS 15 IORegistry of a J475d, dart-ane0
++			 * (all three windows) has power-gates 0x1fb, which pmgr's device
++			 * table names ANE-SYS-DART, a gate without registers under 0x3c
++			 * ANE_SYS. With dart0 in pmp, the J475d panicked at boot with an
++			 * asynchronous SError in apple_dart_probe (7.1.13); with all three
++			 * in ANE_SYS it boots, the DARTs initialize and ane_t6021's smoke
++			 * run passes 20/20 (receipts/2026-10-29-t6022-j475d-ane-sys).
++			 */
++			iommu@285800000 {
++				power-domains = <&ps_ane_sys>;
++			};
++
++			iommu@285810000 {
++				power-domains = <&ps_ane_sys>;
++			};
++
++			iommu@285820000 {
++				power-domains = <&ps_ane_sys>;
++			};
++		};
++	};
++
++	fragment@12 {
++		target-path = "/soc/power-management@28e080000/power-controller@260";
++		ps_ane_sys: __overlay__ {
+ 		};
+ 	};
+ };
+diff --git a/receipts/2026-10-29-t6022-j475d-ane-sys/README.md b/receipts/2026-10-29-t6022-j475d-ane-sys/README.md
+new file mode 100644
+index 0000000..b1bc3c3
+--- /dev/null
++++ b/receipts/2026-10-29-t6022-j475d-ane-sys/README.md
+@@ -0,0 +1,47 @@
++# T6022 (M2 Ultra, J475d): the ANE DARTs in ANE_SYS, 2026-10-29
++
++The first boot of a J475d with the `t6022-ane` overlay (main at `ae18911`) panicked; with the three ANE DARTs moved to
++the ANE_SYS power domain it boots, and `ane_t6021` runs the smoke fixture bit-exact.
++
++## The panic (overlay as shipped)
++
++Kernel 7.1.13 (linux-asahi 7.1.13-3 base), 2.66 s after start, on most boots (one boot in about eleven got through):
++
++```
++Asynchronous SError Interrupt
++CPU: 10 UID: 0 PID: 484 Comm: (udev-worker) Tainted: G S M  7.1.13 #1 PREEMPT(lazy)
++Hardware name: Apple Inc. Mac14,14/J475d, BIOS 2026.07 07/01/2026
++ arm64_serror_panic+0x78/0x90
++ do_serror+0x38/0x60
++ el1h_64_error+0x84/0x88
++ apple_dart_probe+0x170/0x980 [apple_dart] (P)
++ platform_probe+0x88/0xc0
++ ...
++ apple_dart_driver_init+0x2c/0x3fd0 [apple_dart]
++```
++
++The shipped overlay puts dart0 (0x285800000) in pmp (power-controller@2c8) and dart1/dart2 in ANE_CPU (0x2e0).
++
++## Where macOS powers them (live IORegistry, macOS 15, same machine, 2026-10-28)
++
++- `/arm-io/dart-ane0@85800000`: reg 0x285800000, 0x285810000, 0x285820000 (and 0x285804000), each 0x4000,
++  interrupt 885, `compatible` dart,t8110, `power-gates` = 0x1fb. (`dart-ane1`: the same at 0x2285800000, 0x100001fb.)
++- pmgr `devices`: 0x1fb = `ANE-SYS-DART`, flags 0x10, no register (psreg 0, slot 0), parent 0x3c.
++  0x3c = `ANE_SYS`, psreg 6 (base 0x200) slot 12: pmgr offset 0x260. `ANE_CPU` (0x4c, offset 0x2e0) is a child of
++  `ANE_SYS`; the set and base domains 0x70-0x76 (0x4000-0x4030) are children of `ANE_SYS` or of each other.
++
++So all three DART windows sit behind ANE_SYS, which iBoot leaves off on this machine at boot.
++
++## With the DARTs in ANE_SYS (this change)
++
++Same kernel and machine, the overlay with `power-domains = <&ps_ane_sys>` on the three DARTs:
++
++- boot clean; `apple-dart 28580[012]0000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0,
++  locked: 0, AS 42 -> 42] initialized`; `284000000.ane: Adding to iommu group 0`
++- `ane_t6021` (ae18911) loaded by hand: firmware t602x_ane0_fw_selene_rc4x (13.5 pin) booted, handshake complete,
++  chman table validated, `/dev/accel/accel0`
++- `omarchy-ane-smoke`: add-fixture on t6022, 20/20 calls bit-exact (sha256 94041b7c...de0b, the golden), min 0.398 ms,
++  median 0.418 ms
++
++The dtc that applied the overlay was 1.7.2; every phandle in the result resolved (the DARTs at the
++power-controller@260 phandle, AIC and ANE_CPU unchanged).
+-- 
+2.43.0
+

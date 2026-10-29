@@ -1,0 +1,21 @@
+Graphics/Displays:
+
+    Apple M2 Ultra:
+
+      Chipset Model: Apple M2 Ultra
+      Type: GPU
+      Bus: Built-In
+      Total Number of Cores: 76
+      Vendor: Apple (0x106b)
+      Metal Support: Metal 3
+      Displays:
+        LG TV SSCR2:
+          Resolution: 3840 x 2160 (2160p/4K UHD 1 - Ultra High Definition)
+          UI Looks like: 1920 x 1080 @ 120.00Hz
+          Main Display: Yes
+          Mirror: Off
+          Online: Yes
+          Rotation: Supported
+          Automatically Adjust Brightness: No
+          Television: Yes
+

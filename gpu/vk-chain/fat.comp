@@ -1,0 +1,31 @@
+#version 450
+// ggml's binary-op shape: three buffers and 30 words of push constants, index math with integer
+// divisions per element (generic_binary_head.glsl). Bound to vk-chain's one buffer three times.
+// MODE 0: the divisions as ggml has them; MODE 1: the same work with the indices passed in.
+layout(local_size_x = 256) in;
+layout(constant_id = 0) const uint MODE = 0;
+layout(constant_id = 1) const uint ITERS = 0;
+layout(constant_id = 7) const uint VARIANT = 0;
+layout(std430, binding = 0) readonly buffer A { float a[]; };
+layout(std430, binding = 1) readonly buffer B { float b[]; };
+layout(std430, binding = 2) writeonly buffer D { float d[]; };
+layout(push_constant) uniform P {
+    uint ne; uint ne00; uint ne01; uint ne02; uint ne03; uint nb00; uint nb01; uint nb02; uint nb03;
+    uint ne10; uint ne11; uint ne12; uint ne13; uint nb10; uint nb11; uint nb12; uint nb13;
+    uint ne20; uint ne21; uint ne22; uint ne23; uint nb20; uint nb21; uint nb22; uint nb23;
+    uint misalign; float p1; float p2; int p3; uint pad;
+} p;
+void main() {
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= p.ne) return;
+    uint ia = idx, ib = idx, id = idx;
+    if (MODE == 0) {
+        uint i03 = idx / (p.ne02 * p.ne01 * p.ne00), r = idx - i03 * p.ne02 * p.ne01 * p.ne00;
+        uint i02 = r / (p.ne01 * p.ne00); r -= i02 * p.ne01 * p.ne00;
+        uint i01 = r / p.ne00, i00 = r - i01 * p.ne00;
+        ia = i03 * p.nb03 + i02 * p.nb02 + i01 * p.nb01 + i00 * p.nb00;
+        ib = (i03 % p.ne13) * p.nb13 + (i02 % p.ne12) * p.nb12 + (i01 % p.ne11) * p.nb11 + (i00 % p.ne10) * p.nb10;
+        id = i03 * p.nb23 + i02 * p.nb22 + i01 * p.nb21 + i00 * p.nb20;
+    }
+    d[id] = a[ia] * p.p1 + b[ib];
+}

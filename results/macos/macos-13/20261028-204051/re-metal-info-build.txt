@@ -1,0 +1,10 @@
+~/Downloads/linux-lab-macos/linux-lab/macos/metal-info.m:12:67: error: property 'architecture' not found on object of type '__strong id<MTLDevice>'
+               [d respondsToSelector:@selector(architecture)] ? d.architecture.name.UTF8String : "?");
+                                                                  ^
+~/Downloads/linux-lab-macos/linux-lab/macos/metal-info.m:18:78: error: use of undeclared identifier 'MTLGPUFamilyApple9'
+            {MTLGPUFamilyApple7, "Apple7"}, {MTLGPUFamilyApple8, "Apple8"}, {MTLGPUFamilyApple9, "Apple9"},
+                                                                             ^
+~/Downloads/linux-lab-macos/linux-lab/macos/metal-info.m:22:41: error: invalid application of 'sizeof' to an incomplete type 'struct (unnamed struct at ~/Downloads/linux-lab-macos/linux-lab/macos/metal-info.m:15:9)[]'
+        for (unsigned i = 0; i < sizeof fam / sizeof fam[0]; i++) if ([d supportsFamily:fam[i].f]) printf(" %s", fam[i].n);
+                                        ^~~
+3 errors generated.

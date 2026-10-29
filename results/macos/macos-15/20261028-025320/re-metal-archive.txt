@@ -1,0 +1,331 @@
+== argsort
+kernel kernel_argsort_f32_i32_asc threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_argsort_f32_i32_desc threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_argsort_merge_f32_i32_asc threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_argsort_merge_f32_i32_desc threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_moe_reduce_f32
+kernel kernel_top_k_f32_i32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_topk_moe_f32
+archived 5 kernels, skipped 2, into ~/linux-lab-macos/20261028-025320/private/ggml-argsort.metallib
+== binbcast
+kernel kernel_add_id threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_bin_fuse_f16_f16_f16
+needs function constants: kernel_bin_fuse_f16_f16_f16_4
+needs function constants: kernel_bin_fuse_f32_f32_f32
+needs function constants: kernel_bin_fuse_f32_f32_f32_4
+kernel kernel_repeat_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_repeat_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_repeat_i16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_repeat_i32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+archived 5 kernels, skipped 4, into ~/linux-lab-macos/20261028-025320/private/ggml-binbcast.metallib
+== conv
+kernel kernel_col2im_1d_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_col2im_1d_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_2d_dw_f16_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_2d_dw_f32_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_2d_dw_tiled_f16_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_2d_dw_tiled_f32_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_2d_f16_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_2d_f32_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_3d_f16_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_3d_f32_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_transpose_1d_f16_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_transpose_1d_f32_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_transpose_2d_f16_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_conv_transpose_2d_f32_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_im2col_ext_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_im2col_ext_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_im2col_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_im2col_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+archived 18 kernels, skipped 0, into ~/linux-lab-macos/20261028-025320/private/ggml-conv.metallib
+== fa_aux
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_f16
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_f32
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_q4_0
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_q4_1
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_q5_0
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_q5_1
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_q8_0
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_tensor
+== fa_vec_f16
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_vec_f32
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_vec_q4_0
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_vec_q4_1
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_vec_q5_0
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_vec_q5_1
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== fa_vec_q8_0
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== gated_delta_net
+needs function constants: kernel_gated_delta_net_f32_1
+needs function constants: kernel_gated_delta_net_f32_2
+needs function constants: kernel_gated_delta_net_f32_4
+== misc
+kernel kernel_arange_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_argmax_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_argmax_final_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_argmax_part_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_count_equal_i32
+kernel kernel_diag_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_dsv4_hc_comb_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_dsv4_hc_post_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_dsv4_hc_post_nocomb_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_dsv4_hc_pre_f32
+needs function constants: kernel_dsv4_hc_pre_gated_f32
+kernel kernel_fwht_f16_1024 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 4096
+kernel kernel_fwht_f16_128 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_fwht_f16_2048 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 8192
+kernel kernel_fwht_f16_256 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_fwht_f16_4096 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 16384
+kernel kernel_fwht_f16_512 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 2048
+kernel kernel_fwht_f16_64 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_fwht_f16_8192 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 640 staticThreadgroupMemoryLength 32768
+kernel kernel_fwht_f32_1024 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 4096
+kernel kernel_fwht_f32_128 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_fwht_f32_2048 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 8192
+kernel kernel_fwht_f32_256 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_fwht_f32_4096 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 16384
+kernel kernel_fwht_f32_512 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 2048
+kernel kernel_fwht_f32_64 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_fwht_f32_8192 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 640 staticThreadgroupMemoryLength 32768
+kernel kernel_memset_i64 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_opt_step_adamw_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_opt_step_sgd_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_pad_f32
+kernel kernel_pad_reflect_1d_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_roll_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_snake_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_snake_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_timestep_embedding_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+archived 32 kernels, skipped 4, into ~/linux-lab-macos/20261028-025320/private/ggml-misc.metallib
+== mul_mm
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== mul_mv
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== mul_mv_mma
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== norm
+kernel kernel_group_norm_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_l2_norm_f32_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_l2_norm_f32_f32_4 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_norm_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_norm_f32_4 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_norm_mul_add_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_norm_mul_add_f32_4 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_norm_mul_f32
+needs function constants: kernel_norm_mul_f32_4
+kernel kernel_rms_norm_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_rms_norm_f32_4 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_rms_norm_mul_add_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_rms_norm_mul_add_f32_4 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_rms_norm_mul_f32
+needs function constants: kernel_rms_norm_mul_f32_4
+archived 11 kernels, skipped 4, into ~/linux-lab-macos/20261028-025320/private/ggml-norm.metallib
+== pool
+kernel kernel_pool_1d_avg_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_pool_1d_max_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_pool_2d_avg_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_pool_2d_max_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+archived 4 kernels, skipped 0, into ~/linux-lab-macos/20261028-025320/private/ggml-pool.metallib
+== quantize
+compile: Error Domain=MTLLibraryErrorDomain Code=3 "program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+" UserInfo={NSLocalizedDescription=program_source:3442:10: fatal error: 'ggml-common.h' file not found
+#include "ggml-common.h"
+         ^~~~~~~~~~~~~~~
+}
+== reduce
+kernel kernel_cumsum_add_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_cumsum_blk_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_op_sum_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_sum_rows_f32_f32
+needs function constants: kernel_sum_rows_f32_f32_4
+archived 3 kernels, skipped 2, into ~/linux-lab-macos/20261028-025320/private/ggml-reduce.metallib
+== rope
+needs function constants: kernel_rope_multi_f16
+needs function constants: kernel_rope_multi_f32
+needs function constants: kernel_rope_neox_f16
+needs function constants: kernel_rope_neox_f32
+needs function constants: kernel_rope_norm_f16
+needs function constants: kernel_rope_norm_f32
+needs function constants: kernel_rope_vision_f16
+needs function constants: kernel_rope_vision_f32
+== softmax
+kernel kernel_soft_max_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_soft_max_f16_4 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_soft_max_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_soft_max_f32_4 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+archived 4 kernels, skipped 0, into ~/linux-lab-macos/20261028-025320/private/ggml-softmax.metallib
+== solve_tri
+needs function constants: kernel_solve_tri_f32
+== ssm
+needs function constants: kernel_ssm_conv_f32_f32
+needs function constants: kernel_ssm_conv_f32_f32_4
+needs function constants: kernel_ssm_conv_f32_f32_batched
+needs function constants: kernel_ssm_conv_f32_f32_batched_4
+kernel kernel_ssm_scan_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_ssm_scan_f32_tail threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_ssm_scan_ssd_mma_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 896 staticThreadgroupMemoryLength 0
+archived 3 kernels, skipped 4, into ~/linux-lab-macos/20261028-025320/private/ggml-ssm.metallib
+== tri
+kernel kernel_tri_f16_0 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_tri_f16_1 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_tri_f16_2 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_tri_f16_3 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_tri_f32_0 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_tri_f32_1 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_tri_f32_2 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_tri_f32_3 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+archived 8 kernels, skipped 0, into ~/linux-lab-macos/20261028-025320/private/ggml-tri.metallib
+== unary
+kernel kernel_geglu_erf_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_geglu_erf_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_geglu_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_geglu_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_geglu_quick_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_geglu_quick_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_reglu_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_reglu_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_silu_back_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_swiglu_clamp_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_swiglu_clamp_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_swiglu_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_swiglu_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_swiglu_oai_f16 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+kernel kernel_swiglu_oai_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_unary_f16_f16
+needs function constants: kernel_unary_f16_f16_4
+needs function constants: kernel_unary_f32_f32
+needs function constants: kernel_unary_f32_f32_4
+archived 15 kernels, skipped 4, into ~/linux-lab-macos/20261028-025320/private/ggml-unary.metallib
+== upscale
+kernel kernel_upscale_bicubic_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+needs function constants: kernel_upscale_bilinear_f32
+kernel kernel_upscale_nearest_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 1024 staticThreadgroupMemoryLength 0
+archived 2 kernels, skipped 1, into ~/linux-lab-macos/20261028-025320/private/ggml-upscale.metallib
+== wkv
+kernel kernel_rwkv_wkv6_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 384 staticThreadgroupMemoryLength 1024
+kernel kernel_rwkv_wkv7_f32 threadExecutionWidth 32 maxTotalThreadsPerThreadgroup 448 staticThreadgroupMemoryLength 1280
+archived 2 kernels, skipped 0, into ~/linux-lab-macos/20261028-025320/private/ggml-wkv.metallib

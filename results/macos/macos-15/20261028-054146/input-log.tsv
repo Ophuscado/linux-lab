@@ -1,0 +1,39 @@
+0	mouse-idle	note	IOHIDManagerOpen 0xe00002e2 (Input Monitoring refused?)
+0.026807	mouse-idle	mtdevice	0x14680d800	family=112 surface=5152x9056 (1/100 mm) builtin=0
+0.026934	mouse-idle	mtdevice	0x14680fe00	family=129 surface=15600x11040 (1/100 mm) builtin=0
+0.040452	mouse-idle	device	Magic Mouse|004c:0323|ff00:12	max_report=2
+0.040827	mouse-idle	device	|004c:0265|1:2	max_report=1388
+0.040869	mouse-idle	device	|004c:0265|ff00:b	max_report=5
+0.040998	mouse-idle	device	|004c:0267|ff00:b	max_report=5
+0.041115	mouse-idle	device	Magic Mouse|004c:0323|ff00:b	max_report=5
+0.041215	mouse-idle	device	|004c:0265|ff00:d	max_report=16
+0.041307	mouse-idle	device	|004c:0267|1:6	max_report=65
+0.041347	mouse-idle	device	Magic Mouse|004c:0323|1:2	max_report=368
+0.041390	mouse-idle	device	|004c:0265|ff00:3	max_report=108
+0.041477	mouse-idle	device	|004c:0267|ff00:3	max_report=108
+0.041560	mouse-idle	device	|004c:0265|ff00:12	max_report=2
+0.041644	mouse-idle	device	|004c:0267|ff00:12	max_report=2
+3.692164	mouse-idle	mt	0x14680d800	1	214.107000	1	id=2 hand=1 path=2 state=2 nx=0.2245 ny=0.6772 nvx=0.0000 nvy=0.0000 z=0.1250 f9=0 angle=1.5708 major=7.920 minor=7.080 mmx=-11.200 mmy=49.430 mmvx=0.000 mmvy=0.000 f14=0 f15=0 density=0.1602
+3.709241	mouse-idle	mt	0x14680d800	2	214.122000	1	id=2 hand=1 path=2 state=2 nx=0.2257 ny=0.6793 nvx=0.0000 nvy=0.0000 z=0.2500 f9=0 angle=1.5708 major=8.140 minor=7.180 mmx=-11.140 mmy=49.590 mmvx=0.000 mmvy=0.000 f14=0 f15=0 density=0.3086
+3.724189	mouse-idle	mt	0x14680d800	3	214.137000	1	id=2 hand=1 path=2 state=2 nx=0.2261 ny=0.6814 nvx=0.0000 nvy=0.0000 z=0.3750 f9=0 angle=1.5708 major=8.240 minor=7.260 mmx=-11.120 mmy=49.750 mmvx=0.000 mmvy=0.000 f14=0 f15=0 density=0.4492
+3.754196	mouse-idle	mt	0x14680d800	4	214.152000	1	id=2 hand=1 path=2 state=3 nx=0.2253 ny=0.6836 nvx=0.0000 nvy=0.0000 z=0.6250 f9=0 angle=1.5708 major=8.500 minor=7.220 mmx=-11.160 mmy=49.910 mmvx=0.000 mmvy=0.000 f14=0 f15=0 density=0.7266
+3.769288	mouse-idle	mt	0x14680d800	5	214.169000	1	id=2 hand=1 path=2 state=4 nx=0.2229 ny=0.6830 nvx=-0.1399 nvy=-0.0298 z=0.8750 f9=0 angle=1.5708 major=8.760 minor=7.120 mmx=-11.280 mmy=49.870 mmvx=-7.000 mmvy=-2.250 f14=0 f15=0 density=1.0000
+3.784197	mouse-idle	mt	0x14680d800	6	214.184000	1	id=2 hand=1 path=2 state=4 nx=0.2217 ny=0.6836 nvx=-0.0800 nvy=0.0347 z=1.0000 f9=0 angle=1.5708 major=8.880 minor=7.060 mmx=-11.340 mmy=49.910 mmvx=-4.000 mmvy=2.625 f14=0 f15=0 density=1.1367
+3.799209	mouse-idle	mt	0x14680d800	7	214.199000	1	id=2 hand=1 path=2 state=4 nx=0.2209 ny=0.6846 nvx=-0.0525 nvy=0.0695 z=1.1250 f9=0 angle=1.5708 major=9.000 minor=7.060 mmx=-11.380 mmy=49.990 mmvx=-2.625 mmvy=5.250 f14=0 f15=0 density=1.2578
+3.814198	mouse-idle	mt	0x14680d800	8	214.214000	1	id=2 hand=1 path=2 state=4 nx=0.2213 ny=0.6852 nvx=0.0250 nvy=0.0347 z=1.1250 f9=0 angle=1.5708 major=9.040 minor=7.080 mmx=-11.360 mmy=50.030 mmvx=1.250 mmvy=2.625 f14=0 f15=0 density=1.2500
+3.829164	mouse-idle	mt	0x14680d800	9	214.229000	1	id=2 hand=1 path=2 state=4 nx=0.2209 ny=0.6857 nvx=-0.0250 nvy=0.0347 z=1.2500 f9=0 angle=1.5708 major=9.180 minor=7.180 mmx=-11.380 mmy=50.070 mmvx=-1.250 mmvy=2.625 f14=0 f15=0 density=1.3477
+3.844235	mouse-idle	mt	0x14680d800	10	214.244000	1	id=2 hand=1 path=2 state=4 nx=0.2201 ny=0.6862 nvx=-0.0525 nvy=0.0347 z=1.3750 f9=0 angle=1.5708 major=9.240 minor=7.260 mmx=-11.420 mmy=50.110 mmvx=-2.625 mmvy=2.625 f14=0 f15=0 density=1.4492
+3.859275	mouse-idle	mt	0x14680d800	11	214.259000	1	id=2 hand=1 path=2 state=4 nx=0.2197 ny=0.6870 nvx=-0.0250 nvy=0.0513 z=1.3750 f9=0 angle=1.5708 major=9.360 minor=7.400 mmx=-11.440 mmy=50.170 mmvx=-1.250 mmvy=3.875 f14=0 f15=0 density=1.4023
+3.874310	mouse-idle	mt	0x14680d800	12	214.274000	1	id=2 hand=1 path=2 state=4 nx=0.2185 ny=0.6875 nvx=-0.0800 nvy=0.0347 z=1.3750 f9=0 angle=1.5708 major=9.420 minor=7.540 mmx=-11.500 mmy=50.210 mmvx=-4.000 mmvy=2.625 f14=0 f15=0 density=1.3672
+3.889209	mouse-idle	mt	0x14680d800	13	214.289000	1	id=2 hand=1 path=2 state=4 nx=0.2173 ny=0.6883 nvx=-0.0800 nvy=0.0529 z=1.5000 f9=0 angle=1.5708 major=9.560 minor=7.700 mmx=-11.560 mmy=50.270 mmvx=-4.000 mmvy=4.000 f14=0 f15=0 density=1.4375
+3.904517	mouse-idle	mt	0x14680d800	14	214.304000	1	id=2 hand=1 path=2 state=4 nx=0.2161 ny=0.6894 nvx=-0.0775 nvy=0.0695 z=1.5000 f9=0 angle=1.5708 major=10.000 minor=7.840 mmx=-11.620 mmy=50.350 mmvx=-3.875 mmvy=5.250 f14=0 f15=0 density=1.3477
+3.919495	mouse-idle	mt	0x14680d800	15	214.319000	1	id=1 hand=1 path=2 state=4 nx=0.2141 ny=0.6915 nvx=-0.1324 nvy=0.1406 z=1.6250 f9=0 angle=1.6199 major=11.050 minor=8.020 mmx=-11.720 mmy=50.510 mmvx=-6.625 mmvy=10.625 f14=0 f15=0 density=1.2969
+3.934087	mouse-idle	mt	0x14680d800	16	214.334000	1	id=1 hand=1 path=2 state=4 nx=0.2125 ny=0.6949 nvx=-0.1049 nvy=0.2283 z=1.7500 f9=0 angle=1.6690 major=12.600 minor=8.120 mmx=-11.800 mmy=50.770 mmvx=-5.250 mmvy=17.250 f14=0 f15=0 density=1.2227
+3.949382	mouse-idle	mt	0x14680d800	17	214.349000	1	id=1 hand=1 path=2 state=4 nx=0.2105 ny=0.6984 nvx=-0.1324 nvy=0.2283 z=1.7500 f9=0 angle=1.6690 major=12.970 minor=8.090 mmx=-11.900 mmy=51.030 mmvx=-6.625 mmvy=17.250 f14=0 f15=0 density=1.1953
+3.964101	mouse-idle	mt	0x14680d800	18	214.364000	1	id=1 hand=1 path=2 state=4 nx=0.2093 ny=0.7010 nvx=-0.0800 nvy=0.1754 z=1.7500 f9=0 angle=1.6690 major=13.360 minor=8.120 mmx=-11.960 mmy=51.230 mmvx=-4.000 mmvy=13.250 f14=0 f15=0 density=1.1641
+3.979061	mouse-idle	mt	0x14680d800	19	214.379000	1	id=1 hand=1 path=2 state=4 nx=0.2089 ny=0.7026 nvx=-0.0250 nvy=0.1042 z=1.7500 f9=0 angle=1.6690 major=13.360 minor=8.090 mmx=-11.980 mmy=51.350 mmvx=-1.250 mmvy=7.875 f14=0 f15=0 density=1.1680
+3.994148	mouse-idle	mt	0x14680d800	20	214.394000	1	id=1 hand=1 path=2 state=4 nx=0.2085 ny=0.7037 nvx=-0.0250 nvy=0.0695 z=1.6250 f9=0 angle=1.6690 major=13.360 minor=8.090 mmx=-12.000 mmy=51.430 mmvx=-1.250 mmvy=5.250 f14=0 f15=0 density=1.0820
+4.009112	mouse-idle	mt	0x14680d800	21	214.409000	1	id=1 hand=1 path=2 state=4 nx=0.2089 ny=0.7013 nvx=0.0250 nvy=-0.1588 z=1.6250 f9=0 angle=1.6690 major=11.760 minor=8.120 mmx=-11.980 mmy=51.250 mmvx=1.250 mmvy=-12.000 f14=0 f15=0 density=1.2070
+4.024107	mouse-idle	mt	0x14680d800	22	214.424000	1	id=1 hand=1 path=2 state=4 nx=0.2097 ny=0.6981 nvx=0.0525 nvy=-0.2118 z=1.6250 f9=0 angle=1.6199 major=11.320 minor=8.120 mmx=-11.940 mmy=51.010 mmvx=2.625 mmvy=-16.000 f14=0 f15=0 density=1.2539
+4.039098	mouse-idle	mt	0x14680d800	23	214.439000	1	id=1 hand=1 path=2 state=4 nx=0.2109 ny=0.6949 nvx=0.0775 nvy=-0.2101 z=1.5000 f9=0 angle=1.6199 major=10.260 minor=7.990 mmx=-11.880 mmy=50.770 mmvx=3.875 mmvy=-15.875 f14=0 f15=0 density=1.2891
+4.045402	mouse-idle	end	hid=0 mt=23 ev=0

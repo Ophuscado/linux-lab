@@ -1,0 +1,6 @@
+# Magic Mouse: no scroll from a resting finger, smart zoom.
+UPSTREAM=https://github.com/AsahiLinux/linux
+BASE=94fb23346d522edf53722357c426a3e58030beea  # tag asahi-7.1.13-3
+FORK=https://github.com/Ophuscado/linux
+BRANCH=hid-magicmouse
+CLONE=src/linux

@@ -1,0 +1,35 @@
+#version 450
+// GPU latency, one thread. MODE 0: ITERS dependent loads at scattered addresses in a buffer of
+// ELEMENTS floats (small: caches; 16M and up: DRAM). MODE 1: ITERS dependent multiply-adds, no
+// memory, which gives the shader clock (a few cycles per step). us per launch / ITERS = one step.
+layout(local_size_x = 256) in;
+layout(constant_id = 0) const uint MODE = 0;
+layout(constant_id = 1) const uint ITERS = 1000;
+layout(std430, binding = 0) buffer B { float x[]; };
+layout(constant_id = 7) const uint VARIANT = 0;
+layout(push_constant) uniform P { uint n; } p;
+void main() {
+    if (gl_GlobalInvocationID.x != 0) return;
+    if (MODE == 2) {
+        // 16 dependent multiply-adds per loop step: the loop's own counter and branch, which
+        // MODE 1 also times, are spread over 16, so MODE 2 / 16 is one multiply-add's latency.
+        float v = x[0];
+        for (uint it = 0; it < ITERS; it++) {
+            v = v * 0.999999 + 1e-7; v = v * 0.999998 + 2e-7; v = v * 0.999997 + 3e-7; v = v * 0.999996 + 4e-7;
+            v = v * 0.999995 + 5e-7; v = v * 0.999994 + 6e-7; v = v * 0.999993 + 7e-7; v = v * 0.999992 + 8e-7;
+            v = v * 0.999991 + 9e-7; v = v * 0.999990 + 1e-6; v = v * 0.999989 + 2e-6; v = v * 0.999988 + 3e-6;
+            v = v * 0.999987 + 4e-6; v = v * 0.999986 + 5e-6; v = v * 0.999985 + 6e-6; v = v * 0.999984 + 7e-6;
+        }
+        x[0] = v;
+        return;
+    }
+    if (MODE == 1) {
+        float v = x[0];
+        for (uint it = 0; it < ITERS; it++) v = v * 0.999999 + 1e-7;
+        x[0] = v;
+        return;
+    }
+    uint idx = 0;
+    for (uint it = 0; it < ITERS; it++) idx = (idx * 33u + 4099u + (floatBitsToUint(x[idx]) & 1u)) % p.n;
+    x[0] = float(idx);
+}

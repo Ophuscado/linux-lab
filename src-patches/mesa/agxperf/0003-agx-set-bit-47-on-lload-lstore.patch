@@ -1,0 +1,44 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: xingjianll <4396kevinliu@gmail.com>
+Date: Thu, 18 Jun 2026 13:41:08 -0400
+Subject: [PATCH 3/4] agx: set bit 47 on lload/lstore
+
+---
+ src/asahi/compiler/agx_pack.c | 3 ++-
+ src/asahi/isa/AGX2.xml        | 2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/asahi/compiler/agx_pack.c b/src/asahi/compiler/agx_pack.c
+index 18c183d22fe..0cbc933d3a3 100644
+--- a/src/asahi/compiler/agx_pack.c
++++ b/src/asahi/compiler/agx_pack.c
+@@ -791,7 +791,8 @@ agx_pack_instr(struct util_dynarray *emission, struct util_dynarray *fixups,
+          ((R & BITFIELD_MASK(6)) << 9) | (L ? BITFIELD64_BIT(15) : 0) |
+          ((A & BITFIELD_MASK(6)) << 16) | (At << 22) | (I->format << 24) |
+          ((O & BITFIELD64_MASK(6)) << 28) | (Ot ? BITFIELD64_BIT(34) : 0) |
+-         (((uint64_t)I->mask) << 36) | (((uint64_t)(O >> 6)) << 48) |
++         (((uint64_t)I->mask) << 36) | BITFIELD64_BIT(47) |
++         (((uint64_t)(O >> 6)) << 48) |
+          (((uint64_t)(A >> 6)) << 58) | (((uint64_t)(R >> 6)) << 60);
+ 
+       unsigned size = L ? 8 : 6;
+diff --git a/src/asahi/isa/AGX2.xml b/src/asahi/isa/AGX2.xml
+index 04ac235e449..510d37fa1ef 100644
+--- a/src/asahi/isa/AGX2.xml
++++ b/src/asahi/isa/AGX2.xml
+@@ -1438,6 +1438,7 @@
+     <localmemindex/>
+     <modifier name="format" bit="24:27" kind="format"/>
+     <modifier name="mask" kind="mask" bit="36:39"/>
++    <exact bit="47">1</exact>
+   </ins>
+ 
+   <ins name="lstore" length="6/8">
+@@ -1447,6 +1448,7 @@
+     <localmemindex/>
+     <modifier name="format" bit="24:27" kind="format"/>
+     <modifier name="mask" kind="mask" bit="36:39"/>
++    <exact bit="47">1</exact>
+   </ins>
+ 
+   <ins name="barrier" length="2">

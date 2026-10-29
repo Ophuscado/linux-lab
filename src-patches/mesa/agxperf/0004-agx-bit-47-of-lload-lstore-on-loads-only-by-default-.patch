@@ -1,0 +1,57 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Tue, 27 Oct 2026 01:27:37 +0000
+Subject: [PATCH 4/4] agx: bit 47 of lload/lstore on loads only by default,
+ AGX_BIT47 to choose
+
+On the M2 Ultra (G14D) with the coopmat series, bit 47 on both lload and lstore fails test-backend-ops' ARGMAX (0/7) and COUNT_EQUAL (0/2): those shaders write threadgroup memory and read the same words back after a barrier. Llama 2 7B Q4_0, clustering off, pp512/tg128: bit 47 off 546/65.6, loads and stores 618/65.4 (the failures), loads only 617/65.8 (all 21303 tests pass), stores only 547/65.4. So the gain is the load bit and the fault the store bit.
+
+AGX_BIT47 selects: 0 nowhere, 1 loads and stores, 2 loads (default), 3 stores. The shader cache keeps old binaries across a switch; clear it or turn it off when changing it.
+---
+ src/asahi/compiler/agx_pack.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/src/asahi/compiler/agx_pack.c b/src/asahi/compiler/agx_pack.c
+index 0cbc933d3a3..a4ca23f5258 100644
+--- a/src/asahi/compiler/agx_pack.c
++++ b/src/asahi/compiler/agx_pack.c
+@@ -3,6 +3,7 @@
+  * SPDX-License-Identifier: MIT
+  */
+ 
++#include <stdlib.h>
+ #include "agx_compiler.h"
+ #include "agx_opcodes.h"
+ 
+@@ -560,6 +561,22 @@ agx_pack_alu(struct util_dynarray *emission, agx_instr *I)
+    }
+ }
+ 
++/* Bit 47 of lload/lstore (xingjianll's agx-llm-perf, meaning unknown): faster prompts, but it breaks ARGMAX
++ * on the M2 Ultra. AGX_BIT47 picks where it is set while that is found out: 0 nowhere, 1 loads and stores
++ * (the branch's choice), 2 loads only (the default: on stores it breaks ARGMAX), 3 stores only. Shader cache
++ * off when switching. */
++static uint64_t
++agx_local_bit47(bool is_load)
++{
++   static int mode = -1;
++   if (mode < 0) {
++      const char *e = getenv("AGX_BIT47");
++      mode = e ? atoi(e) : 2;
++   }
++   bool on = mode == 1 || (mode == 2 && is_load) || (mode == 3 && !is_load);
++   return on ? BITFIELD64_BIT(47) : 0;
++}
++
+ static void
+ agx_pack_instr(struct util_dynarray *emission, struct util_dynarray *fixups,
+                agx_instr *I, enum u_tristate needs_g13x_coherency)
+@@ -791,7 +808,7 @@ agx_pack_instr(struct util_dynarray *emission, struct util_dynarray *fixups,
+          ((R & BITFIELD_MASK(6)) << 9) | (L ? BITFIELD64_BIT(15) : 0) |
+          ((A & BITFIELD_MASK(6)) << 16) | (At << 22) | (I->format << 24) |
+          ((O & BITFIELD64_MASK(6)) << 28) | (Ot ? BITFIELD64_BIT(34) : 0) |
+-         (((uint64_t)I->mask) << 36) | BITFIELD64_BIT(47) |
++         (((uint64_t)I->mask) << 36) | agx_local_bit47(is_load) |
+          (((uint64_t)(O >> 6)) << 48) |
+          (((uint64_t)(A >> 6)) << 58) | (((uint64_t)(R >> 6)) << 60);
+ 

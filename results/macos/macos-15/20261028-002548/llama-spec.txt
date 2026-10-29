@@ -1,0 +1,13 @@
+llama2 none: gen 90.8 t/s, 1500 tokens, drafted None accepted None, text 2edbc50d
+llama2 ngram-mod-64: gen 380.5 t/s, 1500 tokens, drafted 1518 accepted 1329, text 2edbc50d
+llama2 ngram-mod-128: gen 399.9 t/s, 1500 tokens, drafted 1775 accepted 1339, text 2edbc50d
+gemma none: gen 69.7 t/s, 1500 tokens, drafted None accepted None, text e1f6d5e5
+gemma ngram-mod-64: gen 67.9 t/s, 1500 tokens, drafted 1818 accepted 166, text 0365f90c
+gemma ngram-mod-128: gen 65.0 t/s, 1500 tokens, drafted 3498 accepted 158, text 03ee79b5
+gemma mtp: gen 115.4 t/s, 1500 tokens, drafted 1248 accepted 1083, text 789d3dcc
+gpt20 none: gen 108.1 t/s, 1500 tokens, drafted None accepted None, text f7dbcc99
+gpt20 ngram-mod-64: gen 279.2 t/s, 1500 tokens, drafted 1140 accepted 1094, text f7dbcc99
+gpt20 ngram-mod-128: gen 304.3 t/s, 1500 tokens, drafted 1212 accepted 1102, text f7dbcc99
+gpt120 none: gen 79.2 t/s, 1500 tokens, drafted None accepted None, text 3236cba8
+gpt120 ngram-mod-64: gen 141.4 t/s, 1500 tokens, drafted 1080 accepted 968, text 3236cba8
+gpt120 ngram-mod-128: gen 150.9 t/s, 1500 tokens, drafted 1336 accepted 974, text 3236cba8

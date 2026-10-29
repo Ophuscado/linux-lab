@@ -1,0 +1,14 @@
+0.00.063.591 I srv  llama_server: initializing ...
+0.00.063.601 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.063.772 W srv  server_setup: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+0.00.065.548 I srv    load_model: loading model '~/Downloads/Llama-2-7B/llama-2-7b.Q4_0.gguf'
+0.00.211.240 W llama_context: n_ctx_seq (16384) > n_ctx_train (4096) -- possible training context overflow
+0.00.580.214 I cmn          init: llama threadpool init, n_threads = 16
+0.00.654.164 W srv    load_model: the slot context (16384) exceeds the training context of the model (4096) - capping
+0.00.727.094 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 4096, kv_unified = 'false'
+0.00.729.709 I srv  server_run_i: model loaded
+0.00.729.713 I srv  server_on_li: listening on http://127.0.0.1:8099
+0.01.100.132 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+0.01.100.159 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+0.05.232.060 I srv    operator(): operator(): cleaning up before exit...
+0.06.130.886 W srv          stop: cancel task, id_task = 0

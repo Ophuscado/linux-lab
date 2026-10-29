@@ -1,0 +1,305 @@
+From 4978e04f4ce768d9a0791196c1b5ad188cbeadd6 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Sat, 17 Oct 2026 22:55:44 +0000
+Subject: [PATCH] HID: magicmouse: no scroll from a resting finger; two-finger
+ smart zoom
+
+A finger resting on a Magic Mouse moves over its surface whenever the
+mouse itself is moved, and the driver turns that travel into wheel
+events: the page scrolls while the pointer moves. With the new
+parameter scroll_hold_ms, touch travel does not scroll for that many
+milliseconds after the mouse body reported motion; the scroll baseline
+follows the finger meanwhile, so scrolling starts afresh once the mouse
+is still. 0, the default, keeps today's behaviour.
+
+The parameter smart_zoom (read when the mouse connects) adds the macOS
+"smart zoom": two fingers that tap together, twice within 400 ms, send
+Ctrl+= smart_zoom_steps times; the next double tap sends Ctrl+0. The
+keys are what most programs take for zoom in and actual size. The
+motion of the body is now read before the touches of a report, so both
+features see it.
+
+Built with W=1 for x86_64 against tbt/7.1; checkpatch clean. Not yet
+run on a mouse.
+---
+ drivers/hid/hid-magicmouse.c | 176 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 165 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
+index f2683800b..6ccacc8e2 100644
+--- a/drivers/hid/hid-magicmouse.c
++++ b/drivers/hid/hid-magicmouse.c
+@@ -51,6 +51,18 @@ static bool report_undeciphered;
+ module_param(report_undeciphered, bool, 0644);
+ MODULE_PARM_DESC(report_undeciphered, "Report undeciphered multi-touch state field using a MSC_RAW event");
+ 
++static unsigned int scroll_hold_ms;
++module_param(scroll_hold_ms, uint, 0644);
++MODULE_PARM_DESC(scroll_hold_ms, "Magic Mouse: no scrolling for this many ms after the mouse moved, so a resting finger does not scroll (0: off)");
++
++static bool smart_zoom;
++module_param(smart_zoom, bool, 0644);
++MODULE_PARM_DESC(smart_zoom, "Magic Mouse: a two-finger double tap zooms in (Ctrl+=) and the next one back (Ctrl+0); read when the mouse connects");
++
++static unsigned int smart_zoom_steps = 3;
++module_param(smart_zoom_steps, uint, 0644);
++MODULE_PARM_DESC(smart_zoom_steps, "Magic Mouse: zoom-in steps for one smart zoom (1-10)");
++
+ #define TRACKPAD2_2021_BT_VERSION 0x110
+ #define TRACKPAD_2024_BT_VERSION 0x314
+ 
+@@ -85,6 +97,13 @@ MODULE_PARM_DESC(report_undeciphered, "Report undeciphered multi-touch state fie
+ #define SCROLL_HR_THRESHOLD 90 /* units */
+ #define SCROLL_ACCEL_DEFAULT 7
+ 
++/* Two-finger tap for smart zoom: both fingers down and up again within
++ * TAP_MAX_MS, each moving at most TAP_MOVE units; two taps within TAP_GAP_MS.
++ */
++#define TAP_MAX_MS 300
++#define TAP_GAP_MS 400
++#define TAP_MOVE 150
++
+ /* Touch surface information. Dimension is in hundredths of a mm, min and max
+  * are in units. */
+ #define MOUSE_DIMENSION_X (float)9056
+@@ -146,6 +165,9 @@ struct magicmouse_input_ops {
+  * @ntouches: Number of touches in most recent touch report.
+  * @scroll_accel: Number of consecutive scroll motions.
+  * @scroll_jiffies: Time of last scroll motion.
++ * @move_jiffies: Time the mouse body last moved (for scroll_hold_ms).
++ * @down_mask: Tracking IDs of the touches down in the most recent mouse report.
++ * @tap: State of a two-finger tap for smart_zoom.
+  * @pos: multi touch position data of the last report.
+  * @touches: Most recent data for a touch, indexed by tracking ID.
+  * @tracking_ids: Mapping of current touch input data to @touches.
+@@ -162,6 +184,17 @@ struct magicmouse_sc {
+ 	int ntouches;
+ 	int scroll_accel;
+ 	unsigned long scroll_jiffies;
++	unsigned long move_jiffies;
++	u16 down_mask;
++
++	struct {
++		unsigned long start;
++		unsigned long last;
++		int x[2], y[2], ids[2];
++		bool active;
++		bool blocked;
++		bool zoomed;
++	} tap;
+ 
+ 	struct input_mt_pos pos[MAX_CONTACTS];
+ 	struct {
+@@ -404,6 +437,22 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 		int step_x_hr = msc->touches[id].scroll_x_hr - x;
+ 		int step_y_hr = msc->touches[id].scroll_y_hr - y;
+ 
++		/* While the mouse body moves, a resting finger moves over the
++		 * surface too: follow it without scrolling, so the scroll
++		 * starts afresh once the mouse is still.
++		 */
++		if (scroll_hold_ms && state == TOUCH_STATE_DRAG &&
++		    time_in_range(now, msc->move_jiffies, msc->move_jiffies +
++				  msecs_to_jiffies(scroll_hold_ms))) {
++			msc->touches[id].scroll_x = x;
++			msc->touches[id].scroll_y = y;
++			msc->touches[id].scroll_x_hr = x;
++			msc->touches[id].scroll_y_hr = y;
++			msc->touches[id].scroll_x_active = false;
++			msc->touches[id].scroll_y_active = false;
++			state = TOUCH_STATE_NONE;
++		}
++
+ 		/* Calculate and apply the scroll motion. */
+ 		switch (state) {
+ 		case TOUCH_STATE_START:
+@@ -477,8 +526,10 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 		}
+ 	}
+ 
+-	if (down)
++	if (down) {
+ 		msc->ntouches++;
++		msc->down_mask |= BIT(id);
++	}
+ 
+ 	input_mt_slot(input, id);
+ 	input_mt_report_slot_state(input, MT_TOOL_FINGER, down);
+@@ -510,6 +561,90 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 	}
+ }
+ 
++static void magicmouse_emit_zoom(struct magicmouse_sc *msc)
++{
++	struct input_dev *input = msc->input;
++	int key = msc->tap.zoomed ? KEY_0 : KEY_EQUAL;
++	int steps = msc->tap.zoomed ? 1 : clamp_t(int, smart_zoom_steps, 1, 10);
++	int i;
++
++	input_report_key(input, KEY_LEFTCTRL, 1);
++	input_sync(input);
++	for (i = 0; i < steps; i++) {
++		input_report_key(input, key, 1);
++		input_sync(input);
++		input_report_key(input, key, 0);
++		input_sync(input);
++	}
++	input_report_key(input, KEY_LEFTCTRL, 0);
++	input_sync(input);
++	msc->tap.zoomed = !msc->tap.zoomed;
++}
++
++/* Called once per mouse report, after its touches: tracks a tap of two
++ * fingers that come down and go up together, and zooms on the second
++ * of two such taps in a row.
++ */
++static void magicmouse_tap_zoom(struct magicmouse_sc *msc, bool moved)
++{
++	unsigned long mask = msc->down_mask;
++	unsigned long now = jiffies;
++	int n = hweight16(msc->down_mask);
++	unsigned int bit;
++	int i, id, d;
++
++	if (!test_bit(KEY_EQUAL, msc->input->keybit))
++		return;
++
++	if (!msc->tap.active) {
++		if (n == 0) {
++			msc->tap.blocked = false;
++		} else if (n == 2 && !msc->tap.blocked && !moved) {
++			msc->tap.active = true;
++			msc->tap.start = now;
++			i = 0;
++			for_each_set_bit(bit, &mask, MAX_CONTACTS) {
++				msc->tap.ids[i] = bit;
++				msc->tap.x[i] = msc->pos[bit].x;
++				msc->tap.y[i] = msc->pos[bit].y;
++				i++;
++			}
++		} else if (n > 2) {
++			msc->tap.blocked = true;
++		}
++		return;
++	}
++
++	d = 0;
++	for (i = 0; i < 2; i++) {
++		id = msc->tap.ids[i];
++		if (msc->down_mask & BIT(id))
++			d = max(d, abs(msc->pos[id].x - msc->tap.x[i]) +
++				   abs(msc->pos[id].y - msc->tap.y[i]));
++	}
++	if (n > 2 || moved || d > TAP_MOVE ||
++	    (msc->down_mask & ~(BIT(msc->tap.ids[0]) | BIT(msc->tap.ids[1]))) ||
++	    time_after(now, msc->tap.start + msecs_to_jiffies(TAP_MAX_MS))) {
++		/* Not a tap: wait until every finger is up. */
++		msc->tap.active = false;
++		msc->tap.blocked = n != 0;
++		msc->tap.last = 0;
++		return;
++	}
++	if (n > 0)
++		return;
++
++	/* Both fingers are up again: one two-finger tap. */
++	msc->tap.active = false;
++	if (msc->tap.last &&
++	    time_before(now, msc->tap.last + msecs_to_jiffies(TAP_GAP_MS))) {
++		msc->tap.last = 0;
++		magicmouse_emit_zoom(msc);
++	} else {
++		msc->tap.last = now;
++	}
++}
++
+ static int __magicmouse_raw_event_usb(struct hid_device *hdev,
+ 		struct hid_report *report, u8 *data, int size, bool nested)
+ {
+@@ -571,16 +706,23 @@ static int __magicmouse_raw_event_usb(struct hid_device *hdev,
+ 					size);
+ 			return 0;
+ 		}
+-		msc->ntouches = 0;
+-		for (ii = 0; ii < npoints; ii++)
+-			magicmouse_emit_touch(msc, ii, data + ii * 8 + 6);
++		/* The motion first: a touch that moves while the mouse body
++		 * moves is not a scroll (scroll_hold_ms).
++		 */
++		x = (int)(((data[3] & 0x0c) << 28) | (data[1] << 22)) >> 22;
++		y = (int)(((data[3] & 0x30) << 26) | (data[2] << 22)) >> 22;
++		if (x || y)
++			msc->move_jiffies = jiffies;
+ 
+ 		/* When emulating three-button mode, it is important
+ 		 * to have the current touch information before
+ 		 * generating a click event.
+ 		 */
+-		x = (int)(((data[3] & 0x0c) << 28) | (data[1] << 22)) >> 22;
+-		y = (int)(((data[3] & 0x30) << 26) | (data[2] << 22)) >> 22;
++		msc->ntouches = 0;
++		msc->down_mask = 0;
++		for (ii = 0; ii < npoints; ii++)
++			magicmouse_emit_touch(msc, ii, data + ii * 8 + 6);
++
+ 		clicks = data[3];
+ 
+ 		/* The following bits provide a device specific timestamp. They
+@@ -599,16 +741,21 @@ static int __magicmouse_raw_event_usb(struct hid_device *hdev,
+ 					size);
+ 			return 0;
+ 		}
+-		msc->ntouches = 0;
+-		for (ii = 0; ii < npoints; ii++)
+-			magicmouse_emit_touch(msc, ii, data + ii * 8 + 14);
++		/* The motion first, as for MOUSE_REPORT_ID. */
++		x = (int)((data[3] << 24) | (data[2] << 16)) >> 16;
++		y = (int)((data[5] << 24) | (data[4] << 16)) >> 16;
++		if (x || y)
++			msc->move_jiffies = jiffies;
+ 
+ 		/* When emulating three-button mode, it is important
+ 		 * to have the current touch information before
+ 		 * generating a click event.
+ 		 */
+-		x = (int)((data[3] << 24) | (data[2] << 16)) >> 16;
+-		y = (int)((data[5] << 24) | (data[4] << 16)) >> 16;
++		msc->ntouches = 0;
++		msc->down_mask = 0;
++		for (ii = 0; ii < npoints; ii++)
++			magicmouse_emit_touch(msc, ii, data + ii * 8 + 14);
++
+ 		clicks = data[1];
+ 
+ 		/* The following bits provide a device specific timestamp. They
+@@ -653,6 +800,7 @@ static int __magicmouse_raw_event_usb(struct hid_device *hdev,
+ 	if (input->id.product == USB_DEVICE_ID_APPLE_MAGICMOUSE ||
+ 	    input->id.product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
+ 	    input->id.product == USB_DEVICE_ID_APPLE_MAGICMOUSE2_USBC) {
++		magicmouse_tap_zoom(msc, x || y || (clicks & 3));
+ 		magicmouse_emit_buttons(msc, clicks & 3);
+ 		input_report_rel(input, REL_X, x);
+ 		input_report_rel(input, REL_Y, y);
+@@ -893,6 +1041,11 @@ static int magicmouse_setup_input_usb(struct input_dev *input,
+ 		__set_bit(BTN_RIGHT, input->keybit);
+ 		if (emulate_3button)
+ 			__set_bit(BTN_MIDDLE, input->keybit);
++		if (smart_zoom) {
++			__set_bit(KEY_LEFTCTRL, input->keybit);
++			__set_bit(KEY_EQUAL, input->keybit);
++			__set_bit(KEY_0, input->keybit);
++		}
+ 
+ 		__set_bit(EV_REL, input->evbit);
+ 		__set_bit(REL_X, input->relbit);
+@@ -1340,6 +1493,7 @@ static int magicmouse_probe(struct hid_device *hdev,
+ 	}
+ 
+ 	msc->scroll_accel = SCROLL_ACCEL_DEFAULT;
++	msc->move_jiffies = jiffies - HZ;
+ 	msc->hdev = hdev;
+ 	INIT_DEFERRABLE_WORK(&msc->work, magicmouse_enable_mt_work);
+ 
+-- 
+2.43.0
+

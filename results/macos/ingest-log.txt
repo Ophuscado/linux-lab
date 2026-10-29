@@ -1,0 +1,84 @@
+13 run.zip: 146 run files taken
+14 run.zip: 150 run files taken
+15 run.zip: 150 run files taken
+linux-lab-results.zip: 829 run files taken
+linux-lab-macos: 1 run files taken
+OLDER: 0 run files taken
+20261027-232820/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261027-232820: macOS 15, 33 files
+20261027-233535: macOS 15, 17 files
+20261027-233602/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261027-233602: macOS 15, 33 files
+20261027-234455/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261027-234455: macOS 15, 16 files
+20261028-000105: macOS 15, 8 files
+20261028-000231/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-000231: macOS 15, 3 files
+20261028-000453: macOS 15, 14 files
+20261028-001045/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-001045: macOS 15, 16 files
+20261028-001133/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-001133: macOS 15, 2 files
+20261028-001141/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-001141: macOS 15, 2 files
+20261028-001150/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-001150: macOS 15, 2 files
+20261028-002548/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-002548: macOS 15, 16 files
+20261028-004051/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-004051: macOS 15, 22 files
+20261028-005626: macOS 15, 1 files
+20261028-005632/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-005632: macOS 15, 49 files
+20261028-011823/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-011823: macOS 15, 28 files
+20261028-021506: macOS 15, 5 files
+20261028-021609/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-021609: macOS 15, 10 files
+20261028-022802/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-022802: macOS 15, 10 files
+20261028-024002/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-024002: macOS 15, 10 files
+20261028-025200/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-025200: macOS 15, 10 files
+20261028-025320/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-025320: macOS 15, 24 files
+20261028-031227/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-031227: macOS 15, 10 files
+20261028-031330/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-031330: macOS 15, 3 files
+20261028-031339/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-031339: macOS 15, 3 files
+20261028-031347/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-031347: macOS 15, 18 files
+20261028-033049/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-033049: macOS 15, 8 files
+20261028-034346/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-034346: macOS 15, 7 files
+20261028-054146: macOS 15, 10 files
+20261028-054226: macOS 15, 10 files
+20261028-054537/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-054537: macOS 15, 10 files
+20261028-055856/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-055856: macOS 15, 12 files
+20261028-063807/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-063807: macOS 15, 6 files
+20261028-063922/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-063922: macOS 15, 6 files
+20261028-064704/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-064704: macOS 15, 10 files
+20261028-193628/collect.log: a different copy from linux-lab-results.zip kept as .alt-1
+20261028-193628: macOS 15, 6 files
+20261028-204051/collect.log: a different copy from 13 run.zip kept as .alt-1
+20261028-204051: macOS 13, 36 files
+20261028-204702/collect.log: a different copy from 13 run.zip kept as .alt-1
+20261028-204702: macOS 13, 36 files
+20261028-211109/collect.log: a different copy from 15 run.zip kept as .alt-1
+20261028-211109: macOS 15, 37 files
+20261028-211514/collect.log: a different copy from 15 run.zip kept as .alt-1
+20261028-211514: macOS 15, 37 files
+20261028-213234/collect.log: a different copy from 14 run.zip kept as .alt-1
+20261028-213234: macOS 14, 37 files
+20261028-213651/collect.log: a different copy from 14 run.zip kept as .alt-1
+20261028-213651: macOS 14, 37 files
+total 125.5 MB

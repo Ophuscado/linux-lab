@@ -1,0 +1,34 @@
+Bluetooth:
+
+      Bluetooth Controller:
+          Address: <mac>
+          State: On
+          Chipset: BCM_4388
+          Discoverable: Off
+          Firmware Version: 22.5.542.2784
+          Product ID: 0x4A2B
+          Transport: PCIe
+          Vendor ID: 0x004C (Apple)
+      Connected:
+          Magic Keyboard:
+              Address: <mac>
+              Vendor ID: 0x004C
+              Product ID: 0x0267
+              Firmware Version: 2.0.6
+              Minor Type: Keyboard
+              Services: 0x800020 < HID ACL >
+          Magic Mouse:
+              Address: <mac>
+              Vendor ID: 0x004C
+              Product ID: 0x0323
+              Firmware Version: 3.1.4
+              Minor Type: Mouse
+              Services: 0x800020 < HID ACL >
+          Magic Trackpad:
+              Address: <mac>
+              Vendor ID: 0x004C
+              Product ID: 0x0265
+              Firmware Version: 3.1.8
+              Minor Type: Magic Trackpad
+              Services: 0x800020 < HID ACL >
+
