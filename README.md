@@ -9,6 +9,23 @@ Everything here is tested on that one machine. It is a layer on top of upstream 
 llama.cpp, omarchy-ane): changes are kept as patch series against pinned upstream commits, so each can be rebuilt,
 published and proposed upstream on its own. The findings, with their evidence and dates, are in `KNOWLEDGE.md`.
 
+## Milestones
+
+Dates are 2026. "First" means the first public report for this machine that a web search on 29 Oct found, not a
+claim about every lab in the world.
+
+| Date | Milestone |
+|---|---|
+| 11 Oct | **PCIe over USB4 on the M2 Ultra under Linux.** Asahi's public USB4 series (30 Aug) carries XDomain and USB 3 tunnels and states that PCIe tunnelling is not there yet. Here it works: Apple's tunneled PCIe controller (`apciec`) driven by a ported 2023 driver, its DMA address offset found from macOS's tables, a cable-speed fix, and eight SATA disks per enclosure at 20 Gb/s x2. |
+| 11 Oct | **USB4 and the GPU in one kernel.** The USB4 stack backported from Asahi's 7.2 work-in-progress tree (where the GPU driver is marked broken) onto 7.1.13. |
+| 22 Oct | **Thunderbolt 3 storage on the same kernel, unchanged:** two 24-bay boxes (Intel Titan Ridge bridge, LSI SAS3008, SAS expander) at 40 Gb/s, carrying 33 disks around the clock with no link or controller error. |
+| 29 Oct | **The M2 Ultra's Neural Engine runs under Linux.** omarchy-ane lists M1 and M2 Max as tested (16 Oct); its M2 Ultra overlay panicked the boot. The fix comes from macOS's power tables on this machine (the ANE DARTs sit in the `ANE_SYS` island); firmware boots and the smoke test is 20/20 bit-exact, 0.418 ms. |
+| 25-29 Oct | **llama.cpp on Vulkan, measured against Metal on the same machine and moved forward:** a five-patch series (matrix tiles +12-23 % on prompts; batches of 9-64 tokens 3x faster, which makes speculative decoding pay, 30 -> 55-59 t/s on a code edit; a Metal-style q4_0/q8_0 shader, +7 % generation on Llama 2; a MUL_MAT_ID abort fixed) and the reasons for the remaining gap (launch serialization, fusion, memory bandwidth). |
+| 28 Oct | **GPU usage per client** for the Rust `asahi` driver: a `show_fdinfo` hook missing from the Rust DRM abstraction. In test. |
+| 27-28 Oct | **A public macOS reference dataset of this machine:** 45 runs under macOS 13, 14 and 15 (device trees, IORegistry, Neural Engine, SMC, Metal and MoltenVK benchmarks, input reports), so Linux work needs no macOS boot. |
+| 14-29 Oct | **33 disks of 18 TB moved from HFS+ to XFS in place**, every copy verified before its source was formatted, then pooled and protected by four parity disks. |
+| 18 Oct | **Desktop fixes ready for upstream:** the KDE task switcher dropping windows traced to a rounding in libplasma; a Magic Mouse driver change that stops a resting finger from scrolling. |
+
 ## Results
 
 What works on my machine today, with where its code and evidence live. Dates are 2026.
@@ -57,11 +74,13 @@ What works on my machine today, with where its code and evidence live. Dates are
   and network addresses are replaced. The runs of 27-28 Oct under macOS 13, 14 and 15 are in `results/macos/`.
 
 **Storage server** (`storage/`, `migrate-row.sh`)
-- My 33 disks of 18 TB, in two 24-bay Thunderbolt 3 boxes, moved from HFS+ to XFS in place, disk by disk, each copy
-  verified by size and time and by reading samples back; files macOS keeps compressed (which Linux reads as empty)
-  detected and held. The pool holds 344 of 459 TB; the last disk is still copying.
-- One mergerfs pool over the data disks, SnapRAID with four parity disks, mounts by label that tolerate an absent
-  disk, nightly sync and weekly scrub timers.
+- 33 disks of 18 TB in two 24-bay Thunderbolt 3 boxes: 594 TB (540 TiB) raw. 28 data disks make one mergerfs pool of
+  504 TB (459 TiB), 378 TB (344 TiB) in use; four parity disks for SnapRAID. The goal is 48 disks, both boxes full:
+  864 TB (786 TiB) raw, 756 TB (688 TiB) of data with six parity disks.
+- Moved from HFS+ to XFS in place, disk by disk, each copy verified by size and time and by reading samples back;
+  files macOS keeps compressed (which Linux reads as empty) detected and held. The last disk is still copying.
+- Mounts by label that tolerate an absent disk; SnapRAID nightly sync and weekly scrub timers ready for after the
+  first sync.
 
 **Desktop** (`desktop/`, `src-patches/linux/hid-*`)
 - Magic Mouse: no scroll from a resting finger while the mouse moves (in the driver); Magic Keyboard: optional Fn

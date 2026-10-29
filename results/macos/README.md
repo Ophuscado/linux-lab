@@ -7,7 +7,7 @@ programs) and model files. Serial-number lines are removed, UUIDs and MAC addres
 second, differing copy of the same file from another source (mostly the log written once more on copying). Files over
 200 KB are gzipped (read them with `zcat` or `zgrep`).
 
-What the data showed is in `../../KNOWLEDGE.md` (Metal, Vulkan through MoltenVK and Honeykrisp; the ANE overlay).
+What the data showed is in `../../KNOWLEDGE.md` (sections "GPU: llama.cpp on Vulkan against Metal" and "The Neural Engine").
 
 | Run | macOS | Steps | Contents |
 |---|---|---|---|

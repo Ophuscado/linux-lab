@@ -23,7 +23,8 @@ Standing choices, with the reason when one was given.
   follows the target project's rules on tool use (the kernel's coding-assistants.rst asks for transparency and a
   human Signed-off-by; Asahi forbids generative AI for material contributions, so Asahi gets reports only, written
   by hand). Each public repository's README is its showcase; temporary work lives in branches.
-- 26 Oct: SnapRAID as one array over every disk, 4 parity disks, 6 at most (SnapRAID's limit).
+- 26 Oct: SnapRAID as one array over every disk, 4 parity disks, 6 at most (SnapRAID's limit); the goal is 48 disks,
+  both 24-bay boxes full (864 TB, 786 TiB raw).
 - 18 Oct, giving back: a small, generic, tested fix goes upstream and is carried here until it lands; a fork only
   as a patch series on a pinned upstream commit; taste and settings stay a local layer over an untouched upstream.
 - 18 Oct: the KDE settings as they were that day are the desired defaults; no script overrides one without a switch.
@@ -92,18 +93,17 @@ Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK 
 
 | tokens/s | Metal pp512 / tg128 | Vulkan on MoltenVK | Honeykrisp, Linux |
 |---|---|---|---|
-| Llama 2 7B Q4_0 | 1518 / 121.5 | 788 / 59.9 | 762 / 69.7 |
-| GPT-OSS 20B | 1945 / 125.0 | 992 / 82.7 | 747 / 70.9 |
-| Qwen3-Coder-Next Q8 | 1535 / 67 | 422 / 24.8 | 488 / 34.8 |
+| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 762 / 69.7 |
+| GPT-OSS 20B | 1944 / 124.5 | 992 / 82.7 | 747 / 70.9 |
+| Qwen3-Coder-Next Q8 | 1535 / 67.8 | 422 / 24.8 | 488 / 34.8 |
 
 - 29 Oct, VERIFIED, one 4096x14336 matrix-vector (test-backend-ops perf, µs): f16 Metal 143, MoltenVK 161, Linux
   247; q4_0 37 / 100 / 81 (68 with `GGML_VK_MMV_SIMD=1`, honeykrisp 0005, at 8 rows a workgroup); q8_0 57.5 / 90 /
   160 (126-128 with either the new shader or 4 rows). Generation with the new shader: Llama 2 65.1 to 69.7 (4 rows),
   Qwen 33.6 to 34.8 (4 rows), GPT-OSS 70.2 to 70.9. Plain f16 streams at 475 GB/s on Linux against 820 on Metal and
   730 through MoltenVK, so part of the gap is below llama.cpp: memory bandwidth reached on Linux (INFERRED; open).
-- 28 Oct, VERIFIED: Metal's graph optimisations are worth 7 % of generation on Llama 2, 13-15 % on GPT-OSS, 28-29 % on
-  Qwen and Gemma (fusion alone 22-25 %): RMS_NORM+MUL everywhere, the MoE reduce, Gemma's whole router. Prompts move
-  3-8 %.
+- 28 Oct, VERIFIED: Metal's graph optimisations are worth 5-16 % of generation on Llama 2 and GPT-OSS and 28 % on
+  Gemma and Qwen, fusion alone 22-25 % there (table below); prompts move 3-8 %.
 - 28 Oct: MoltenVK runs llama.cpp's Vulkan backend no faster than Honeykrisp, so most of the 2-3x lies in the Vulkan
   shaders and graph, not in Mesa or the kernel (INFERRED).
 - 25 Oct, VERIFIED: a launch that waits on the previous one costs 4.0-4.2 µs (Metal 2.27); Qwen issues 1878 launches a
@@ -129,6 +129,66 @@ Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK 
   ksystemstats backend reading them (INFERRED).
 - Benchmarks take `~/.cache/linux-lab-gpu.lock` (flock): two runs sharing the GPU halve each other.
 
+### Metal on this machine
+
+macOS 15.8.1, llama.cpp 2280f0f with Metal, 27-28 Oct, VERIFIED (`results/macos/macos-15`, runs `20261027-234455` to
+`20261028-025200`; each figure the median of 3-5 runs, which agree within 2 %). Flash attention on, all layers on the
+GPU, batch 8192.
+
+| model (file) | pp512 | pp2048 | tg128 |
+|---|---|---|---|
+| Llama 2 7B Q4_0 (3.6 GiB) | 1517 | 1538 | 120.4 |
+| GPT-OSS 20B Q8_0 (12.3 GiB) | 1944 | 2146 | 124.5 |
+| GPT-OSS 120B Q4_K (58.7 GiB) | 1001 | 1300 | 94.2 |
+| Gemma 4 26B-A4B Q4_K (15.8 GiB) | 2100 | 2338 | 95.2 |
+| Qwen3-Coder-Next 80B-A3B Q8_0 (80.4 GiB) | 1535 | 1817 | 67.8 |
+
+Tokens per second against batch size (llama-bench, one prompt of N tokens; the speed a speculative step pays to
+verify N tokens):
+
+| N | 1 | 2 | 4 | 8 | 9 | 12 | 16 | 24 | 32 | 48 | 64 | 128 | 512 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Llama 2 | 119 | 179 | 352 | 680 | 529 | 696 | 906 | 631 | 836 | 838 | 1116 | 1326 | 1518 |
+| GPT-OSS 20B | 118 | 182 | 268 | 333 | 348 | 376 | 388 | 386 | 514 | 669 | 860 | 1219 | 1947 |
+| GPT-OSS 120B | 88 | 128 | 181 | 223 | 234 | 251 | 259 | 251 | 248 | 320 | 410 | 543 | 998 |
+| Gemma 4 | 91 | 146 | 231 | 334 | 328 | 367 | 414 | 370 | 548 | 717 | 884 | 1355 | 2099 |
+| Qwen3-Coder-Next | 64 | 101 | 149 | 206 | 204 | 226 | 242 | 214 | 377 | 504 | 626 | 932 | 1536 |
+
+Metal has no cliff past 8 tokens (Honeykrisp had one until honeykrisp 0002/0003); its dip is at 24.
+
+Speculative decoding through llama-server (`macos/spec-req.py`: rename a variable in `gpu/llama-run.sh`, greedy, 1500
+tokens), t/s (drafted/accepted):
+
+| model | none | ngram-mod 64 | ngram-mod 128 | MTP head |
+|---|---|---|---|---|
+| Llama 2 | 90.4 | 383 (1518/1329) | 405 (1775/1339) | - |
+| GPT-OSS 20B | 108 | 279 (1140/1094) | 304 (1212/1102) | - |
+| GPT-OSS 120B | 79.9 | 142 (1080/968) | 151 (1336/974) | - |
+| Gemma 4 | 69.3 | 68.6 (1818/166) | 65.0 (3498/158) | 115 (1248/1083) |
+| Qwen3-Coder-Next | 59.5 | 204 (1488/1266) | 216 (1874/1275) | - |
+
+Within a run every setting gives the same text hash except Gemma's (INFERRED: batched verification rounds
+differently there); the text changes between runs because the script being edited changed. Linux on a similar Qwen
+code edit: 30 none, 55-59 with ngram-mod 128.
+
+What Metal's graph work is worth (tg128 and pp512 with each optimisation switched off, against the default):
+
+| model | fusion off | concurrency off | reordering off | all off |
+|---|---|---|---|---|
+| Llama 2 | 0 % / 0 % | -4 % / -4 % | 0 % / -1 % | -5 % / -4 % |
+| GPT-OSS 20B | -6 % / -1 % | -8 % / -3 % | -8 % / -3 % | -13 % / -3 % |
+| GPT-OSS 120B | -7 % / -1 % | -10 % / -2 % | -10 % / -2 % | -16 % / -3 % |
+| Gemma 4 | -25 % / -4 % | -14 % / -2 % | -10 % / -4 % | -28 % / -6 % |
+| Qwen3-Coder-Next | -22 % / -3 % | -12 % / -5 % | -9 % / -3 % | -28 % / -8 % |
+
+One op at a time (test-backend-ops perf, µs): matrix-vector 4096x14336 f16 143, q4_0 37.0, q8_0 57.5, q4_K 53.5,
+q6_K 63.4; 14336x4096 q4_K 45.8; the smallest op (ADD of 4096 floats) 3.8; GATED_DELTA_NET for one token 8.6. A
+dependent Metal launch costs 2.27 µs (metal-chain), 0.30 when independent. Power: the GPU at 1398 MHz throughout,
+~113 W on Llama 2 prompts, Qwen ~94 W on prompts and ~44 W generating.
+
+The same build's Vulkan backend through MoltenVK 1.4.2: Llama 2 788 / 836 / 59.9, GPT-OSS 20B 992 / 1221 / 82.7,
+Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
+
 ## macOS reference data
 
 - 27-28 Oct: `macos/collect.sh` runs on macOS 13.7.8, 14.8.9 and 15.8.1, 45 runs in `results/macos/`: device tree and
@@ -144,10 +204,10 @@ Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK 
 ## Storage server
 
 33 HFS+ disks of 18 TB moved to XFS in place, disk by disk, all in the two M424 boxes now: 32 done, disk 33 (still
-HFS+) the last. The pool holds 344 of 459 TB. Layout
-(`storage/snapraid-setup.sh`): data disks by label at `/mnt/data/NN`, parity at `/mnt/parity/NN`, one mergerfs pool at
-`/srv/pool` (create policy `pfrd`, `minfreespace` 900G), SnapRAID with 4 parity levels, content files on the root and
-on four data disks.
+HFS+) the last. The pool holds 378 TB (344 TiB) of 504 TB (459 TiB); raw capacity 594 TB (540 TiB). Layout
+(`storage/snapraid-setup.sh`): data disks by label at `/mnt/data/NN`, parity at `/mnt/parity/NN`, one mergerfs pool
+at `/srv/pool` (create policy `pfrd`, `minfreespace` 900G), SnapRAID with 4 parity levels, content files on the root
+and on four data disks.
 
 - 28 Oct: `minfreespace` 900G leaves each 16.4 TB disk 15.5 TB of data; `snapraid-setup.sh need` checks that the
   parity disks hold the fullest one at a given block size, each file rounded up to whole blocks.
