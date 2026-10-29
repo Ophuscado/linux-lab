@@ -1,8 +1,8 @@
 # Knowledge
 
-Findings that took work to reach, with dates (2026) and how sure they are: VERIFIED (run or read here), OBSERVED (seen,
-not reproduced), INFERRED, UNKNOWN. Newest first in each section. The long notes they were condensed from (journal
-excerpts, every bisect step, per-cell tables) are in the repository's first commit, `1b39073`.
+Findings that took work to reach, with dates (2026) and how sure they are: VERIFIED (run or read here), OBSERVED
+(seen, not reproduced), INFERRED, UNKNOWN. Newest first in each section. The long notes they were condensed from
+(journal excerpts, every bisect step, per-cell tables) are in the repository's first commit, `1b39073`.
 
 - [Decisions](#decisions)
 - [USB4 and Thunderbolt storage](#usb4-and-thunderbolt-storage)
@@ -41,7 +41,13 @@ Standing choices, with the reason when one was given.
 ## USB4 and Thunderbolt storage
 
 Kernel 7.1.13-tbtwip: Asahi's 7.1.13 with the 7.2 Thunderbolt stack, the 2023 tunneled-PCIe driver ported, and fixes
-(`src-patches/linux/tbt-7.1`, `tbt-pcie`).
+(`src-patches/linux/tbt-7.1`, `tbt-pcie`). The disks lived in four home-made ASM2464 USB4 enclosures until 21 Oct
+and in two M424 Thunderbolt 3 boxes since 22 Oct.
+
+- 22 Oct, VERIFIED: the same kernel drives Thunderbolt 3 with no change: two M424 24-bay boxes, each an Intel JHL7440
+  (Titan Ridge) bridge, an LSI SAS3008 HBA (`mpt3sas`) and a SAS expander, train at 40 Gb/s (2 x 20) and have carried
+  the migration around the clock with no Thunderbolt, PCIe or `mpt3sas` error. Behind the HBA disks have no ataN
+  ports, so the tools find them by serial.
 
 - 14 Oct, VERIFIED: two of four enclosures never got a tunnel because the ASMedia firmware gives boxes the same router
   UUID and boltd re-points the stored record instead of authorizing. A udev rule writing `authorized=1`
@@ -72,9 +78,10 @@ Kernel 7.1.13-tbtwip: Asahi's 7.1.13 with the 7.2 Thunderbolt stack, the 2023 tu
 - 29 Oct, VERIFIED: the M2 Ultra's die-0 Neural Engine runs under Linux: omarchy-ane's `ane_t6021` (ae18911) boots its
   firmware, and the smoke test is 20/20 bit-exact against the reference, median 0.418 ms. Loaded by hand
   (`kernel/ane.sh load`); the module pins itself until reboot.
-- 29 Oct, VERIFIED: omarchy-ane's T6022 overlay panicked the boot (SError in `apple_dart_probe`): it put the ANE DARTs
-  in always-on islands, while macOS's power table on this machine gates them under `ANE_SYS` (pmgr 0x260).
-  `kernel/dt/t6022-ane-dart-power.dts` fixes it; prepared for omarchy-ane as `src-patches/linux-ane/m2-ultra-dart-power`.
+- 29 Oct, VERIFIED: omarchy-ane's T6022 overlay panicked the boot (SError in `apple_dart_probe`): it put the ANE
+  DARTs in always-on islands, while macOS's power table on this machine gates them under `ANE_SYS` (pmgr 0x260).
+  `kernel/dt/t6022-ane-dart-power.dts` fixes it; prepared for omarchy-ane as
+  `src-patches/linux-ane/m2-ultra-dart-power`.
 - 29 Oct: dtc 1.7.0's fdtoverlay renumbers a labelled node's phandle and leaves its users dangling (1.7.1+ does not);
   `tbt-kernel.sh` refuses a tree with more unresolved references than before its overlays.
 
@@ -85,15 +92,15 @@ Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK 
 
 | tokens/s | Metal pp512 / tg128 | Vulkan on MoltenVK | Honeykrisp, Linux |
 |---|---|---|---|
-| Llama 2 7B Q4_0 | 1518 / 121.5 | 788 / 59.9 | 762 / 68.2 |
-| GPT-OSS 20B | 1945 / 125.0 | 992 / 82.7 | 747 / 69.2 |
-| Qwen3-Coder-Next Q8 | 1535 / 67 | 422 / 24.8 | 488 / 34.4 |
+| Llama 2 7B Q4_0 | 1518 / 121.5 | 788 / 59.9 | 762 / 69.7 |
+| GPT-OSS 20B | 1945 / 125.0 | 992 / 82.7 | 747 / 70.9 |
+| Qwen3-Coder-Next Q8 | 1535 / 67 | 422 / 24.8 | 488 / 34.8 |
 
-- 29 Oct, VERIFIED, one 4096x14336 matrix-vector (test-backend-ops perf, µs): f16 Metal 143, MoltenVK 161, Linux 247;
-  q4_0 37 / 100 / 81 (68 with `GGML_VK_MMV_SIMD=1`, honeykrisp 0005, at 8 rows a workgroup); q8_0 57.5 / 90 / 160
-  (126-128 with either the new shader or 4 rows). Generation with the new shader: Llama 2 65.1 to 68.2, Qwen 33.6 to
-  34.4. Plain f16 streams at 475 GB/s on Linux against 820 on Metal and 730 through MoltenVK, so part of the gap is
-  below llama.cpp: memory bandwidth reached on Linux (INFERRED; open).
+- 29 Oct, VERIFIED, one 4096x14336 matrix-vector (test-backend-ops perf, µs): f16 Metal 143, MoltenVK 161, Linux
+  247; q4_0 37 / 100 / 81 (68 with `GGML_VK_MMV_SIMD=1`, honeykrisp 0005, at 8 rows a workgroup); q8_0 57.5 / 90 /
+  160 (126-128 with either the new shader or 4 rows). Generation with the new shader: Llama 2 65.1 to 69.7 (4 rows),
+  Qwen 33.6 to 34.8 (4 rows), GPT-OSS 70.2 to 70.9. Plain f16 streams at 475 GB/s on Linux against 820 on Metal and
+  730 through MoltenVK, so part of the gap is below llama.cpp: memory bandwidth reached on Linux (INFERRED; open).
 - 28 Oct, VERIFIED: Metal's graph optimisations are worth 7 % of generation on Llama 2, 13-15 % on GPT-OSS, 28-29 % on
   Qwen and Gemma (fusion alone 22-25 %): RMS_NORM+MUL everywhere, the MoE reduce, Gemma's whole router. Prompts move
   3-8 %.
@@ -113,7 +120,8 @@ Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK 
   slower than 8. Raising the limit to 64 for MoE layers and 16 for dense ones (0002, 0003) takes a 9-token Qwen batch
   from 37 to 107 t/s. Speculation with ngram-mod drafts of up to 128 tokens: a Qwen code edit 30 to 55-59 t/s, same
   text. MTP heads speed Gemma and Flash-Next up but change the text.
-- 26 Oct: rows per workgroup best at 2 for the MoE models, 1 for GPT-OSS and dense ones; the integer-dot path is slower.
+- 26 Oct: rows per workgroup best at 2 for the MoE models, 1 for GPT-OSS and dense ones; the integer-dot path is
+  slower.
 - 26 Oct: llama.cpp fails to read a model from the mergerfs pool ("read error: Bad address"); models load from
   `~/Projects/_llm`.
 - 28 Oct: GPU usage per client needs `drm-*` fdinfo lines; the Rust DRM abstraction lacked a `show_fdinfo` hook and
@@ -135,8 +143,8 @@ Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK 
 
 ## Storage server
 
-33 HFS+ disks of 18 TB moved to XFS in place, disk by disk: 32 in four USB4 enclosures, done; disk 33 on USB, the
-last, in progress. Layout
+33 HFS+ disks of 18 TB moved to XFS in place, disk by disk, all in the two M424 boxes now: 32 done, disk 33 (still
+HFS+) the last. The pool holds 344 of 459 TB. Layout
 (`storage/snapraid-setup.sh`): data disks by label at `/mnt/data/NN`, parity at `/mnt/parity/NN`, one mergerfs pool at
 `/srv/pool` (create policy `pfrd`, `minfreespace` 900G), SnapRAID with 4 parity levels, content files on the root and
 on four data disks.
@@ -154,24 +162,24 @@ on four data disks.
 - 16 Oct, VERIFIED: a global `sync` in one worker waited hours for every other writer; per-file fsync took 5 h for
   466,599 files. One `syncfs` per pool branch waits for those disks only.
 - 16 Oct: `rsync --no-inc-recursive` lists the whole tree before copying, days on a slow disk of small files.
-- 15-16 Oct: SATA faults across boxes stopped when the Mac got a three-pin, earthed cord (its chassis floated and the
-  boxes' leakage ran through the USB-C shields; OBSERVED). The rest were one bay's connector on one box's controller
-  board, found by swapping disks; spin-down after 1-3 idle minutes made the pool wake disks many times an hour.
+- 15-16 Oct, the home-made boxes: SATA faults across boxes stopped when the Mac got a three-pin, earthed cord (its
+  chassis floated and the boxes' leakage ran through the USB-C shields; OBSERVED). The rest were one bay's connector
+  on one box's controller board, found by swapping disks; spin-down after 1-3 idle minutes made the pool wake disks
+  many times an hour.
 - 14 Oct: XFS everywhere because a SnapRAID parity file of 16.4 TiB exceeds ext4's 16 TiB file limit.
-- 17 Oct: the M424 24-bay box (Intel Thunderbolt 3 bridge, LSI SAS3008, SAS expander) needs `mpt3sas` (present) and the
-  Thunderbolt 3 path of the kernel, never run here.
 - 18 Oct: smartd checks every disk each 30 min without waking a sleeping one; KDE's disk monitor runs `smartctl --all`
   without `-n standby` and spins them up.
 
 ## Desktop
 
+- 29 Oct, VERIFIED: the TV's profile is now macOS's own (`desktop/icc/lg-tv-macos.icc`, from
+  /Library/ColorSync/Profiles/Displays): the TV's EDID primaries, exactly BT.2020's, the sRGB tone curve, an identity
+  video-card gamma. Compared by eye it beat the profile used since 18 Oct (oled-tv-calibrator's "Native HDR": fixed
+  primaries between sRGB and P3, gamma 2.2, no measurement), which is dropped.
 - 18 Oct, VERIFIED: closing a window from the Cmd+Tab switcher dropped other windows from it. Cause: libplasma's
   Dialog sizes the window with its margins truncated and gives the item back the window minus the margins unrounded,
   so Thumbnail Grid loses a column. `ux-fix.sh switcher` sizes the grid by its own columns; the same change is
   prepared for KWin.
-- 18 Oct: oled-tv-calibrator's "Native HDR" profile holds no measurement: fixed primaries between sRGB and P3, gamma
-  2.2, identity curves. KWin maps sRGB into that gamut, which tones colours down on the TV; it was preferred to
-  KScreen's Built-in profile and to none. `desktop/icc.sh` writes the same profile without vendor names.
 - 17 Oct: the Magic Mouse settings in modprobe.d did not apply: the driver loads from the initramfs, which lacks the
   file (INFERRED); a tmpfiles.d entry sets them after boot. No upstream code stops a resting finger from scrolling
   while the mouse moves; `src-patches/linux/hid-magicmouse` does.
@@ -185,7 +193,7 @@ on four data disks.
 ## System
 
 - 17 Oct, audit (`system/system-audit.sh`): `macsmc-rtc` sets the clock 8 s into boot, so every boot's journal starts
-  on the systemd epoch; smartd scanned before the enclosures were up (`settings.sh smartd-rescan`); a kernel update
-  would boot without the enclosures (`kernel-pin`); updatedb crawled the pool (`indexer`).
+  on the systemd epoch; smartd scanned before the disk boxes were up (`settings.sh smartd-rescan`); a kernel update
+  would boot without the disk boxes (`kernel-pin`); updatedb crawled the pool (`indexer`).
 - 13 Oct: the Asahi installer's resize prompt asks for the new macOS size; GB and TB are decimal. It adds a boot stub,
   a 500 MiB EFI and a 1 GiB `/boot`. Partitions are removed with `diskutil`, never the recovery one.
