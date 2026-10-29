@@ -33,10 +33,10 @@ index 88d0f3a37..7b43adc11 100644
  };
  
 diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
-index 723824795..2dc155b32 100644
+index 0c1990d6c..00a06285e 100644
 --- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
 +++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
-@@ -11073,7 +11073,10 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
+@@ -11075,7 +11075,10 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
      ggml_tensor * dst;
      const ggml_tensor * src1;
  
@@ -48,7 +48,7 @@ index 723824795..2dc155b32 100644
          ggml_tensor * mul = cgraph->nodes[node_idx + 1];
          dst = mul;
          src1 = mul->src[0] == rms ? mul->src[1] : mul->src[0];
-@@ -11084,6 +11087,9 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
+@@ -11086,6 +11089,9 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
  
      const uint32_t num_partials = ctx->do_add_rms_partials ? ggml_vk_rms_num_partials(ctx, dst) : 0;
      vk_op_binary_push_constants bin = ggml_vk_rms_norm_push_constants(src0, src1, dst, op_params[0], num_partials);
@@ -58,7 +58,7 @@ index 723824795..2dc155b32 100644
  
      if (ctx->fused_rms_norm_mode == RMS_NORM_MUL_ROPE ||
          ctx->fused_rms_norm_mode == RMS_NORM_MUL_ROPE_VIEW_SET_ROWS) {
-@@ -11166,7 +11172,8 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
+@@ -11168,7 +11174,8 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
                  ggml_vk_subbuffer(ctx, buf[6], offset[6]),
              }, pc, elements);
      } else {
@@ -68,7 +68,7 @@ index 723824795..2dc155b32 100644
          ggml_vk_op_f32<vk_op_binary_push_constants>(ctx, subctx, src0, src1, nullptr, nullptr, dst, GGML_OP_RMS_NORM, std::move(bin));
      }
  
-@@ -13752,6 +13759,18 @@ bool ggml_vk_can_fuse(const ggml_backend_vk_context * ctx, const struct ggml_cgr
+@@ -13754,6 +13761,18 @@ bool ggml_vk_can_fuse(const ggml_backend_vk_context * ctx, const struct ggml_cgr
          return false;
      }
  
@@ -87,7 +87,7 @@ index 723824795..2dc155b32 100644
      if ((ops.size() == 2 || ops.size() == 3 || ops.size() == 4) &&
          ops.begin()[0] == GGML_OP_RMS_NORM && ops.begin()[1] == GGML_OP_MUL) {
          // additional constraints specific to this fusion
-@@ -14671,6 +14690,12 @@ static ggml_status ggml_backend_vk_graph_compute(ggml_backend_t backend, ggml_cg
+@@ -14673,6 +14692,12 @@ static ggml_status ggml_backend_vk_graph_compute(ggml_backend_t backend, ggml_cg
                  ctx->fused_rms_norm_mode = RMS_NORM_VIEW_SET_ROWS;
                  fusion_string = "RMS_NORM_VIEW_SET_ROWS";
                  std::fill_n(op_srcs_fused_elementwise, 3, false);
