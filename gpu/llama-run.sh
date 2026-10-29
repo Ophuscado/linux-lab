@@ -5,8 +5,9 @@
 #            prompts +17% over coopmat, generation the same or better, all 21303 operator tests pass; coopmat if
 #            agxperf is not built, the system driver if neither is
 #   barrier  HK_PERFTEST=designedusccdmbarrier: +7-9% generation, every test passes
-#   matvec   the large workgroup; rows per workgroup 2 for the MoE models (Qwen, Gemma), 1 for GPT-OSS and dense
-#            models (model sweep, cell 4252)
+#   matvec   the large workgroup; rows per workgroup 4 for Qwen, 2 for Gemma, 1 for GPT-OSS and dense models (cells
+#            4252, 89035); q4_0 and q8_0 through the Metal-layout shader (src-patches/llama.cpp/honeykrisp 0005,
+#            GGML_VK_MMV_SIMD=1): Llama 2 65.1 to 69.7 t/s, Qwen 33.6 to 34.8; a build without 0005 ignores it
 #   batch    -ub/-b 8192: prompts 593 to 676 on Qwen
 #   tiles    the medium matmul tile at 256 threads, 128x64 (src-patches/llama.cpp/honeykrisp): prompts +12-23%
 #            (Qwen 596 to 680, Gemma 770 to 905 at pp2048; cells 4280, 4285)
@@ -33,7 +34,7 @@ model=${1:-qwen}; [[ $# -gt 0 ]] && shift
 draft=() rows=2
 case $model in
 qwen) M=$LLM/Qwen3-Coder-Next/UD-Q8_K_XL/model.gguf  # drafts up to 128: +13% over the default 64 (cell 4361)
-    draft=(--spec-type ngram-mod --spec-ngram-mod-n-max 128 --spec-ngram-mod-n-min 96) ;;
+    rows=4 draft=(--spec-type ngram-mod --spec-ngram-mod-n-max 128 --spec-ngram-mod-n-min 96) ;;
 gemma) M=$LLM/Gemma-4-26B-A4B-Instruct/UD-Q4_K_XL/model.gguf
     draft=(--spec-type draft-mtp,ngram-mod -md "$LLM/Gemma-4-26B-A4B-Instruct/mtp-Q8_0.gguf" -ngld 99) ;;
 flash) M=$LLM/Qwen3.8-Flash-Next/UD-Q4_K_XL/model.gguf  # MTP alone beats MTP with ngram-mod here (cell 4265)
@@ -50,7 +51,7 @@ for d in agxperf coopmat; do
 done
 [[ -n ${VK_DRIVER_FILES:-} ]] || echo "driver: the system's (no mesa-side driver built)"
 [[ ${LLAMA_CLUSTER:-0} == 1 ]] || export AGX_CLUSTER_OFF=1
-export GGML_VK_WT_M=256,128,64,,32,32 GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_MAX_COLS=16 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_RM_STDQ=$rows GGML_VK_RM_KQ=$rows
+export GGML_VK_WT_M=256,128,64,,32,32 GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_MAX_COLS=16 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1 GGML_VK_RM_STDQ=$rows GGML_VK_RM_KQ=$rows
 
 exec "$SERVER" -m "$M" "${draft[@]}" \
     -ngl all -t 16 -fa on -np 1 -ub 8192 -b 8192 \
