@@ -639,7 +639,7 @@ stamp_time() {
         date -d "$1" '+%F %T'
     fi
 }
-# start and run: the owner goes on, so the disks are trusted again.
+# start and run: the operator goes on, so the disks are trusted again.
 trust_again() {
     run_pending_asides
     [[ ! -f $MIG/state/stop ]] || { log "the stop is lifted, the disks are trusted again; it said: $(cat "$MIG/state/stop")"; rm -f "$MIG/state/stop"; }
@@ -1064,7 +1064,7 @@ unreadable_restore() {
 # the copy and its verify go on without them. hfsplus cannot open them by any other name either (it
 # has no export operations, so no open by handle); those a git repository tracks come back from its
 # copied .git after the verify (unreadable_restore), the rest are lost with the source, ruled
-# expendable by the owner (18 Oct), so they hold nothing up. True when there is at least one.
+# expendable by the operator (18 Oct), so they hold nothing up. True when there is at least one.
 unreadable_scan() {
     local nn=$1 src=$MIG/mnt/src-$1 tmp
     tmp=$(mktemp)
@@ -1077,7 +1077,7 @@ unreadable_scan() {
     python3 -I -c "$EXCLUDE_PY" <"$tmp" >"$MIG/state/$nn.unreadable.rsync"
     tr '\0' '\n' <"$tmp" >"$MIG/state/$nn.unreadable"
     rm -f "$tmp"
-    log "WARN $nn: $(wc -l <"$MIG/state/$nn.unreadable") names Linux cannot read (a character such as an emoji, shown as ??) are not copied and go with the source (expendable, owner 18 Oct); listed in $MIG/state/$nn.unreadable. The copy goes on without them"
+    log "WARN $nn: $(wc -l <"$MIG/state/$nn.unreadable") names Linux cannot read (a character such as an emoji, shown as ??) are not copied and go with the source (expendable, operator 18 Oct); listed in $MIG/state/$nn.unreadable. The copy goes on without them"
 }
 # src_find NN ARGS...: sudo find ARGS over source NN. Once unreadable_scan has listed names of NN
 # that Linux cannot read, find's "No such file or directory" for an entry is no error: on a
@@ -1766,7 +1766,7 @@ erase)
         case $st in
         src*)
             [[ -f $MIG/state/$nn.copied ]] && { echo "$nn: already marked: $(cat "$MIG/state/$nn.copied")"; continue; }
-            echo "erase: not needed, says the owner $(date '+%F %T')" >"$MIG/state/$nn.copied"
+            echo "erase: not needed, says the operator $(date '+%F %T')" >"$MIG/state/$nn.copied"
             printf '%s: %s, %.2f TB on %s, marked: will be formatted without a copy\n' "$nn" "$(readlink -f "$(disk_of "$nn")")" "$(awk -v u="${st#src }" 'BEGIN { print u / 1e12 }')" "$SRC_FS"
             ;;
         xfs*) echo "$nn: already XFS, nothing to mark" ;;
@@ -1980,14 +1980,14 @@ restore)
     done
     ;;
 rescued)
-    # The owner copied a held source's compressed files from macOS, or decided they are not needed.
+    # The operator copied a held source's compressed files from macOS, or decided they are not needed.
     shift
     [[ $# -gt 0 ]] || die "rescued needs disk names, e.g. rescued 10"
     LOG=$MIG/heal.log
     for nn in "$@"; do
         [[ -f $MIG/state/$nn.held ]] || die "$nn is not held"
         [[ ! -s $MIG/state/$nn.mismatch ]] || die "$nn is held for copies that differ from the source, not for compressed files: $(held_why "$nn")"
-        echo "$(date '+%F %T') signed off by the owner" >"$MIG/state/$nn.rescued"
+        echo "$(date '+%F %T') signed off by the operator" >"$MIG/state/$nn.rescued"
         mv "$MIG/state/$nn.held" "$MIG/state/$nn.copied"
         log "rescued: $nn's HFS+-compressed files ($MIG/state/$nn.compressed) signed off; $nn may be formatted"
     done

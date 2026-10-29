@@ -40,7 +40,7 @@ set -euo pipefail
 # Overridable only so the build can be exercised off the target machine.
 REL=${MAGICMOUSE_REL:-$(uname -r)}
 KCONFIG=${MAGICMOUSE_CONFIG:-/boot/config-$REL}
-# The owner's tree, named both ~/Projects/asahi-linux-tbt and ~/Projects/linux-asahi-tbt
+# The operator's tree, named both ~/Projects/asahi-linux-tbt and ~/Projects/linux-asahi-tbt
 # (18 Oct); the one that exists is used.
 if [[ -z ${SRC:-} ]]; then
     for SRC in "$HOME/Projects/linux-lab/src/linux" "$HOME/Projects/linux-asahi-tbt" "$HOME/Projects/asahi-linux-tbt"; do [[ -d $SRC/.git ]] && break; done

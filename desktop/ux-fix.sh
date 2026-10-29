@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ux-fix.sh: the desktop the way the owner wants it on KDE Plasma 6 (Wayland), each change
+# ux-fix.sh: the desktop the way the operator wants it on KDE Plasma 6 (Wayland), each change
 # with its undo.
 #
 #   ux-fix.sh on [SPEED]          Magic Mouse and middle-click paste: apply, now and after reboots
@@ -99,7 +99,7 @@ die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
 RULE=linux-lab-konsole-size
 RULE2=linux-lab-app-size
 APP_SIZE=${APP_SIZE:-1366x860}
-# Every normal window opens at APP_SIZE (the owner, 18 Oct); APPS, a regex on the window
+# Every normal window opens at APP_SIZE (the operator, 18 Oct); APPS, a regex on the window
 # class, narrows it to some programs.
 APPS=${APPS:-}
 TABS_CSS=${XDG_DATA_HOME:-$HOME/.local/share}/konsole/linux-lab-tabs.css

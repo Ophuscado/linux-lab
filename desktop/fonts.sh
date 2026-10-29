@@ -18,7 +18,7 @@
 #   fonts.sh show             what is installed and in use
 #
 # Apple's licence allows SF only for mock-ups of user interfaces for Apple platforms; using it
-# as a Linux desktop font is outside it. The owner's choice, on their own Mac, 17 Oct 2026; the
+# as a Linux desktop font is outside it. The operator's choice, on their own Mac, 17 Oct 2026; the
 # fonts never go into this repository or an image made from it.
 
 set -euo pipefail

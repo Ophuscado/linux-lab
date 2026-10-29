@@ -14,7 +14,7 @@
 # "apple_lab") and try moves the keyboards over through sysfs, with a udev rule that does it
 # again whenever the built-in driver takes one; a keyboard the lab driver refuses goes back to
 # the built-in one at once. Then bind the four keys in System Settings > Keyboard > Shortcuts >
-# KWin (the owner's choice, 18 Oct): Maximize Window Fn+F, Move Window to the Center Fn+C,
+# KWin (the operator's choice, 18 Oct): Maximize Window Fn+F, Move Window to the Center Fn+C,
 # Keep Window Above Others Fn+P, Keep Window on All Desktops Fn+D.
 
 set -euo pipefail
