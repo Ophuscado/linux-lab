@@ -1,0 +1,45 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Thu, 29 Oct 2026 10:15:09 +0000
+Subject: [PATCH 2/2] test_ane_m2: give the fake T602x tree ANE_SYS, check T6022's
+ DARTs land there
+
+The fake board tree of section 2 had no power-controller@260, which the
+T6022 overlay now targets by path, so fdtoverlay stopped with
+FDT_ERR_NOTFOUND (CI on the first push of this branch). Real T602x trees
+have the node (pmgr 0x260 is ANE_SYS on T6020, T6021 and T6022). Add it,
+and assert that the three ANE DARTs of the applied T6022 overlay point at
+it.
+---
+ tools/test_ane_m2.py | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/tools/test_ane_m2.py b/tools/test_ane_m2.py
+index a9ad318..694e65c 100755
+--- a/tools/test_ane_m2.py
++++ b/tools/test_ane_m2.py
+@@ -84,7 +84,7 @@ for dtb in sorted(Path(os.environ['ANE_DTBS']).glob('*.dtb')) if os.environ.get(
+ # 2. omarchy-ane-dt apply on a fake root with the packaged overlays and a
+ # T602x board tree that has the nodes the overlays reach by path.
+ PCS = ''.join(f'power-controller@{a} {{ #power-domain-cells = <0>; #reset-cells = <0>; }};'
+-              for a in ('2c8', '2e0', '4000', '4008', '4010', '4018', '4020', '4028', '4030'))
++              for a in ('260', '2c8', '2e0', '4000', '4008', '4010', '4018', '4020', '4028', '4030'))
+ BOARD = '''/dts-v1/;
+ / {
+   compatible = "apple,%s", "apple,%s";
+@@ -131,6 +131,12 @@ for soc, board in (('t6020', 'j414s'), ('t6021', 'j414c'), ('t6022', 'j180d')):
+     # The stock apple-mailbox binds the ANE mailbox only with both interrupts.
+     mbox = tree.phandles[oadt.cells(tree.nodes[ane[0]]['mboxes'])[0]]
+     assert tree.strings(mbox, 'interrupt-names') == ['recv-not-empty', 'send-empty'], soc
++    if soc == 't6022':
++        # T6022's three ANE DARTs are powered from ANE_SYS (pmgr 0x260), not pmp or ANE_CPU
++        # (receipts/2026-10-29-t6022-j475d-ane-sys).
++        for dart in ('285800000', '285810000', '285820000'):
++            pd = tree.phandles[oadt.cells(tree.nodes[f'/soc/iommu@{dart}']['power-domains'])[0]]
++            assert pd == '/soc/power-management@28e080000/power-controller@260', (dart, pd)
+     assert '/config' not in tree.nodes, 'the U-Boot input overlay stays off'
+ 
+ # 3. omarchy-ane-check --root on a fake running system: node present, module
+-- 
+2.43.0
+
