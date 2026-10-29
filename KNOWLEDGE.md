@@ -131,6 +131,14 @@ Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK 
   `asahi.busy_stats=1` (not yet built). The Rust DRM abstraction had lacked a `show_fdinfo` hook and the GEM file
   operations did not set it (`src-patches/linux/asahi-fdinfo`). KDE's GPU sensor needs a ksystemstats backend
   reading these lines (INFERRED).
+- 29 Oct, VERIFIED, one Qwen3-Coder-Next token op by op (Vulkan per-op logger, cell 89059, against Metal's encoded
+  graph of 28 Oct): Vulkan issues 1805 launches a token, Metal 1996 dispatches, 703 of them marked concurrent with
+  the one before. Vulkan already fuses as much or more (RMS_NORM+MUL, +ROPE, +SET_ROWS, multi-add, the MoE top-k,
+  SSM_CONV+SILU, MUL_MAT+ADD, MUL_MAT_ID+MUL); Metal fuses two things Vulkan does not, RMS_NORM+SCALE (72 a token)
+  and GATED_DELTA_NET+CPY (36), worth ~0.5 ms of ~29 (INFERRED from ~4.5 µs a launch). So Metal's 22 % from fusion
+  is fusion against Metal's own unfused graph, not against Vulkan's: the gap is the cost of a dependent launch
+  (~16 µs a launch on average in a Vulkan token against ~7.4 on Metal) and how many launches overlap, not their
+  number.
 - 29 Oct, VERIFIED, read bandwidth (`vk-chain.sh bw`): 610-655 GB/s from 64 MB to 1 GB when 1216 workgroups walk the
   buffer, the same on both memory types and on the system Mesa and agxperf; ~290 GB/s when the grid has one vec4 per
   invocation (65,536 workgroups for 256 MB): workgroup launch rate, not memory, caps that form. 16 MB reaches 550
