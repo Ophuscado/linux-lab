@@ -12,7 +12,8 @@ comparison on identical hardware, so I'm sharing the numbers in case they help.
 | GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 820 / 70.4 |
 | Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 448 / 34.2 |
 
-Same settings on both systems: flash attention on, all layers on the GPU, batch 8192, the mean of 3 runs or more.
+Same settings on both systems: flash attention on, all layers on the GPU, the whole 512-token prompt in one batch,
+the mean of 3 runs or more.
 macOS 15.8.1 for the first two columns. On Linux, the patches below and Honeykrisp built from Mesa's development
 tree with a third-party cooperative-matrix and compiler series, with `HK_PERFTEST=designedusccdmbarrier`.
 

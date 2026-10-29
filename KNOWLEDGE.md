@@ -157,7 +157,7 @@ The Linux column: one session on 29 Oct (run 4664), the six-patch series and `gp
 
 macOS 15.8.1, llama.cpp 2280f0f with Metal, 27-28 Oct, VERIFIED (`results/macos/macos-15`, runs `20261027-234455` to
 `20261028-025200`; each figure the median of 3-5 runs, which agree within 2 %). Flash attention on, all layers on the
-GPU, batch 8192.
+GPU, batch 2048.
 
 | model (file) | pp512 | pp2048 | tg128 |
 |---|---|---|---|
