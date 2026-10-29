@@ -1,4 +1,4 @@
-# linux-lab
+# Ophuscado's Lab for Linux on Apple Mac Studio with M2 Ultra
 
 A personal lab for improving Linux support on an Apple Mac Studio with M2 Ultra (`j475d`). My machine runs Fedora
 Asahi Remix, and this repository is what it takes to make it a complete Linux machine. Everything here is tested on
