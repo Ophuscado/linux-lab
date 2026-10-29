@@ -24,8 +24,8 @@
 #   magicmouse.sh undo             the kernel's own driver again
 #   magicmouse.sh show             which driver runs, its settings, whether the initramfs has one
 #
-# When the running kernel has the driver built in (CONFIG_HID_MAGICMOUSE=y, as 7.1.13-tbtwip:
-# cell 81438), the lab's driver is built under another name, hid_magicmouse_lab (HID driver
+# When the running kernel has the driver built in (CONFIG_HID_MAGICMOUSE=y, as 7.1.13-tbtwip),
+# the lab's driver is built under another name, hid_magicmouse_lab (HID driver
 # "magicmouse_lab"), and try moves the mice and trackpads over to it through sysfs (unbind
 # from magicmouse, bind to magicmouse_lab); a udev rule does the same whenever the kernel's own
 # binds one again (a reconnect, a boot), and puts it back if the lab's will not take it.
@@ -108,7 +108,7 @@ build)
     fi
     cd "$SRC"
     # Without a finished build of its own, the tree must hold the running kernel's source before
-    # anything is applied (cell 81430: a 6.14 tree, where the patch only failed to apply).
+    # anything is applied (a 6.14 tree, where the patch only failed to apply).
     if [[ ! -f .config || ! -f Module.symvers ]] && [[ $(git rev-parse HEAD) != "$KCOMMIT" ]]; then
         [[ ${2:-} == --checkout ]] ||
             die "$SRC is at $(git log -1 --format='%h %s' | cut -c1-70); the running kernel was built from ${KCOMMIT:0:12}. magicmouse.sh build --checkout fetches that commit (depth 1) and checks it out there; git -C $SRC checkout $(git rev-parse --short HEAD) goes back"
@@ -129,7 +129,7 @@ build)
     else
         # Only this module: the source of the running kernel and its configuration. Without a full
         # build there is no Module.symvers, so modpost only warns about the kernel's symbols; the
-        # kernel has no CONFIG_MODVERSIONS to check them by (cell 81114, 18 Oct), and try refuses
+        # kernel has no CONFIG_MODVERSIONS to check them by (18 Oct), and try refuses
         # a module whose release string differs.
         [[ -r $KCONFIG ]] || die "no $KCONFIG to build against"
         cp "$KCONFIG" .config
@@ -140,7 +140,7 @@ build)
         [[ $(make -s LOCALVERSION= kernelrelease) == "$REL" ]] || die "this tree makes release $(make -s LOCALVERSION= kernelrelease), the running kernel is $REL"
         target=drivers/hid/hid-magicmouse.ko
         if builtin; then
-            # Built in, so compiled here it would be no module (cell 81438: "missing MODULE_LICENSE").
+            # Built in, so compiled here it would be no module ("missing MODULE_LICENSE").
             mkdir -p drivers/hid/lab
             sed 's/\.name = "magicmouse",/.name = "magicmouse_lab",/' drivers/hid/hid-magicmouse.c >drivers/hid/lab/hid-magicmouse-lab.c
             grep -q '"magicmouse_lab"' drivers/hid/lab/hid-magicmouse-lab.c || die "could not rename the HID driver in the copy"

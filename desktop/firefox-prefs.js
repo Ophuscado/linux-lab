@@ -1,4 +1,4 @@
-// Firefox the operator's way: the choices the profile held on 18 Oct (cell 82938), kept here so a new profile or a
+// Firefox the operator's way: the choices the profile held on 18 Oct, kept here so a new profile or a
 // reinstall starts with them. theme.sh firefox-prefs on puts them in the default profile's user.js, in a marked
 // block; Firefox sets them again at each start, so a change made in Settings lasts until the next start unless it is
 // made here too. Left out: Firefox's own bookkeeping (counters, timestamps, migrations), ids, the window and panel
