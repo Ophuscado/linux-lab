@@ -139,6 +139,9 @@ Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK 
   is fusion against Metal's own unfused graph, not against Vulkan's: the gap is the cost of a dependent launch
   (~16 µs a launch on average in a Vulkan token against ~7.4 on Metal) and how many launches overlap, not their
   number.
+- 29 Oct, VERIFIED (run 4622): with all of ggml-vulkan's fusion off, Qwen generates 24.7 t/s against 34.6 with it,
+  so fusion is worth +40 % here (Metal's own: +28 %). Fusing RMS_NORM+SCALE too (honeykrisp 0006, every RMS_NORM
+  test passing on the GPU) left Qwen at 34.6 against 34.8 before: within run-to-run noise.
 - 29 Oct, VERIFIED, read bandwidth (`vk-chain.sh bw`): 610-655 GB/s from 64 MB to 1 GB when 1216 workgroups walk the
   buffer, the same on both memory types and on the system Mesa and agxperf; ~290 GB/s when the grid has one vec4 per
   invocation (65,536 workgroups for 256 MB): workgroup launch rate, not memory, caps that form. 16 MB reaches 550
