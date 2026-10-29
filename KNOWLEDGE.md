@@ -81,8 +81,8 @@ and in two M424 Thunderbolt 3 boxes since 22 Oct.
   (`kernel/ane.sh load`); the module pins itself until reboot.
 - 29 Oct, VERIFIED: omarchy-ane's T6022 overlay panicked the boot (SError in `apple_dart_probe`): it put the ANE
   DARTs in always-on islands, while macOS's power table on this machine gates them under `ANE_SYS` (pmgr 0x260).
-  `kernel/dt/t6022-ane-dart-power.dts` fixes it; prepared for omarchy-ane as
-  `src-patches/linux-ane/m2-ultra-dart-power`.
+  `kernel/dt/t6022-ane-dart-power.dts` fixes it. Merged into omarchy-ane on 29 Oct (pull request 278, b5c6abb), the
+  maintainer's own 13.5 device trees agreeing; whether T6020/T6021 need it is open (their iBoot may leave ANE_SYS on).
 - 29 Oct: dtc 1.7.0's fdtoverlay renumbers a labelled node's phandle and leaves its users dangling (1.7.1+ does not);
   `tbt-kernel.sh` refuses a tree with more unresolved references than before its overlays.
 

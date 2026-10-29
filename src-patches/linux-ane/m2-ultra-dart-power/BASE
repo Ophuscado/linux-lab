@@ -1,6 +1,7 @@
-# The M2 Ultra (T6022) Neural Engine: its DARTs in the ANE_SYS power domain, so the boot does not panic.
+# The M2 Ultra (T6022) Neural Engine: its DARTs in ANE_SYS. Merged upstream on 29 Oct (PR 278, b5c6abb); what is left
+# is a follow-up test that the DARTs land there.
 UPSTREAM=https://github.com/joshuaswarren/omarchy-ane
-BASE=ae189112ed11f2033e0f8f2613a239d1ed5d4213  # main of 2026-10-25
+BASE=b5c6abb4d873bb737a02b54713d9ff5fa451cd26  # main after PR 278 merged, 2026-10-29
 FORK=https://github.com/Ophuscado/linux-ane
 BRANCH=m2-ultra-dart-power
 CLONE=src/linux-ane
