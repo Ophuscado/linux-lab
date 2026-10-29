@@ -1,7 +1,7 @@
 From 71b8bdda3016bd2fcc2291c29686167c78131ad9 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Mon, 26 Oct 2026 01:45:14 +0000
-Subject: [PATCH 11/11] drm/asahi: Report per-client GPU time and memory in
+Subject: [PATCH 2/3] drm/asahi: Report per-client GPU time and memory in
  fdinfo
 
 Tools that show GPU usage per process (nvtop, KDE's system monitor, gputop)
