@@ -263,15 +263,24 @@ and on four data disks.
   Dialog sizes the window with its margins truncated and gives the item back the window minus the margins unrounded,
   so Thumbnail Grid loses a column. `ux-fix.sh switcher` sizes the grid by its own columns; the same change is
   prepared for KWin.
-- 17 Oct: the Magic Mouse settings in modprobe.d did not apply: the driver loads from the initramfs, which lacks the
-  file (INFERRED); a tmpfiles.d entry sets them after boot. No upstream code stops a resting finger from scrolling
-  while the mouse moves; `src-patches/linux/hid-magicmouse` does.
+- 29 Oct, VERIFIED by feel: input as on macOS 15 (`results/macos/macos-15/20261028-064704`). macOS moves the pointer
+  0.875 points per mouse count with acceleration off (43339 for 49012 in mouse-move, its scaling 0.875), so the Magic
+  Mouse is flat at -0.125 in KDE; the trackpad flat; key repeat 250 ms then 30/s (hidutil 33.3 ms); natural scrolling
+  off; Magic Mouse scroll speed 50. `ux-fix.sh input`, `magicmouse.sh speed`.
+- 29 Oct: no upstream code stops a resting finger from scrolling while the mouse moves; `src-patches/linux/hid-magicmouse`
+  does (`scroll_hold_ms`, best at 1 ms, one tick at HZ 1000). Built into the kernel, its parameters are set by
+  tmpfiles.d: modprobe.d options never reach a built-in driver, and the initramfs lacked them for the module (17 Oct).
+- 29 Oct: the trackpad's three-finger tap is a middle click that no setting removes: libinput's tap map only swaps it
+  with the two-finger tap, and KWin's `[ButtonRebinds][Mouse]` reads only `ExtraButton1`-`24`
+  (`src/plugins/buttonrebinds/buttonrebindsfilter.cpp`). Middle-click paste is off (`ux-fix.sh on`), so a stray tap
+  pastes nothing; the driver is where it can go.
 - 17 Oct: the wheel changing a hovered slider or combo box has no setting (KDE bug 399324); `desktop/qt-nowheel` is a
   Qt style plugin for it.
 - 17 Oct: KWin's Minimize All script ("Minimize all other windows", Meta+Shift+O) replaces kwin-solo-window, which
   asks KWin for its whole debug report on every window event.
-- 17 Oct: keyboard: `gb` variant `mac`, model `applealu_iso`; ñ through a compose key on the right Cmd. Program
-  shortcuts are switched off with `_launch=none` in kglobalshortcutsrc.
+- 29 Oct: keyboard: layout `us` variant `intl-unicode`, model `applealu_iso`, compose on the right Cmd, Caps Lock as
+  Escape (the operator's own; `ux-fix.sh keyboard` has the `gb mac` alternative). Program shortcuts are switched off with
+  `_launch=none` in kglobalshortcutsrc.
 
 ## System
 

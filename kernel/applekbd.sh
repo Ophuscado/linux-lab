@@ -10,7 +10,9 @@
 #   applekbd.sh undo       the kernel's own driver again
 #   applekbd.sh show       which driver runs each Apple keyboard, and fn_shortcuts
 #
-# When the kernel has hid-apple built in, the lab's is built as hid_apple_lab (HID driver
+# On a kernel built with the patch (tbt-kernel.sh), its own hid-apple has fn_shortcuts: try and
+# undo set it now and at every boot (tmpfiles.d), with no driver beside it.
+# Otherwise, when the kernel has hid-apple built in, the lab's is built as hid_apple_lab (HID driver
 # "apple_lab") and try moves the keyboards over through sysfs, with a udev rule that does it
 # again whenever the built-in driver takes one; a keyboard the lab driver refuses goes back to
 # the built-in one at once. Then bind the four keys in System Settings > Keyboard > Shortcuts >
@@ -32,11 +34,14 @@ OPTS=/etc/modprobe.d/hid_apple-lab.conf
 LAB=$SRC/drivers/hid/lab-apple/hid-apple-lab.ko
 die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
 builtin() { grep -q '^CONFIG_HID_APPLE=y' "$KCONFIG" 2>/dev/null; }
-if builtin; then MOD=hid_apple_lab; else MOD=hid_apple; fi
+P=/sys/module/hid_apple/parameters
+TMPF=/etc/tmpfiles.d/hid_apple-lab.conf
+patched() { builtin && [[ -e $P/fn_shortcuts ]]; }
+if builtin && ! patched; then MOD=hid_apple_lab; else MOD=hid_apple; fi
 
 show() {
     local d
-    echo "kernel: hid-apple $(builtin && echo 'built in; the lab driver runs beside it as hid_apple_lab' || echo 'is a module')"
+    echo "kernel: hid-apple $(if patched; then echo 'built in, with the patch'; elif builtin; then echo 'built in; the lab driver runs beside it as hid_apple_lab'; else echo 'is a module'; fi)"
     for d in /sys/bus/hid/drivers/apple/*:* /sys/bus/hid/drivers/apple_lab/*:*; do
         [[ -e $d ]] && echo "  ${d##*/}: ${d%/*}" | sed 's#/sys/bus/hid/drivers/##'
     done
@@ -80,6 +85,16 @@ build)
     [[ -f $LAB ]] || die "no $LAB after the build"
     echo "built: $LAB ($(modinfo -F vermagic "$LAB" 2>/dev/null))"
     ;;
+try | undo)
+    if patched; then
+        v=$([[ $1 == try ]] && echo Y || echo N)
+        echo "$v" | sudo tee "$P/fn_shortcuts" >/dev/null
+        if [[ $v == Y ]]; then printf '%s\n' '# Written by applekbd.sh try; removed by applekbd.sh undo.' "w $P/fn_shortcuts - - - - Y" | sudo tee "$TMPF" >/dev/null
+        else sudo rm -f "$TMPF"; fi
+        show
+        exit 0
+    fi
+    ;;&
 try)
     builtin || LAB=$SRC/drivers/hid/hid-apple.ko
     [[ -f $LAB ]] || die "not built yet: applekbd.sh build"
