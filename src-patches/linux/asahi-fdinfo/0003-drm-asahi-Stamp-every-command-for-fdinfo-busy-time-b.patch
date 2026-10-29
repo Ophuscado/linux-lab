@@ -1,0 +1,177 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Thu, 29 Oct 2026 07:09:07 +0000
+Subject: [PATCH 3/3] drm/asahi: Stamp every command for fdinfo busy time
+ (busy_stats)
+
+The firmware writes a command's start and end stamps only when the
+command's microsequence holds Timestamp ops, and the driver adds those
+only when userspace asked for timestamps. So the drm-engine-render and
+drm-engine-compute lines of the previous patch stayed at 0 ns for every
+client that never queries timestamps, which is nearly all of them (a
+GPU-bound Vulkan client on an M2 Ultra: 0 ns over 5 s).
+
+With the asahi.busy_stats=1 module parameter every command gets the two
+Timestamp ops. A command without user timestamps points its user
+timestamp pointers at the kernel's own stamps, the path the firmware
+already takes when a client does ask, rather than at NULL. Off by
+default: the cost of the extra ops per command is not measured yet.
+---
+ drivers/gpu/drm/asahi/asahi.rs         |  5 ++++
+ drivers/gpu/drm/asahi/queue/compute.rs | 17 ++++++++++---
+ drivers/gpu/drm/asahi/queue/render.rs  | 33 +++++++++++++++++++++-----
+ 3 files changed, 46 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/gpu/drm/asahi/asahi.rs b/drivers/gpu/drm/asahi/asahi.rs
+index 296091d..6aefb33 100644
+--- a/drivers/gpu/drm/asahi/asahi.rs
++++ b/drivers/gpu/drm/asahi/asahi.rs
+@@ -57,5 +57,10 @@ kernel::module_platform_driver! {
+             // permissions: 0o644,
+             description: "Fully isolate GPU contexts (limits performance)",
+         },
++        busy_stats: u32 {
++            default: 0,
++            // permissions: 0o644,
++            description: "Stamp every command's start and end, for the drm-engine-* busy time in fdinfo",
++        },
+     },
+ }
+diff --git a/drivers/gpu/drm/asahi/queue/compute.rs b/drivers/gpu/drm/asahi/queue/compute.rs
+index 0684c8a..ee163bb 100644
+--- a/drivers/gpu/drm/asahi/queue/compute.rs
++++ b/drivers/gpu/drm/asahi/queue/compute.rs
+@@ -68,6 +68,10 @@ impl super::QueueInner::ver {
+         let mut user_timestamps: fw::job::UserTimestamps = Default::default();
+         user_timestamps.start = common::get_timestamp_object(objects, cmdbuf.ts.start)?;
+         user_timestamps.end = common::get_timestamp_object(objects, cmdbuf.ts.end)?;
++        // The firmware stamps a command only when told to; for fdinfo's busy time (busy_stats=1) every command
++        // is stamped, and one without user timestamps gets its stamps copied back into the kernel's own.
++        let stamp = user_timestamps.any() || *crate::module_parameters::busy_stats.value() != 0;
++        let stamps_to_kernel = !user_timestamps.any() && stamp;
+ 
+         // This sequence number increases per new client/VM? assigned to some slot,
+         // but it's unclear *which* slot...
+@@ -164,7 +168,7 @@ impl super::QueueInner::ver {
+                             notifier_buf: inner_weak_ptr!(notifier.weak_pointer(), state.unk_buf),
+                         })?;
+ 
+-                        if user_timestamps.any() {
++                        if stamp {
+                             builder.add(microseq::Timestamp::ver {
+                                 header: microseq::op::Timestamp::new(true),
+                                 command_time: inner_weak_ptr!(ptr, command_time),
+@@ -188,7 +192,7 @@ impl super::QueueInner::ver {
+                             header: microseq::op::WaitForIdle2::HEADER,
+                         })?;
+ 
+-                        if user_timestamps.any() {
++                        if stamp {
+                             builder.add(microseq::Timestamp::ver {
+                                 header: microseq::op::Timestamp::new(false),
+                                 command_time: inner_weak_ptr!(ptr, command_time),
+@@ -351,7 +355,14 @@ impl super::QueueInner::ver {
+                         start_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), start)),
+                         end_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), end)),
+                     }),
+-                    user_timestamp_pointers: inner.user_timestamps.pointers()?,
++                    user_timestamp_pointers: if stamps_to_kernel {
++                        fw::job::raw::TimestampPointers {
++                            start_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), start)),
++                            end_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), end)),
++                        }
++                    } else {
++                        inner.user_timestamps.pointers()?
++                    },
+                     client_sequence: slot_client_seq,
+                     pad_2d1: Default::default(),
+                     unk_2d4: 0,
+diff --git a/drivers/gpu/drm/asahi/queue/render.rs b/drivers/gpu/drm/asahi/queue/render.rs
+index 65c8ba3..ae77877 100644
+--- a/drivers/gpu/drm/asahi/queue/render.rs
++++ b/drivers/gpu/drm/asahi/queue/render.rs
+@@ -226,6 +226,13 @@ impl super::QueueInner::ver {
+         vtx_user_timestamps.end = common::get_timestamp_object(objects, cmdbuf.ts_vtx.end)?;
+         frg_user_timestamps.start = common::get_timestamp_object(objects, cmdbuf.ts_frag.start)?;
+         frg_user_timestamps.end = common::get_timestamp_object(objects, cmdbuf.ts_frag.end)?;
++        // As in compute: with busy_stats=1 every command is stamped for fdinfo, into the kernel's own stamps when
++        // the client asked for none.
++        let busy = *crate::module_parameters::busy_stats.value() != 0;
++        let vtx_stamp = vtx_user_timestamps.any() || busy;
++        let frg_stamp = frg_user_timestamps.any() || busy;
++        let vtx_stamps_to_kernel = !vtx_user_timestamps.any() && busy;
++        let frg_stamps_to_kernel = !frg_user_timestamps.any() && busy;
+ 
+         let gpu = match (*self.dev)
+             .gpu
+@@ -525,7 +532,7 @@ impl super::QueueInner::ver {
+                             notifier_buf: inner_weak_ptr!(notifier.weak_pointer(), state.unk_buf),
+                         })?;
+ 
+-                        if frg_user_timestamps.any() {
++                        if frg_stamp {
+                             builder.add(microseq::Timestamp::ver {
+                                 header: microseq::op::Timestamp::new(true),
+                                 command_time: inner_weak_ptr!(ptr, command_time),
+@@ -549,7 +556,7 @@ impl super::QueueInner::ver {
+                             header: microseq::op::WaitForIdle2::HEADER,
+                         })?;
+ 
+-                        if frg_user_timestamps.any() {
++                        if frg_stamp {
+                             builder.add(microseq::Timestamp::ver {
+                                 header: microseq::op::Timestamp::new(false),
+                                 command_time: inner_weak_ptr!(ptr, command_time),
+@@ -927,7 +934,14 @@ impl super::QueueInner::ver {
+                         start_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), frag.start)),
+                         end_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), frag.end)),
+                     }),
+-                    user_timestamp_pointers: inner.user_timestamps.pointers()?,
++                    user_timestamp_pointers: if frg_stamps_to_kernel {
++                        fw::job::raw::TimestampPointers {
++                            start_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), frag.start)),
++                            end_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), frag.end)),
++                        }
++                    } else {
++                        inner.user_timestamps.pointers()?
++                    },
+                     client_sequence: slot_client_seq,
+                     pad_925: Default::default(),
+                     unk_928: 0,
+@@ -1041,7 +1055,7 @@ impl super::QueueInner::ver {
+                             unk_178: (!clustering) as u32,
+                         })?;
+ 
+-                        if vtx_user_timestamps.any() {
++                        if vtx_stamp {
+                             builder.add(microseq::Timestamp::ver {
+                                 header: microseq::op::Timestamp::new(true),
+                                 command_time: inner_weak_ptr!(ptr, command_time),
+@@ -1065,7 +1079,7 @@ impl super::QueueInner::ver {
+                             header: microseq::op::WaitForIdle2::HEADER,
+                         })?;
+ 
+-                        if vtx_user_timestamps.any() {
++                        if vtx_stamp {
+                             builder.add(microseq::Timestamp::ver {
+                                 header: microseq::op::Timestamp::new(false),
+                                 command_time: inner_weak_ptr!(ptr, command_time),
+@@ -1370,7 +1384,14 @@ impl super::QueueInner::ver {
+                         start_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), vtx.start)),
+                         end_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), vtx.end)),
+                     }),
+-                    user_timestamp_pointers: inner.user_timestamps.pointers()?,
++                    user_timestamp_pointers: if vtx_stamps_to_kernel {
++                        fw::job::raw::TimestampPointers {
++                            start_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), vtx.start)),
++                            end_addr: Some(inner_ptr!(inner.timestamps.gpu_pointer(), vtx.end)),
++                        }
++                    } else {
++                        inner.user_timestamps.pointers()?
++                    },
+                     client_sequence: slot_client_seq,
+                     pad_5d5: Default::default(),
+                     unk_5d8: 0,
+-- 
+2.43.0
+

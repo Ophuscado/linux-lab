@@ -1,4 +1,4 @@
-# GPU time and memory per client in the asahi DRM driver's fdinfo (written, not yet built).
+# GPU time and memory per client in the asahi DRM driver's fdinfo (built and running since 29 Oct; busy time needs asahi.busy_stats=1, patch 3).
 UPSTREAM=https://github.com/AsahiLinux/linux
 BASE=94fb23346d522edf53722357c426a3e58030beea  # tag asahi-7.1.13-3
 FORK=https://github.com/Ophuscado/linux

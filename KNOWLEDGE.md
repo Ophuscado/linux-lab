@@ -124,9 +124,20 @@ Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK 
   slower.
 - 26 Oct: llama.cpp fails to read a model from the mergerfs pool ("read error: Bad address"); models load from
   `~/Projects/_llm`.
-- 28 Oct: GPU usage per client needs `drm-*` fdinfo lines; the Rust DRM abstraction lacked a `show_fdinfo` hook and
-  the GEM file operations did not set it (`src-patches/linux/asahi-fdinfo`, in test). KDE's GPU sensor needs a
-  ksystemstats backend reading them (INFERRED).
+- 29 Oct, VERIFIED on the new kernel: every GPU client has `drm-driver: asahi`, `drm-engine-render/compute` and
+  `drm-total/shared-memory` lines (17 files at boot), memory correct, busy time always 0 ns, also for a client
+  saturating the GPU for 5 s. The firmware stamps a command's start and end only when its microsequence carries
+  Timestamp ops, which the driver adds only for user timestamp queries; patch 3 adds them for every command behind
+  `asahi.busy_stats=1` (not yet built). The Rust DRM abstraction had lacked a `show_fdinfo` hook and the GEM file
+  operations did not set it (`src-patches/linux/asahi-fdinfo`). KDE's GPU sensor needs a ksystemstats backend
+  reading these lines (INFERRED).
+- 29 Oct, VERIFIED, read bandwidth (`vk-chain.sh bw`): 610-655 GB/s from 64 MB to 1 GB when 1216 workgroups walk the
+  buffer, the same on both memory types and on the system Mesa and agxperf; ~290 GB/s when the grid has one vec4 per
+  invocation (65,536 workgroups for 256 MB): workgroup launch rate, not memory, caps that form. 16 MB reaches 550
+  (system) to 996 GB/s (agxperf), from the cache. So DRAM gives about 80 % of the M2 Ultra's 800 GB/s here, and
+  the f16 matrix-vector at 475 GB/s is below even that: its shape, not the memory (INFERRED). Metal's own read
+  bandwidth on this machine is not measured yet; its matrix-vector figures repeat a 117 MB matrix that partly sits
+  in the 96 MB system cache, so they are an upper bound.
 - Benchmarks take `~/.cache/linux-lab-gpu.lock` (flock): two runs sharing the GPU halve each other.
 
 ### Metal on this machine
