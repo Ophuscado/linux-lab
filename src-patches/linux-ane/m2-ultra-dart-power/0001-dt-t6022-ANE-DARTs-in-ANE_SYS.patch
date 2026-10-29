@@ -1,7 +1,7 @@
 From de95afc5a7c5b3147aa3e076e2c0aae1ae2dd7ee Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Thu, 29 Oct 2026 01:53:48 +0000
-Subject: [PATCH] dt: t6022 ANE DARTs in ANE_SYS
+Subject: [PATCH 1/2] dt: t6022 ANE DARTs in ANE_SYS
 
 On a J475d the shipped t6022-ane overlay panicked the boot with an
 asynchronous SError in apple_dart_probe: dart0 in pmp, dart1/2 in ANE_CPU.
