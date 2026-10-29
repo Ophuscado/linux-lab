@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Thu, 29 Oct 2026 10:26:20 +0000
+Subject: [PATCH] test_ane_m2: check that T6022's ANE DARTs land in ANE_SYS
+
+8b06dc9 gave the fake T602x board tree power-controller@260 so the T6022 overlay applies; this asserts the result: the three ANE DARTs' power-domains point at that node (receipts/2026-10-29-t6022-j475d-ane-sys).
+---
+ tools/test_ane_m2.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tools/test_ane_m2.py b/tools/test_ane_m2.py
+index 03845e2..694e65c 100755
+--- a/tools/test_ane_m2.py
++++ b/tools/test_ane_m2.py
+@@ -131,6 +131,12 @@ for soc, board in (('t6020', 'j414s'), ('t6021', 'j414c'), ('t6022', 'j180d')):
+     # The stock apple-mailbox binds the ANE mailbox only with both interrupts.
+     mbox = tree.phandles[oadt.cells(tree.nodes[ane[0]]['mboxes'])[0]]
+     assert tree.strings(mbox, 'interrupt-names') == ['recv-not-empty', 'send-empty'], soc
++    if soc == 't6022':
++        # T6022's three ANE DARTs are powered from ANE_SYS (pmgr 0x260), not pmp or ANE_CPU
++        # (receipts/2026-10-29-t6022-j475d-ane-sys).
++        for dart in ('285800000', '285810000', '285820000'):
++            pd = tree.phandles[oadt.cells(tree.nodes[f'/soc/iommu@{dart}']['power-domains'])[0]]
++            assert pd == '/soc/power-management@28e080000/power-controller@260', (dart, pd)
+     assert '/config' not in tree.nodes, 'the U-Boot input overlay stays off'
+ 
+ # 3. omarchy-ane-check --root on a fake running system: node present, module
+-- 
+2.43.0
+
