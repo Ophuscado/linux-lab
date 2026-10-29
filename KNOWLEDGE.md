@@ -93,9 +93,11 @@ Same machine, llama.cpp 2280f0f, Honeykrisp (Mesa) on Linux, Metal and MoltenVK 
 
 | tokens/s | Metal pp512 / tg128 | Vulkan on MoltenVK | Honeykrisp, Linux |
 |---|---|---|---|
-| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 762 / 69.7 |
-| GPT-OSS 20B | 1944 / 124.5 | 992 / 82.7 | 747 / 70.9 |
-| Qwen3-Coder-Next Q8 | 1535 / 67.8 | 422 / 24.8 | 488 / 34.8 |
+| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 763 / 69.4 |
+| GPT-OSS 20B | 1944 / 124.5 | 992 / 82.7 | 820 / 70.4 |
+| Qwen3-Coder-Next Q8 | 1535 / 67.8 | 422 / 24.8 | 448 / 34.2 |
+
+The Linux column: one session on 29 Oct (run 4664), the six-patch series and `gpu/llama-run.sh`'s settings.
 
 - 29 Oct, VERIFIED, one 4096x14336 matrix-vector (test-backend-ops perf, µs): f16 Metal 143, MoltenVK 161, Linux
   247; q4_0 37 / 100 / 81 (68 with `GGML_VK_MMV_SIMD=1`, honeykrisp 0005, at 8 rows a workgroup); q8_0 57.5 / 90 /
