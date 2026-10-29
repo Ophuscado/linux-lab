@@ -15,8 +15,9 @@
 #                                  does not scroll for HOLD_MS (default 250) after the mouse
 #                                  moved, a two-finger double tap zooms (Ctrl+=) and the next
 #                                  one zooms back (Ctrl+0). Mouse and trackpad drop for a second
-#   magicmouse.sh hold MS          the resting-finger guard of the running lab driver, now and
-#                                  for the next load (0 turns it off)
+#   magicmouse.sh hold MS          the resting-finger guard, now and at every boot (0 turns it
+#                                  off); on a kernel built with the patch (tbt-kernel.sh) this is
+#                                  all there is to do: its own driver has the guard, off by default
 #   magicmouse.sh speed N          scroll speed, 0 (slow) to 63 (fast; the kernel's default 32):
 #                                  one scroll step per (64 - N) * 7 units of finger travel, so
 #                                  1 needs 441, 22 needs 294 (two thirds), 32 needs 224. Set live on
@@ -56,6 +57,8 @@ OPTS=/etc/modprobe.d/hid_magicmouse-lab.conf
 LAB=$SRC/drivers/hid/lab/hid-magicmouse-lab.ko
 LP=/sys/module/hid_magicmouse_lab/parameters
 builtin() { grep -q '^CONFIG_HID_MAGICMOUSE=y' "$KCONFIG" 2>/dev/null; }
+# The kernel's own driver has the patch (a tbt-kernel.sh build): no lab driver beside it.
+patched() { builtin && [[ -e $P/scroll_hold_ms ]]; }
 # The commit the running trial kernel was built from, as tbt-kernel.sh pins it.
 KREPO=$(sed -n 's/^REPO=//p' "$HERE/tbt-kernel.sh")
 KCOMMIT=$(sed -n 's/^COMMIT=//p' "$HERE/tbt-kernel.sh")
@@ -69,6 +72,12 @@ reload() {
 }
 show() {
     local d
+    if patched; then
+        echo "driver: the kernel's, with the patch (scroll_hold_ms $(cat $P/scroll_hold_ms), smart_zoom $(cat $P/smart_zoom), steps $(cat $P/smart_zoom_steps))"
+        echo "settings at boot: $(grep -v '^#' "$TMPF" 2>/dev/null | tr '\n' ' ' || true)"
+        [[ -f $RULE || -f $OPTS ]] && echo "WARN: the lab driver's rule or options are left over: magicmouse.sh hold MS removes them"
+        return
+    fi
     if builtin; then
         echo "kernel: the driver is built in; the lab's runs beside it as hid_magicmouse_lab"
         [[ -d $LP ]] && echo "lab driver: loaded (scroll_hold_ms $(cat $LP/scroll_hold_ms), smart_zoom $(cat $LP/smart_zoom), emulate_3button $(cat $LP/emulate_3button), scroll_speed $(cat $LP/scroll_speed))" || echo "lab driver: not loaded"
@@ -97,6 +106,8 @@ move() {
 }
 
 case ${1:-} in
+build | try)
+    patched && die "the kernel's own driver has the patch already: magicmouse.sh hold MS" ;;&
 build)
     if [[ ! -d $SRC/.git ]]; then
         [[ ! -e $SRC ]] || [[ -z $(ls -A "$SRC") ]] || die "$SRC exists and is not a git tree"
@@ -214,7 +225,20 @@ undo)
     show
     ;;
 hold)
-    [[ ${2:-} =~ ^[0-9]+$ ]] || die "magicmouse.sh hold MS (e.g. 165; 0 is off)"
+    [[ ${2:-} =~ ^[0-9]+$ ]] || die "magicmouse.sh hold MS (e.g. 100; 0 is off)"
+    if patched; then
+        echo "$2" | sudo tee "$P/scroll_hold_ms" >/dev/null
+        echo Y | sudo tee "$P/smart_zoom" >/dev/null
+        printf '%s\n' '# Written by magicmouse.sh hold: the patched driver built into the kernel.' \
+            "w $P/scroll_hold_ms - - - - $2" "w $P/smart_zoom - - - - Y" | sudo tee "$TMPF" >/dev/null
+        # The lab driver beside it is no longer needed.
+        if [[ -f $RULE ]]; then sudo rm -f "$RULE"; sudo udevadm control --reload; fi
+        sudo rm -f "$OPTS"
+        if [[ -f $UPD/hid-magicmouse-lab.ko ]]; then sudo rm -f "$UPD/hid-magicmouse-lab.ko"; sudo depmod -a "$REL"; fi
+        show
+        echo "smart zoom takes effect when the mouse connects again"
+        exit 0
+    fi
     if builtin; then p=$LP; o=hid_magicmouse_lab; else p=$P; o=hid_magicmouse; fi
     [[ -e $p/scroll_hold_ms ]] || die "the lab driver is not running: magicmouse.sh try"
     echo "$2" | sudo tee "$p/scroll_hold_ms" >/dev/null
