@@ -1,0 +1,37 @@
+#version 450
+// ggml's matrix-vector in its simplest form: a workgroup of 128 threads, 2 rows, f32, k = ITERS;
+// each thread a strided part of the dot product, then a subgroup sum and a shared-memory sum
+// across the workgroup's subgroups (4 of 32 threads on Apple's GPU). Rows start at float k (row r at (r + 1) * k); the vector is float 0..k
+// for every workgroup (MODE 0, as ggml: all cores read the same lines) or the next row (MODE 1).
+// MODE 2 and 3: the same as 0 and 1 with the loads of 8 iterations issued before their multiply-adds,
+// so 8 memory reads are in flight at once instead of one. Launch with VKCHAIN_GROUPS = rows / 2.
+#extension GL_KHR_shader_subgroup_arithmetic : enable
+#extension GL_EXT_control_flow_attributes : enable
+layout(local_size_x = 128) in;
+layout(constant_id = 0) const uint MODE = 0;
+layout(constant_id = 1) const uint ITERS = 2048;
+layout(constant_id = 7) const uint VARIANT = 0;
+layout(std430, binding = 0) buffer B { float x[]; };
+layout(push_constant) uniform P { uint n; } p;
+shared float sh[2][32];
+void main() {
+    uint t = gl_LocalInvocationID.x, k = ITERS, m = p.n / k - 2;
+    uint r0 = gl_WorkGroupID.x * 2;
+    float acc[2] = { 0.0, 0.0 };
+    for (uint j = 0; j < 2; j++) {
+        uint r = min(r0 + j, m - 1), a = (r + 1) * k, b = (MODE & 1) == 0 ? 0 : ((r + 1) % m + 1) * k;
+        uint i = t;
+        if (MODE >= 2) {
+            for (; i + 7 * 128 < k; i += 8 * 128) {
+                float va[8], vb[8];
+                [[unroll]] for (uint u = 0; u < 8; u++) { va[u] = x[a + i + u * 128]; vb[u] = x[b + i + u * 128]; }
+                [[unroll]] for (uint u = 0; u < 8; u++) acc[j] += va[u] * vb[u];
+            }
+        }
+        for (; i < k; i += 128) acc[j] += x[a + i] * x[b + i];
+        acc[j] = subgroupAdd(acc[j]);
+    }
+    if (gl_SubgroupInvocationID == 0) { sh[0][gl_SubgroupID] = acc[0]; sh[1][gl_SubgroupID] = acc[1]; }
+    barrier();
+    if (t < 2) { float s = 0.0; for (uint q = 0; q < gl_NumSubgroups; q++) s += sh[t][q]; x[(m + 1) * k + r0 + t] = s; }
+}

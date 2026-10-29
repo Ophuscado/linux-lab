@@ -1,0 +1,20 @@
+0.00.037.587 I srv  llama_server: initializing ...
+0.00.037.594 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.037.772 W srv  server_setup: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+0.00.039.303 I srv    load_model: loading model '~/Downloads/GPT-OSS-120B/UD-Q4_K_XL/model.gguf'
+0.00.382.741 W load: setting token '<|message|>' (200008) attribute to USER_DEFINED (16), old attributes: 8
+0.00.382.910 W load: setting token '<|channel|>' (200005) attribute to USER_DEFINED (16), old attributes: 8
+0.00.383.159 W load: setting token '<|start|>' (200006) attribute to USER_DEFINED (16), old attributes: 8
+0.00.383.375 W load: setting token '<|constrain|>' (200003) attribute to USER_DEFINED (16), old attributes: 8
+0.00.383.481 W load: special_eog_ids contains both '<|return|>' and '<|call|>', or '<|calls|>' and '<|flush|>' tokens, removing '<|end|>' token from EOG list
+0.02.906.946 I cmn          init: llama threadpool init, n_threads = 16
+0.02.987.157 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 16384, kv_unified = 'false'
+0.02.989.598 I srv  server_run_i: model loaded
+0.02.989.603 I srv  server_on_li: listening on http://127.0.0.1:8099
+0.03.089.414 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+0.03.089.463 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+0.07.662.899 I slot print_timing: id  0 | task 0 | n_gen =    244, tg =  80.67 t/s, tg_3s =  81.00 t/s
+0.10.667.818 I slot print_timing: id  0 | task 0 | n_gen =    485, tg =  80.44 t/s, tg_3s =  80.20 t/s
+0.13.672.859 I slot print_timing: id  0 | task 0 | n_gen =    726, tg =  80.36 t/s, tg_3s =  80.20 t/s
+0.14.544.672 I srv    operator(): operator(): cleaning up before exit...
+0.15.146.865 W srv          stop: cancel task, id_task = 0

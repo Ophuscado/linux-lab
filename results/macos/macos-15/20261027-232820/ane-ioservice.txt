@@ -1,0 +1,50 @@
++-o H11ANE  <class H11ANEIn, id 0x1000006ac, registered, matched, active, busy 0 (2 ms), retain 10>
+  | {
+  |   "IOClass" = "H11ANEIn"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleH11ANEInterface"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOFunctionParent000001EA" = <>
+  |   "IOPowerManagement" = {"DevicePowerState"=0,"CurrentPowerState"=0,"CapabilityFlags"=0,"MaxPowerState"=1}
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "ane,t8020"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOReportLegend" = ({"IOReportGroupName"="H11ANE","IOReportChannels"=((0,6442450945,"Total Interrupts"),(1,6442450945,"Number Power Ups"),(2,6442450945,"Number Power Downs"),(3,6442450945,"Memory Alloc Requests"),(4,6442450945,"Memory Free Requests"),(5,6442450945,"ANECPU Commands Sent"),(6,6442450945,"ANECPU Responses Received"),(7,6442450945,"H2T Buffer Responses"),(8,6442450945,"T2H Buffer Notifications"),(9,6442450945,"T2H IO Commands"),(10,6442450945,"ANECPU Log Messages"),(11,6442450945,"Allocated Shared Memory")),"IOReportChannelInfo"={"IOReportChannelUnit"=0},"IOReportSubGroupName"="H11ANE Events"},{"IOReportGroupName"="H11ANE","IOReportChannels"=((12,4295098369,"ANE Power")),"IOReportChannelInfo"={"IOReportChannelUnit"=0},"IOReportSubGroupName"="H11ANE Power State"})
+  |   "IOReportLegendPublic" = Yes
+  |   "IONameMatched" = "ane,t8020"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleH11ANEInterface"
+  |   "DeviceProperties" = {"ANEDevicePropertyANECPUSubType"=5,"ANEDevicePropertyIsInternalBuild"=No,"ANEDevicePropertyANEVersion"=128,"ANEDevicePropertyANEMinorVersion"=17,"ANEDevicePropertyANEHWBoardType"=160,"ANEDevicePropertyANEHWBoardSubType"=0,"ANEDevicePropertyNumANECores"=16,"ANEDevicePropertyTypeANEArchitectureTypeStr"="h14g"}
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleH11ANEInterface"
+  |   "FirmwareLoaded" = Yes
+  | }
+  | 
+  +-o ANEClientHints  <class ANEClientHints, id 0x10000108c, registered, matched, active, busy 0 (1 ms), retain 6>
+      {
+      }
+      
+
++-o H11ANE1  <class H11ANEIn, id 0x1000004b8, registered, matched, active, busy 0 (1 ms), retain 10>
+  | {
+  |   "IOClass" = "H11ANEIn"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleH11ANEInterface"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPowerManagement" = {"DevicePowerState"=0,"CurrentPowerState"=0,"CapabilityFlags"=0,"MaxPowerState"=1}
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "ane,t8020"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOReportLegend" = ({"IOReportGroupName"="H11ANE","IOReportChannels"=((0,6442450945,"Total Interrupts"),(1,6442450945,"Number Power Ups"),(2,6442450945,"Number Power Downs"),(3,6442450945,"Memory Alloc Requests"),(4,6442450945,"Memory Free Requests"),(5,6442450945,"ANECPU Commands Sent"),(6,6442450945,"ANECPU Responses Received"),(7,6442450945,"H2T Buffer Responses"),(8,6442450945,"T2H Buffer Notifications"),(9,6442450945,"T2H IO Commands"),(10,6442450945,"ANECPU Log Messages"),(11,6442450945,"Allocated Shared Memory")),"IOReportChannelInfo"={"IOReportChannelUnit"=0},"IOReportSubGroupName"="H11ANE Events"},{"IOReportGroupName"="H11ANE","IOReportChannels"=((12,4295098369,"ANE Power")),"IOReportChannelInfo"={"IOReportChannelUnit"=0},"IOReportSubGroupName"="H11ANE Power State"})
+  |   "IOReportLegendPublic" = Yes
+  |   "IONameMatched" = "ane,t8020"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleH11ANEInterface"
+  |   "DeviceProperties" = {"ANEDevicePropertyANECPUSubType"=5,"ANEDevicePropertyIsInternalBuild"=No,"ANEDevicePropertyANEVersion"=128,"ANEDevicePropertyANEMinorVersion"=17,"ANEDevicePropertyANEHWBoardType"=160,"ANEDevicePropertyANEHWBoardSubType"=1,"ANEDevicePropertyNumANECores"=16,"ANEDevicePropertyTypeANEArchitectureTypeStr"="h14g"}
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleH11ANEInterface"
+  |   "IOFunctionParent000001ED" = <>
+  |   "FirmwareLoaded" = Yes
+  | }
+  | 
+  +-o ANEClientHints  <class ANEClientHints, id 0x10000108a, registered, matched, active, busy 0 (0 ms), retain 6>
+      {
+      }
+      
+

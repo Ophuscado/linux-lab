@@ -1,0 +1,13 @@
+_tmp/
+vk-chain/vk-chain
+vk-chain/add.spv
+vk-chain/reduce.spv
+vk-chain/chase.spv
+vk-chain/fat.spv
+vk-chain/dot.spv
+vk-chain/addk.spv
+vk-chain/q8dot.spv
+src/
+build/
+var/
+__pycache__/

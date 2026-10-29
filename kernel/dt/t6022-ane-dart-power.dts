@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: GPL-2.0+ OR MIT
+/*
+ * Applied after omarchy-ane's t6022-ane overlay: its three ANE DARTs take their power from the ANE_SYS island.
+ *
+ * Why (29 Oct 2026, this Mac): the kernel with t6022-ane panicked 2.66 s into boot with an asynchronous SError in
+ * apple_dart_probe, called from udev loading apple_dart: the first register read of a DART whose power island was
+ * off. The overlay puts dart0 in pmp (always on) and dart1/dart2 in ANE_CPU. macOS 15 on this machine
+ * (re-ioreg-IODeviceTree, 28 Oct) gives dart-ane0, which holds all three register windows (0x285800000,
+ * 0x285810000, 0x285820000, and 0x285804000), power-gates 0x1fb; pmgr's device table names 0x1fb ANE-SYS-DART,
+ * a virtual gate whose parent is 0x3c ANE_SYS: psreg 6, slot 12, the power-controller at pmgr offset 0x260.
+ * ANE_CPU (0x2e0) is a child of ANE_SYS, so dart1/dart2 may have worked through the parent link; dart0 in pmp
+ * did not.
+ */
+/dts-v1/;
+/plugin/;
+
+/ {
+	fragment@0 {
+		target-path = "/soc/power-management@28e080000/power-controller@260";
+		ps_ane_sys: __overlay__ {
+		};
+	};
+
+	fragment@1 {
+		target-path = "/soc/iommu@285800000";
+		__overlay__ {
+			power-domains = <&ps_ane_sys>;
+		};
+	};
+
+	fragment@2 {
+		target-path = "/soc/iommu@285810000";
+		__overlay__ {
+			power-domains = <&ps_ane_sys>;
+		};
+	};
+
+	fragment@3 {
+		target-path = "/soc/iommu@285820000";
+		__overlay__ {
+			power-domains = <&ps_ane_sys>;
+		};
+	};
+};

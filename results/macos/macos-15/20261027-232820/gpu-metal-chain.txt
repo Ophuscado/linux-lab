@@ -1,0 +1,43 @@
+device Apple M2 Ultra
+== run: plain add, one float per thread, 256-thread threadgroups, 1500 launches
+      16 KB chain       2.31 us per launch
+      16 KB barrier     2.66 us per launch
+      16 KB free        0.32 us per launch
+     256 KB chain       3.04 us per launch
+     256 KB barrier     3.57 us per launch
+     256 KB free        1.19 us per launch
+    4096 KB chain      19.47 us per launch
+    4096 KB barrier    19.94 us per launch
+    4096 KB free       13.33 us per launch
+   65536 KB chain     241.47 us per launch
+   65536 KB barrier   241.64 us per launch
+   65536 KB free      230.94 us per launch
+== groups: the same add of 1 MB and 16 MB over 8 to 4096 threadgroups
+  1024 KB,    8 threadgroups: chain    45.11 us
+  1024 KB,   32 threadgroups: chain    13.90 us
+  1024 KB,   76 threadgroups: chain     7.92 us
+  1024 KB,  152 threadgroups: chain     5.55 us
+  1024 KB,  304 threadgroups: chain     5.35 us
+  1024 KB,  608 threadgroups: chain     5.44 us
+  1024 KB, 1024 threadgroups: chain     6.42 us
+  1024 KB, 4096 threadgroups: chain    14.07 us
+ 16384 KB,    8 threadgroups: chain   650.12 us
+ 16384 KB,   32 threadgroups: chain   171.56 us
+ 16384 KB,   76 threadgroups: chain    80.16 us
+ 16384 KB,  152 threadgroups: chain    45.72 us
+ 16384 KB,  304 threadgroups: chain    29.48 us
+ 16384 KB,  608 threadgroups: chain    23.88 us
+ 16384 KB, 1024 threadgroups: chain    25.06 us
+ 16384 KB, 4096 threadgroups: chain    29.00 us
+== dot: minimal f32 matrix-vector, 2 rows per 128-thread threadgroup
+512x2048 f32 chain      12.49 us per launch
+512x2048 f32 barrier    13.24 us per launch
+512x2048 f32 free        1.59 us per launch
+2048x512 f32 chain       7.27 us per launch
+2048x512 f32 barrier     7.80 us per launch
+2048x512 f32 free        3.11 us per launch
+4096x4096 f32 chain      49.10 us per launch
+4096x4096 f32 barrier    49.72 us per launch
+4096x4096 f32 free       38.54 us per launch
+== clock: one thread's dependent multiply-adds (16 per step against 1, 100k steps)
+one dependent multiply-add 0.00 ns (0.0 cycles at 1398 MHz); one loop step 26.96 ns

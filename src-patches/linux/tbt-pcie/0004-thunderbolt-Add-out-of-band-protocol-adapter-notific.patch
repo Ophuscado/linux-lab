@@ -1,0 +1,414 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Sun, 11 Oct 2026 15:26:13 +0000
+Subject: [PATCH 4/9] thunderbolt: Add out-of-band protocol adapter
+ notifications
+
+On Apple Silicon the PCIe down adapter of the host router does not lead
+to a device on the Thunderbolt bus. The PCIe controller behind it is a
+separate platform device whose link only trains while a tunnel to the
+adapter is active, so it has to be told when that tunnel comes and goes.
+
+Add a small class for such controllers: they register a protocol adapter
+for their firmware node, and the host router driver looks it up and
+calls its activate and deactivate hooks. Add an NHI hook, tunnel_notify,
+which the core calls for every tunnel that starts at the host router
+when it becomes active and when it stops being active.
+
+The protocol adapter class is Sven Peter's, from the atcphy-20230219
+branch of the Asahi Linux tree, reduced to what is used and moved to the
+current class API. The hook replaces that branch's
+oob_notify_tunnel_state and is called from tb_tunnel_set_active(), so
+that a tunnel which never became active is not reported as gone.
+
+Check: full arm64 build with clang 18, CONFIG_USB4=y, no warnings.
+---
+ drivers/thunderbolt/Makefile           |   2 +-
+ drivers/thunderbolt/domain.c           |   6 +
+ drivers/thunderbolt/nhi.h              |   7 ++
+ drivers/thunderbolt/protocol_adapter.c | 162 +++++++++++++++++++++++++
+ drivers/thunderbolt/tb.h               |   3 +
+ drivers/thunderbolt/tunnel.c           |  24 ++++
+ include/linux/thunderbolt.h            |  49 ++++++++
+ 7 files changed, 252 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/thunderbolt/protocol_adapter.c
+
+diff --git a/drivers/thunderbolt/Makefile b/drivers/thunderbolt/Makefile
+index edcfe58bc8..4d08db1290 100644
+--- a/drivers/thunderbolt/Makefile
++++ b/drivers/thunderbolt/Makefile
+@@ -3,7 +3,7 @@ ccflags-y := -I$(src)
+ obj-${CONFIG_USB4} := thunderbolt.o
+ thunderbolt-objs := nhi.o ctl.o tb.o switch.o cap.o pci.o path.o tunnel.o eeprom.o
+ thunderbolt-objs += domain.o dma_port.o icm.o property.o xdomain.o lc.o tmu.o usb4.o
+-thunderbolt-objs += usb4_port.o nvm.o retimer.o quirks.o clx.o
++thunderbolt-objs += usb4_port.o nvm.o retimer.o quirks.o clx.o protocol_adapter.o
+ 
+ thunderbolt-${CONFIG_ACPI} += acpi.o
+ thunderbolt-$(CONFIG_DEBUG_FS) += debugfs.o
+diff --git a/drivers/thunderbolt/domain.c b/drivers/thunderbolt/domain.c
+index 65d0eca3c9..3657932d38 100644
+--- a/drivers/thunderbolt/domain.c
++++ b/drivers/thunderbolt/domain.c
+@@ -923,9 +923,14 @@ int tb_domain_init(void)
+ 	ret = bus_register(&tb_bus_type);
+ 	if (ret)
+ 		goto err_xdomain;
++	ret = tb_protocol_adapter_init();
++	if (ret)
++		goto err_bus;
+ 
+ 	return 0;
+ 
++err_bus:
++	bus_unregister(&tb_bus_type);
+ err_xdomain:
+ 	tb_xdomain_exit();
+ err_acpi:
+@@ -937,6 +942,7 @@ err_acpi:
+ 
+ void tb_domain_exit(void)
+ {
++	tb_protocol_adapter_exit();
+ 	bus_unregister(&tb_bus_type);
+ 	ida_destroy(&tb_domain_ida);
+ 	tb_nvm_exit();
+diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
+index afd9a11489..1c54731dae 100644
+--- a/drivers/thunderbolt/nhi.h
++++ b/drivers/thunderbolt/nhi.h
+@@ -11,6 +11,8 @@
+ 
+ #include <linux/thunderbolt.h>
+ 
++struct tb_tunnel;
++
+ enum nhi_fw_mode {
+ 	NHI_FW_SAFE_MODE,
+ 	NHI_FW_AUTH_MODE,
+@@ -82,6 +84,10 @@ struct tb_nhi_ring_layout {
+  * @is_present: Whether the device is currently present on the parent bus
+  * @init_interrupts: NHI specific interrupt initialization hook
+  * @reset_interface: Resets the host interface
++ * @tunnel_notify: Called after a tunnel starting at the host router has been
++ *		   activated and after it has been deactivated, for host
++ *		   routers whose protocol adapters lead to controllers
++ *		   that need to be told out-of-band
+  */
+ struct tb_nhi_ops {
+ 	int (*init)(struct tb_nhi *nhi);
+@@ -100,6 +106,7 @@ struct tb_nhi_ops {
+ 	bool (*is_present)(struct tb_nhi *nhi);
+ 	int (*init_interrupts)(struct tb_nhi *nhi);
+ 	void (*reset_interface)(struct tb_nhi *nhi);
++	void (*tunnel_notify)(struct tb_tunnel *tunnel, bool active);
+ };
+ 
+ /*
+diff --git a/drivers/thunderbolt/protocol_adapter.c b/drivers/thunderbolt/protocol_adapter.c
+new file mode 100644
+index 0000000000..1b15075689
+--- /dev/null
++++ b/drivers/thunderbolt/protocol_adapter.c
+@@ -0,0 +1,162 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Thunderbolt driver - Out-of-band protocol adapter notification support
++ *
++ * On some host routers the controller behind a protocol adapter is not a
++ * device on the Thunderbolt bus but a separate platform device, which has to
++ * be told when a tunnel to its adapter comes up or goes away. Such a
++ * controller registers a protocol adapter for its firmware node and the host
++ * router driver looks it up from there.
++ *
++ * Copyright (C) The Asahi Linux Contributors
++ * Author: Sven Peter <sven@svenpeter.dev>
++ *
++ * based on USB Role Switch Support (drivers/usb/roles/class.c)
++ * Copyright (C) 2018 Intel Corporation
++ * Author: Heikki Krogerus <heikki.krogerus@linux.intel.com>
++ *         Hans de Goede <hdegoede@redhat.com>
++ */
++
++#include <linux/device.h>
++#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/property.h>
++#include <linux/slab.h>
++#include <linux/thunderbolt.h>
++
++#include "tb.h"
++
++static const struct class tb_protocol_adapter_class = {
++	.name = "thunderbolt_protocol_adapter",
++};
++
++struct tb_protocol_adapter {
++	struct device dev;
++	struct mutex lock;
++
++	tb_protocol_adapter_activate_t activate;
++	tb_protocol_adapter_deactivate_t deactivate;
++};
++
++#define to_tb_protocol_adapter(d) \
++	container_of(d, struct tb_protocol_adapter, dev)
++
++static void tb_protocol_adapter_release(struct device *dev)
++{
++	struct tb_protocol_adapter *adapter = to_tb_protocol_adapter(dev);
++
++	kfree(adapter);
++}
++
++static const struct device_type tb_protocol_adapter_dev_type = {
++	.name = "tb_protocol_adapter",
++	.release = tb_protocol_adapter_release,
++};
++
++struct tb_protocol_adapter *
++tb_protocol_adapter_register(struct device *parent,
++			     const struct tb_protocol_adapter_desc *desc)
++{
++	struct tb_protocol_adapter *adapter;
++	int ret;
++
++	if (!desc->fwnode)
++		return ERR_PTR(-EINVAL);
++
++	adapter = kzalloc(sizeof(*adapter), GFP_KERNEL);
++	if (!adapter)
++		return ERR_PTR(-ENOMEM);
++
++	mutex_init(&adapter->lock);
++
++	adapter->activate = desc->activate;
++	adapter->deactivate = desc->deactivate;
++	adapter->dev.parent = parent;
++	adapter->dev.fwnode = desc->fwnode;
++	adapter->dev.class = &tb_protocol_adapter_class;
++	adapter->dev.type = &tb_protocol_adapter_dev_type;
++	dev_set_drvdata(&adapter->dev, desc->driver_data);
++	dev_set_name(&adapter->dev, "%s-tbt-protocol-adapter",
++		     dev_name(parent));
++
++	ret = device_register(&adapter->dev);
++	if (ret) {
++		put_device(&adapter->dev);
++		return ERR_PTR(ret);
++	}
++
++	return adapter;
++}
++EXPORT_SYMBOL_GPL(tb_protocol_adapter_register);
++
++void tb_protocol_adapter_unregister(struct tb_protocol_adapter *adapter)
++{
++	device_unregister(&adapter->dev);
++}
++EXPORT_SYMBOL_GPL(tb_protocol_adapter_unregister);
++
++struct tb_protocol_adapter *
++tb_protocol_adapter_get(struct fwnode_handle *fwnode)
++{
++	struct tb_protocol_adapter *adapter;
++	struct device *dev;
++
++	dev = class_find_device_by_fwnode(&tb_protocol_adapter_class, fwnode);
++	if (!dev)
++		return ERR_PTR(-EPROBE_DEFER);
++
++	adapter = to_tb_protocol_adapter(dev);
++	/* The parent is bound for as long as its adapter is registered. */
++	if (!try_module_get(dev->parent->driver->owner)) {
++		put_device(dev);
++		return ERR_PTR(-ENODEV);
++	}
++
++	return adapter;
++}
++EXPORT_SYMBOL_GPL(tb_protocol_adapter_get);
++
++void tb_protocol_adapter_put(struct tb_protocol_adapter *adapter)
++{
++	module_put(adapter->dev.parent->driver->owner);
++	put_device(&adapter->dev);
++}
++EXPORT_SYMBOL_GPL(tb_protocol_adapter_put);
++
++void *tb_protocol_adapter_get_drvdata(struct tb_protocol_adapter *adapter)
++{
++	return dev_get_drvdata(&adapter->dev);
++}
++EXPORT_SYMBOL_GPL(tb_protocol_adapter_get_drvdata);
++
++int tb_protocol_adapter_activate(struct tb_protocol_adapter *adapter)
++{
++	int ret = 0;
++
++	mutex_lock(&adapter->lock);
++	if (adapter->activate)
++		ret = adapter->activate(adapter);
++	mutex_unlock(&adapter->lock);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(tb_protocol_adapter_activate);
++
++void tb_protocol_adapter_deactivate(struct tb_protocol_adapter *adapter)
++{
++	mutex_lock(&adapter->lock);
++	if (adapter->deactivate)
++		adapter->deactivate(adapter);
++	mutex_unlock(&adapter->lock);
++}
++EXPORT_SYMBOL_GPL(tb_protocol_adapter_deactivate);
++
++int tb_protocol_adapter_init(void)
++{
++	return class_register(&tb_protocol_adapter_class);
++}
++
++void tb_protocol_adapter_exit(void)
++{
++	class_unregister(&tb_protocol_adapter_class);
++}
+diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
+index 8f2ac506f9..4baecf2cad 100644
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -772,6 +772,9 @@ extern const struct device_type usb4_port_device_type;
+ 
+ int tb_domain_init(void);
+ void tb_domain_exit(void);
++int tb_protocol_adapter_init(void);
++void tb_protocol_adapter_exit(void);
++
+ int tb_xdomain_init(void);
+ void tb_xdomain_exit(void);
+ 
+diff --git a/drivers/thunderbolt/tunnel.c b/drivers/thunderbolt/tunnel.c
+index e4c2001b74..7b6c98fb67 100644
+--- a/drivers/thunderbolt/tunnel.c
++++ b/drivers/thunderbolt/tunnel.c
+@@ -12,6 +12,7 @@
+ #include <linux/ktime.h>
+ #include <linux/string_helpers.h>
+ 
++#include "nhi.h"
+ #include "tunnel.h"
+ #include "tb.h"
+ 
+@@ -271,16 +272,39 @@ void tb_tunnel_event(struct tb *tb, enum tb_tunnel_event event,
+ 	kfree(envp[0]);
+ }
+ 
++/*
++ * Tunnels starting at the host router end in one of its own protocol adapters.
++ * Tell the NHI driver about them, for host routers whose adapters lead to
++ * controllers that only work while they know about the tunnel.
++ */
++static void tb_tunnel_notify_nhi(struct tb_tunnel *tunnel, bool active)
++{
++	const struct tb_nhi_ops *ops = tunnel->tb->nhi->ops;
++
++	if (!ops || !ops->tunnel_notify)
++		return;
++	if (!tunnel->src_port || tb_route(tunnel->src_port->sw))
++		return;
++
++	ops->tunnel_notify(tunnel, active);
++}
++
+ static inline void tb_tunnel_set_active(struct tb_tunnel *tunnel, bool active)
+ {
++	bool was_active = tunnel->state == TB_TUNNEL_ACTIVE;
++
+ 	if (active) {
+ 		tunnel->state = TB_TUNNEL_ACTIVE;
+ 		tb_tunnel_event(tunnel->tb, TB_TUNNEL_ACTIVATED, tunnel->type,
+ 				tunnel->src_port, tunnel->dst_port);
++		if (!was_active)
++			tb_tunnel_notify_nhi(tunnel, true);
+ 	} else {
+ 		tunnel->state = TB_TUNNEL_INACTIVE;
+ 		tb_tunnel_event(tunnel->tb, TB_TUNNEL_DEACTIVATED, tunnel->type,
+ 				tunnel->src_port, tunnel->dst_port);
++		if (was_active)
++			tb_tunnel_notify_nhi(tunnel, false);
+ 	}
+ }
+ 
+diff --git a/include/linux/thunderbolt.h b/include/linux/thunderbolt.h
+index 8401159625..b594544dfe 100644
+--- a/include/linux/thunderbolt.h
++++ b/include/linux/thunderbolt.h
+@@ -11,6 +11,7 @@
+ #ifndef THUNDERBOLT_H_
+ #define THUNDERBOLT_H_
+ 
++#include <linux/err.h>
+ #include <linux/types.h>
+ 
+ struct config_group;
+@@ -739,12 +740,60 @@ int tb_configfs_register_group(struct config_group *group);
+ void tb_configfs_unregister_group(struct config_group *group);
+ #endif
+ 
++#endif /* CONFIG_USB4 */
++
++struct tb_protocol_adapter;
++typedef int (*tb_protocol_adapter_activate_t)(struct tb_protocol_adapter *adapter);
++typedef void (*tb_protocol_adapter_deactivate_t)(struct tb_protocol_adapter *adapter);
++
++/**
++ * struct tb_protocol_adapter_desc - Description of an out-of-band protocol adapter
++ * @fwnode: Firmware node of the controller behind the adapter, used to look it up
++ * @activate: Called once a tunnel to the adapter has been established
++ * @deactivate: Called once the tunnel to the adapter is gone
++ * @driver_data: Private data returned by tb_protocol_adapter_get_drvdata()
++ *
++ * Both callbacks may sleep and are called with the domain lock held.
++ */
++struct tb_protocol_adapter_desc {
++	struct fwnode_handle *fwnode;
++	tb_protocol_adapter_activate_t activate;
++	tb_protocol_adapter_deactivate_t deactivate;
++	void *driver_data;
++};
++
++#if IS_REACHABLE(CONFIG_USB4)
++struct tb_protocol_adapter *
++tb_protocol_adapter_register(struct device *parent,
++			     const struct tb_protocol_adapter_desc *desc);
++void tb_protocol_adapter_unregister(struct tb_protocol_adapter *adapter);
++struct tb_protocol_adapter *tb_protocol_adapter_get(struct fwnode_handle *fwnode);
++void tb_protocol_adapter_put(struct tb_protocol_adapter *adapter);
++void *tb_protocol_adapter_get_drvdata(struct tb_protocol_adapter *adapter);
++int tb_protocol_adapter_activate(struct tb_protocol_adapter *adapter);
++void tb_protocol_adapter_deactivate(struct tb_protocol_adapter *adapter);
+ #else /* CONFIG_USB4 */
+ static inline bool usb4_usb3_port_match(struct device *usb4_port_dev,
+ 					const struct fwnode_handle *usb3_port_fwnode)
+ {
+ 	return false;
+ }
++
++static inline struct tb_protocol_adapter *
++tb_protocol_adapter_register(struct device *parent,
++			     const struct tb_protocol_adapter_desc *desc)
++{
++	return ERR_PTR(-ENODEV);
++}
++
++static inline void tb_protocol_adapter_unregister(struct tb_protocol_adapter *adapter)
++{
++}
++
++static inline void *tb_protocol_adapter_get_drvdata(struct tb_protocol_adapter *adapter)
++{
++	return NULL;
++}
+ #endif /* CONFIG_USB4 */
+ 
+ #endif /* THUNDERBOLT_H_ */

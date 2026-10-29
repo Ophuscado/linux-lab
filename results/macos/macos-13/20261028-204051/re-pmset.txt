@@ -1,0 +1,65 @@
+System-wide power settings:
+Currently in use:
+ standby              0
+ Sleep On Power Button 1
+ autorestart          0
+ powernap             1
+ networkoversleep     0
+ disksleep            10
+ sleep                1 (sleep prevented by powerd)
+ ttyskeepawake        1
+ displaysleep         10
+ tcpkeepalive         1
+ lowpowermode         0
+ womp                 0
+AC Power:
+ Sleep On Power Button 1
+ lowpowermode         0
+ standby              0
+ ttyskeepawake        1
+ powernap             1
+ displaysleep         10
+ womp                 0
+ networkoversleep     0
+ sleep                1
+ tcpkeepalive         1
+ autorestart          0
+ disksleep            10
+Capabilities for AC Power:
+ displaysleep
+ disksleep
+ sleep
+ womp
+ autorestart
+ standby
+ powernap
+ ttyskeepawake
+ tcpkeepalive
+ lowpowermode
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded
+2026-10-28 20:41:17 +0000 
+Assertion status system-wide:
+   BackgroundTask                 0
+   ApplePushServiceTask           0
+   UserIsActive                   1
+   PreventUserIdleDisplaySleep    0
+   PreventSystemSleep             0
+   ExternalMedia                  1
+   PreventUserIdleSystemSleep     1
+   NetworkClientActive            0
+Listed by owning process:
+   pid 84(powerd): [0x0000049b00018485] 00:32:28 PreventUserIdleSystemSleep named: "Powerd - Prevent sleep while display is on"  
+   pid 84(powerd): [0x0000001100088076] 00:51:28 ExternalMedia named: "com.apple.powermanagement.externalmediamounted"  
+   pid 139(WindowServer): [0x0000001d000980b9] 00:00:25 UserIsActive named: "com.apple.iohideventsystem.queue.tickle serviceID:10000115c service:AppleUserHIDEventService product:Magic Mouse eventType:17"  
+	Timeout will fire in 574 secs Action=TimeoutActionRelease
+Kernel Assertions: 0x2c=USB,BT-HID,THNDR
+   id=512  level=255 0x20=THNDR creat=10/28/26, 7:54 PM  mod=10/28/26, 8:18 PM description=acio2 owner=AppleThunderboltHALType5
+   id=515  level=255 0x20=THNDR creat=10/28/26, 7:55 PM  mod=10/28/26, 8:23 PM description=acio0 owner=AppleThunderboltHALType5
+   id=522  level=255 0x4=USB creat=10/28/26, 7:57 PM description=com.apple.usb.externaldevice.04200000 owner=Ultra USB 3.0
+   id=523  level=255 0x4=USB creat=10/28/26, 7:59 PM description=com.apple.usb.externaldevice.08100000 owner=Game Drive
+   id=529  level=255 0x8=BT-HID creat=10/28/26, 7:54 PM description=com.apple.driver.IOBluetoothHIDDriver owner=IOBluetoothHIDDriver
+   id=531  level=255 0x8=BT-HID creat=10/28/26, 8:02 PM description=com.apple.driver.IOBluetoothHIDDriver owner=AppleHSBluetoothDevice
+   id=532  level=255 0x8=BT-HID creat=10/28/26, 7:56 PM description=com.apple.driver.IOBluetoothHIDDriver owner=AppleHSBluetoothDevice
+   id=550  level=255 0x4=USB creat=10/28/26, 8:03 PM description=com.apple.usb.externaldevice.03100000 owner=iPad

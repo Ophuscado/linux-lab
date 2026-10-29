@@ -1,0 +1,367 @@
+Services:
+VendorID ProductID LocationID UsagePage Usage RegistryID  Transport Class                         Product       UserClass               Built-In 
+0x0      0x0       0x56503862 65288     3     0x100000ba7 (null)    AppleSMCKeysEndpoint          PMU vbuck8    (null)                  1        
+0x0      0x0       0x54503962 65280     5     0x100000d06 (null)    AppleSMCKeysEndpoint          PMU tdie9     (null)                  1        
+0x0      0x0       0x54503464 65280     5     0x100000cde (null)    AppleSMCKeysEndpoint          PMU tdev4     (null)                  1        
+0x0      0x0       0x4950336c 65288     2     0x100000e8d (null)    AppleSMCKeysEndpoint          PMU ildo3     (null)                  1        
+0x0      0x0       0x56503062 65288     3     0x100000e65 (null)    AppleSMCKeysEndpoint          PMU vbuck0    (null)                  1        
+0x0      0x0       0x54503662 65280     5     0x100000e3d (null)    AppleSMCKeysEndpoint          PMU tdie6     (null)                  1        
+0x0      0x0       0x49503173 65288     2     0x100000e15 (null)    AppleSMCKeysEndpoint          PMU IP1s      (null)                  1        
+0x0      0x0       0x4950316c 65288     2     0x100000ded (null)    AppleSMCKeysEndpoint          PMU ildo1     (null)                  1        
+0x0      0x0       0x5650616c 65288     3     0x100000dc5 (null)    AppleSMCKeysEndpoint          PMU vldo10    (null)                  1        
+0x0      0x0       0x54503462 65280     5     0x100000d9d (null)    AppleSMCKeysEndpoint          PMU tdie4     (null)                  1        
+0x0      0x0       0x49506162 65288     2     0x100000d75 (null)    AppleSMCKeysEndpoint          PMU ibuck10   (null)                  1        
+0x0      0x0       0x4950306c 65288     2     0x100000d4d (null)    AppleSMCKeysEndpoint          PMU ildo0     (null)                  1        
+0x0      0x0       0x54503864 65280     5     0x10000080f (null)    AppleSMCKeysEndpoint          PMU tdev8     (null)                  1        
+0x0      0x0       0x54506162 65280     5     0x100000a36 (null)    AppleSMCKeysEndpoint          PMU tdie10    (null)                  1        
+0x0      0x0       0x49503962 65288     2     0x100000cad (null)    AppleSMCKeysEndpoint          PMU ibuck9    (null)                  1        
+0x0      0x0       0x54503167 65280     5     0x100000af5 (null)    AppleSMCKeysEndpoint          PMU TP1g      (null)                  1        
+0x0      0x0       0x56503173 65288     3     0x100000d44 (null)    AppleSMCKeysEndpoint          PMU VP1s      (null)                  1        
+0x0      0x0       0x5650316c 65288     3     0x100000d1c (null)    AppleSMCKeysEndpoint          PMU vldo1     (null)                  1        
+0x0      0x0       0x49503562 65288     2     0x100000ea3 (null)    AppleSMCKeysEndpoint          PMU ibuck5    (null)                  1        
+0x0      0x0       0x56503073 65288     3     0x100000e7b (null)    AppleSMCKeysEndpoint          PMU VP0s      (null)                  1        
+0x0      0x0       0x5650306c 65288     3     0x100000e53 (null)    AppleSMCKeysEndpoint          PMU vldo0     (null)                  1        
+0x0      0x0       0x54503864 65280     5     0x100000e2b (null)    AppleSMCKeysEndpoint          PMU tdev8     (null)                  1        
+0x0      0x0       0x49503362 65288     2     0x100000e03 (null)    AppleSMCKeysEndpoint          PMU ibuck3    (null)                  1        
+0x0      0x0       0x56503962 65288     3     0x100000ddb (null)    AppleSMCKeysEndpoint          PMU vbuck9    (null)                  1        
+0x0      0x0       0x54503267 65280     5     0x100000db3 (null)    AppleSMCKeysEndpoint          PMU TP2g      (null)                  1        
+0x0      0x0       0x54503664 65280     5     0x100000d8b (null)    AppleSMCKeysEndpoint          PMU tdev6     (null)                  1        
+0x0      0x0       0x49503162 65288     2     0x100000d63 (null)    AppleSMCKeysEndpoint          PMU ibuck1    (null)                  1        
+0x0      0x0       0x0        12        1     0x100001341 Audio     AppleUserHIDEventService      Headset       AppleUserHIDEventDriver 0        
+0x0      0x0       0x54503267 65280     5     0x100000d13 (null)    AppleSMCKeysEndpoint          PMU TP2g      (null)                  1        
+0x0      0x0       0x49503173 65288     2     0x100000cc3 (null)    AppleSMCKeysEndpoint          PMU IP1s      (null)                  1        
+0x0      0x0       0x5650356c 65288     3     0x100000b33 (null)    AppleSMCKeysEndpoint          PMU vldo5     (null)                  1        
+0x0      0x0       0x4950366c 65288     2     0x100000d5a (null)    AppleSMCKeysEndpoint          PMU ildo6     (null)                  1        
+0x0      0x0       0x56503362 65288     3     0x100000d32 (null)    AppleSMCKeysEndpoint          PMU vbuck3    (null)                  1        
+0x0      0x0       0x49506162 65288     2     0x100000cba (null)    AppleSMCKeysEndpoint          PMU ibuck10   (null)                  1        
+0x0      0x0       0x49503462 65288     2     0x100000c92 (null)    AppleSMCKeysEndpoint          PMU ibuck4    (null)                  1        
+0x0      0x0       0x4950356c 65288     2     0x100000e91 (null)    AppleSMCKeysEndpoint          PMU ildo5     (null)                  1        
+0x0      0x0       0x54503362 65280     5     0x10000097b (null)    AppleSMCKeysEndpoint          PMU tdie3     (null)                  1        
+0x0      0x0       0x56503262 65288     3     0x100000e69 (null)    AppleSMCKeysEndpoint          PMU vbuck2    (null)                  1        
+0x0      0x0       0x54503862 65280     5     0x100000e41 (null)    AppleSMCKeysEndpoint          PMU tdie8     (null)                  1        
+0x0      0x0       0x56503075 65288     3     0x100000e19 (null)    AppleSMCKeysEndpoint          PMU VP0u      (null)                  1        
+0x0      0x0       0x4950336c 65288     2     0x100000df1 (null)    AppleSMCKeysEndpoint          PMU ildo3     (null)                  1        
+0x0      0x0       0x56503062 65288     3     0x100000dc9 (null)    AppleSMCKeysEndpoint          PMU vbuck0    (null)                  1        
+0x0      0x0       0x54503662 65280     5     0x100000da1 (null)    AppleSMCKeysEndpoint          PMU tdie6     (null)                  1        
+0x0      0x0       0x49503173 65288     2     0x100000d79 (null)    AppleSMCKeysEndpoint          PMU IP1s      (null)                  1        
+0x0      0x0       0x54503164 65280     5     0x100000cd0 (null)    AppleSMCKeysEndpoint          PMU tdev1     (null)                  1        
+0x0      0x0       0x49503762 65288     2     0x100000ea7 (null)    AppleSMCKeysEndpoint          PMU ibuck7    (null)                  1        
+0x0      0x0       0x56503273 65288     3     0x100000e7f (null)    AppleSMCKeysEndpoint          PMU VP2s      (null)                  1        
+0x0      0x0       0x5650326c 65288     3     0x100000e57 (null)    AppleSMCKeysEndpoint          PMU vldo2     (null)                  1        
+0x0      0x0       0x5450326c 65280     5     0x100000e2f (null)    AppleSMCKeysEndpoint          PMU tdie2     (null)                  1        
+0x0      0x0       0x49503562 65288     2     0x100000e07 (null)    AppleSMCKeysEndpoint          PMU ibuck5    (null)                  1        
+0x0      0x0       0x56503073 65288     3     0x100000ddf (null)    AppleSMCKeysEndpoint          PMU VP0s      (null)                  1        
+0x0      0x0       0x5650306c 65288     3     0x100000db7 (null)    AppleSMCKeysEndpoint          PMU vldo0     (null)                  1        
+0x0      0x0       0x54503864 65280     5     0x100000d8f (null)    AppleSMCKeysEndpoint          PMU tdev8     (null)                  1        
+0x0      0x0       0x49503362 65288     2     0x100000d67 (null)    AppleSMCKeysEndpoint          PMU ibuck3    (null)                  1        
+0x0      0x0       0x49503273 65288     2     0x100000cc7 (null)    AppleSMCKeysEndpoint          PMU IP2s      (null)                  1        
+0x0      0x0       0x54503564 65280     5     0x1000007f8 (null)    AppleSMCKeysEndpoint          PMU tdev5     (null)                  1        
+0x0      0x0       0x0        65292     5     0x100000ce6 SPU       AppleSPUHIDDriver             (null)        (null)                  1        
+0x0      0x0       0x54503962 65280     5     0x100000a1f (null)    AppleSMCKeysEndpoint          PMU tdie9     (null)                  1        
+0x0      0x0       0x4950616c 65288     2     0x100000e95 (null)    AppleSMCKeysEndpoint          PMU ildo10    (null)                  1        
+0x0      0x0       0x56503462 65288     3     0x100000e6d (null)    AppleSMCKeysEndpoint          PMU vbuck4    (null)                  1        
+0x0      0x0       0x54506162 65280     5     0x100000e45 (null)    AppleSMCKeysEndpoint          PMU tdie10    (null)                  1        
+0x0      0x0       0x54503164 65280     5     0x100000e1d (null)    AppleSMCKeysEndpoint          PMU tdev1     (null)                  1        
+0x0      0x0       0x4950356c 65288     2     0x100000df5 (null)    AppleSMCKeysEndpoint          PMU ildo5     (null)                  1        
+0x0      0x0       0x56503262 65288     3     0x100000dcd (null)    AppleSMCKeysEndpoint          PMU vbuck2    (null)                  1        
+0x0      0x0       0x54503862 65280     5     0x100000da5 (null)    AppleSMCKeysEndpoint          PMU tdie8     (null)                  1        
+0x0      0x0       0x56503075 65288     3     0x100000d7d (null)    AppleSMCKeysEndpoint          PMU VP0u      (null)                  1        
+0x4c     0x265     0xa5bfb89  13        12    0x100001532 Bluetooth AppleMultitouchDevice                       (null)                  0        
+0x0      0x0       0x56503062 65288     3     0x100000d2d (null)    AppleSMCKeysEndpoint          PMU vbuck0    (null)                  1        
+0x0      0x0       0x54503862 65280     5     0x100000d05 (null)    AppleSMCKeysEndpoint          PMU tdie8     (null)                  1        
+0x0      0x0       0x5450316c 65280     5     0x10000094e (null)    AppleSMCKeysEndpoint          PMU tdie1     (null)                  1        
+0x0      0x0       0x56506373 65288     3     0x100000d4c (null)    AppleSMCKeysEndpoint          PMU VPcs      (null)                  1        
+0x0      0x0       0x5650356c 65288     3     0x100000d24 (null)    AppleSMCKeysEndpoint          PMU vldo5     (null)                  1        
+0x0      0x0       0x54503462 65280     5     0x100000cfc (null)    AppleSMCKeysEndpoint          PMU tdie4     (null)                  1        
+0x0      0x0       0x54503264 65280     5     0x1000007e6 (null)    AppleSMCKeysEndpoint          PMU tdev2     (null)                  1        
+0x0      0x0       0x54503364 65280     5     0x100000cd4 (null)    AppleSMCKeysEndpoint          PMU tdev3     (null)                  1        
+0x0      0x0       0x49503962 65288     2     0x100000eab (null)    AppleSMCKeysEndpoint          PMU ibuck9    (null)                  1        
+0x0      0x0       0x56506273 65288     3     0x100000e83 (null)    AppleSMCKeysEndpoint          PMU VPbs      (null)                  1        
+0x0      0x0       0x5650346c 65288     3     0x100000e5b (null)    AppleSMCKeysEndpoint          PMU vldo4     (null)                  1        
+0x0      0x0       0x54503162 65280     5     0x100000e33 (null)    AppleSMCKeysEndpoint          PMU tdie1     (null)                  1        
+0x0      0x0       0x49503762 65288     2     0x100000e0b (null)    AppleSMCKeysEndpoint          PMU ibuck7    (null)                  1        
+0x0      0x0       0x56503273 65288     3     0x100000de3 (null)    AppleSMCKeysEndpoint          PMU VP2s      (null)                  1        
+0x0      0x0       0x5650326c 65288     3     0x100000dbb (null)    AppleSMCKeysEndpoint          PMU vldo2     (null)                  1        
+0x0      0x0       0x5450326c 65280     5     0x100000d93 (null)    AppleSMCKeysEndpoint          PMU tdie2     (null)                  1        
+0x0      0x0       0x49503562 65288     2     0x100000d6b (null)    AppleSMCKeysEndpoint          PMU ibuck5    (null)                  1        
+0x0      0x0       0x56506173 65288     3     0x100000c0c (null)    AppleSMCKeysEndpoint          PMU VPas      (null)                  1        
+0x0      0x0       0x5650626c 65288     3     0x100000b44 (null)    AppleSMCKeysEndpoint          PMU vldo11    (null)                  1        
+0x0      0x0       0x54503764 65280     5     0x100000805 (null)    AppleSMCKeysEndpoint          PMU tdev7     (null)                  1        
+0x0      0x0       0x49503762 65288     2     0x100000ca3 (null)    AppleSMCKeysEndpoint          PMU ibuck7    (null)                  1        
+0x0      0x0       0x4950336c 65288     2     0x100000c2b (null)    AppleSMCKeysEndpoint          PMU ildo3     (null)                  1        
+0x0      0x0       0x56503762 65288     3     0x100000d3a (null)    AppleSMCKeysEndpoint          PMU vbuck7    (null)                  1        
+0x0      0x0       0x54503167 65280     5     0x100000d12 (null)    AppleSMCKeysEndpoint          PMU TP1g      (null)                  1        
+0x0      0x0       0x54503764 65280     5     0x100000cea (null)    AppleSMCKeysEndpoint          PMU tdev7     (null)                  1        
+0x0      0x0       0x49503073 65288     2     0x100000cc2 (null)    AppleSMCKeysEndpoint          PMU IP0s      (null)                  1        
+0x0      0x0       0x49503062 65288     2     0x100000e99 (null)    AppleSMCKeysEndpoint          PMU ibuck0    (null)                  1        
+0x0      0x0       0x56503662 65288     3     0x100000e71 (null)    AppleSMCKeysEndpoint          PMU vbuck6    (null)                  1        
+0x0      0x0       0x54503173 65280     5     0x100000e49 (null)    AppleSMCKeysEndpoint          PMU TP1s      (null)                  1        
+0x0      0x0       0x54503364 65280     5     0x100000e21 (null)    AppleSMCKeysEndpoint          PMU tdev3     (null)                  1        
+0x0      0x0       0x4950616c 65288     2     0x100000df9 (null)    AppleSMCKeysEndpoint          PMU ildo10    (null)                  1        
+0x0      0x0       0x56503462 65288     3     0x100000dd1 (null)    AppleSMCKeysEndpoint          PMU vbuck4    (null)                  1        
+0x0      0x0       0x54506162 65280     5     0x100000da9 (null)    AppleSMCKeysEndpoint          PMU tdie10    (null)                  1        
+0x0      0x0       0x54503164 65280     5     0x100000d81 (null)    AppleSMCKeysEndpoint          PMU tdev1     (null)                  1        
+0x0      0x0       0x4950306c 65288     2     0x100000c22 (null)    AppleSMCKeysEndpoint          PMU ildo0     (null)                  1        
+0x0      0x0       0x5650346c 65288     3     0x100000b32 (null)    AppleSMCKeysEndpoint          PMU vldo4     (null)                  1        
+0x0      0x0       0x54506162 65280     5     0x100000d09 (null)    AppleSMCKeysEndpoint          PMU tdie10    (null)                  1        
+0x0      0x0       0x49503362 65288     2     0x100000c91 (null)    AppleSMCKeysEndpoint          PMU ibuck3    (null)                  1        
+0x0      0x0       0x56503162 65288     3     0x100000b51 (null)    AppleSMCKeysEndpoint          PMU vbuck1    (null)                  1        
+0x0      0x0       0x5650616c 65288     3     0x100000d28 (null)    AppleSMCKeysEndpoint          PMU vldo10    (null)                  1        
+0x0      0x0       0x54503662 65280     5     0x100000d00 (null)    AppleSMCKeysEndpoint          PMU tdie6     (null)                  1        
+0x0      0x0       0x49503073 65288     2     0x100000eaf (null)    AppleSMCKeysEndpoint          PMU IP0s      (null)                  1        
+0x0      0x0       0x4950306c 65288     2     0x100000e87 (null)    AppleSMCKeysEndpoint          PMU ildo0     (null)                  1        
+0x0      0x0       0x5650366c 65288     3     0x100000e5f (null)    AppleSMCKeysEndpoint          PMU vldo6     (null)                  1        
+0x0      0x0       0x54503362 65280     5     0x100000e37 (null)    AppleSMCKeysEndpoint          PMU tdie3     (null)                  1        
+0x0      0x0       0x49503962 65288     2     0x100000e0f (null)    AppleSMCKeysEndpoint          PMU ibuck9    (null)                  1        
+0x0      0x0       0x56506273 65288     3     0x100000de7 (null)    AppleSMCKeysEndpoint          PMU VPbs      (null)                  1        
+0x0      0x0       0x5650346c 65288     3     0x100000dbf (null)    AppleSMCKeysEndpoint          PMU vldo4     (null)                  1        
+0x0      0x0       0x54503162 65280     5     0x100000d97 (null)    AppleSMCKeysEndpoint          PMU tdie1     (null)                  1        
+0x0      0x0       0x49503762 65288     2     0x100000d6f (null)    AppleSMCKeysEndpoint          PMU ibuck7    (null)                  1        
+0x0      0x0       0x0        12        1     0x100000393 (null)    AppleM68Buttons               (null)        (null)                  1        
+0x0      0x0       0x5650326c 65288     3     0x100000d1f (null)    AppleSMCKeysEndpoint          PMU vldo2     (null)                  1        
+0x0      0x0       0x54503162 65280     5     0x100000cf7 (null)    AppleSMCKeysEndpoint          PMU tdie1     (null)                  1        
+0x0      0x0       0x54503164 65280     5     0x1000007e1 (null)    AppleSMCKeysEndpoint          PMU tdev1     (null)                  1        
+0x0      0x0       0x56503762 65288     3     0x100000b98 (null)    AppleSMCKeysEndpoint          PMU vbuck7    (null)                  1        
+0x5ac    0x0       0x0        65280     23    0x100000ece (null)    IOHIDSystem                   (null)        (null)                  0        
+0x0      0x0       0x54503162 65280     5     0x100000968 (null)    AppleSMCKeysEndpoint          PMU tdie1     (null)                  1        
+0x0      0x0       0x56503262 65288     3     0x100000b67 (null)    AppleSMCKeysEndpoint          PMU vbuck2    (null)                  1        
+0x0      0x0       0x56503962 65288     3     0x100000d3e (null)    AppleSMCKeysEndpoint          PMU vbuck9    (null)                  1        
+0x0      0x0       0x54503864 65280     5     0x100000cee (null)    AppleSMCKeysEndpoint          PMU tdev8     (null)                  1        
+0x0      0x0       0x49503262 65288     2     0x100000e9d (null)    AppleSMCKeysEndpoint          PMU ibuck2    (null)                  1        
+0x0      0x0       0x56503862 65288     3     0x100000e75 (null)    AppleSMCKeysEndpoint          PMU vbuck8    (null)                  1        
+0x0      0x0       0x54503167 65280     5     0x100000e4d (null)    AppleSMCKeysEndpoint          PMU TP1g      (null)                  1        
+0x0      0x0       0x54503564 65280     5     0x100000e25 (null)    AppleSMCKeysEndpoint          PMU tdev5     (null)                  1        
+0x0      0x0       0x49503062 65288     2     0x100000dfd (null)    AppleSMCKeysEndpoint          PMU ibuck0    (null)                  1        
+0x0      0x0       0x56503662 65288     3     0x100000dd5 (null)    AppleSMCKeysEndpoint          PMU vbuck6    (null)                  1        
+0x0      0x0       0x54503173 65280     5     0x100000dad (null)    AppleSMCKeysEndpoint          PMU TP1s      (null)                  1        
+0x0      0x0       0x54503364 65280     5     0x100000d85 (null)    AppleSMCKeysEndpoint          PMU tdev3     (null)                  1        
+0x0      0x0       0x4950616c 65288     2     0x100000d5d (null)    AppleSMCKeysEndpoint          PMU ildo10    (null)                  1        
+0x0      0x0       0x4950326c 65288     2     0x100000c26 (null)    AppleSMCKeysEndpoint          PMU ildo2     (null)                  1        
+0x0      0x0       0x54503073 65280     5     0x100000d0d (null)    AppleSMCKeysEndpoint          PMU TP0s      (null)                  1        
+0x0      0x0       0x4950366c 65288     2     0x100000c45 (null)    AppleSMCKeysEndpoint          PMU ildo6     (null)                  1        
+0x0      0x0       0x54503462 65280     5     0x10000097e (null)    AppleSMCKeysEndpoint          PMU tdie4     (null)                  1        
+0x0      0x0       0x5650306c 65288     3     0x100000b05 (null)    AppleSMCKeysEndpoint          PMU vldo0     (null)                  1        
+0x0      0x0       0x4950336c 65288     2     0x100000d54 (null)    AppleSMCKeysEndpoint          PMU ildo3     (null)                  1        
+0x0      0x0       0x49503273 65288     2     0x100000eb3 (null)    AppleSMCKeysEndpoint          PMU IP2s      (null)                  1        
+0x0      0x0       0x4950326c 65288     2     0x100000e8b (null)    AppleSMCKeysEndpoint          PMU ildo2     (null)                  1        
+0x0      0x0       0x54503262 65280     5     0x100000975 (null)    AppleSMCKeysEndpoint          PMU tdie2     (null)                  1        
+0x0      0x0       0x5650626c 65288     3     0x100000e63 (null)    AppleSMCKeysEndpoint          PMU vldo11    (null)                  1        
+0x0      0x0       0x54503562 65280     5     0x100000e3b (null)    AppleSMCKeysEndpoint          PMU tdie5     (null)                  1        
+0x0      0x0       0x49503073 65288     2     0x100000e13 (null)    AppleSMCKeysEndpoint          PMU IP0s      (null)                  1        
+0x0      0x0       0x4950306c 65288     2     0x100000deb (null)    AppleSMCKeysEndpoint          PMU ildo0     (null)                  1        
+0x0      0x0       0x5650366c 65288     3     0x100000dc3 (null)    AppleSMCKeysEndpoint          PMU vldo6     (null)                  1        
+0x0      0x0       0x54503362 65280     5     0x100000d9b (null)    AppleSMCKeysEndpoint          PMU tdie3     (null)                  1        
+0x0      0x0       0x49503962 65288     2     0x100000d73 (null)    AppleSMCKeysEndpoint          PMU ibuck9    (null)                  1        
+0x0      0x0       0x54503362 65280     5     0x100000cfb (null)    AppleSMCKeysEndpoint          PMU tdie3     (null)                  1        
+0x0      0x0       0x54503264 65280     5     0x100000cd3 (null)    AppleSMCKeysEndpoint          PMU tdev2     (null)                  1        
+0x0      0x0       0x49503162 65288     2     0x100000c83 (null)    AppleSMCKeysEndpoint          PMU ibuck1    (null)                  1        
+0x0      0x0       0x56503273 65288     3     0x100000c0b (null)    AppleSMCKeysEndpoint          PMU VP2s      (null)                  1        
+0x0      0x0       0x56503662 65288     3     0x100000b93 (null)    AppleSMCKeysEndpoint          PMU vbuck6    (null)                  1        
+0x0      0x0       0x56503073 65288     3     0x100000d42 (null)    AppleSMCKeysEndpoint          PMU VP0s      (null)                  1        
+0x0      0x0       0x5650306c 65288     3     0x100000d1a (null)    AppleSMCKeysEndpoint          PMU vldo0     (null)                  1        
+0x0      0x0       0x5450326c 65280     5     0x100000cf2 (null)    AppleSMCKeysEndpoint          PMU tdie2     (null)                  1        
+0x0      0x0       0x49503662 65288     2     0x100000ca2 (null)    AppleSMCKeysEndpoint          PMU ibuck6    (null)                  1        
+0x0      0x0       0x49503462 65288     2     0x100000ea1 (null)    AppleSMCKeysEndpoint          PMU ibuck4    (null)                  1        
+0x0      0x0       0x54503762 65280     5     0x10000098b (null)    AppleSMCKeysEndpoint          PMU tdie7     (null)                  1        
+0x0      0x0       0x56506162 65288     3     0x100000e79 (null)    AppleSMCKeysEndpoint          PMU vbuck10   (null)                  1        
+0x0      0x0       0x54503367 65280     5     0x100000e51 (null)    AppleSMCKeysEndpoint          PMU TP3g      (null)                  1        
+0x0      0x0       0x54503764 65280     5     0x100000e29 (null)    AppleSMCKeysEndpoint          PMU tdev7     (null)                  1        
+0x0      0x0       0x49503262 65288     2     0x100000e01 (null)    AppleSMCKeysEndpoint          PMU ibuck2    (null)                  1        
+0x0      0x0       0x56503862 65288     3     0x100000dd9 (null)    AppleSMCKeysEndpoint          PMU vbuck8    (null)                  1        
+0x0      0x0       0x54503167 65280     5     0x100000db1 (null)    AppleSMCKeysEndpoint          PMU TP1g      (null)                  1        
+0x0      0x0       0x54503564 65280     5     0x100000d89 (null)    AppleSMCKeysEndpoint          PMU tdev5     (null)                  1        
+0x0      0x0       0x49503062 65288     2     0x100000d61 (null)    AppleSMCKeysEndpoint          PMU ibuck0    (null)                  1        
+0x0      0x0       0x54503273 65280     5     0x100000d11 (null)    AppleSMCKeysEndpoint          PMU TP2s      (null)                  1        
+0x0      0x0       0x54503664 65280     5     0x1000007fb (null)    AppleSMCKeysEndpoint          PMU tdev6     (null)                  1        
+0x0      0x0       0x56503662 65288     3     0x100000d39 (null)    AppleSMCKeysEndpoint          PMU vbuck6    (null)                  1        
+0x0      0x0       0x56503462 65288     3     0x100000b8a (null)    AppleSMCKeysEndpoint          PMU vbuck4    (null)                  1        
+0x0      0x0       0x54503662 65280     5     0x100000982 (null)    AppleSMCKeysEndpoint          PMU tdie6     (null)                  1        
+0x0      0x0       0x5650316c 65288     3     0x100000b09 (null)    AppleSMCKeysEndpoint          PMU vldo1     (null)                  1        
+0x0      0x0       0x4950356c 65288     2     0x100000d58 (null)    AppleSMCKeysEndpoint          PMU ildo5     (null)                  1        
+0x0      0x0       0x56503262 65288     3     0x100000d30 (null)    AppleSMCKeysEndpoint          PMU vbuck2    (null)                  1        
+0x4c     0x267     0x7745d30a 1         6     0x1000014bd Bluetooth AppleHIDKeyboardEventDriverV2               (null)                  0        
+0x0      0x0       0x54503862 65280     5     0x100000a19 (null)    AppleSMCKeysEndpoint          PMU tdie8     (null)                  1        
+0x0      0x0       0x4950346c 65288     2     0x100000e8f (null)    AppleSMCKeysEndpoint          PMU ildo4     (null)                  1        
+0x0      0x0       0x56503162 65288     3     0x100000e67 (null)    AppleSMCKeysEndpoint          PMU vbuck1    (null)                  1        
+0x0      0x0       0x5450326c 65280     5     0x100000951 (null)    AppleSMCKeysEndpoint          PMU tdie2     (null)                  1        
+0x0      0x0       0x54503762 65280     5     0x100000e3f (null)    AppleSMCKeysEndpoint          PMU tdie7     (null)                  1        
+0x0      0x0       0x49503273 65288     2     0x100000e17 (null)    AppleSMCKeysEndpoint          PMU IP2s      (null)                  1        
+0x0      0x0       0x4950326c 65288     2     0x100000def (null)    AppleSMCKeysEndpoint          PMU ildo2     (null)                  1        
+0x0      0x0       0x5650626c 65288     3     0x100000dc7 (null)    AppleSMCKeysEndpoint          PMU vldo11    (null)                  1        
+0x0      0x0       0x54503562 65280     5     0x100000d9f (null)    AppleSMCKeysEndpoint          PMU tdie5     (null)                  1        
+0x0      0x0       0x49503073 65288     2     0x100000d77 (null)    AppleSMCKeysEndpoint          PMU IP0s      (null)                  1        
+0x0      0x0       0x4950316c 65288     2     0x100000d4f (null)    AppleSMCKeysEndpoint          PMU ildo1     (null)                  1        
+0x0      0x0       0x54503562 65280     5     0x100000cff (null)    AppleSMCKeysEndpoint          PMU tdie5     (null)                  1        
+0x0      0x0       0x56503362 65288     3     0x100000b6f (null)    AppleSMCKeysEndpoint          PMU vbuck3    (null)                  1        
+0x0      0x0       0x56506173 65288     3     0x100000d46 (null)    AppleSMCKeysEndpoint          PMU VPas      (null)                  1        
+0x0      0x0       0x54503062 65280     5     0x100000cf6 (null)    AppleSMCKeysEndpoint          PMU tdie0     (null)                  1        
+0x0      0x0       0x49503862 65288     2     0x100000ca6 (null)    AppleSMCKeysEndpoint          PMU ibuck8    (null)                  1        
+0x0      0x0       0x4950626c 65288     2     0x100000c7e (null)    AppleSMCKeysEndpoint          PMU ildo11    (null)                  1        
+0x0      0x0       0x49503662 65288     2     0x100000ea5 (null)    AppleSMCKeysEndpoint          PMU ibuck6    (null)                  1        
+0x0      0x0       0x56503173 65288     3     0x100000e7d (null)    AppleSMCKeysEndpoint          PMU VP1s      (null)                  1        
+0x0      0x0       0x5650316c 65288     3     0x100000e55 (null)    AppleSMCKeysEndpoint          PMU vldo1     (null)                  1        
+0x0      0x0       0x5450316c 65280     5     0x100000e2d (null)    AppleSMCKeysEndpoint          PMU tdie1     (null)                  1        
+0x0      0x0       0x49503462 65288     2     0x100000e05 (null)    AppleSMCKeysEndpoint          PMU ibuck4    (null)                  1        
+0x0      0x0       0x56506162 65288     3     0x100000ddd (null)    AppleSMCKeysEndpoint          PMU vbuck10   (null)                  1        
+0x0      0x0       0x54503367 65280     5     0x100000db5 (null)    AppleSMCKeysEndpoint          PMU TP3g      (null)                  1        
+0x0      0x0       0x54503764 65280     5     0x100000d8d (null)    AppleSMCKeysEndpoint          PMU tdev7     (null)                  1        
+0x0      0x0       0x54503273 65280     5     0x100000aee (null)    AppleSMCKeysEndpoint          PMU TP2s      (null)                  1        
+0x0      0x0       0x49503262 65288     2     0x100000d65 (null)    AppleSMCKeysEndpoint          PMU ibuck2    (null)                  1        
+0x0      0x0       0x56503862 65288     3     0x100000d3d (null)    AppleSMCKeysEndpoint          PMU vbuck8    (null)                  1        
+0x0      0x0       0x5650616c 65288     3     0x100000b3e (null)    AppleSMCKeysEndpoint          PMU vldo10    (null)                  1        
+0x0      0x0       0x49503562 65288     2     0x100000c9d (null)    AppleSMCKeysEndpoint          PMU ibuck5    (null)                  1        
+0x0      0x0       0x4950616c 65288     2     0x100000c4d (null)    AppleSMCKeysEndpoint          PMU ildo10    (null)                  1        
+0x0      0x0       0x56503462 65288     3     0x100000d34 (null)    AppleSMCKeysEndpoint          PMU vbuck4    (null)                  1        
+0x0      0x0       0x4950366c 65288     2     0x100000e93 (null)    AppleSMCKeysEndpoint          PMU ildo6     (null)                  1        
+0x0      0x0       0x56503362 65288     3     0x100000e6b (null)    AppleSMCKeysEndpoint          PMU vbuck3    (null)                  1        
+0x0      0x0       0x54503962 65280     5     0x100000e43 (null)    AppleSMCKeysEndpoint          PMU tdie9     (null)                  1        
+0x0      0x0       0x5450305a 65280     5     0x100000e1b (null)    AppleSMCKeysEndpoint          PMU tcal      (null)                  1        
+0x0      0x0       0x4950346c 65288     2     0x100000df3 (null)    AppleSMCKeysEndpoint          PMU ildo4     (null)                  1        
+0x0      0x0       0x56503162 65288     3     0x100000dcb (null)    AppleSMCKeysEndpoint          PMU vbuck1    (null)                  1        
+0x0      0x0       0x54503762 65280     5     0x100000da3 (null)    AppleSMCKeysEndpoint          PMU tdie7     (null)                  1        
+0x0      0x0       0x49503273 65288     2     0x100000d7b (null)    AppleSMCKeysEndpoint          PMU IP2s      (null)                  1        
+0x0      0x0       0x5650626c 65288     3     0x100000d2b (null)    AppleSMCKeysEndpoint          PMU vldo11    (null)                  1        
+0x0      0x0       0x5450305a 65280     5     0x1000007c5 (null)    AppleSMCKeysEndpoint          PMU tcal      (null)                  1        
+0x0      0x0       0x54503173 65280     5     0x100000a3c (null)    AppleSMCKeysEndpoint          PMU TP1s      (null)                  1        
+0x0      0x0       0x4950356c 65288     2     0x100000c3b (null)    AppleSMCKeysEndpoint          PMU ildo5     (null)                  1        
+0x0      0x0       0x54503267 65280     5     0x100000afb (null)    AppleSMCKeysEndpoint          PMU TP2g      (null)                  1        
+0x0      0x0       0x56506273 65288     3     0x100000d4a (null)    AppleSMCKeysEndpoint          PMU VPbs      (null)                  1        
+0x0      0x0       0x5650346c 65288     3     0x100000d22 (null)    AppleSMCKeysEndpoint          PMU vldo4     (null)                  1        
+0x0      0x0       0x49503062 65288     2     0x100000c82 (null)    AppleSMCKeysEndpoint          PMU ibuck0    (null)                  1        
+0x0      0x0       0x49503862 65288     2     0x100000ea9 (null)    AppleSMCKeysEndpoint          PMU ibuck8    (null)                  1        
+0x0      0x0       0x56506173 65288     3     0x100000e81 (null)    AppleSMCKeysEndpoint          PMU VPas      (null)                  1        
+0x0      0x0       0x5650336c 65288     3     0x100000e59 (null)    AppleSMCKeysEndpoint          PMU vldo3     (null)                  1        
+0x0      0x0       0x54503062 65280     5     0x100000e31 (null)    AppleSMCKeysEndpoint          PMU tdie0     (null)                  1        
+0x0      0x0       0x49503662 65288     2     0x100000e09 (null)    AppleSMCKeysEndpoint          PMU ibuck6    (null)                  1        
+0x0      0x0       0x56503173 65288     3     0x100000de1 (null)    AppleSMCKeysEndpoint          PMU VP1s      (null)                  1        
+0x0      0x0       0x5650316c 65288     3     0x100000db9 (null)    AppleSMCKeysEndpoint          PMU vldo1     (null)                  1        
+0x0      0x0       0x5450316c 65280     5     0x100000d91 (null)    AppleSMCKeysEndpoint          PMU tdie1     (null)                  1        
+0x0      0x0       0x49503462 65288     2     0x100000d69 (null)    AppleSMCKeysEndpoint          PMU ibuck4    (null)                  1        
+0x0      0x0       0x5450305a 65280     5     0x100000cc9 (null)    AppleSMCKeysEndpoint          PMU tcal      (null)                  1        
+0x0      0x0       0x56503173 65288     3     0x100000c01 (null)    AppleSMCKeysEndpoint          PMU VP1s      (null)                  1        
+0x0      0x0       0x5650336c 65288     3     0x100000b11 (null)    AppleSMCKeysEndpoint          PMU vldo3     (null)                  1        
+0x0      0x0       0x54503173 65280     5     0x100000d10 (null)    AppleSMCKeysEndpoint          PMU TP1s      (null)                  1        
+0x0      0x0       0x4950626c 65288     2     0x100000e97 (null)    AppleSMCKeysEndpoint          PMU ildo11    (null)                  1        
+0x0      0x0       0x56503562 65288     3     0x100000e6f (null)    AppleSMCKeysEndpoint          PMU vbuck5    (null)                  1        
+0x0      0x0       0x54503073 65280     5     0x100000e47 (null)    AppleSMCKeysEndpoint          PMU TP0s      (null)                  1        
+0x0      0x0       0x54503264 65280     5     0x100000e1f (null)    AppleSMCKeysEndpoint          PMU tdev2     (null)                  1        
+0x0      0x0       0x4950366c 65288     2     0x100000df7 (null)    AppleSMCKeysEndpoint          PMU ildo6     (null)                  1        
+0x0      0x0       0x56503362 65288     3     0x100000dcf (null)    AppleSMCKeysEndpoint          PMU vbuck3    (null)                  1        
+0x0      0x0       0x54503962 65280     5     0x100000da7 (null)    AppleSMCKeysEndpoint          PMU tdie9     (null)                  1        
+0x0      0x0       0x5450305a 65280     5     0x100000d7f (null)    AppleSMCKeysEndpoint          PMU tcal      (null)                  1        
+0x0      0x0       0x4950346c 65288     2     0x100000d57 (null)    AppleSMCKeysEndpoint          PMU ildo4     (null)                  1        
+0x0      0x0       0x56503162 65288     3     0x100000d2f (null)    AppleSMCKeysEndpoint          PMU vbuck1    (null)                  1        
+0x0      0x0       0x56506373 65288     3     0x100000c20 (null)    AppleSMCKeysEndpoint          PMU VPcs      (null)                  1        
+0x0      0x0       0x0        65280     255   0x100000cdf SPU       AppleSPUHIDDriver             (null)        (null)                  1        
+0x0      0x0       0x49503262 65288     2     0x100000c8f (null)    AppleSMCKeysEndpoint          PMU ibuck2    (null)                  1        
+0x0      0x0       0x54503367 65280     5     0x100000aff (null)    AppleSMCKeysEndpoint          PMU TP3g      (null)                  1        
+0x0      0x0       0x5650366c 65288     3     0x100000d26 (null)    AppleSMCKeysEndpoint          PMU vldo6     (null)                  1        
+0x0      0x0       0x54503364 65280     5     0x1000007e8 (null)    AppleSMCKeysEndpoint          PMU tdev3     (null)                  1        
+0x0      0x0       0x54503073 65280     5     0x100000a37 (null)    AppleSMCKeysEndpoint          PMU TP0s      (null)                  1        
+0x0      0x0       0x49506162 65288     2     0x100000ead (null)    AppleSMCKeysEndpoint          PMU ibuck10   (null)                  1        
+0x0      0x0       0x56506373 65288     3     0x100000e85 (null)    AppleSMCKeysEndpoint          PMU VPcs      (null)                  1        
+0x0      0x0       0x5650356c 65288     3     0x100000e5d (null)    AppleSMCKeysEndpoint          PMU vldo5     (null)                  1        
+0x0      0x0       0x54503262 65280     5     0x100000e35 (null)    AppleSMCKeysEndpoint          PMU tdie2     (null)                  1        
+0x0      0x0       0x49503862 65288     2     0x100000e0d (null)    AppleSMCKeysEndpoint          PMU ibuck8    (null)                  1        
+0x0      0x0       0x56506173 65288     3     0x100000de5 (null)    AppleSMCKeysEndpoint          PMU VPas      (null)                  1        
+0x0      0x0       0x5650336c 65288     3     0x100000dbd (null)    AppleSMCKeysEndpoint          PMU vldo3     (null)                  1        
+0x0      0x0       0x54503062 65280     5     0x100000d95 (null)    AppleSMCKeysEndpoint          PMU tdie0     (null)                  1        
+0x0      0x0       0x49503662 65288     2     0x100000d6d (null)    AppleSMCKeysEndpoint          PMU ibuck6    (null)                  1        
+0x0      0x0       0x56503273 65288     3     0x100000d45 (null)    AppleSMCKeysEndpoint          PMU VP2s      (null)                  1        
+0x0      0x0       0x56506273 65288     3     0x100000c0e (null)    AppleSMCKeysEndpoint          PMU VPbs      (null)                  1        
+0x0      0x0       0x56503062 65288     3     0x100000b46 (null)    AppleSMCKeysEndpoint          PMU vbuck0    (null)                  1        
+0x0      0x0       0x4950346c 65288     2     0x100000c2d (null)    AppleSMCKeysEndpoint          PMU ildo4     (null)                  1        
+0x0      0x0       0x56506162 65288     3     0x100000bdd (null)    AppleSMCKeysEndpoint          PMU vbuck10   (null)                  1        
+0x0      0x0       0x56503562 65288     3     0x100000b8d (null)    AppleSMCKeysEndpoint          PMU vbuck5    (null)                  1        
+0x0      0x0       0x49503162 65288     2     0x100000e9b (null)    AppleSMCKeysEndpoint          PMU ibuck1    (null)                  1        
+0x0      0x0       0x56503762 65288     3     0x100000e73 (null)    AppleSMCKeysEndpoint          PMU vbuck7    (null)                  1        
+0x0      0x0       0x54503062 65280     5     0x10000095d (null)    AppleSMCKeysEndpoint          PMU tdie0     (null)                  1        
+0x0      0x0       0x54503273 65280     5     0x100000e4b (null)    AppleSMCKeysEndpoint          PMU TP2s      (null)                  1        
+0x0      0x0       0x54503464 65280     5     0x100000e23 (null)    AppleSMCKeysEndpoint          PMU tdev4     (null)                  1        
+0x0      0x0       0x4950626c 65288     2     0x100000dfb (null)    AppleSMCKeysEndpoint          PMU ildo11    (null)                  1        
+0x0      0x0       0x56503562 65288     3     0x100000dd3 (null)    AppleSMCKeysEndpoint          PMU vbuck5    (null)                  1        
+0x0      0x0       0x54503073 65280     5     0x100000dab (null)    AppleSMCKeysEndpoint          PMU TP0s      (null)                  1        
+0x0      0x0       0x54503264 65280     5     0x100000d83 (null)    AppleSMCKeysEndpoint          PMU tdev2     (null)                  1        
+0x0      0x0       0x4950316c 65288     2     0x100000c24 (null)    AppleSMCKeysEndpoint          PMU ildo1     (null)                  1        
+0x0      0x0       0x5650326c 65288     3     0x100000b0c (null)    AppleSMCKeysEndpoint          PMU vldo2     (null)                  1        
+0x0      0x0       0x54503464 65280     5     0x1000007f5 (null)    AppleSMCKeysEndpoint          PMU tdev4     (null)                  1        
+0x0      0x0       0x54503564 65280     5     0x100000ce3 (null)    AppleSMCKeysEndpoint          PMU tdev5     (null)                  1        
+0x0      0x0       0x56503075 65288     3     0x1000007a5 (null)    AppleSMCKeysEndpoint          PMU VP0u      (null)                  1        
+0x4c     0x323     0x2e1d9c9  13        12    0x100001510 Bluetooth AppleMultitouchDevice         Magic Mouse   (null)                  0        
+0x0      0x0       0x544e306e 65280     5     0x100000fc9 (null)    AppleANS3NVMeController       NAND CH0 temp (null)                  1        
+0x0      0x0       0x4950326c 65288     2     0x100000d52 (null)    AppleSMCKeysEndpoint          PMU ildo2     (null)                  1        
+0x0      0x0       0x54503762 65280     5     0x100000d02 (null)    AppleSMCKeysEndpoint          PMU tdie7     (null)                  1        
+0x0      0x0       0x49503173 65288     2     0x100000eb1 (null)    AppleSMCKeysEndpoint          PMU IP1s      (null)                  1        
+0x0      0x0       0x4950316c 65288     2     0x100000e89 (null)    AppleSMCKeysEndpoint          PMU ildo1     (null)                  1        
+0x0      0x0       0x5650616c 65288     3     0x100000e61 (null)    AppleSMCKeysEndpoint          PMU vldo10    (null)                  1        
+0x0      0x0       0x54503462 65280     5     0x100000e39 (null)    AppleSMCKeysEndpoint          PMU tdie4     (null)                  1        
+0x0      0x0       0x49506162 65288     2     0x100000e11 (null)    AppleSMCKeysEndpoint          PMU ibuck10   (null)                  1        
+0x0      0x0       0x56506373 65288     3     0x100000de9 (null)    AppleSMCKeysEndpoint          PMU VPcs      (null)                  1        
+0x0      0x0       0x5650356c 65288     3     0x100000dc1 (null)    AppleSMCKeysEndpoint          PMU vldo5     (null)                  1        
+0x0      0x0       0x54503262 65280     5     0x100000d99 (null)    AppleSMCKeysEndpoint          PMU tdie2     (null)                  1        
+0x0      0x0       0x49503862 65288     2     0x100000d71 (null)    AppleSMCKeysEndpoint          PMU ibuck8    (null)                  1        
+0x0      0x0       0x5650336c 65288     3     0x100000d21 (null)    AppleSMCKeysEndpoint          PMU vldo3     (null)                  1        
+0x0      0x0       0x54503262 65280     5     0x100000cf9 (null)    AppleSMCKeysEndpoint          PMU tdie2     (null)                  1        
+0x0      0x0       0x0        65292     1     0x100000cd1 SPU       AppleSPUHIDDriver             (null)        (null)                  1        
+0x0      0x0       0x56503962 65288     3     0x100000bb9 (null)    AppleSMCKeysEndpoint          PMU vbuck9    (null)                  1        
+0x0      0x0       0x56506162 65288     3     0x100000d40 (null)    AppleSMCKeysEndpoint          PMU vbuck10   (null)                  1        
+0x0      0x0       0x54503367 65280     5     0x100000d18 (null)    AppleSMCKeysEndpoint          PMU TP3g      (null)                  1        
+0x0      0x0       0x5450316c 65280     5     0x100000cf0 (null)    AppleSMCKeysEndpoint          PMU tdie1     (null)                  1        
+0x0      0x0       0x56503075 65288     3     0x100000cc8 (null)    AppleSMCKeysEndpoint          PMU VP0u      (null)                  1        
+0x0      0x0       0x49503362 65288     2     0x100000e9f (null)    AppleSMCKeysEndpoint          PMU ibuck3    (null)                  1        
+0x0      0x0       0x56503962 65288     3     0x100000e77 (null)    AppleSMCKeysEndpoint          PMU vbuck9    (null)                  1        
+0x0      0x0       0x54503267 65280     5     0x100000e4f (null)    AppleSMCKeysEndpoint          PMU TP2g      (null)                  1        
+0x0      0x0       0x54503664 65280     5     0x100000e27 (null)    AppleSMCKeysEndpoint          PMU tdev6     (null)                  1        
+0x0      0x0       0x49503162 65288     2     0x100000dff (null)    AppleSMCKeysEndpoint          PMU ibuck1    (null)                  1        
+0x0      0x0       0x56503762 65288     3     0x100000dd7 (null)    AppleSMCKeysEndpoint          PMU vbuck7    (null)                  1        
+0x0      0x0       0x54503273 65280     5     0x100000daf (null)    AppleSMCKeysEndpoint          PMU TP2s      (null)                  1        
+0x0      0x0       0x54503464 65280     5     0x100000d87 (null)    AppleSMCKeysEndpoint          PMU tdev4     (null)                  1        
+0x0      0x0       0x4950626c 65288     2     0x100000d5f (null)    AppleSMCKeysEndpoint          PMU ildo11    (null)                  1        
+0x0      0x0       0x56503562 65288     3     0x100000d37 (null)    AppleSMCKeysEndpoint          PMU vbuck5    (null)                  1        
+0x0      0x0       0x56503073 65288     3     0x100000c00 (null)    AppleSMCKeysEndpoint          PMU VP0s      (null)                  1        
+0x0      0x0       0x54503664 65280     5     0x100000ce7 (null)    AppleSMCKeysEndpoint          PMU tdev6     (null)                  1        
+0x0      0x0       0x5650366c 65288     3     0x100000b38 (null)    AppleSMCKeysEndpoint          PMU vldo6     (null)                  1        
+0x0      0x0       0x54503562 65280     5     0x100000980 (null)    AppleSMCKeysEndpoint          PMU tdie5     (null)                  1        
+
+Devices:
+VendorID ProductID LocationID UsagePage Usage RegistryID  Transport Class             Product     UserClass Built-In 
+0x4c     0x323     0x2e1d9c9  65280     18    0x1000014fe Bluetooth IOHIDResource     Magic Mouse (null)    0        
+0x0      0x0       0x0        65292     1     0x100000cac SPU       AppleSPUHIDDevice (null)      (null)    1        
+0x4c     0x265     0xa5bfb89  1         2     0x100001519 Bluetooth IOHIDResource                 (null)    0        
+0x0      0x0       0x0        65280     72    0x100000ec2 SPMI      AppleBTM          BTM         (null)    0        
+0x4c     0x267     0x7745d30a 65280     11    0x1000014a8 Bluetooth IOHIDResource                 (null)    0        
+0x4c     0x323     0x2e1d9c9  65280     11    0x100001500 Bluetooth IOHIDResource     Magic Mouse (null)    0        
+0x0      0x0       0x0        12        1     0x100000ae3 Audio     AppleCS42L84Audio Headset     (null)    0        
+0x4c     0x265     0xa5bfb89  65280     13    0x10000151b Bluetooth IOHIDResource                 (null)    0        
+0x4c     0x265     0xa5bfb89  65280     18    0x100001515 Bluetooth IOHIDResource                 (null)    0        
+0x0      0x0       0x0        65292     5     0x100000c93 SPU       AppleSPUHIDDevice (null)      (null)    1        
+0x4c     0x267     0x7745d30a 1         6     0x1000014ad Bluetooth IOHIDResource                 (null)    0        
+0x4c     0x323     0x2e1d9c9  1         2     0x100001502 Bluetooth IOHIDResource     Magic Mouse (null)    0        
+0x4c     0x265     0xa5bfb89  65280     3     0x10000151d Bluetooth IOHIDResource                 (null)    0        
+0x4c     0x265     0xa5bfb89  65280     11    0x100001517 Bluetooth IOHIDResource                 (null)    0        
+0x0      0x0       0x0        65280     255   0x100000ca5 SPU       AppleSPUHIDDevice (null)      (null)    1        
+0x4c     0x267     0x7745d30a 65280     3     0x1000014af Bluetooth IOHIDResource                 (null)    0        
+0x4c     0x267     0x7745d30a 65280     18    0x1000014a5 Bluetooth IOHIDResource                 (null)    0        
+
+== HIDPointerAcceleration
+45056
+== HIDMouseAcceleration
+57344
+== HIDTrackpadAcceleration
+(null)
+== HIDScrollAcceleration
+20480
+== HIDMouseScrollAcceleration
+20480
+== HIDTrackpadScrollAcceleration
+(null)
+== HIDPointerAccelerationType
+(null)
+== HIDKeyRepeat
+33333333
+== HIDInitialKeyRepeat
+250000000
+== HIDFKeyMode
+(null)
+== HIDScrollReverse
+(null)

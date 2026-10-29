@@ -1,0 +1,231 @@
+{
+  "SPThunderboltDataType" : [
+    {
+      "_name" : "thunderboltusb4_bus_5",
+      "device_name_key" : "Mac Studio",
+      "receptacle_1_tag" : {
+        "current_speed_key" : "Up to 40 Gb/s",
+        "link_status_key" : "0x100",
+        "receptacle_id_key" : "6",
+        "receptacle_status_key" : "receptacle_no_devices_connected"
+      },
+      "route_string_key" : "0",
+      "switch_uid_key" : "0x05ACFAE1AFC09EC5",
+      "vendor_name_key" : "Apple Inc."
+    },
+    {
+      "_name" : "thunderboltusb4_bus_4",
+      "device_name_key" : "Mac Studio",
+      "receptacle_1_tag" : {
+        "current_speed_key" : "Up to 40 Gb/s",
+        "link_status_key" : "0x100",
+        "receptacle_id_key" : "5",
+        "receptacle_status_key" : "receptacle_no_devices_connected"
+      },
+      "route_string_key" : "0",
+      "switch_uid_key" : "0x05ACFAE1AFC09EC4",
+      "vendor_name_key" : "Apple Inc."
+    },
+    {
+      "_name" : "thunderboltusb4_bus_3",
+      "device_name_key" : "Mac Studio",
+      "receptacle_1_tag" : {
+        "current_speed_key" : "Up to 40 Gb/s",
+        "link_status_key" : "0x100",
+        "receptacle_id_key" : "4",
+        "receptacle_status_key" : "receptacle_no_devices_connected"
+      },
+      "route_string_key" : "0",
+      "switch_uid_key" : "0x05ACFAE1AFC09EC3",
+      "vendor_name_key" : "Apple Inc."
+    },
+    {
+      "_items" : [
+        {
+          "_name" : "Unknown Device",
+          "device_id_key" : "0x0",
+          "device_name_key" : "Unknown Device",
+          "device_revision_key" : "0x0",
+          "mode_key" : "thunderbolt_three",
+          "receptacle_2_tag" : {
+            "current_speed_key" : "Up to 40 Gb/s",
+            "lc_version_key" : "1.45.0",
+            "link_status_key" : "0x7",
+            "receptacle_status_key" : "receptacle_no_devices_connected"
+          },
+          "receptacle_upstream_ambiguous_tag" : {
+            "current_speed_key" : "40 Gb/s",
+            "lc_version_key" : "1.45.0",
+            "link_status_key" : "0x2",
+            "receptacle_status_key" : "receptacle_connected"
+          },
+          "route_string_key" : "1",
+          "switch_uid_key" : "0x0000000000000000",
+          "switch_version_key" : "68.0",
+          "vendor_id_key" : "0x0",
+          "vendor_name_key" : ""
+        }
+      ],
+      "_name" : "thunderboltusb4_bus_2",
+      "device_name_key" : "Mac Studio",
+      "receptacle_1_tag" : {
+        "current_speed_key" : "40 Gb/s",
+        "link_status_key" : "0x2",
+        "receptacle_id_key" : "3",
+        "receptacle_status_key" : "receptacle_connected"
+      },
+      "route_string_key" : "0",
+      "switch_uid_key" : "0x05ACFAE1AFC09EC2",
+      "vendor_name_key" : "Apple Inc."
+    },
+    {
+      "_name" : "thunderboltusb4_bus_1",
+      "device_name_key" : "Mac Studio",
+      "receptacle_1_tag" : {
+        "current_speed_key" : "Up to 40 Gb/s",
+        "link_status_key" : "0x100",
+        "receptacle_id_key" : "2",
+        "receptacle_status_key" : "receptacle_no_devices_connected"
+      },
+      "route_string_key" : "0",
+      "switch_uid_key" : "0x05ACFAE1AFC09EC1",
+      "vendor_name_key" : "Apple Inc."
+    },
+    {
+      "_name" : "thunderboltusb4_bus_0",
+      "device_name_key" : "Mac Studio",
+      "receptacle_1_tag" : {
+        "current_speed_key" : "Up to 40 Gb/s",
+        "link_status_key" : "0x100",
+        "receptacle_id_key" : "1",
+        "receptacle_status_key" : "receptacle_no_devices_connected"
+      },
+      "route_string_key" : "0",
+      "switch_uid_key" : "0x05ACFAE1AFC09EC0",
+      "vendor_name_key" : "Apple Inc."
+    }
+  ],
+  "SPUSBDataType" : [
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_items" : [
+        {
+          "_name" : "iPad",
+          "bcd_device" : "13.07",
+          "bus_power" : "500",
+          "bus_power_used" : "500",
+          "device_speed" : "high_speed",
+          "extra_current_used" : "1900",
+          "location_id" : "0x05100000 / 1",
+          "manufacturer" : "Apple Inc.",
+          "product_id" : "0x12ab",
+          "sleep_current" : "2400",
+          "vendor_id" : "apple_vendor_id"
+        }
+      ],
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_items" : [
+        {
+          "_name" : "ASM246X series",
+          "bcd_device" : "1.00",
+          "bus_power" : "500",
+          "bus_power_used" : "0",
+          "device_speed" : "high_speed",
+          "extra_current_used" : "0",
+          "location_id" : "0x03100000 / 1",
+          "manufacturer" : "ASMedia",
+          "product_id" : "0x2463",
+          "vendor_id" : "0x174c  (ASMedia Technology Inc.)"
+        }
+      ],
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_items" : [
+        {
+          "_name" : "Ultra USB 3.0",
+          "bcd_device" : "1.00",
+          "bus_power" : "900",
+          "bus_power_used" : "896",
+          "device_speed" : "super_speed",
+          "extra_current_used" : "0",
+          "location_id" : "0x04200000 / 1",
+          "manufacturer" : "SanDisk",
+          "Media" : [
+            {
+              "_name" : "Ultra USB 3.0",
+              "bsd_name" : "disk8",
+              "Logical Unit" : 0,
+              "partition_map_type" : "master_boot_record_partition_map_type",
+              "removable_media" : "yes",
+              "size" : "30.75 GB",
+              "size_in_bytes" : 30752000000,
+              "smart_status" : "Verified",
+              "USB Interface" : 0
+            }
+          ],
+          "product_id" : "0x5595",
+          "vendor_id" : "0x0781  (SanDisk Corporation)"
+        }
+      ],
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_items" : [
+        {
+          "_name" : "Game Drive",
+          "bcd_device" : "50.02",
+          "bus_power" : "900",
+          "bus_power_used" : "896",
+          "device_speed" : "super_speed",
+          "extra_current_used" : "0",
+          "location_id" : "0x08100000 / 1",
+          "manufacturer" : "Western Digital",
+          "Media" : [
+            {
+              "_name" : "Game Drive",
+              "bsd_name" : "disk7",
+              "Logical Unit" : 0,
+              "partition_map_type" : "guid_partition_map_type",
+              "removable_media" : "no",
+              "size" : "5 TB",
+              "size_in_bytes" : 5000947302400,
+              "smart_status" : "Verified",
+              "USB Interface" : 0
+            }
+          ],
+          "product_id" : "0x262f",
+          "vendor_id" : "0x1058  (Western Digital Technologies, Inc.)"
+        }
+      ],
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleEmbeddedUSBXHCIASMedia3142",
+      "pci_device" : "0x2142 ",
+      "pci_revision" : "0x0000 ",
+      "pci_vendor" : "0x1b21 "
+    },
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleUSBXHCITR",
+      "pci_device" : "0x15f0 ",
+      "pci_revision" : "0x0006 ",
+      "pci_vendor" : "0x8086 "
+    }
+  ]
+}

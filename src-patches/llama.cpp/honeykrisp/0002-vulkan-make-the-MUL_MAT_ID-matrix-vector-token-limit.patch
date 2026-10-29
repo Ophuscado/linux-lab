@@ -1,0 +1,54 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Mon, 26 Oct 2026 23:40:38 +0000
+Subject: [PATCH 2/4] vulkan: make the MUL_MAT_ID matrix-vector token limit
+ settable
+
+ggml_vk_use_mul_mat_vec_id() sends up to 8 tokens down the matrix-vector path and more to the matmul path. The matrix-vector path dispatches once per token, so it has no column limit of its own; for MoE models with many experts a batch of 9-64 tokens leaves most experts with one token or none, and the matmul path computes a full tile for each.
+
+GGML_VK_MMV_ID_MAX sets the limit (default 8). On an M2 Ultra, Qwen3-Coder-Next Q8 (512 experts, 10 used) at 64: 9 tokens 26 -> 37 t/s, 48 tokens 103 -> 123, 64 tokens 125 -> 142, 512 tokens unchanged; at 128 the 128-token batch loses (209 -> 186). MUL_MAT_ID 1109/1109 pass with every case on the matrix-vector path.
+
+Only operands at no view offset take it past 8 tokens: the matrix-vector path binds its buffers without misalignment
+support, and test-backend-ops' expert-id view at a 4-byte offset (ids_offset, the duplicate-id cases that older trees
+run) aborted on its alignment assert with the limit raised. MUL_MAT_ID on such a view keeps the matmul path.
+---
+ ggml/src/ggml-vulkan/ggml-vulkan.cpp | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index d87069212..768af5419 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -8065,10 +8065,31 @@ static void ggml_vk_mul_mat_vec_id_q_f16(ggml_backend_vk_context * ctx, vk_conte
+     }
+ }
+ 
++// Tuning: GGML_VK_MMV_ID_MAX, the most tokens a MUL_MAT_ID takes the matrix-vector path for (default 8). That
++// path dispatches once per token, so any count works; past it the matmul path runs every expert's tile.
++static uint64_t ggml_vk_mmv_id_max() {
++    static const uint64_t v = [] {
++        const char * e = getenv("GGML_VK_MMV_ID_MAX");
++        return e ? std::max<uint64_t>(1, strtoull(e, nullptr, 10)) : uint64_t(8);
++    }();
++    return v;
++}
++
++// Past 8 tokens only when no operand is a view at an offset: the matrix-vector path binds its buffers without
++// misalignment support (the matmul path has it), so an expert-id view at an offset trips its alignment assert.
++static bool ggml_vk_mmv_id_unoffset(const ggml_tensor * dst) {
++    for (const ggml_tensor * t : std::initializer_list<const ggml_tensor *>{ dst->src[0], dst->src[1], dst->src[2], dst }) {
++        if (t && t->view_offs % 256 != 0) {
++            return false;
++        }
++    }
++    return true;
++}
++
+ static bool ggml_vk_use_mul_mat_vec_id(const ggml_tensor * dst) {
+     const ggml_tensor * src0 = dst->src[0];
+     const ggml_tensor * ids = dst->src[2];
+-    return ids->ne[1] <= 8 && (src0->type == GGML_TYPE_F32 || src0->type == GGML_TYPE_F16 || ggml_is_quantized(src0->type));
++    return ((uint64_t)ids->ne[1] <= 8 || ((uint64_t)ids->ne[1] <= ggml_vk_mmv_id_max() && ggml_vk_mmv_id_unoffset(dst))) && (src0->type == GGML_TYPE_F32 || src0->type == GGML_TYPE_F16 || ggml_is_quantized(src0->type));
+ }
+ 
+ bool ggml_vk_use_mul_mat_vec_id(const struct ggml_cgraph * cgraph, int node_idx) {

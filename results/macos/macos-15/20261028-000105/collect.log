@@ -1,0 +1,3 @@
+00:01:05 collect.sh: llama into ~/linux-lab-macos/20261028-000105
+00:01:05 llama: build
+00:01:13 llama: llama2: ~/Downloads/Llama-2-7B/llama-2-7b.Q4_0.gguf

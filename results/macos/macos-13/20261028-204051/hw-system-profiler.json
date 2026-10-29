@@ -1,0 +1,273 @@
+{
+  "SPDisplaysDataType" : [
+    {
+      "_name" : "Apple M2 Ultra",
+      "spdisplays_mtlgpufamilysupport" : "spdisplays_metal3",
+      "spdisplays_ndrvs" : [
+        {
+          "_name" : "LG TV SSCR2",
+          "_spdisplays_display-product-id" : "83cd",
+          "_spdisplays_display-vendor-id" : "1e6d",
+          "_spdisplays_display-week" : "1",
+          "_spdisplays_display-year" : "2025",
+          "_spdisplays_displayID" : "1",
+          "_spdisplays_pixels" : "3840 x 2160",
+          "_spdisplays_resolution" : "1920 x 1080 @ 120.00Hz",
+          "spdisplays_ambient_brightness" : "spdisplays_no",
+          "spdisplays_main" : "spdisplays_yes",
+          "spdisplays_mirror" : "spdisplays_off",
+          "spdisplays_online" : "spdisplays_yes",
+          "spdisplays_pixelresolution" : "spdisplays_2160p",
+          "spdisplays_resolution" : "1920 x 1080 @ 120.00Hz",
+          "spdisplays_rotation" : "spdisplays_supported",
+          "spdisplays_television" : "spdisplays_yes"
+        }
+      ],
+      "spdisplays_vendor" : "sppci_vendor_Apple",
+      "sppci_bus" : "spdisplays_builtin",
+      "sppci_cores" : "76",
+      "sppci_device_type" : "spdisplays_gpu",
+      "sppci_model" : "Apple M2 Ultra"
+    }
+  ],
+  "SPHardwareDataType" : [
+    {
+      "_name" : "hardware_overview",
+      "boot_rom_version" : "mBoot-20457.1.29",
+      "chip_type" : "Apple M2 Ultra",
+      "machine_model" : "Mac14,14",
+      "machine_name" : "Mac Studio",
+      "model_number" : "Z180000EDY/A",
+      "number_processors" : "proc 24:16:8",
+      "os_loader_version" : "8422.141.2.700.1",
+      "physical_memory" : "192 GB"
+    }
+  ],
+  "SPMemoryDataType" : [
+    {
+      "dimm_manufacturer" : "Hynix",
+      "dimm_type" : "LPDDR5",
+      "SPMemoryDataType" : "192 GB"
+    }
+  ],
+  "SPNVMeDataType" : [
+    {
+      "_items" : [
+        {
+          "_name" : "APPLE SSD AP4096Z",
+          "bsd_name" : "disk0",
+          "detachable_drive" : "no",
+          "device_model" : "APPLE SSD AP4096Z",
+          "device_revision" : "591",
+          "partition_map_type" : "guid_partition_map_type",
+          "removable_media" : "no",
+          "size" : "4 TB",
+          "size_in_bytes" : 4002222325760,
+          "smart_status" : "Verified",
+          "spnvme_trim_support" : "Yes"
+        }
+      ],
+      "_name" : "Apple SSD Controller"
+    }
+  ],
+  "SPPCIDataType" : [
+    {
+      "_name" : "pci8086,15f0",
+      "sppci_bus" : "sppci_pci_device",
+      "sppci_device_type" : "sppci_usbxhci",
+      "sppci_device-id" : "0x15f0",
+      "sppci_driver_installed" : "affirmative_string",
+      "sppci_link-speed" : "2.5 GT/s",
+      "sppci_link-width" : "x4",
+      "sppci_msi" : "Yes",
+      "sppci_pause-compatible" : "No",
+      "sppci_revision-id" : "0x0006",
+      "sppci_slot_name" : "Thunderbolt@3,0,0",
+      "sppci_subsystem-id" : "0x0000",
+      "sppci_subsystem-vendor-id" : "0x8086",
+      "sppci_tunnel-compatible" : "Yes",
+      "sppci_vendor-id" : "0x8086"
+    },
+    {
+      "_name" : "pci8086,15f0",
+      "sppci_bus" : "sppci_pci_device",
+      "sppci_device_type" : "sppci_usbxhci",
+      "sppci_device-id" : "0x15f0",
+      "sppci_driver_installed" : "affirmative_string",
+      "sppci_link-speed" : "2.5 GT/s",
+      "sppci_link-width" : "x4",
+      "sppci_msi" : "Yes",
+      "sppci_pause-compatible" : "No",
+      "sppci_revision-id" : "0x0006",
+      "sppci_slot_name" : "Thunderbolt@3,0,0",
+      "sppci_subsystem-id" : "0x0000",
+      "sppci_subsystem-vendor-id" : "0x8086",
+      "sppci_tunnel-compatible" : "Yes",
+      "sppci_vendor-id" : "0x8086"
+    }
+  ],
+  "SPPowerDataType" : [
+    {
+      "_name" : "sppower_information",
+      "AC Power" : {
+        "Automatic Restart On Power Loss" : "No",
+        "Current Power Source" : "TRUE",
+        "Disk Sleep Timer" : 10,
+        "Display Sleep Timer" : 10,
+        "LowPowerMode" : 0,
+        "PrioritizeNetworkReachabilityOverSleep" : 0,
+        "Sleep On Power Button" : "Yes",
+        "System Sleep Timer" : 1,
+        "Wake On LAN" : "No"
+      }
+    },
+    {
+      "_name" : "sppower_hwconfig_information",
+      "sppower_ups_installed" : "FALSE"
+    },
+    {
+      "_name" : "sppower_ac_charger_information",
+      "sppower_ac_charger_family" : "0x0000"
+    },
+    {
+      "_items" : [
+        {
+          "_items" : [
+            {
+              "appPID" : 431,
+              "eventtype" : "wake",
+              "scheduledby" : "com.apple.alarm.user-visible-com.apple.CalendarNotification.EKTravelEngine.periodicRefreshTimer",
+              "time" : "2026-10-29T04:02:33Z",
+              "UserVisible" : false
+            },
+            {
+              "appPID" : 74,
+              "eventtype" : "wake",
+              "scheduledby" : "com.apple.alarm.user-visible-com.apple.acmd.alarm",
+              "time" : "2026-10-29T20:07:09Z",
+              "UserVisible" : false
+            }
+          ],
+          "_name" : "sppower_scheduled_events_info"
+        }
+      ],
+      "_name" : "sppower_events_info"
+    }
+  ],
+  "SPUSBDataType" : [
+    {
+      "_items" : [
+        {
+          "_name" : "Ultra USB 3.0",
+          "bcd_device" : "1.00",
+          "bus_power" : "900",
+          "bus_power_used" : "896",
+          "device_speed" : "super_speed",
+          "extra_current_used" : "0",
+          "location_id" : "0x04200000 / 1",
+          "manufacturer" : "SanDisk",
+          "Media" : [
+            {
+              "_name" : "Ultra USB 3.0",
+              "bsd_name" : "disk7",
+              "Logical Unit" : 0,
+              "partition_map_type" : "master_boot_record_partition_map_type",
+              "removable_media" : "yes",
+              "size" : "30.75 GB",
+              "size_in_bytes" : 30752000000,
+              "smart_status" : "Verified",
+              "USB Interface" : 0
+            }
+          ],
+          "product_id" : "0x5595",
+          "vendor_id" : "0x0781  (SanDisk Corporation)"
+        }
+      ],
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_items" : [
+        {
+          "_name" : "iPad",
+          "bcd_device" : "13.07",
+          "bus_power" : "500",
+          "bus_power_used" : "500",
+          "device_speed" : "high_speed",
+          "extra_current_used" : "1900",
+          "location_id" : "0x03100000 / 1",
+          "manufacturer" : "Apple Inc.",
+          "product_id" : "0x12ab",
+          "sleep_current" : "2400",
+          "vendor_id" : "apple_vendor_id"
+        }
+      ],
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleT8112USBXHCI"
+    },
+    {
+      "_items" : [
+        {
+          "_name" : "Game Drive",
+          "bcd_device" : "50.02",
+          "bus_power" : "900",
+          "bus_power_used" : "896",
+          "device_speed" : "super_speed",
+          "extra_current_used" : "0",
+          "location_id" : "0x08100000 / 1",
+          "manufacturer" : "Western Digital",
+          "Media" : [
+            {
+              "_name" : "Game Drive",
+              "bsd_name" : "disk8",
+              "Logical Unit" : 0,
+              "partition_map_type" : "guid_partition_map_type",
+              "removable_media" : "no",
+              "size" : "5 TB",
+              "size_in_bytes" : 5000947302400,
+              "smart_status" : "Verified",
+              "USB Interface" : 0
+            }
+          ],
+          "product_id" : "0x262f",
+          "vendor_id" : "0x1058  (Western Digital Technologies, Inc.)"
+        }
+      ],
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleEmbeddedUSBXHCIASMedia3142",
+      "pci_device" : "0x2142 ",
+      "pci_revision" : "0x0000 ",
+      "pci_vendor" : "0x1b21 "
+    },
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleUSBXHCITR",
+      "pci_device" : "0x15f0 ",
+      "pci_revision" : "0x0006 ",
+      "pci_vendor" : "0x8086 "
+    },
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleUSBXHCITR",
+      "pci_device" : "0x15f0 ",
+      "pci_revision" : "0x0006 ",
+      "pci_vendor" : "0x8086 "
+    }
+  ]
+}

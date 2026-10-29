@@ -1,0 +1,156 @@
+== com.apple.AppleMultitouchTrackpad
+  ActuateDetents = 1
+  ActuationStrength = 1
+  Clicking = True
+  DragLock = 0
+  Dragging = 0
+  FirstClickThreshold = 1
+  ForceSuppressed = False
+  SecondClickThreshold = 1
+  TrackpadCornerSecondaryClick = 0
+  TrackpadFiveFingerPinchGesture = 2
+  TrackpadFourFingerHorizSwipeGesture = 2
+  TrackpadFourFingerPinchGesture = 2
+  TrackpadFourFingerVertSwipeGesture = 2
+  TrackpadHandResting = True
+  TrackpadHorizScroll = 1
+  TrackpadMomentumScroll = True
+  TrackpadPinch = 1
+  TrackpadRightClick = True
+  TrackpadRotate = 1
+  TrackpadScroll = True
+  TrackpadThreeFingerDrag = False
+  TrackpadThreeFingerHorizSwipeGesture = 2
+  TrackpadThreeFingerTapGesture = 0
+  TrackpadThreeFingerVertSwipeGesture = 2
+  TrackpadTwoFingerDoubleTapGesture = 1
+  TrackpadTwoFingerFromRightEdgeSwipeGesture = 3
+  USBMouseStopsTrackpad = 0
+  UserPreferences = True
+  version = 12
+== com.apple.driver.AppleBluetoothMultitouch.trackpad
+  Clicking = True
+  DragLock = False
+  Dragging = False
+  TrackpadCornerSecondaryClick = 0
+  TrackpadFiveFingerPinchGesture = 2
+  TrackpadFourFingerHorizSwipeGesture = 2
+  TrackpadFourFingerPinchGesture = 2
+  TrackpadFourFingerVertSwipeGesture = 2
+  TrackpadHandResting = True
+  TrackpadHorizScroll = 1
+  TrackpadMomentumScroll = True
+  TrackpadPinch = 1
+  TrackpadRightClick = True
+  TrackpadRotate = 1
+  TrackpadScroll = True
+  TrackpadThreeFingerDrag = False
+  TrackpadThreeFingerHorizSwipeGesture = 2
+  TrackpadThreeFingerTapGesture = 0
+  TrackpadThreeFingerVertSwipeGesture = 2
+  TrackpadTwoFingerDoubleTapGesture = 1
+  TrackpadTwoFingerFromRightEdgeSwipeGesture = 3
+  USBMouseStopsTrackpad = 0
+  UserPreferences = True
+  version = 5
+== com.apple.AppleMultitouchMouse
+  MouseButtonDivision = 55
+  MouseButtonMode = 'TwoButton'
+  MouseHorizontalScroll = True
+  MouseMomentumScroll = True
+  MouseOneFingerDoubleTapGesture = 0
+  MouseTwoFingerDoubleTapGesture = 3
+  MouseTwoFingerHorizSwipeGesture = 2
+  MouseVerticalScroll = True
+  UserPreferences = True
+  version = 1
+== com.apple.driver.AppleBluetoothMultitouch.mouse
+  MouseButtonDivision = 55
+  MouseButtonMode = 'TwoButton'
+  MouseHorizontalScroll = True
+  MouseMomentumScroll = True
+  MouseOneFingerDoubleTapGesture = 0
+  MouseTwoFingerDoubleTapGesture = 3
+  MouseTwoFingerHorizSwipeGesture = 2
+  MouseVerticalScroll = True
+  UserPreferences = True
+== com.apple.driver.AppleHIDMouse
+  Button1 = 1
+  Button2 = 1
+  Button3 = 0
+  Button4 = 0
+  Button4Click = 0
+  Button4Force = 0
+  ButtonDominance = 1
+  ScrollH = 1
+  ScrollS = 4
+  ScrollSSize = 30
+  ScrollV = 1
+== com.apple.keyboard
+== com.apple.HIToolbox
+  AppleCurrentKeyboardLayoutInputSourceID = 'com.apple.keylayout.British'
+  AppleEnabledInputSources = <list of 4>
+  AppleInputSourceUpdateTime = <datetime>
+  AppleSelectedInputSources = <list of 1>
+== com.apple.dock
+  last-analytics-stamp = <list of 1>
+  lastShowIndicatorTime = 814858224.467926
+  loc = 'en_US:US'
+  mod-count = 10
+  persistent-apps = <list of 5>
+  persistent-others = <list of 1>
+  recent-apps = <list of 2>
+  region = 'US'
+  trash-full = True
+  version = 1
+  wvous-br-corner = 14
+== com.apple.WindowManager
+  AppWindowGroupingBehavior = 1
+  AutoHide = False
+  HasDisplayedShowDesktopEducation = True
+  HideDesktop = True
+  LastHeartbeatDateString.daily = '2026-10-27T16:22:44Z'
+  StageManagerHideWidgets = False
+  StandardHideWidgets = False
+== com.apple.spaces
+  SpacesDisplayConfiguration = <dict of 2>
+== com.apple.universalaccess
+  History = <dict of 1>
+  closeViewHotkeysEnabled = False
+  closeViewZoomDisplayID = 0
+  closeViewZoomFactor = 1.0
+  login = False
+  sessionChange = False
+== com.apple.symbolichotkeys
+  hotkey 15: enabled=False parameters=None
+  hotkey 16: enabled=False parameters=None
+  hotkey 17: enabled=False parameters=None
+  hotkey 18: enabled=False parameters=None
+  hotkey 19: enabled=False parameters=None
+  hotkey 20: enabled=False parameters=None
+  hotkey 21: enabled=False parameters=None
+  hotkey 22: enabled=False parameters=None
+  hotkey 23: enabled=False parameters=None
+  hotkey 24: enabled=False parameters=None
+  hotkey 25: enabled=False parameters=None
+  hotkey 26: enabled=False parameters=None
+  hotkey 60: enabled=True parameters=[32, 49, 262144]
+  hotkey 61: enabled=True parameters=[32, 49, 786432]
+  hotkey 79: enabled=True parameters=None
+  hotkey 80: enabled=True parameters=None
+  hotkey 81: enabled=True parameters=None
+  hotkey 82: enabled=True parameters=None
+  hotkey 164: enabled=True parameters=[262144, 4294705151]
+== com.apple.preference.trackpad
+== global (pointer, scroll, keyboard, appearance and animation keys)
+  AppleInterfaceStyle = 'Dark'
+  AppleMiniaturizeOnDoubleClick = False
+  InitialKeyRepeat = 15.0
+  KeyRepeat = 2.0
+  com.apple.mouse.linear = True
+  com.apple.mouse.scaling = 0.875
+  com.apple.springing.delay = 0.5
+  com.apple.springing.enabled = True
+  com.apple.swipescrolldirection = False
+  com.apple.trackpad.forceClick = True
+  com.apple.trackpad.scaling = 0.875

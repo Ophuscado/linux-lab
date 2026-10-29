@@ -1,0 +1,3 @@
+qwen none: gen 57.7 t/s, 1500 tokens, drafted None accepted None, text e8d44d56
+qwen ngram-mod-64: gen 203.3 t/s, 1500 tokens, drafted 1488 accepted 1266, text e8d44d56
+qwen ngram-mod-128: gen 215.0 t/s, 1500 tokens, drafted 1874 accepted 1275, text e8d44d56

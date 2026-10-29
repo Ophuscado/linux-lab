@@ -1,0 +1,4 @@
+03:13:30 collect.sh: vulkan into ~/linux-lab-macos/20261028-031330
+03:13:30 vulkan
+03:13:39 vulkan: llama.cpp with Vulkan did not build (see vk-cmake.txt)
+03:13:39 done: ~/linux-lab-macos/20261028-031330.tar.gz

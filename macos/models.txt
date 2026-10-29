@@ -1,0 +1,14 @@
+# The models of the Linux runs, by priority for the Metal comparison: NAME|FILE|MTP_FILE, paths under the
+# models folder (MODELS, default /Volumes/BACKUP/linux-lab-macos/models: the exFAT disk both systems read,
+# filled from Linux by macos/stage.sh with the same files as ~/Projects/_llm, in this order). collect.sh
+# skips the ones that are not there.
+#   llama2  llama.cpp's own Metal reference model: the number every Apple-silicon table has
+#   gemma   the MoE with MTP drafts: the 9-token cliff and its fix were measured on it
+#   qwen    the daily model: pp2048 672 -> 780 and the ngram-mod code edit
+#   gpt20, gpt120, flash   more of the same kernels at other sizes: optional
+llama2|Llama-2-7B/llama-2-7b.Q4_0.gguf|
+gemma|Gemma-4-26B-A4B-Instruct/UD-Q4_K_XL/model.gguf|Gemma-4-26B-A4B-Instruct/mtp-Q8_0.gguf
+qwen|Qwen3-Coder-Next/UD-Q8_K_XL/model.gguf|
+gpt20|GPT-OSS-20B/UD-Q8_K_XL/model.gguf|
+gpt120|GPT-OSS-120B/UD-Q4_K_XL/model.gguf|
+flash|Qwen3.8-Flash-Next/UD-Q4_K_XL/model.gguf|Qwen3.8-Flash-Next/mtp-Q4_K_M.gguf

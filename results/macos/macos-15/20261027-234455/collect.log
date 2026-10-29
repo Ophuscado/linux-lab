@@ -1,0 +1,9 @@
+23:44:55 collect.sh: llama into ~/linux-lab-macos/20261027-234455
+23:44:55 llama: build
+23:45:03 llama: llama2: ~/Downloads/Llama-2-7B/llama-2-7b.Q4_0.gguf
+23:46:11 llama: gemma: ~/Downloads/Gemma-4-26B-A4B-Instruct/UD-Q4_K_XL/model.gguf with ~/Downloads/Gemma-4-26B-A4B-Instruct/mtp-Q8_0.gguf
+23:48:06 llama: qwen: ~/Downloads/Qwen3-Coder-Next/UD-Q8_K_XL/model.gguf is not there (set QWEN= in ~/models.env, or macos/stage.sh copies it); skipped
+23:48:06 llama: gpt20: ~/Downloads/GPT-OSS-20B/UD-Q8_K_XL/model.gguf
+23:49:01 llama: gpt120: ~/Downloads/GPT-OSS-120B/UD-Q4_K_XL/model.gguf
+23:50:36 llama: flash: ~/Downloads/Qwen3.8-Flash-Next/UD-Q4_K_XL/model.gguf is not there (set FLASH= in ~/models.env, or macos/stage.sh copies it); skipped
+23:50:36 llama: test-backend-ops perf

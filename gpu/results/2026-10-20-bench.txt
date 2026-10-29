@@ -1,0 +1,19 @@
+Benchmark results for best config (rows=1, wg=large)
+
+Environment overrides: GGML_VK_RM_STDQ=1 GGML_VK_RM_KQ=1 GGML_VK_DMMV_WG=large
+
+Command:
+GGML_VK_RM_STDQ=1 GGML_VK_RM_KQ=1 GGML_VK_DMMV_WG=large ~/src/llama.cpp-tune/build/bin/llama-bench -m ~/Projects/_llm/gpt-20b.gguf -ngl 99 -t 16 -p 512 -n 128 -r 3
+
+Output:
+
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Apple M2 Ultra (G14D B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 0 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: none
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+... (truncated) ...
+| gpt-oss 20B Q8_0 | 12.28 GiB | 20.91 B | Vulkan | 99 | 16 | pp512 | 593.48 ± 6.48
+| gpt-oss 20B Q8_0 | 12.28 GiB | 20.91 B | Vulkan | 99 | 16 | tg128 | 59.45 ± 1.20
+
+Build: f2cc728 (1)
+
+---

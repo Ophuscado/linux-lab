@@ -1,0 +1,35 @@
+Running MIL frontend_milinternal pipeline: 0 passes [00:00, ? passes/s]Running MIL frontend_milinternal pipeline: 0 passes [00:00, ? passes/s]
+Running MIL default pipeline:   0%|          | 0/95 [00:00<?, ? passes/s]Running MIL default pipeline: 100%|██████████| 95/95 [00:00<00:00, 1826.40 passes/s]
+Running MIL backend_mlprogram pipeline:   0%|          | 0/12 [00:00<?, ? passes/s]Running MIL backend_mlprogram pipeline: 100%|██████████| 12/12 [00:00<00:00, 5258.77 passes/s]
+20:48:58 add20 cpu: 0.0382 ms median over 2000
+20:48:58 add20 cpu+gpu: 0.0623 ms median over 2000
+20:48:59 add20 cpu+ane: 0.2035 ms median over 2000
+20:48:59 add20 all: 0.1938 ms median over 2000
+Running MIL frontend_milinternal pipeline: 0 passes [00:00, ? passes/s]Running MIL frontend_milinternal pipeline: 0 passes [00:00, ? passes/s]
+Running MIL default pipeline:   0%|          | 0/95 [00:00<?, ? passes/s]Running MIL default pipeline:  62%|██████▏   | 59/95 [00:00<00:00, 189.54 passes/s]Running MIL default pipeline: 100%|██████████| 95/95 [00:00<00:00, 284.72 passes/s]
+Running MIL backend_mlprogram pipeline:   0%|          | 0/12 [00:00<?, ? passes/s]Running MIL backend_mlprogram pipeline: 100%|██████████| 12/12 [00:00<00:00, 15363.75 passes/s]
+20:49:02 linear-1-4096-4096 cpu: 0.6548 ms median over 2000, 51.2 GB/s of weights
+20:49:02 linear-1-4096-4096 cpu+gpu: 0.2735 ms median over 2000, 122.7 GB/s of weights
+20:49:04 linear-1-4096-4096 cpu+ane: 0.801 ms median over 2000, 41.9 GB/s of weights
+20:49:06 linear-1-4096-4096 all: 0.802 ms median over 2000, 41.8 GB/s of weights
+Running MIL frontend_milinternal pipeline: 0 passes [00:00, ? passes/s]Running MIL frontend_milinternal pipeline: 0 passes [00:00, ? passes/s]
+Running MIL default pipeline:   0%|          | 0/95 [00:00<?, ? passes/s]Running MIL default pipeline:  62%|██████▏   | 59/95 [00:00<00:00, 180.11 passes/s]Running MIL default pipeline: 100%|██████████| 95/95 [00:00<00:00, 271.70 passes/s]
+Running MIL backend_mlprogram pipeline:   0%|          | 0/12 [00:00<?, ? passes/s]Running MIL backend_mlprogram pipeline: 100%|██████████| 12/12 [00:00<00:00, 15382.53 passes/s]
+20:49:13 linear-64-4096-4096 cpu: 5.7021 ms median over 1054, 5.9 GB/s of weights
+20:49:14 linear-64-4096-4096 cpu+gpu: 0.4852 ms median over 2000, 69.1 GB/s of weights
+20:49:17 linear-64-4096-4096 cpu+ane: 0.9903 ms median over 2000, 33.9 GB/s of weights
+20:49:19 linear-64-4096-4096 all: 0.9913 ms median over 2000, 33.8 GB/s of weights
+Running MIL frontend_milinternal pipeline: 0 passes [00:00, ? passes/s]Running MIL frontend_milinternal pipeline: 0 passes [00:00, ? passes/s]
+Running MIL default pipeline:   0%|          | 0/95 [00:00<?, ? passes/s]Running MIL default pipeline:  62%|██████▏   | 59/95 [00:00<00:00, 190.23 passes/s]Running MIL default pipeline: 100%|██████████| 95/95 [00:00<00:00, 286.02 passes/s]
+Running MIL backend_mlprogram pipeline:   0%|          | 0/12 [00:00<?, ? passes/s]Running MIL backend_mlprogram pipeline: 100%|██████████| 12/12 [00:00<00:00, 15424.96 passes/s]
+20:49:22 linear-1-8192-2048 cpu: 0.6272 ms median over 2000, 53.5 GB/s of weights
+20:49:22 linear-1-8192-2048 cpu+gpu: 0.2869 ms median over 2000, 117.0 GB/s of weights
+20:49:24 linear-1-8192-2048 cpu+ane: 0.7984 ms median over 2000, 42.0 GB/s of weights
+20:49:26 linear-1-8192-2048 all: 0.7967 ms median over 2000, 42.1 GB/s of weights
+Running MIL frontend_milinternal pipeline: 0 passes [00:00, ? passes/s]Running MIL frontend_milinternal pipeline: 0 passes [00:00, ? passes/s]
+Running MIL default pipeline:   0%|          | 0/95 [00:00<?, ? passes/s]Running MIL default pipeline:  62%|██████▏   | 59/95 [00:00<00:00, 68.37 passes/s]Running MIL default pipeline: 100%|██████████| 95/95 [00:00<00:00, 100.72 passes/s]
+Running MIL backend_mlprogram pipeline:   0%|          | 0/12 [00:00<?, ? passes/s]Running MIL backend_mlprogram pipeline: 100%|██████████| 12/12 [00:00<00:00, 14421.68 passes/s]
+20:49:34 linear-1-14336-4096 cpu: 2.4051 ms median over 2000, 48.8 GB/s of weights
+20:49:35 linear-1-14336-4096 cpu+gpu: 0.4221 ms median over 2000, 278.2 GB/s of weights
+20:49:41 linear-1-14336-4096 cpu+ane: 8.2626 ms median over 727, 14.2 GB/s of weights
+20:49:48 linear-1-14336-4096 all: 8.2537 ms median over 728, 14.2 GB/s of weights

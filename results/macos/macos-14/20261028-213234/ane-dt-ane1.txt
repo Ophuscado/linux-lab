@@ -1,0 +1,30 @@
++-o ane1@84000000  <class AppleARMIODevice, id 0x10000047a, registered, matched, active, busy 0 (1652 ms), retain 10>
+    {
+      "segment-ranges" = <00009200000100000000000000000000000000000001000000000d0001000000000002010001000000000d000000000000000d000001000000c0430000000000>
+      "IOInterruptSpecifiers" = (<74130000>)
+      "clock-gates" = <d9010010>
+      "AAPL,phandle" = <e3010000>
+      "IODeviceMemory" = (({"address"=148243480576,"length"=33554432}),({"address"=148411777024,"length"=16436}),({"address"=148411826176,"length"=16384}))
+      "IOReportLegendPublic" = Yes
+      "die-ane-id" = <00000000>
+      "ane-type" = <a0000000>
+      "segment-names" = <"__TEXT;__DATA">
+      "iommu-parent" = <e5010000>
+      "function-mcc_dataset" = <cb0000005344244d>
+      "ane-subtype" = <01000000>
+      "name" = <"ane1">
+      "IOInterruptControllers" = ("IOInterruptController000000CC")
+      "interrupt-parent" = <cc000000>
+      "die-id" = <01000000>
+      "compatible" = <"ane,t8020">
+      "clock-ids" = <3e0100003f0100004001000041010000>
+      "interrupts" = <74130000>
+      "pre-loaded" = <01000000>
+      "IOReportLegend" = ({"IOReportGroupName"="Interrupt Statistics (by index)","IOReportChannels"=((5291294645182005248,4295098369,"               First Level Interrupt Handler Count"),(5291294645182005249,4295098369,"              Second Level Interrupt Handler Count"),(5291294645182005250,4295098369,"        First Level Interrupt Handler Time (MATUs)"),(5291294645182005251,4295098369,"   Second Level Interrupt Handler CPU Time (MATUs)"),(5291294645182005252,4295098369,"Second Level Interrupt Handler System Time (MATUs)")),"IOReportChannelInfo"={"IOReportChannelUnit"=0},"IOReportSubGroupName"="ane1 0"})
+      "device_type" = <"ane">
+      "power-gates" = <d9010010>
+      "reg" = <000000842000000000000002000000000000088e20000000344000000000000000c0088e200000000040000000000000>
+      "ane-id" = <01000000>
+    }
+    
+

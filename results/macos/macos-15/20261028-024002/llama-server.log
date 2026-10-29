@@ -1,0 +1,21 @@
+0.00.038.278 I srv  llama_server: initializing ...
+0.00.038.286 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.038.447 W srv  server_setup: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+0.00.039.961 I srv    load_model: loading model '~/Downloads/Qwen3-Coder-Next/UD-Q8_K_XL/model.gguf'
+0.00.582.184 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.04.959.864 I cmn          init: llama threadpool init, n_threads = 16
+0.05.067.303 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 16384, kv_unified = 'false'
+0.05.070.640 I srv  server_run_i: model loaded
+0.05.070.646 I srv  server_on_li: listening on http://127.0.0.1:8099
+0.06.143.058 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+0.06.143.084 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+0.10.372.518 I slot print_timing: id  0 | task 0 | n_gen =   1060, tg = 330.52 t/s, tg_3s = 330.83 t/s
+0.13.372.558 I slot print_timing: id  0 | task 0 | n_gen =   1278, tg = 205.83 t/s, tg_3s =  72.67 t/s
+0.14.106.422 I slot print_timing: id  0 | task 0 | prompt eval time =    1025.34 ms /  1661 tokens (    0.62 ms per token,  1619.95 tokens per second)
+0.14.106.425 I slot print_timing: id  0 | task 0 |        eval time =    6937.99 ms /  1500 tokens (    4.63 ms per token,   216.06 tokens per second)
+0.14.106.425 I slot print_timing: id  0 | task 0 |       total time =    7963.33 ms /  3161 tokens
+0.14.106.426 I slot print_timing: id  0 | task 0 |    graphs reused =        194
+0.14.106.426 I slot print_timing: id  0 | task 0 |   graph reallocs =          0    /     0        (same size) / (changed size)
+0.14.106.454 I slot print_timing: id  0 | task 0 | draft acceptance = 0.68036 ( 1275 accepted /  1874 generated), mean len = 86.00
+0.14.106.537 I slot      release: id  0 | task 0 | stop processing: n_tokens = 3160, truncated = 0
+0.14.111.407 I srv    operator(): operator(): cleaning up before exit...

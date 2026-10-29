@@ -1,0 +1,189 @@
+{
+ "macos": "22.6.0",
+ "coremltools": "9.0",
+ "runs": [
+  {
+   "model": "add20",
+   "units": "cpu",
+   "load_s": 0.029,
+   "runs": 2000,
+   "median_ms": 0.0386,
+   "p10_ms": 0.0344
+  },
+  {
+   "model": "add20",
+   "units": "cpu+gpu",
+   "load_s": 0.033,
+   "runs": 2000,
+   "median_ms": 0.0621,
+   "p10_ms": 0.0573
+  },
+  {
+   "model": "add20",
+   "units": "cpu+ane",
+   "load_s": 0.062,
+   "runs": 2000,
+   "median_ms": 0.1881,
+   "p10_ms": 0.163
+  },
+  {
+   "model": "add20",
+   "units": "all",
+   "load_s": 0.063,
+   "runs": 2000,
+   "median_ms": 0.1879,
+   "p10_ms": 0.1637
+  },
+  {
+   "model": "linear-1-4096-4096",
+   "units": "cpu",
+   "load_s": 0.03,
+   "runs": 2000,
+   "median_ms": 0.6278,
+   "p10_ms": 0.612,
+   "weight_GBps": 53.4
+  },
+  {
+   "model": "linear-1-4096-4096",
+   "units": "cpu+gpu",
+   "load_s": 0.09,
+   "runs": 2000,
+   "median_ms": 0.2712,
+   "p10_ms": 0.242,
+   "weight_GBps": 123.7
+  },
+  {
+   "model": "linear-1-4096-4096",
+   "units": "cpu+ane",
+   "load_s": 0.222,
+   "runs": 2000,
+   "median_ms": 0.7994,
+   "p10_ms": 0.7945,
+   "weight_GBps": 42.0
+  },
+  {
+   "model": "linear-1-4096-4096",
+   "units": "all",
+   "load_s": 0.228,
+   "runs": 2000,
+   "median_ms": 0.7962,
+   "p10_ms": 0.7903,
+   "weight_GBps": 42.1
+  },
+  {
+   "model": "linear-64-4096-4096",
+   "units": "cpu",
+   "load_s": 0.032,
+   "runs": 1033,
+   "median_ms": 5.809,
+   "p10_ms": 5.654,
+   "weight_GBps": 5.8
+  },
+  {
+   "model": "linear-64-4096-4096",
+   "units": "cpu+gpu",
+   "load_s": 0.074,
+   "runs": 2000,
+   "median_ms": 0.5214,
+   "p10_ms": 0.484,
+   "weight_GBps": 64.4
+  },
+  {
+   "model": "linear-64-4096-4096",
+   "units": "cpu+ane",
+   "load_s": 0.422,
+   "runs": 2000,
+   "median_ms": 1.0095,
+   "p10_ms": 0.99,
+   "weight_GBps": 33.2
+  },
+  {
+   "model": "linear-64-4096-4096",
+   "units": "all",
+   "load_s": 0.416,
+   "runs": 2000,
+   "median_ms": 1.0058,
+   "p10_ms": 0.9891,
+   "weight_GBps": 33.4
+  },
+  {
+   "model": "linear-1-8192-2048",
+   "units": "cpu",
+   "load_s": 0.031,
+   "runs": 2000,
+   "median_ms": 0.5513,
+   "p10_ms": 0.5453,
+   "weight_GBps": 60.9
+  },
+  {
+   "model": "linear-1-8192-2048",
+   "units": "cpu+gpu",
+   "load_s": 0.073,
+   "runs": 2000,
+   "median_ms": 0.2858,
+   "p10_ms": 0.2534,
+   "weight_GBps": 117.4
+  },
+  {
+   "model": "linear-1-8192-2048",
+   "units": "cpu+ane",
+   "load_s": 0.223,
+   "runs": 2000,
+   "median_ms": 0.8036,
+   "p10_ms": 0.7979,
+   "weight_GBps": 41.8
+  },
+  {
+   "model": "linear-1-8192-2048",
+   "units": "all",
+   "load_s": 0.229,
+   "runs": 2000,
+   "median_ms": 0.8011,
+   "p10_ms": 0.7949,
+   "weight_GBps": 41.9
+  },
+  {
+   "model": "linear-1-14336-4096",
+   "units": "cpu",
+   "load_s": 0.031,
+   "runs": 2000,
+   "median_ms": 2.4558,
+   "p10_ms": 2.4092,
+   "weight_GBps": 47.8
+  },
+  {
+   "model": "linear-1-14336-4096",
+   "units": "cpu+gpu",
+   "load_s": 0.178,
+   "runs": 2000,
+   "median_ms": 0.4194,
+   "p10_ms": 0.4111,
+   "weight_GBps": 280.0
+  },
+  {
+   "model": "linear-1-14336-4096",
+   "units": "cpu+ane",
+   "load_s": 0.672,
+   "runs": 729,
+   "median_ms": 8.2412,
+   "p10_ms": 8.204,
+   "weight_GBps": 14.3
+  },
+  {
+   "model": "linear-1-14336-4096",
+   "units": "all",
+   "load_s": 0.697,
+   "runs": 726,
+   "median_ms": 8.271,
+   "p10_ms": 8.227,
+   "weight_GBps": 14.2
+  }
+ ],
+ "plans": {
+  "add20": "unavailable: RuntimeError: MLComputePlan is only available on macOS >= 14.4",
+  "linear-1-4096-4096": "unavailable: RuntimeError: MLComputePlan is only available on macOS >= 14.4",
+  "linear-64-4096-4096": "unavailable: RuntimeError: MLComputePlan is only available on macOS >= 14.4",
+  "linear-1-8192-2048": "unavailable: RuntimeError: MLComputePlan is only available on macOS >= 14.4",
+  "linear-1-14336-4096": "unavailable: RuntimeError: MLComputePlan is only available on macOS >= 14.4"
+ }
+}

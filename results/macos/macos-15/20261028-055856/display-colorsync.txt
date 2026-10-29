@@ -1,0 +1,25 @@
+ls: ~/Library/ColorSync/Profiles: No such file or directory
+/Library/ColorSync/Profiles/Displays:
+total 8
+drwxrwxr-x   3 root  wheel    96 Oct 13 18:19 .
+drwxr-xr-x  10 root  wheel   320 Sep 23 02:33 ..
+-rw-r--r--@  1 root  wheel  3360 Oct 13 18:19 LG TV SSCR2-<uuid>.icc
+
+/System/Library/ColorSync/Profiles:
+total 184
+drwxr-xr-x  16 root  wheel    512 Sep 23 02:33 .
+drwxr-xr-x   5 root  wheel    160 Sep 23 02:33 ..
+-rw-r--r--   1 root  wheel    600 Sep 23 02:33 ACESCG Linear.icc
+-rw-r--r--   1 root  wheel    560 Sep 23 02:33 AdobeRGB1998.icc
+-rw-r--r--   1 root  wheel    556 Sep 23 02:33 DCI(P3) RGB.icc
+-rw-r--r--   1 root  wheel    536 Sep 23 02:33 Display P3.icc
+-rw-r--r--   1 root  wheel  55280 Sep 23 02:33 Generic CMYK Profile.icc
+-rw-r--r--   1 root  wheel   4508 Sep 23 02:33 Generic Gray Gamma 2.2 Profile.icc
+-rw-r--r--   1 root  wheel   2020 Sep 23 02:33 Generic Gray Profile.icc
+-rw-r--r--   1 root  wheel   3588 Sep 23 02:33 Generic Lab Profile.icc
+-rw-r--r--   1 root  wheel   1992 Sep 23 02:33 Generic RGB Profile.icc
+-rw-r--r--   1 root  wheel   1936 Sep 23 02:33 Generic XYZ Profile.icc
+-rw-r--r--   1 root  wheel    556 Sep 23 02:33 ITU-2020.icc
+-rw-r--r--   1 root  wheel    556 Sep 23 02:33 ITU-709.icc
+-rw-r--r--   1 root  wheel    568 Sep 23 02:33 ROMM RGB.icc
+-rw-r--r--   2 root  wheel   3144 Sep 23 02:33 sRGB Profile.icc

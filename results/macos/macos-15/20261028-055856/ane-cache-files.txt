@@ -1,0 +1,3 @@
+/var/folders/lz/vs37r3m921x9m8lnn2psr93m0000gn/T/tmp9u3xwoef.mlmodelc/model.mil
+/var/folders/lz/vs37r3m921x9m8lnn2psr93m0000gn/T/tmp9u3xwoef.mlmodelc/coremldata.bin
+/var/folders/lz/vs37r3m921x9m8lnn2psr93m0000gn/T/tmp9u3xwoef.mlmodelc/analytics/coremldata.bin

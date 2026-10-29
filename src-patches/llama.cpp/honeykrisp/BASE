@@ -1,0 +1,6 @@
+# Vulkan on Apple GPUs under Honeykrisp: matmul tiles, matrix-vector limits.
+UPSTREAM=https://github.com/ggml-org/llama.cpp
+BASE=2280f0fd163b03d4331d49e08460f66502e35854  # master of 2026-10-25
+FORK=https://github.com/Ophuscado/llama.cpp
+BRANCH=honeykrisp
+CLONE=src/llama.cpp

@@ -1,0 +1,4 @@
+02:28:02 collect.sh: llama into ~/linux-lab-macos/20261028-022802
+02:28:02 llama: build
+02:28:11 llama: qwen: ~/Downloads/Qwen3-Coder-Next/UD-Q8_K_XL/model.gguf
+02:29:40 llama: test-backend-ops perf

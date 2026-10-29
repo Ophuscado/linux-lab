@@ -1,0 +1,147 @@
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Apple M2 Ultra (MoltenVK) | uma: 1 | fp16: 1 | bf16: 0 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: none
+Testing 3 devices
+
+Backend 1/3: Vulkan0
+  Device description: Apple M2 Ultra
+  Device memory: 196608 MB (147455 MB free)
+
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):                23844 runs -    48.47 us/run -  25.17 MFLOP/run - [1;34m519.16 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):                19870 runs -    53.26 us/run -  25.17 MFLOP/run - [1;34m472.50 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               23844 runs -    50.34 us/run -  25.17 MFLOP/run - [1;34m499.96 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               35766 runs -    30.08 us/run -  25.17 MFLOP/run - [1;34m836.74 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               19870 runs -    53.05 us/run -  25.17 MFLOP/run - [1;34m474.38 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               19870 runs -    56.93 us/run -  25.17 MFLOP/run - [1;34m442.08 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):              3974 runs -   393.95 us/run -  25.17 MFLOP/run - [1;34m 63.88 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):             15896 runs -    68.47 us/run -  25.17 MFLOP/run - [1;34m367.54 GFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                 3976 runs -   287.99 us/run - 100.66 MFLOP/run - [1;34m349.53 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                 5964 runs -   176.54 us/run - 100.66 MFLOP/run - [1;34m570.20 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                9940 runs -   111.57 us/run - 100.66 MFLOP/run - [1;34m902.24 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               10934 runs -    93.19 us/run - 100.66 MFLOP/run - [1;34m  1.08 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                7952 runs -   125.87 us/run - 100.66 MFLOP/run - [1;34m799.76 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                6958 runs -   154.69 us/run - 100.66 MFLOP/run - [1;34m650.74 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               994 runs -  1572.13 us/run - 100.66 MFLOP/run - [1;34m 64.03 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):              3976 runs -   253.28 us/run - 100.66 MFLOP/run - [1;34m397.44 GFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                 1988 runs -   564.10 us/run - 201.33 MFLOP/run - [1;34m356.90 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                 3479 runs -   323.58 us/run - 201.33 MFLOP/run - [1;34m622.18 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                5467 runs -   190.96 us/run - 201.33 MFLOP/run - [1;34m  1.05 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                5467 runs -   189.49 us/run - 201.33 MFLOP/run - [1;34m  1.06 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                4970 runs -   223.09 us/run - 201.33 MFLOP/run - [1;34m902.46 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                3479 runs -   295.26 us/run - 201.33 MFLOP/run - [1;34m681.86 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):               497 runs -  3154.12 us/run - 201.33 MFLOP/run - [1;34m 63.83 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):              2485 runs -   503.28 us/run - 201.33 MFLOP/run - [1;34m400.03 GFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                 250 runs -  4153.25 us/run - 805.31 MFLOP/run - [1;34m193.90 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                 625 runs -  1775.88 us/run - 805.31 MFLOP/run - [1;34m453.47 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                500 runs -  2314.81 us/run - 805.31 MFLOP/run - [1;34m347.89 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                500 runs -  2294.71 us/run - 805.31 MFLOP/run - [1;34m350.94 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                500 runs -  2500.52 us/run - 805.31 MFLOP/run - [1;34m322.06 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                375 runs -  2773.06 us/run - 805.31 MFLOP/run - [1;34m290.40 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                      125 runs - 13694.00 us/run - 805.31 MFLOP/run - [1;34m 58.81 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                      500 runs -  2360.49 us/run - 805.31 MFLOP/run - [1;34m341.16 GFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                 252 runs -  4567.48 us/run -   1.61 GFLOP/run - [1;34m352.63 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                 504 runs -  2101.39 us/run -   1.61 GFLOP/run - [1;34m766.45 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                441 runs -  2606.24 us/run -   1.61 GFLOP/run - [1;34m617.98 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                441 runs -  2634.61 us/run -   1.61 GFLOP/run - [1;34m611.33 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                378 runs -  2814.43 us/run -   1.61 GFLOP/run - [1;34m572.27 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                378 runs -  3115.89 us/run -   1.61 GFLOP/run - [1;34m516.90 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                      126 runs - 14993.17 us/run -   1.61 GFLOP/run - [1;34m107.42 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                      378 runs -  2668.76 us/run -   1.61 GFLOP/run - [1;34m603.51 GFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                224 runs -  4828.12 us/run -   3.22 GFLOP/run - [1;34m667.18 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                320 runs -  3208.95 us/run -   3.22 GFLOP/run - [1;34m  1.00 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               352 runs -  3055.96 us/run -   3.22 GFLOP/run - [1;34m  1.05 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               352 runs -  2915.95 us/run -   3.22 GFLOP/run - [1;34m  1.10 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               352 runs -  3050.79 us/run -   3.22 GFLOP/run - [1;34m  1.06 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               320 runs -  3425.78 us/run -   3.22 GFLOP/run - [1;34m940.29 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                      96 runs - 15463.67 us/run -   3.22 GFLOP/run - [1;34m208.31 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                     352 runs -  2911.46 us/run -   3.22 GFLOP/run - [1;34m  1.11 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                176 runs -  5886.83 us/run -   6.44 GFLOP/run - [1;34m  1.09 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                176 runs -  6007.55 us/run -   6.44 GFLOP/run - [1;34m  1.07 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               224 runs -  4717.36 us/run -   6.44 GFLOP/run - [1;34m  1.37 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               208 runs -  4968.98 us/run -   6.44 GFLOP/run - [1;34m  1.30 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               288 runs -  3535.12 us/run -   6.44 GFLOP/run - [1;34m  1.82 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               240 runs -  4455.13 us/run -   6.44 GFLOP/run - [1;34m  1.45 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                      64 runs - 16703.27 us/run -   6.44 GFLOP/run - [1;34m385.70 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                     224 runs -  4647.79 us/run -   6.44 GFLOP/run - [1;34m  1.39 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                120 runs -  8934.26 us/run -  12.88 GFLOP/run - [1;34m  1.44 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                104 runs - 10153.38 us/run -  12.88 GFLOP/run - [1;34m  1.27 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               136 runs -  7441.60 us/run -  12.88 GFLOP/run - [1;34m  1.73 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               112 runs -  9083.93 us/run -  12.88 GFLOP/run - [1;34m  1.42 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               192 runs -  5300.40 us/run -  12.88 GFLOP/run - [1;34m  2.43 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               144 runs -  7188.56 us/run -  12.88 GFLOP/run - [1;34m  1.79 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                      64 runs - 17612.02 us/run -  12.88 GFLOP/run - [1;34m731.60 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                     208 runs -  4974.79 us/run -  12.88 GFLOP/run - [1;34m  2.59 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):                17030 runs -    61.39 us/run -  29.36 MFLOP/run - [1;34m478.26 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):                20436 runs -    56.12 us/run -  29.36 MFLOP/run - [1;34m523.14 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               20436 runs -    52.96 us/run -  29.36 MFLOP/run - [1;34m554.37 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               34060 runs -    32.21 us/run -  29.36 MFLOP/run - [1;34m911.46 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               20436 runs -    56.32 us/run -  29.36 MFLOP/run - [1;34m521.27 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               17030 runs -    58.84 us/run -  29.36 MFLOP/run - [1;34m498.94 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):              3406 runs -   453.56 us/run -  29.36 MFLOP/run - [1;34m 64.73 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):             17030 runs -    66.12 us/run -  29.36 MFLOP/run - [1;34m444.01 GFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                 3408 runs -   301.92 us/run - 117.44 MFLOP/run - [1;34m388.98 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                 5964 runs -   183.73 us/run - 117.44 MFLOP/run - [1;34m639.19 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                8520 runs -   121.41 us/run - 117.44 MFLOP/run - [1;34m967.29 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               10224 runs -   102.20 us/run - 117.44 MFLOP/run - [1;34m  1.15 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                7668 runs -   136.99 us/run - 117.44 MFLOP/run - [1;34m857.30 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                6816 runs -   162.10 us/run - 117.44 MFLOP/run - [1;34m724.49 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               852 runs -  1838.74 us/run - 117.44 MFLOP/run - [1;34m 63.87 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):              4260 runs -   237.94 us/run - 117.44 MFLOP/run - [1;34m493.57 GFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                 1704 runs -   609.12 us/run - 234.88 MFLOP/run - [1;34m385.61 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                 3408 runs -   333.40 us/run - 234.88 MFLOP/run - [1;34m704.51 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                5112 runs -   208.01 us/run - 234.88 MFLOP/run - [1;34m  1.13 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                5112 runs -   203.72 us/run - 234.88 MFLOP/run - [1;34m  1.15 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                4260 runs -   242.22 us/run - 234.88 MFLOP/run - [1;34m969.69 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                3408 runs -   300.24 us/run - 234.88 MFLOP/run - [1;34m782.31 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):               426 runs -  3934.03 us/run - 234.88 MFLOP/run - [1;34m 59.70 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):              2556 runs -   468.92 us/run - 234.88 MFLOP/run - [1;34m500.90 GFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                 428 runs -  2712.89 us/run - 939.52 MFLOP/run - [1;34m346.32 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                 856 runs -  1182.45 us/run - 939.52 MFLOP/run - [1;34m794.56 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                749 runs -  1537.36 us/run - 939.52 MFLOP/run - [1;34m611.13 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                749 runs -  1555.29 us/run - 939.52 MFLOP/run - [1;34m604.08 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                642 runs -  1665.20 us/run - 939.52 MFLOP/run - [1;34m564.21 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                642 runs -  1833.65 us/run - 939.52 MFLOP/run - [1;34m512.38 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                      214 runs -  9120.97 us/run - 939.52 MFLOP/run - [1;34m103.01 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                      642 runs -  1580.89 us/run - 939.52 MFLOP/run - [1;34m594.30 GFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                 378 runs -  2826.99 us/run -   1.88 GFLOP/run - [1;34m664.68 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                 810 runs -  1304.12 us/run -   1.88 GFLOP/run - [1;34m  1.44 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                648 runs -  1624.20 us/run -   1.88 GFLOP/run - [1;34m  1.16 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                594 runs -  1732.10 us/run -   1.88 GFLOP/run - [1;34m  1.08 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                594 runs -  1743.33 us/run -   1.88 GFLOP/run - [1;34m  1.08 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                540 runs -  1928.80 us/run -   1.88 GFLOP/run - [1;34m974.21 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                      108 runs -  9304.54 us/run -   1.88 GFLOP/run - [1;34m201.95 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                      648 runs -  1670.43 us/run -   1.88 GFLOP/run - [1;34m  1.12 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                351 runs -  3049.02 us/run -   3.76 GFLOP/run - [1;34m  1.23 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                459 runs -  2188.19 us/run -   3.76 GFLOP/run - [1;34m  1.72 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               567 runs -  1793.50 us/run -   3.76 GFLOP/run - [1;34m  2.10 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               378 runs -  2831.04 us/run -   3.76 GFLOP/run - [1;34m  1.33 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               486 runs -  2068.34 us/run -   3.76 GFLOP/run - [1;34m  1.82 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               486 runs -  2108.45 us/run -   3.76 GFLOP/run - [1;34m  1.78 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                     108 runs -  9685.55 us/run -   3.76 GFLOP/run - [1;34m388.01 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                     513 runs -  1981.39 us/run -   3.76 GFLOP/run - [1;34m  1.90 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                308 runs -  3374.39 us/run -   7.52 GFLOP/run - [1;34m  2.23 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                294 runs -  3514.44 us/run -   7.52 GFLOP/run - [1;34m  2.14 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               476 runs -  2147.58 us/run -   7.52 GFLOP/run - [1;34m  3.50 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               224 runs -  4672.55 us/run -   7.52 GFLOP/run - [1;34m  1.61 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               336 runs -  3056.17 us/run -   7.52 GFLOP/run - [1;34m  2.46 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               434 runs -  2374.96 us/run -   7.52 GFLOP/run - [1;34m  3.16 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                      98 runs - 10384.50 us/run -   7.52 GFLOP/run - [1;34m723.79 GFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                     350 runs -  2968.63 us/run -   7.52 GFLOP/run - [1;34m  2.53 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                224 runs -  4591.47 us/run -  15.03 GFLOP/run - [1;34m  3.27 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                434 runs -  2338.59 us/run -  15.03 GFLOP/run - [1;34m  6.43 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               350 runs -  2884.00 us/run -  15.03 GFLOP/run - [1;34m  5.21 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               350 runs -  2903.03 us/run -  15.03 GFLOP/run - [1;34m  5.18 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               329 runs -  3059.71 us/run -  15.03 GFLOP/run - [1;34m  4.91 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               308 runs -  3261.69 us/run -  15.03 GFLOP/run - [1;34m  4.61 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                      77 runs - 14165.51 us/run -  15.03 GFLOP/run - [1;34m  1.06 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                     343 runs -  2924.12 us/run -  15.03 GFLOP/run - [1;34m  5.14 TFLOPS[0m
+  MUL_MAT_ID(type_a=mxfp4,type_b=f32,n_mats=32,n_used=4,b=0,m=2880,n=1,k=2880,m_v=0,ids_offset=0,skip=0):              15080 runs -    67.06 us/run -  66.36 MFLOP/run - [1;34m989.54 GFLOPS[0m
+  MUL_MAT_ID(type_a=mxfp4,type_b=f32,n_mats=32,n_used=4,b=0,m=2880,n=4,k=2880,m_v=0,ids_offset=0,skip=0):               4524 runs -   223.36 us/run - 265.42 MFLOP/run - [1;34m  1.19 TFLOPS[0m
+  MUL_MAT_ID(type_a=mxfp4,type_b=f32,n_mats=32,n_used=4,b=0,m=2880,n=8,k=2880,m_v=0,ids_offset=0,skip=0):               2457 runs -   440.40 us/run - 530.84 MFLOP/run - [1;34m  1.21 TFLOPS[0m
+  MUL_MAT_ID(type_a=mxfp4,type_b=f32,n_mats=32,n_used=4,b=0,m=2880,n=512,k=2880,m_v=0,ids_offset=0,skip=0):                      183 runs -  5537.08 us/run -  33.97 GFLOP/run - [1;34m  6.14 TFLOPS[0m
+  Backend Vulkan0: [1;32mOK[0m
+Backend 2/3: BLAS
+  Skipping
+Backend 3/3: CPU
+  Skipping
+3/3 backends passed
+[1;32mOK[0m

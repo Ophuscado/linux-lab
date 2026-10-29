@@ -1,0 +1,6 @@
+# The M2 Ultra (T6022) Neural Engine: its DARTs in the ANE_SYS power domain, so the boot does not panic.
+UPSTREAM=https://github.com/joshuaswarren/omarchy-ane
+BASE=ae189112ed11f2033e0f8f2613a239d1ed5d4213  # main of 2026-10-25
+FORK=https://github.com/Ophuscado/linux-ane
+BRANCH=m2-ultra-dart-power
+CLONE=src/linux-ane

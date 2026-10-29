@@ -1,0 +1,29 @@
+#version 450
+// A row sum the way ggml's norm and softmax shaders do it: shared memory and workgroup
+// barriers (MODE 0), or subgroup adds with one barrier (MODE 1). ITERS rounds per launch,
+// so the barriers' cost shows against vk-chain's add.spv.
+#extension GL_KHR_shader_subgroup_arithmetic : enable
+layout(local_size_x = 256) in;
+layout(constant_id = 0) const uint MODE = 0;
+layout(constant_id = 1) const uint ITERS = 16;
+layout(std430, binding = 0) buffer B { float x[]; };
+layout(constant_id = 7) const uint VARIANT = 0;
+layout(push_constant) uniform P { uint n; } p;
+shared float s[256];
+void main() {
+    uint t = gl_LocalInvocationID.x, i = gl_GlobalInvocationID.x;
+    float v = i < p.n ? x[i] : 0.0;
+    for (uint it = 0; it < ITERS; it++) {
+        if (MODE == 0) {
+            s[t] = v; barrier();
+            for (uint w = 128; w > 0; w >>= 1) { if (t < w) s[t] += s[t + w]; barrier(); }
+            v = v * 0.5 + s[0] * 1e-6; barrier();
+        } else {
+            float r = subgroupAdd(v);
+            if (gl_SubgroupInvocationID == 0) s[gl_SubgroupID] = r; barrier();
+            float tot = 0.0; for (uint k = 0; k < gl_NumSubgroups; k++) tot += s[k];
+            v = v * 0.5 + tot * 1e-6; barrier();
+        }
+    }
+    if (i < p.n) x[i] = v;
+}

@@ -1,0 +1,248 @@
+From 71b8bdda3016bd2fcc2291c29686167c78131ad9 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Mon, 26 Oct 2026 01:45:14 +0000
+Subject: [PATCH 11/11] drm/asahi: Report per-client GPU time and memory in
+ fdinfo
+
+Tools that show GPU usage per process (nvtop, KDE's system monitor, gputop)
+read the DRM fdinfo keys. asahi printed none, so they show no load and no
+memory for Apple GPUs.
+
+Each queue now keeps a reference to its client's counters. When a render or
+compute command completes, the start and end stamps the firmware wrote for it
+are added to drm-engine-render (vertex and fragment) or drm-engine-compute.
+Memory comes from the DRM core's drm_show_memory_stats() over the client's GEM
+handles.
+---
+ drivers/gpu/drm/asahi/file.rs          | 36 ++++++++++++++++++++++++--
+ drivers/gpu/drm/asahi/gpu.rs           |  4 +++
+ drivers/gpu/drm/asahi/queue/compute.rs |  8 ++++++
+ drivers/gpu/drm/asahi/queue/mod.rs     |  4 +++
+ drivers/gpu/drm/asahi/queue/render.rs  | 13 ++++++++++
+ 5 files changed, 63 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/asahi/file.rs b/drivers/gpu/drm/asahi/file.rs
+index 061f289..527d540 100644
+--- a/drivers/gpu/drm/asahi/file.rs
++++ b/drivers/gpu/drm/asahi/file.rs
+@@ -30,6 +30,7 @@
+ use core::ops::Deref;
+ use core::ops::Range;
+ use core::ptr::addr_of_mut;
++use core::sync::atomic::{AtomicU64, Ordering};
+ use kernel::bindings;
+ use kernel::dma_fence::RawDmaFence;
+ use kernel::drm::gem::BaseObject;
+@@ -201,6 +202,7 @@ pub(crate) enum Object {
+ // #[pin_data]
+ pub(crate) struct File {
+     id: u64,
++    stats: Arc<ClientStats>,
+     // #[pin]
+     vms: xarray::XArray<KBox<Vm>>,
+     // #[pin]
+@@ -212,6 +214,23 @@ pub(crate) struct File {
+ /// Convenience type alias for our DRM `File` type.
+ pub(crate) type DrmFile = drm::File<File>;
+ 
++/// GPU time a client's work took, for its fdinfo (`drm-engine-*`): the firmware's start and end stamps
++/// of each finished command, summed per engine, in nanoseconds.
++#[derive(Default)]
++pub(crate) struct ClientStats {
++    pub(crate) render_ns: AtomicU64,
++    pub(crate) compute_ns: AtomicU64,
++}
++
++impl ClientStats {
++    /// Add one finished command's time, from its firmware stamps (left at 0 when not written).
++    pub(crate) fn add(counter: &AtomicU64, start: u64, end: u64) {
++        if start != 0 && end > start {
++            counter.fetch_add(end - start, Ordering::Relaxed);
++        }
++    }
++}
++
+ /// Available VM range for the user
+ const VM_USER_RANGE: Range<u64> = mmu::IOVA_USER_USABLE_RANGE;
+ 
+@@ -229,19 +248,30 @@ fn open(device: &AsahiDevice) -> Result<Pin<KBox<Self>>> {
+         let id = gpu.ids().file.next();
+ 
+         mod_dev_dbg!(device, "[File {}]: DRM device opened\n", id);
+-        Ok(KBox::pin_init(File::new(id), GFP_KERNEL)?)
++        let stats = Arc::new(ClientStats::default(), GFP_KERNEL)?;
++        Ok(KBox::pin_init(File::new(id, stats), GFP_KERNEL)?)
+     }
+ 
+     fn as_raw(&self) -> *mut bindings::drm_file {
+         todo!()
+     }
++
++    const HAS_FDINFO: bool = true;
++
++    fn show_fdinfo(file: &DrmFile, p: &mut drm::file::Printer) {
++        let stats = &file.inner().stats;
++        // A failed allocation only drops a line from a text file: nothing to report.
++        let _ = p.print(format_args!("drm-engine-render:\t{} ns\n", stats.render_ns.load(Ordering::Relaxed)));
++        let _ = p.print(format_args!("drm-engine-compute:\t{} ns\n", stats.compute_ns.load(Ordering::Relaxed)));
++        p.memory_stats(file);
++    }
+ }
+ 
+ // SAFETY: All bit patterns are valid by construction.
+ unsafe impl AnyBitPattern for uapi::drm_asahi_gem_bind_op {}
+ 
+ impl File {
+-    fn new(id: u64) -> impl PinInit<Self, Error> {
++    fn new(id: u64, stats: Arc<ClientStats>) -> impl PinInit<Self, Error> {
+         unsafe {
+             pin_init::pin_init_from_closure(move |slot: *mut Self| {
+                 let raw_vms = addr_of_mut!((*slot).vms);
+@@ -259,6 +289,7 @@ fn new(id: u64) -> impl PinInit<Self, Error> {
+                     .__pinned_init(raw_objects)?;
+ 
+                 (*slot).id = id;
++                addr_of_mut!((*slot).stats).write(stats);
+                 Ok(())
+             })
+         }
+@@ -943,6 +974,7 @@ pub(crate) fn queue_create(
+             // TODO: Plumb deeper the enum
+             uapi::drm_asahi_priority_DRM_ASAHI_PRIORITY_REALTIME - data.priority,
+             data.usc_exec_base,
++            file.inner().stats.clone(),
+         )?;
+ 
+         data.queue_id = resv.index().try_into()?;
+diff --git a/drivers/gpu/drm/asahi/gpu.rs b/drivers/gpu/drm/asahi/gpu.rs
+index b6c1c64..0c446fb 100644
+--- a/drivers/gpu/drm/asahi/gpu.rs
++++ b/drivers/gpu/drm/asahi/gpu.rs
+@@ -56,6 +56,7 @@
+ };
+ 
+ use crate::alloc::Allocator;
++use crate::file;
+ use crate::debug::*;
+ use crate::driver::{
+     AsahiDevRef,
+@@ -288,6 +289,7 @@ fn new_queue(
+         ualloc_priv: Arc<Mutex<alloc::DefaultAllocator>>,
+         priority: u32,
+         usc_exec_base: u64,
++        stats: Arc<file::ClientStats>,
+     ) -> Result<KBox<dyn queue::Queue>>;
+     /// Return a reference to the global `SequenceIDs` instance.
+     fn ids(&self) -> &SequenceIDs;
+@@ -1340,6 +1342,7 @@ fn new_queue(
+         ualloc_priv: Arc<Mutex<alloc::DefaultAllocator>>,
+         priority: u32,
+         usc_exec_base: u64,
++        stats: Arc<file::ClientStats>,
+     ) -> Result<KBox<dyn queue::Queue>> {
+         let mut kalloc = self.alloc();
+         let id = self.ids.queue.next();
+@@ -1355,6 +1358,7 @@ fn new_queue(
+                 id,
+                 priority,
+                 usc_exec_base,
++                stats,
+             )?,
+             GFP_KERNEL,
+         )?)
+diff --git a/drivers/gpu/drm/asahi/queue/compute.rs b/drivers/gpu/drm/asahi/queue/compute.rs
+index 62afc56..0684c8a 100644
+--- a/drivers/gpu/drm/asahi/queue/compute.rs
++++ b/drivers/gpu/drm/asahi/queue/compute.rs
+@@ -112,6 +112,9 @@ pub(super) fn submit_compute(
+             kalloc.shared.new_default::<fw::job::JobTimestamps>()?,
+             GFP_KERNEL,
+         )?;
++        // Read back when the command completes, for the client's fdinfo.
++        let done_ts = timestamps.clone();
++        let stats = self.stats.clone();
+ 
+         let uuid = 0;
+         mod_dev_dbg!(self.dev, "[Submission {}] UUID = {:#x?}\n", id, uuid);
+@@ -375,6 +378,11 @@ pub(super) fn submit_compute(
+                 fence.set_error(err.into())
+             }
+ 
++            let (start, end) = done_ts.with(|raw, _| {
++                (raw.start.load(Ordering::Relaxed), raw.end.load(Ordering::Relaxed))
++            });
++            file::ClientStats::add(&stats.compute_ns, start, end);
++
+             fence.command_complete();
+         })?;
+ 
+diff --git a/drivers/gpu/drm/asahi/queue/mod.rs b/drivers/gpu/drm/asahi/queue/mod.rs
+index 85da1d5..db98d4f 100644
+--- a/drivers/gpu/drm/asahi/queue/mod.rs
++++ b/drivers/gpu/drm/asahi/queue/mod.rs
+@@ -142,6 +142,8 @@ pub(crate) struct QueueInner {
+     id: u64,
+     #[ver(V >= V13_0B4)]
+     counter: AtomicU64,
++    /// The owning client's GPU time, for its fdinfo.
++    stats: Arc<file::ClientStats>,
+ }
+ 
+ #[versions(AGX)]
+@@ -444,6 +446,7 @@ pub(crate) fn new(
+         id: u64,
+         priority: u32,
+         usc_exec_base: u64,
++        stats: Arc<file::ClientStats>,
+     ) -> Result<Queue::ver> {
+         mod_dev_dbg!(dev, "[Queue {}] Creating queue\n", id);
+ 
+@@ -506,6 +509,7 @@ pub(crate) fn new(
+                 id,
+                 #[ver(V >= V13_0B4)]
+                 counter: AtomicU64::new(0),
++                stats,
+             },
+         };
+ 
+diff --git a/drivers/gpu/drm/asahi/queue/render.rs b/drivers/gpu/drm/asahi/queue/render.rs
+index 32273b2..65c8ba3 100644
+--- a/drivers/gpu/drm/asahi/queue/render.rs
++++ b/drivers/gpu/drm/asahi/queue/render.rs
+@@ -376,6 +376,9 @@ pub(super) fn submit_render(
+             kalloc.shared.new_default::<fw::job::RenderTimestamps>()?,
+             GFP_KERNEL,
+         )?;
++        // Read back when the commands complete, for the client's fdinfo.
++        let (frag_ts, vtx_ts) = (timestamps.clone(), timestamps.clone());
++        let (frag_stats, vtx_stats) = (self.stats.clone(), self.stats.clone());
+ 
+         let unk1 = false;
+ 
+@@ -945,6 +948,11 @@ pub(super) fn submit_render(
+                 fence.set_error(err.into());
+             }
+ 
++            let (start, end) = frag_ts.with(|raw, _| {
++                (raw.frag.start.load(Ordering::Relaxed), raw.frag.end.load(Ordering::Relaxed))
++            });
++            file::ClientStats::add(&frag_stats.render_ns, start, end);
++
+             fence.command_complete();
+         })?;
+ 
+@@ -1384,6 +1392,11 @@ pub(super) fn submit_render(
+                 fence.set_error(err.into())
+             }
+ 
++            let (start, end) = vtx_ts.with(|raw, _| {
++                (raw.vtx.start.load(Ordering::Relaxed), raw.vtx.end.load(Ordering::Relaxed))
++            });
++            file::ClientStats::add(&vtx_stats.render_ns, start, end);
++
+             fence.command_complete();
+         })?;
+ 
+-- 
+2.43.0
+

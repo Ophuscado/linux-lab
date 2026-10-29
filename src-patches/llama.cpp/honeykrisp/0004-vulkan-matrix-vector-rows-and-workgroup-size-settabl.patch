@@ -1,0 +1,72 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Mon, 26 Oct 2026 23:56:06 +0000
+Subject: [PATCH 4/4] vulkan: matrix-vector rows and workgroup size settable
+
+GGML_VK_RM_STDQ and GGML_VK_RM_KQ set the rows per workgroup of the matrix-vector shaders for the standard and the K quants, GGML_VK_DMMV_WG=large|subgroup the workgroup size for every shape, and GGML_VK_FORCE_INT_DOT tries the integer-dot path on a driver that does not report it as accelerated. Any of them prints the values used to stderr.
+
+On an M2 Ultra under Honeykrisp, generation is best with the large workgroup and 2 rows for MoE models (Qwen3-Coder-Next, Gemma 4), 1 row for GPT-OSS and dense models; the integer-dot path is slower there.
+---
+ ggml/src/ggml-vulkan/ggml-vulkan.cpp | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
+
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index 54b09ff96..9a3c9a9c4 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -2964,6 +2964,19 @@ void ggml_vk_load_shaders(vk_device& device, vk_pipeline requested) {
+         }
+         return is_rdna3_or_4 ? 4u : rows;
+     };
++    // Tuning overrides, for GPUs that have no settings of their own above.
++    if (const char * env = getenv("GGML_VK_RM_STDQ")) {
++        rm_stdq = std::max(1, atoi(env));
++    }
++    if (const char * env = getenv("GGML_VK_RM_KQ")) {
++        rm_kq = std::max(1, atoi(env));
++    }
++    if (getenv("GGML_VK_RM_STDQ") || getenv("GGML_VK_RM_KQ") || getenv("GGML_VK_DMMV_WG") || getenv("GGML_VK_FORCE_INT_DOT")) {
++        const char * wg = getenv("GGML_VK_DMMV_WG");
++        // Straight to stderr: tools such as llama-bench drop log messages after start-up.
++        fprintf(stderr, "ggml_vulkan: tuning overrides: rm_stdq=%u rm_kq=%u dmmv_wg=%s int_dot=%d\n",
++                rm_stdq, rm_kq, wg ? wg : "default", (int)device->integer_dot_product);
++    }
+     uint32_t rm_iq = 2 * rm_kq;
+ 
+     const bool use_subgroups = device->subgroup_arithmetic;
+@@ -4361,7 +4374,10 @@ vk_device ggml_vk_get_device(size_t idx) {
+             device->coopmat_support = false;
+         }
+ 
+-        device->integer_dot_product = device->integer_dot_product && shader_integer_dot_product_props.integerDotProduct4x8BitPackedSignedAccelerated;
++        device->integer_dot_product = device->integer_dot_product &&
++            (shader_integer_dot_product_props.integerDotProduct4x8BitPackedSignedAccelerated ||
++             // Tuning override: try the integer path on a driver that does not call it accelerated.
++             getenv("GGML_VK_FORCE_INT_DOT") != nullptr);
+ 
+         device->min_imported_host_pointer_alignment = external_memory_host_props.minImportedHostPointerAlignment;
+ 
+@@ -5711,6 +5727,11 @@ static vk_pipeline ggml_vk_get_dequantize_mul_mat_vec(ggml_backend_vk_context *
+         }
+     }
+ 
++    // Tuning override: GGML_VK_DMMV_WG=large or =subgroup, for every matrix shape.
++    if (const char * env = getenv("GGML_VK_DMMV_WG")) {
++        dmmv_wg = (env[0] == 'l' || env[0] == 'L') ? DMMV_WG_SIZE_LARGE : DMMV_WG_SIZE_SUBGROUP;
++    }
++
+     if (b_type == GGML_TYPE_Q8_1) {
+         if (ctx->device->vendor_id == VK_VENDOR_ID_INTEL) {
+             dmmv_wg = DMMV_WG_SIZE_SUBGROUP;
+@@ -5799,6 +5820,11 @@ static vk_pipeline ggml_vk_get_dequantize_mul_mat_vec_id(ggml_backend_vk_context
+         }
+     }
+ 
++    // Tuning override: GGML_VK_DMMV_WG=large or =subgroup, for every matrix shape.
++    if (const char * env = getenv("GGML_VK_DMMV_WG")) {
++        dmmv_wg = (env[0] == 'l' || env[0] == 'L') ? DMMV_WG_SIZE_LARGE : DMMV_WG_SIZE_SUBGROUP;
++    }
++
+     if (b_type == GGML_TYPE_Q8_1) {
+         if (ctx->device->vendor_id == VK_VENDOR_ID_INTEL) {
+             dmmv_wg = DMMV_WG_SIZE_SUBGROUP;

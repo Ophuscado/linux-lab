@@ -1,0 +1,74 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Sun, 18 Oct 2026 07:34:44 +0000
+Subject: [PATCH] HID: apple: Optional Fn shortcuts on F, C, P and D
+
+macOS gives the Fn (Globe) key shortcuts of its own; on Linux an Apple
+keyboard's Fn only reaches the function, arrow and editing keys. With
+the new parameter fn_shortcuts, Fn+F, Fn+C, Fn+P and Fn+D send
+KEY_PROG1 to KEY_PROG4, which nothing else produces on these keyboards
+and which a desktop can bind to window actions. A key keeps the code it
+was pressed with, so releasing Fn first does not leave a key down.
+
+Off by default: the keys type as before.
+---
+ drivers/hid/hid-apple.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
+index d72e1121e..c00a3ce9a 100644
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -88,6 +88,11 @@ MODULE_PARM_DESC(swap_fn_leftctrl, "Swap the Fn and left Control keys. "
+ 		"(For people who want to keep PC keyboard muscle memory. "
+ 		"[0] = as-is, Mac layout, 1 = swapped, PC layout)");
+ 
++static bool fn_shortcuts;
++module_param(fn_shortcuts, bool, 0644);
++MODULE_PARM_DESC(fn_shortcuts, "Fn+F, Fn+C, Fn+P and Fn+D send the Prog1 to Prog4 keys, "
++		"free for desktop shortcuts. ([N] = off, Y = on)");
++
+ struct apple_non_apple_keyboard {
+ 	char *name;
+ };
+@@ -335,6 +340,14 @@ static const struct apple_key_translation powerbook_numlock_keys[] = {
+ 	{ }
+ };
+ 
++static const struct apple_key_translation apple_fn_shortcut_keys[] = {
++	{ KEY_F,	KEY_PROG1 },
++	{ KEY_C,	KEY_PROG2 },
++	{ KEY_P,	KEY_PROG3 },
++	{ KEY_D,	KEY_PROG4 },
++	{ }
++};
++
+ static const struct apple_key_translation apple_iso_keyboard[] = {
+ 	{ KEY_GRAVE,	KEY_102ND },
+ 	{ KEY_102ND,	KEY_GRAVE },
+@@ -494,6 +507,14 @@ static int hidinput_apple_event(struct hid_device *hid, struct input_dev *input,
+ 	if (code == KEY_FN)
+ 		asc->fn_on = !!value;
+ 
++	if (fn_shortcuts) {
++		trans = apple_find_translation(apple_fn_shortcut_keys, code);
++		/* A key keeps the code it went down with, whatever Fn does meanwhile */
++		if (trans && (test_bit(trans->to, input->key) ||
++			      (asc->fn_on && !test_bit(trans->from, input->key))))
++			code = trans->to;
++	}
++
+ 	if (real_fnmode) {
+ 		switch (hid->bus) {
+ 		case BUS_HOST:
+@@ -753,6 +774,7 @@ static void apple_setup_input(struct input_dev *input)
+ 	apple_setup_key_translation(input, magic_keyboard_2021_and_2024_fn_keys);
+ 	apple_setup_key_translation(input, macbookpro_no_esc_fn_keys);
+ 	apple_setup_key_translation(input, macbookpro_dedicated_esc_fn_keys);
++	apple_setup_key_translation(input, apple_fn_shortcut_keys);
+ }
+ 
+ static int apple_input_mapping(struct hid_device *hdev, struct hid_input *hi,
+-- 
+2.43.0
+

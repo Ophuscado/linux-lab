@@ -1,0 +1,5 @@
+molten-vk 1.4.2
+shaderc 2026.4
+vulkan-headers 1.4.363.0
+vulkan-loader 1.4.363.0
+~/Downloads/linux-lab-macos/linux-lab/macos/collect.sh: line 285: /opt/homebrew/bin/vulkaninfo: No such file or directory

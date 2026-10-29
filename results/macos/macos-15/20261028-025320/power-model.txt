@@ -1,0 +1,1 @@
+~/Downloads/Qwen3-Coder-Next/UD-Q8_K_XL/model.gguf

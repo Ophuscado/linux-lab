@@ -1,0 +1,3 @@
+*** Recognized (0x70) family*** (10 cols X 15 rows)
+*** Recognized (0x81) family*** (30 cols X 22 rows)
+mouse-idle: 0 HID reports, 23 touches, 0 events

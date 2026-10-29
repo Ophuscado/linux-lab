@@ -1,0 +1,245 @@
+ggml_metal_device_init: tensor API disabled for pre-M5 and pre-A19 devices
+ggml_metal_library_init: using embedded metal library
+ggml_metal_library_compile_all: compiled 'fa_aux' library in 0.012 sec
+ggml_metal_library_compile_all: compiled 'fa_f16' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'fa_f32' library in 0.001 sec
+ggml_metal_library_compile_all: compiled 'fa_q4_0' library in 0.003 sec
+ggml_metal_library_compile_all: compiled 'fa_q4_1' library in 0.003 sec
+ggml_metal_library_compile_all: compiled 'fa_q5_0' library in 0.009 sec
+ggml_metal_library_compile_all: compiled 'fa_q5_1' library in 0.003 sec
+ggml_metal_library_compile_all: compiled 'fa_q8_0' library in 0.012 sec
+ggml_metal_library_compile_all: compiled 'fa_tensor' library in 0.001 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_f16' library in 0.011 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_f32' library in 0.010 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q4_0' library in 0.006 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q4_1' library in 0.007 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q5_0' library in 0.008 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q5_1' library in 0.013 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q8_0' library in 0.010 sec
+ggml_metal_library_compile_all: compiled 'mul_mv' library in 0.004 sec
+ggml_metal_library_compile_all: compiled 'mul_mv_mma' library in 0.015 sec
+ggml_metal_library_compile_all: compiled 'mul_mm' library in 0.014 sec
+ggml_metal_library_compile_all: compiled 'quantize' library in 0.004 sec
+ggml_metal_library_compile_all: compiled 'softmax' library in 0.015 sec
+ggml_metal_library_compile_all: compiled 'norm' library in 0.015 sec
+ggml_metal_library_compile_all: compiled 'unary' library in 0.009 sec
+ggml_metal_library_compile_all: compiled 'binbcast' library in 0.008 sec
+ggml_metal_library_compile_all: compiled 'reduce' library in 0.015 sec
+ggml_metal_library_compile_all: compiled 'tri' library in 0.000 sec
+ggml_metal_library_compile_all: compiled 'ssm' library in 0.011 sec
+ggml_metal_library_compile_all: compiled 'wkv' library in 0.008 sec
+ggml_metal_library_compile_all: compiled 'gated_delta_net' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'solve_tri' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'rope' library in 0.011 sec
+ggml_metal_library_compile_all: compiled 'conv' library in 0.004 sec
+ggml_metal_library_compile_all: compiled 'upscale' library in 0.011 sec
+ggml_metal_library_compile_all: compiled 'argsort' library in 0.011 sec
+ggml_metal_library_compile_all: compiled 'pool' library in 0.007 sec
+ggml_metal_library_compile_all: compiled 'misc' library in 0.003 sec
+ggml_metal_library_compile_all: loaded 36 libraries from embedded data in 0.016 sec (max single = 0.015 sec)
+ggml_metal_rsets_init: creating a residency set collection (keep_alive = 180 s)
+ggml_metal_device_init: GPU name:   MTL0 (Apple M2 Ultra)
+ggml_metal_device_init: GPU family: MTLGPUFamilyApple8  (1008)
+ggml_metal_device_init: GPU family: MTLGPUFamilyMetal3  (5001)
+ggml_metal_device_init: simdgroup reduction   = true
+ggml_metal_device_init: simdgroup matrix mul. = true
+ggml_metal_device_init: has unified memory    = true
+ggml_metal_device_init: has bfloat            = true
+ggml_metal_device_init: has tensor            = false
+ggml_metal_device_init: use residency sets    = true
+ggml_metal_device_init: use shared buffers    = true
+ggml_metal_device_init: recommendedMaxWorkingSetSize  = 154618.82 MB
+ggml_metal_init: allocating
+ggml_metal_init: found device: Apple M2 Ultra
+ggml_metal_init: picking default device: Apple M2 Ultra
+ggml_metal_init: use fusion         = true
+ggml_metal_init: use concurrency    = true
+ggml_metal_init: use graph optimize = true
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_id_f32_f32_4', name = 'kernel_mul_mv_id_f32_f32_4_nsg=4_split=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_id_f32_f32_4_nsg=4_split=0      0x137106480 | th_max =  768 | th_width =   32
+Testing 3 devices
+
+Backend 1/3: MTL0
+  Device description: Apple M2 Ultra
+  Device memory: 147456 MB (147455 MB free)
+
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):                23844 runs -    43.34 us/run -  25.17 MFLOP/run - [1;34m580.66 GFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_id_f16_f32_4', name = 'kernel_mul_mv_id_f16_f32_4_nsg=4_split=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_id_f16_f32_4_nsg=4_split=0      0x135f183b0 | th_max = 1024 | th_width =   32
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):                43714 runs -    24.16 us/run -  25.17 MFLOP/run - [1;34m  1.04 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_id_q4_0_f32', name = 'kernel_mul_mv_id_q4_0_f32_nsg=2_split=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_id_q4_0_f32_nsg=2_split=0       0x135f189e0 | th_max =  832 | th_width =   32
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               83454 runs -    12.31 us/run -  25.17 MFLOP/run - [1;34m  2.04 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_id_q8_0_f32', name = 'kernel_mul_mv_id_q8_0_f32_nsg=4_split=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_id_q8_0_f32_nsg=4_split=0       0x135e44220 | th_max = 1024 | th_width =   32
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               47688 runs -    21.58 us/run -  25.17 MFLOP/run - [1;34m  1.17 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_id_q4_K_f32', name = 'kernel_mul_mv_id_q4_K_f32_nsg=2_split=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_id_q4_K_f32_nsg=2_split=0       0x135f19010 | th_max =  768 | th_width =   32
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               67558 runs -    15.21 us/run -  25.17 MFLOP/run - [1;34m  1.65 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_id_q6_K_f32', name = 'kernel_mul_mv_id_q6_K_f32_nsg=2_split=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_id_q6_K_f32_nsg=2_split=0       0x135e44480 | th_max =  896 | th_width =   32
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               55636 runs -    19.17 us/run -  25.17 MFLOP/run - [1;34m  1.31 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_id_iq2_xs_f32', name = 'kernel_mul_mv_id_iq2_xs_f32_nsg=2_split=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_id_iq2_xs_f32_nsg=2_split=0      0x135e44d70 | th_max =  640 | th_width =   32
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):             47688 runs -    22.13 us/run -  25.17 MFLOP/run - [1;34m  1.14 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_id_iq4_xs_f32', name = 'kernel_mul_mv_id_iq4_xs_f32_nsg=2_split=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_id_iq4_xs_f32_nsg=2_split=0      0x135f19640 | th_max =  832 | th_width =   32
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,m_v=0,ids_offset=0,skip=0):             55636 runs -    18.47 us/run -  25.17 MFLOP/run - [1;34m  1.36 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                 4970 runs -   248.13 us/run - 100.66 MFLOP/run - [1;34m405.69 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                 8946 runs -   112.06 us/run - 100.66 MFLOP/run - [1;34m898.33 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               31808 runs -    31.96 us/run - 100.66 MFLOP/run - [1;34m  3.15 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               13916 runs -    73.24 us/run - 100.66 MFLOP/run - [1;34m  1.37 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               22862 runs -    44.04 us/run - 100.66 MFLOP/run - [1;34m  2.29 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               17892 runs -    57.07 us/run - 100.66 MFLOP/run - [1;34m  1.76 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):             18886 runs -    55.44 us/run - 100.66 MFLOP/run - [1;34m  1.82 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,m_v=0,ids_offset=0,skip=0):             18886 runs -    52.98 us/run - 100.66 MFLOP/run - [1;34m  1.90 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                 2485 runs -   500.12 us/run - 201.33 MFLOP/run - [1;34m402.56 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                 4473 runs -   228.82 us/run - 201.33 MFLOP/run - [1;34m879.85 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):               17395 runs -    58.13 us/run - 201.33 MFLOP/run - [1;34m  3.46 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                7455 runs -   142.24 us/run - 201.33 MFLOP/run - [1;34m  1.42 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):               12425 runs -    82.50 us/run - 201.33 MFLOP/run - [1;34m  2.44 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                8946 runs -   112.11 us/run - 201.33 MFLOP/run - [1;34m  1.80 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):             10437 runs -   100.36 us/run - 201.33 MFLOP/run - [1;34m  2.01 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,m_v=0,ids_offset=0,skip=0):             10437 runs -    99.22 us/run - 201.33 MFLOP/run - [1;34m  2.03 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_map0_ne20_8', name = 'kernel_mul_mm_id_map0_ne20_8_ne02=128'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_map0_ne20_8_ne02=128         0x105f04e00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_zero', name = 'kernel_mul_mm_id_zero'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_zero                         0x105f05060 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_f32_f32', name = 'kernel_mul_mm_id_f32_f32_bci=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_f32_f32_bci=0                0x105f05950 | th_max =  832 | th_width =   32
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                1000 runs -  1022.19 us/run - 805.31 MFLOP/run - [1;34m787.83 GFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_f16_f32', name = 'kernel_mul_mm_id_f16_f32_bci=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_f16_f32_bci=0                0x135e0f0b0 | th_max =  896 | th_width =   32
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                1875 runs -   560.33 us/run - 805.31 MFLOP/run - [1;34m  1.44 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_q4_0_f32', name = 'kernel_mul_mm_id_q4_0_f32_bci=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_q4_0_f32_bci=0               0x135e45c20 | th_max =  896 | th_width =   32
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):               2375 runs -   423.97 us/run - 805.31 MFLOP/run - [1;34m  1.90 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_q8_0_f32', name = 'kernel_mul_mm_id_q8_0_f32_bci=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_q8_0_f32_bci=0               0x135e45400 | th_max =  896 | th_width =   32
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):               2250 runs -   455.02 us/run - 805.31 MFLOP/run - [1;34m  1.77 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_q4_K_f32', name = 'kernel_mul_mm_id_q4_K_f32_bci=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_q4_K_f32_bci=0               0x135e44a20 | th_max =  896 | th_width =   32
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):               2000 runs -   510.87 us/run - 805.31 MFLOP/run - [1;34m  1.58 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_q6_K_f32', name = 'kernel_mul_mm_id_q6_K_f32_bci=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_q6_K_f32_bci=0               0x135e46630 | th_max =  896 | th_width =   32
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):               1875 runs -   549.39 us/run - 805.31 MFLOP/run - [1;34m  1.47 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_iq2_xs_f32', name = 'kernel_mul_mm_id_iq2_xs_f32_bci=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_iq2_xs_f32_bci=0             0x135f1a620 | th_max =  896 | th_width =   32
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                     2000 runs -   527.33 us/run - 805.31 MFLOP/run - [1;34m  1.53 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_iq4_xs_f32', name = 'kernel_mul_mm_id_iq4_xs_f32_bci=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_iq4_xs_f32_bci=0             0x135e45e80 | th_max =  832 | th_width =   32
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                     2000 runs -   526.84 us/run - 805.31 MFLOP/run - [1;34m  1.53 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                 945 runs -  1129.53 us/run -   1.61 GFLOP/run - [1;34m  1.43 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                1512 runs -   662.42 us/run -   1.61 GFLOP/run - [1;34m  2.43 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):               2142 runs -   480.20 us/run -   1.61 GFLOP/run - [1;34m  3.35 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):               1953 runs -   514.65 us/run -   1.61 GFLOP/run - [1;34m  3.13 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):               1764 runs -   580.55 us/run -   1.61 GFLOP/run - [1;34m  2.77 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):               1638 runs -   628.50 us/run -   1.61 GFLOP/run - [1;34m  2.56 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                     1701 runs -   595.40 us/run -   1.61 GFLOP/run - [1;34m  2.71 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                     1701 runs -   588.40 us/run -   1.61 GFLOP/run - [1;34m  2.74 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                832 runs -  1205.54 us/run -   3.22 GFLOP/run - [1;34m  2.67 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               1408 runs -   712.98 us/run -   3.22 GFLOP/run - [1;34m  4.52 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):              1952 runs -   518.96 us/run -   3.22 GFLOP/run - [1;34m  6.21 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):              1792 runs -   567.32 us/run -   3.22 GFLOP/run - [1;34m  5.68 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):              1600 runs -   627.25 us/run -   3.22 GFLOP/run - [1;34m  5.14 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):              1504 runs -   677.97 us/run -   3.22 GFLOP/run - [1;34m  4.75 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                    1600 runs -   637.23 us/run -   3.22 GFLOP/run - [1;34m  5.06 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                    1600 runs -   628.65 us/run -   3.22 GFLOP/run - [1;34m  5.12 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                768 runs -  1324.75 us/run -   6.44 GFLOP/run - [1;34m  4.86 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               1232 runs -   812.64 us/run -   6.44 GFLOP/run - [1;34m  7.93 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):              1440 runs -   697.90 us/run -   6.44 GFLOP/run - [1;34m  9.23 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):              1376 runs -   729.60 us/run -   6.44 GFLOP/run - [1;34m  8.83 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):              1264 runs -   801.10 us/run -   6.44 GFLOP/run - [1;34m  8.04 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):              1184 runs -   848.64 us/run -   6.44 GFLOP/run - [1;34m  7.59 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                    1232 runs -   819.63 us/run -   6.44 GFLOP/run - [1;34m  7.86 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                    1248 runs -   806.60 us/run -   6.44 GFLOP/run - [1;34m  7.99 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                584 runs -  1733.15 us/run -  12.88 GFLOP/run - [1;34m  7.43 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                920 runs -  1089.50 us/run -  12.88 GFLOP/run - [1;34m 11.83 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               904 runs -  1107.48 us/run -  12.88 GFLOP/run - [1;34m 11.63 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               888 runs -  1130.21 us/run -  12.88 GFLOP/run - [1;34m 11.40 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               808 runs -  1246.86 us/run -  12.88 GFLOP/run - [1;34m 10.33 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               776 runs -  1300.00 us/run -  12.88 GFLOP/run - [1;34m  9.91 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                     784 runs -  1277.99 us/run -  12.88 GFLOP/run - [1;34m 10.08 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                     808 runs -  1246.07 us/run -  12.88 GFLOP/run - [1;34m 10.34 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):                20436 runs -    55.92 us/run -  29.36 MFLOP/run - [1;34m524.99 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):                37466 runs -    27.59 us/run -  29.36 MFLOP/run - [1;34m  1.06 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               78338 runs -    13.15 us/run -  29.36 MFLOP/run - [1;34m  2.23 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               44278 runs -    24.38 us/run -  29.36 MFLOP/run - [1;34m  1.20 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               61308 runs -    16.73 us/run -  29.36 MFLOP/run - [1;34m  1.76 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):               47684 runs -    21.01 us/run -  29.36 MFLOP/run - [1;34m  1.40 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):             44278 runs -    23.22 us/run -  29.36 MFLOP/run - [1;34m  1.26 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=1,k=2048,m_v=0,ids_offset=0,skip=0):             51090 runs -    20.90 us/run -  29.36 MFLOP/run - [1;34m  1.40 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                 4260 runs -   280.16 us/run - 117.44 MFLOP/run - [1;34m419.19 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):                 8520 runs -   123.12 us/run - 117.44 MFLOP/run - [1;34m953.85 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               28116 runs -    35.95 us/run - 117.44 MFLOP/run - [1;34m  3.27 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               11928 runs -    84.50 us/run - 117.44 MFLOP/run - [1;34m  1.39 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               20448 runs -    49.30 us/run - 117.44 MFLOP/run - [1;34m  2.38 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):               16188 runs -    64.95 us/run - 117.44 MFLOP/run - [1;34m  1.81 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):             16188 runs -    62.56 us/run - 117.44 MFLOP/run - [1;34m  1.88 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=4,k=2048,m_v=0,ids_offset=0,skip=0):             17040 runs -    60.99 us/run - 117.44 MFLOP/run - [1;34m  1.93 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                 2130 runs -   566.56 us/run - 234.88 MFLOP/run - [1;34m414.58 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                 4260 runs -   257.04 us/run - 234.88 MFLOP/run - [1;34m913.78 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):               15336 runs -    66.53 us/run - 234.88 MFLOP/run - [1;34m  3.53 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                6390 runs -   164.86 us/run - 234.88 MFLOP/run - [1;34m  1.42 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):               11076 runs -    93.54 us/run - 234.88 MFLOP/run - [1;34m  2.51 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):                8094 runs -   126.41 us/run - 234.88 MFLOP/run - [1;34m  1.86 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):              8946 runs -   114.75 us/run - 234.88 MFLOP/run - [1;34m  2.05 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=8,k=2048,m_v=0,ids_offset=0,skip=0):              8946 runs -   113.69 us/run - 234.88 MFLOP/run - [1;34m  2.07 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_map0_ne20_4', name = 'kernel_mul_mm_id_map0_ne20_4_ne02=32'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_map0_ne20_4_ne02=32          0x135e46390 | th_max = 1024 | th_width =   32
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                1498 runs -   683.05 us/run - 939.52 MFLOP/run - [1;34m  1.38 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                2568 runs -   401.44 us/run - 939.52 MFLOP/run - [1;34m  2.34 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):               3531 runs -   289.44 us/run - 939.52 MFLOP/run - [1;34m  3.25 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):               3210 runs -   317.41 us/run - 939.52 MFLOP/run - [1;34m  2.96 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):               2889 runs -   350.91 us/run - 939.52 MFLOP/run - [1;34m  2.68 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):               2675 runs -   382.05 us/run - 939.52 MFLOP/run - [1;34m  2.46 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                     2782 runs -   363.17 us/run - 939.52 MFLOP/run - [1;34m  2.59 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=32,k=2048,m_v=0,ids_offset=0,skip=0):                     2782 runs -   366.47 us/run - 939.52 MFLOP/run - [1;34m  2.56 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                1458 runs -   709.54 us/run -   1.88 GFLOP/run - [1;34m  2.65 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                2322 runs -   433.10 us/run -   1.88 GFLOP/run - [1;34m  4.34 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):               3186 runs -   316.09 us/run -   1.88 GFLOP/run - [1;34m  5.94 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):               2970 runs -   341.41 us/run -   1.88 GFLOP/run - [1;34m  5.50 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):               2646 runs -   378.31 us/run -   1.88 GFLOP/run - [1;34m  4.97 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):               2430 runs -   414.57 us/run -   1.88 GFLOP/run - [1;34m  4.53 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                     2592 runs -   392.82 us/run -   1.88 GFLOP/run - [1;34m  4.78 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=64,k=2048,m_v=0,ids_offset=0,skip=0):                     2538 runs -   398.19 us/run -   1.88 GFLOP/run - [1;34m  4.72 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               1377 runs -   737.78 us/run -   3.76 GFLOP/run - [1;34m  5.09 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):               2187 runs -   462.76 us/run -   3.76 GFLOP/run - [1;34m  8.12 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):              2295 runs -   437.17 us/run -   3.76 GFLOP/run - [1;34m  8.60 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):              2241 runs -   451.36 us/run -   3.76 GFLOP/run - [1;34m  8.33 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):              2025 runs -   499.38 us/run -   3.76 GFLOP/run - [1;34m  7.53 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):              1917 runs -   522.82 us/run -   3.76 GFLOP/run - [1;34m  7.19 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                    1971 runs -   510.08 us/run -   3.76 GFLOP/run - [1;34m  7.37 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=128,k=2048,m_v=0,ids_offset=0,skip=0):                    1998 runs -   505.98 us/run -   3.76 GFLOP/run - [1;34m  7.43 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               1148 runs -   872.45 us/run -   7.52 GFLOP/run - [1;34m  8.62 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):               1596 runs -   628.71 us/run -   7.52 GFLOP/run - [1;34m 11.95 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):              1512 runs -   666.57 us/run -   7.52 GFLOP/run - [1;34m 11.28 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):              1484 runs -   678.74 us/run -   7.52 GFLOP/run - [1;34m 11.07 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):              1344 runs -   750.32 us/run -   7.52 GFLOP/run - [1;34m 10.02 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):              1288 runs -   781.50 us/run -   7.52 GFLOP/run - [1;34m  9.62 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                    1302 runs -   770.57 us/run -   7.52 GFLOP/run - [1;34m  9.75 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=256,k=2048,m_v=0,ids_offset=0,skip=0):                    1344 runs -   749.75 us/run -   7.52 GFLOP/run - [1;34m 10.02 TFLOPS[0m
+  MUL_MAT_ID(type_a=f32,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                861 runs -  1170.68 us/run -  15.03 GFLOP/run - [1;34m 12.84 TFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                987 runs -  1020.06 us/run -  15.03 GFLOP/run - [1;34m 14.74 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               910 runs -  1100.04 us/run -  15.03 GFLOP/run - [1;34m 13.67 TFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               903 runs -  1108.67 us/run -  15.03 GFLOP/run - [1;34m 13.56 TFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               819 runs -  1222.73 us/run -  15.03 GFLOP/run - [1;34m 12.29 TFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):               791 runs -  1264.27 us/run -  15.03 GFLOP/run - [1;34m 11.89 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq2_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                     798 runs -  1255.43 us/run -  15.03 GFLOP/run - [1;34m 11.97 TFLOPS[0m
+  MUL_MAT_ID(type_a=iq4_xs,type_b=f32,n_mats=32,n_used=4,b=0,m=1792,n=512,k=2048,m_v=0,ids_offset=0,skip=0):                     819 runs -  1221.22 us/run -  15.03 GFLOP/run - [1;34m 12.31 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_id_mxfp4_f32', name = 'kernel_mul_mv_id_mxfp4_f32_nsg=2_split=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_id_mxfp4_f32_nsg=2_split=0      0x135e47650 | th_max = 1024 | th_width =   32
+  MUL_MAT_ID(type_a=mxfp4,type_b=f32,n_mats=32,n_used=4,b=0,m=2880,n=1,k=2880,m_v=0,ids_offset=0,skip=0):              27144 runs -    37.19 us/run -  66.36 MFLOP/run - [1;34m  1.78 TFLOPS[0m
+  MUL_MAT_ID(type_a=mxfp4,type_b=f32,n_mats=32,n_used=4,b=0,m=2880,n=4,k=2880,m_v=0,ids_offset=0,skip=0):               8671 runs -   119.22 us/run - 265.42 MFLOP/run - [1;34m  2.23 TFLOPS[0m
+  MUL_MAT_ID(type_a=mxfp4,type_b=f32,n_mats=32,n_used=4,b=0,m=2880,n=8,k=2880,m_v=0,ids_offset=0,skip=0):               4536 runs -   228.39 us/run - 530.84 MFLOP/run - [1;34m  2.32 TFLOPS[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_id_mxfp4_f32', name = 'kernel_mul_mm_id_mxfp4_f32_bci=0'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_id_mxfp4_f32_bci=0              0x135e478b0 | th_max =  576 | th_width =   32
+  MUL_MAT_ID(type_a=mxfp4,type_b=f32,n_mats=32,n_used=4,b=0,m=2880,n=512,k=2880,m_v=0,ids_offset=0,skip=0):                      315 runs -  3194.85 us/run -  33.97 GFLOP/run - [1;34m 10.63 TFLOPS[0m
+ggml_metal_free: deallocating
+  Backend MTL0: [1;32mOK[0m
+Backend 2/3: BLAS
+  Skipping
+Backend 3/3: CPU
+  Skipping
+3/3 backends passed
+[1;32mOK[0m

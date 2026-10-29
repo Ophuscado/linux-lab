@@ -1,0 +1,97 @@
+ggml_metal_device_init: tensor API disabled for pre-M5 and pre-A19 devices
+ggml_metal_library_init: using embedded metal library
+ggml_metal_library_compile_all: compiled 'fa_aux' library in 0.001 sec
+ggml_metal_library_compile_all: compiled 'fa_f16' library in 0.014 sec
+ggml_metal_library_compile_all: compiled 'fa_f32' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'fa_q4_0' library in 0.003 sec
+ggml_metal_library_compile_all: compiled 'fa_q4_1' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'fa_q5_0' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'fa_q5_1' library in 0.012 sec
+ggml_metal_library_compile_all: compiled 'fa_q8_0' library in 0.016 sec
+ggml_metal_library_compile_all: compiled 'fa_tensor' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_f16' library in 0.010 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_f32' library in 0.015 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q4_0' library in 0.015 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q4_1' library in 0.006 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q5_0' library in 0.008 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q5_1' library in 0.003 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q8_0' library in 0.013 sec
+ggml_metal_library_compile_all: compiled 'mul_mv' library in 0.004 sec
+ggml_metal_library_compile_all: compiled 'mul_mv_mma' library in 0.011 sec
+ggml_metal_library_compile_all: compiled 'mul_mm' library in 0.007 sec
+ggml_metal_library_compile_all: compiled 'quantize' library in 0.015 sec
+ggml_metal_library_compile_all: compiled 'softmax' library in 0.014 sec
+ggml_metal_library_compile_all: compiled 'norm' library in 0.007 sec
+ggml_metal_library_compile_all: compiled 'unary' library in 0.004 sec
+ggml_metal_library_compile_all: compiled 'binbcast' library in 0.004 sec
+ggml_metal_library_compile_all: compiled 'reduce' library in 0.007 sec
+ggml_metal_library_compile_all: compiled 'tri' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'ssm' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'wkv' library in 0.015 sec
+ggml_metal_library_compile_all: compiled 'gated_delta_net' library in 0.000 sec
+ggml_metal_library_compile_all: compiled 'solve_tri' library in 0.006 sec
+ggml_metal_library_compile_all: compiled 'rope' library in 0.009 sec
+ggml_metal_library_compile_all: compiled 'conv' library in 0.005 sec
+ggml_metal_library_compile_all: compiled 'upscale' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'argsort' library in 0.002 sec
+ggml_metal_library_compile_all: compiled 'pool' library in 0.004 sec
+ggml_metal_library_compile_all: compiled 'misc' library in 0.002 sec
+ggml_metal_library_compile_all: loaded 36 libraries from embedded data in 0.016 sec (max single = 0.016 sec)
+ggml_metal_rsets_init: creating a residency set collection (keep_alive = 180 s)
+ggml_metal_device_init: GPU name:   MTL0 (Apple M2 Ultra)
+ggml_metal_device_init: GPU family: MTLGPUFamilyApple8  (1008)
+ggml_metal_device_init: GPU family: MTLGPUFamilyMetal3  (5001)
+ggml_metal_device_init: simdgroup reduction   = true
+ggml_metal_device_init: simdgroup matrix mul. = true
+ggml_metal_device_init: has unified memory    = true
+ggml_metal_device_init: has bfloat            = true
+ggml_metal_device_init: has tensor            = false
+ggml_metal_device_init: use residency sets    = true
+ggml_metal_device_init: use shared buffers    = true
+ggml_metal_device_init: recommendedMaxWorkingSetSize  = 154618.82 MB
+ggml_metal_init: allocating
+ggml_metal_init: found device: Apple M2 Ultra
+ggml_metal_init: picking default device: Apple M2 Ultra
+ggml_metal_init: use fusion         = true
+ggml_metal_init: use concurrency    = true
+ggml_metal_init: use graph optimize = true
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f32_f16', name = 'kernel_cpy_f32_f16'
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_f16                            0x1377097d0 | th_max = 1024 | th_width =   32
+Testing 3 devices
+
+Backend 1/3: MTL0
+  Device description: Apple M2 Ultra
+  Device memory: 147456 MB (147455 MB free)
+
+  CPY(type_src=f32,type_dst=f16,ne_src=[512,3072,1,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0):                    7282 runs -   152.93 us/run -     9216 kB/run - [1;34m  57.48 GB/s[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f32_f32', name = 'kernel_cpy_f32_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_f32                            0x13770c6b0 | th_max = 1024 | th_width =   32
+  CPY(type_src=f32,type_dst=f32,ne_src=[8192,512,2,1],permute_src=[0,2,1,3],permute_dst=[0,0,0,0],_src_transpose=0):                    1539 runs -   910.64 us/run -    65536 kB/run - [1;34m  68.70 GB/s[0m
+  CPY(type_src=f32,type_dst=f32,ne_src=[3072,512,2,1],permute_src=[0,2,1,3],permute_dst=[0,0,0,0],_src_transpose=0):                    4098 runs -   335.12 us/run -    24576 kB/run - [1;34m  69.96 GB/s[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f32_q4_0', name = 'kernel_cpy_f32_q4_0'
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_q4_0                           0x13770bf60 | th_max = 1024 | th_width =   32
+  CPY(type_src=f32,type_dst=q4_0,ne_src=[8192,512,2,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0):                   6286 runs -   162.32 us/run -    37376 kB/run - [1;34m 219.81 GB/s[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_q4_0_f32', name = 'kernel_cpy_q4_0_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_q4_0_f32                           0x13770cc60 | th_max = 1024 | th_width =   32
+  CPY(type_src=q4_0,type_dst=f32,ne_src=[8192,512,2,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0):                  17062 runs -    60.83 us/run -    37376 kB/run - [1;34m 586.02 GB/s[0m
+  CPY(type_src=f32,type_dst=f32,ne_src=[786432,256,1,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0):                    44 runs - 23625.75 us/run -  1572864 kB/run - [1;34m  64.93 GB/s[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f16_f16', name = 'kernel_cpy_f16_f16'
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_f16_f16                            0x13770d210 | th_max = 1024 | th_width =   32
+  CPY(type_src=f16,type_dst=f16,ne_src=[786432,256,1,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0):                    43 runs - 23623.05 us/run -   786432 kB/run - [1;34m  32.12 GB/s[0m
+  CPY(type_src=f16,type_dst=f16,ne_src=[768,1024,256,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0):                    43 runs - 24921.79 us/run -   786432 kB/run - [1;34m  30.44 GB/s[0m
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_bf16_bf16', name = 'kernel_cpy_bf16_bf16'
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_bf16_bf16                          0x13770cec0 | th_max = 1024 | th_width =   32
+  CPY(type_src=bf16,type_dst=bf16,ne_src=[768,1024,256,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0):                  43 runs - 24920.42 us/run -   786432 kB/run - [1;34m  30.45 GB/s[0m
+  CPY(type_src=f32,type_dst=f32,ne_src=[786432,256,1,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1):                    44 runs - 23627.30 us/run -  1572864 kB/run - [1;34m  64.93 GB/s[0m
+  CPY(type_src=f32,type_dst=f32,ne_src=[768,1024,256,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1):                    44 runs - 24929.39 us/run -  1572864 kB/run - [1;34m  61.54 GB/s[0m
+  CPY(type_src=f16,type_dst=f16,ne_src=[786432,256,1,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1):                    43 runs - 23609.35 us/run -   786432 kB/run - [1;34m  32.14 GB/s[0m
+  CPY(type_src=f16,type_dst=f16,ne_src=[768,1024,256,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1):                    43 runs - 24923.26 us/run -   786432 kB/run - [1;34m  30.44 GB/s[0m
+  CPY(type_src=bf16,type_dst=bf16,ne_src=[768,1024,256,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1):                  43 runs - 24920.63 us/run -   786432 kB/run - [1;34m  30.45 GB/s[0m
+ggml_metal_free: deallocating
+  Backend MTL0: [1;32mOK[0m
+Backend 2/3: BLAS
+  Skipping
+Backend 3/3: CPU
+  Skipping
+3/3 backends passed
+[1;32mOK[0m
