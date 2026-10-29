@@ -8,14 +8,13 @@ comparison on identical hardware, so I'm sharing the numbers in case they help.
 
 | Model | Metal (macOS) | Vulkan via MoltenVK (macOS) | Vulkan via Honeykrisp (Linux) |
 |---|---|---|---|
-| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 762 / 69.7 |
-| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 747 / 70.9 |
-| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 488 / 34.8 |
+| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 763 / 69.4 |
+| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 820 / 70.4 |
+| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 448 / 34.2 |
 
-Linux figures are the best I measured between 26 and 29 Oct with the tweaks below, on Honeykrisp built from Mesa's
-26.3 development tree with a third-party cooperative-matrix and compiler series and
-`HK_PERFTEST=designedusccdmbarrier`; macOS figures are medians of 3-5 runs on macOS 15.8.1. Flash attention
-on, all layers on the GPU.
+Same settings on both systems: flash attention on, all layers on the GPU, batch 8192, the mean of 3 runs or more.
+macOS 15.8.1 for the first two columns. On Linux, the patches below and Honeykrisp built from Mesa's development
+tree with a third-party cooperative-matrix and compiler series, with `HK_PERFTEST=designedusccdmbarrier`.
 
 **What I take from it**
 
@@ -35,7 +34,7 @@ on, all layers on the GPU.
 - The matrix-vector path for batches of 9-64 tokens instead of stopping at 8: a 9-token Qwen batch goes from 37 to
   107 t/s, which is what makes speculative decoding pay (a code edit with ngram-mod drafts: 30 to 55-59 t/s).
 - A q4_0/q8_0 matrix-vector shader laid out like Metal's kernel_mul_mv: one 4096x14336 step 81 to 68 us (q4_0) and
-  160 to 128 us (q8_0); generation +7 % on Llama 2, +4 % on Qwen. All MUL_MAT and MUL_MAT_ID tests pass.
+  160 to 128 us (q8_0); generation +7 % on Llama 2, +2-4 % on Qwen. All MUL_MAT and MUL_MAT_ID tests pass.
 
 Two of these look worth proposing on their own, and I'm happy to open pull requests if that's welcome: a fix for an
 abort in MUL_MAT_ID with offset expert-id views, and the 256-thread tile as Honeykrisp's default.
