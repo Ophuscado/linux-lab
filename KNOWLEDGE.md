@@ -208,7 +208,13 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   (2x) is not in the tile shape.
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
-  generates for llama.cpp's coopmat1 shaders (not profiled: no GPU counters on Linux yet).
+  generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (`AGX_MESA_DEBUG=shaderdb` and `shaders`, run 5093-5094): the matmul shader has 93-97 registers,
+  1024 threads, no spills; its inner loop issues 16 `simd_matrix_fmadd16` among ~190 instructions (36 local loads,
+  ~90 mov/collect/split to assemble the operands, 28 iadd), and its loader 128 `icmpsel` (bounds clamps) for 32
+  device loads. Larger per-warp tiles that reuse operands more: 64x32 per warp (`256,128,128,,64,32`) f16 -23 % in
+  test-backend-ops, q8_0 -2 %, and nothing on real prompts (Llama 2 744 / 809 / 809 to 739 / 802 / 791); WMITER 4 is
+  fast but wrong. The lever left is the operand assembly the compiler emits, a Mesa matter.
 
 ### What moved Honeykrisp forward
 
