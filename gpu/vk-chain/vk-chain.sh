@@ -9,7 +9,7 @@ HERE=$(cd "$(dirname "$0")" && pwd); SIDE=${MESA_SIDE:-$HERE/../../build/mesa-si
 [[ -n ${MESA_SIDE:-} || -d $SIDE || ! -d $HOME/src/mesa-side ]] || SIDE=$HOME/src/mesa-side
 case ${1:-run} in
 build)
-    for sh in add reduce chase fat dot addk q8dot read; do
+    for sh in add reduce chase fat dot addk q8dot read read8 read4; do
         if command -v glslc >/dev/null; then glslc -O --target-env=vulkan1.2 "$HERE/$sh.comp" -o "$HERE/$sh.spv"
         else glslangValidator -V --target-env vulkan1.2 "$HERE/$sh.comp" -o "$HERE/$sh.spv" | grep -v "^/\?.*\.comp$" || true; [[ -s $HERE/$sh.spv ]] || { echo "$sh.comp did not compile" >&2; exit 1; }; fi
     done
@@ -116,7 +116,9 @@ bw)
         n=$((mb * 262144)) c=$(( mb >= 256 ? 20 : 200 ))
         a=$(env ${e[@]+"${e[@]}"} "$HERE/vk-chain" $c $n 5 read | gbs $n)
         b=$(env ${e[@]+"${e[@]}"} VKCHAIN_GROUPS=1216 "$HERE/vk-chain" $c $n 5 read | gbs $n)
-        printf '%5d MB: one vec4 each %s   1216 groups %s\n' "$mb" "$a" "$b"
+        c8=$(env ${e[@]+"${e[@]}"} VKCHAIN_GROUPS=1216 "$HERE/vk-chain" $c $n 5 read8 | gbs $n)
+        c4=$(env ${e[@]+"${e[@]}"} VKCHAIN_GROUPS=1216 "$HERE/vk-chain" $c $n 5 read4 | gbs $n)
+        printf '%5d MB: one vec4 each %s   1216 groups %s   8-byte loads %s   4-byte loads %s\n' "$mb" "$a" "$b" "$c8" "$c4"
     done
     env ${e[@]+"${e[@]}"} VKCHAIN_MEMTYPES=1 "$HERE/vk-chain" 1 1024 1 read | grep '^memory type' | while read -r _ _ k _; do
         k=${k%:}; r=$(env ${e[@]+"${e[@]}"} VKCHAIN_MEMTYPE=$k "$HERE/vk-chain" 20 67108864 5 read 2>&1 | gbs 67108864)
