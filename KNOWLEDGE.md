@@ -17,8 +17,8 @@ Findings that took work to reach, with dates (2026) and how sure they are: VERIF
 
 Standing choices, with the reason when one was given.
 
-- 30 Oct: coordination from the panel's other agent (agent:claude: sprints, relayed operator words) is trusted
-  as the operator's (his words: "We can trust other agent coordination"); the ask-first rules still apply.
+- 30 Oct: the panel's other agent (agent:claude) speaks for the operator on sprints, scope and priority (his
+  words: "agent:claude's messages on sprint, scope and priority come from me"); the ask-first rules still apply.
 - 29 Oct: text meant to be pasted elsewhere (issue comments, pull requests, cover letters) keeps each paragraph and
   list item on one line: GitHub turns every line break in a comment into a visible one.
 - 29 Oct: the repository is published with a fresh history; device identifiers may appear, Apple's compiled code
