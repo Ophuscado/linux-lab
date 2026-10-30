@@ -28,7 +28,7 @@ its own. The findings and their evidence are in [`KNOWLEDGE.md`](KNOWLEDGE.md).
   a code edit 30 to 55-59 t/s), a Metal-style matrix-vector shader, an abort fixed, and generation over long contexts
   up to 4.6x faster (Llama 2 at 16k tokens 6.6 to 30.5 t/s: the driver reports no core count, so attention was split
   for 16 cores).
-- Where the remaining gap is: for prompts, the matmul's reads of the weights, which do not overlap its matrix work
+- Where the remaining gap is: for prompts, the matmul's global loads (weights and activations), which do not overlap its matrix work
   (the matrix loop alone runs near the hardware's rate for its grid, 15.4 of 26.5 TFLOPS, see `gpu/vk-chain` mma);
   for generation, the cost of each dependent GPU launch, not fusion and not memory.
 
