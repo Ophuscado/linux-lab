@@ -47,6 +47,11 @@ int main(int argc, char **argv) {
     // 16-bit storage, for q8dot.spv's 16-bit reads of q8_0 blocks (as ggml reads them).
     VkPhysicalDevice16BitStorageFeatures s16 = { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_16BIT_STORAGE_FEATURES, .storageBuffer16BitAccess = VK_TRUE };
     VkPhysicalDeviceFeatures2 f2 = { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2, .pNext = &s16, .features = { .shaderInt16 = VK_TRUE } };
+    // mma*.spv: cooperative matrices, f16 arithmetic and the Vulkan memory model they are written against.
+    VkPhysicalDeviceCooperativeMatrixFeaturesKHR cm = { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_MATRIX_FEATURES_KHR, .cooperativeMatrix = VK_TRUE };
+    VkPhysicalDeviceVulkan12Features v12 = { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES, .pNext = &cm, .shaderFloat16 = VK_TRUE, .vulkanMemoryModel = VK_TRUE };
+    const char *cmext[] = { "VK_KHR_cooperative_matrix" };
+    if (!strncmp(shader, "mma", 3)) { s16.pNext = &v12; dext = cmext; ndext = 1; }
     CK(vkCreateDevice(pd, &(VkDeviceCreateInfo){ VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO, .pNext = &f2, .queueCreateInfoCount = 1,
         .enabledExtensionCount = ndext, .ppEnabledExtensionNames = dext,
         .pQueueCreateInfos = &(VkDeviceQueueCreateInfo){ VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO, .queueFamilyIndex = qi, .queueCount = 1, .pQueuePriorities = &prio } }, NULL, &dev));

@@ -13,6 +13,11 @@ build)
         if command -v glslc >/dev/null; then glslc -O --target-env=vulkan1.2 "$HERE/$sh.comp" -o "$HERE/$sh.spv"
         else glslangValidator -V --target-env vulkan1.2 "$HERE/$sh.comp" -o "$HERE/$sh.spv" | grep -v "^/\?.*\.comp$" || true; [[ -s $HERE/$sh.spv ]] || { echo "$sh.comp did not compile" >&2; exit 1; }; fi
     done
+    # mma.comp needs VK_KHR_cooperative_matrix (Honeykrisp with the coopmat series; not MoltenVK).
+    for nn in 8 16; do
+        if command -v glslc >/dev/null; then glslc -O --target-env=vulkan1.3 -DN=$nn "$HERE/mma.comp" -o "$HERE/mma$nn.spv" || true
+        else glslangValidator -V --target-env vulkan1.3 -DN=$nn "$HERE/mma.comp" -o "$HERE/mma$nn.spv" | grep -v "^/\?.*\.comp$" || true; fi
+    done
     if [[ $(uname) == Darwin ]]; then
         # macOS: Homebrew's loader and headers, MoltenVK as the driver (vulkan step of macos/collect.sh).
         hb=$(brew --prefix); cc -O2 -I"$hb/include" -o "$HERE/vk-chain" "$HERE/vk-chain.c" -L"$hb/lib" -lvulkan -Wl,-rpath,"$hb/lib"
@@ -38,6 +43,17 @@ barriers)
     for t in "add 0 0" "reduce 0 1" "reduce 0 16" "reduce 1 1" "reduce 1 16"; do
         set -- $t; env ${e[@]+"${e[@]}"} "$HERE/vk-chain" 1500 65536 10 "$1" "$2" "$3" | grep -v '^device' | sed "s|^|$1 mode $2 iters $3: |"
     done ;;
+mma)
+    # mma [ICD]: the matrix hardware with no global memory (mma.comp): TFLOPS of NxNxN f16 multiply-adds, from
+    # registers (mode 0), with A and B loaded from shared memory each step, B column-major as llama.cpp's
+    # (mode 1) or row-major (mode 2), mode 1 with a barrier every 2 steps (3) or llama.cpp's padded rows (4);
+    # 1216 workgroups of 8 subgroups, 1024 steps of 4 ops each.
+    [[ -x $HERE/vk-chain ]] || "$0" build
+    e=(); [[ -z ${2:-} ]] || e=(VK_DRIVER_FILES="$2")
+    for nn in 8 16; do for m in 0 1 2 3 4; do
+        env ${e[@]+"${e[@]}"} VKCHAIN_GROUPS=1216 "$HERE/vk-chain" 20 65536 5 mma$nn $m 1024 2>&1 |
+            awk -v n=$nn -v m=$m '/^free/ { printf "%dx%dx%d mode %d: %.1f TFLOPS (%.1f us a launch)\n", n, n, n, m, 1216 * 8 * 1024 * 4 * 2 * n * n * n / ($2 * 1e6), $2 } /error|not|lost/'
+    done; done ;;
 latency)
     # latency [ICD]: one GPU load's latency, from 1000 dependent loads per launch, in buffers
     # from 16 KB (caches) to 256 MB (DRAM), against an empty launch (ITERS 0).
