@@ -97,9 +97,10 @@ and in two M424 Thunderbolt 3 boxes since 22 Oct.
 ## GPU: llama.cpp on Vulkan against Metal
 
 The same Mac Studio and llama.cpp commit (2280f0f): Metal and Vulkan through MoltenVK on macOS 15.8.1, Vulkan through
-Honeykrisp on Linux with the patches of `src-patches/llama.cpp/honeykrisp` (six; the seventh, the core count, changes only long contexts) and the settings of `gpu/llama-run.sh`
-(Linux measured with `gpu/llama-compare.sh`, the same tests and flags as `macos/collect.sh`). Flash attention on, all
-layers on the GPU, the mean of 2-5 runs. More tables under [Metal and Honeykrisp in detail](#metal-and-honeykrisp-in-detail).
+Honeykrisp on Linux with the patches of `src-patches/llama.cpp/honeykrisp` (six; the seventh, the core count, changes
+only long contexts) and the settings of `gpu/llama-run.sh` (Linux measured with `gpu/llama-compare.sh`, the same tests
+and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the mean of 2-5 runs. More tables under
+[Metal and Honeykrisp in detail](#metal-and-honeykrisp-in-detail).
 
 | Tokens/s, pp512 / pp2048 / tg128 | Metal | Vulkan via MoltenVK | Vulkan via Honeykrisp |
 |---|---|---|---|
