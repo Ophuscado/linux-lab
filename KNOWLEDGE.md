@@ -211,6 +211,11 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (runs 5304-5306, test-only edit restored after; MUL_MAT 2275/2275): fetching the next k block of
+  B (llama.cpp's aligned 8-wide loads) into registers before this block's matrix ops, stored to shared memory at the
+  next block, is slower: 512 threads 128x128 f16 6340 to 8994 us, q4_0 5226 to 7034; 256 threads 128x64 f16 +7 %,
+  the rest even. With double buffering (run 5302) also failing, overlapping the loads from the shader side does not
+  pay under this compiler (INFERRED: the held registers cost more than the hidden latency).
 - 30 Oct, VERIFIED (run 5302, test-only edit restored after; MUL_MAT 2275/2275): two shared tiles in turn in
   mul_mm.comp's coopmat path (the next k block loaded before this one's matrix ops, one barrier a block, no row
   padding) overlap little. 256 threads 128x64: q4_0 6433 to 6002 us, q8_0 7292 to 6887, q4_K 7855 to 7673, f16 7833
