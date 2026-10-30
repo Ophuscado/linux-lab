@@ -211,6 +211,15 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (runs 5212-5229; test-only switches in my builds, restored after), what does not move the
+  512-token matmul at 16x16x16 (f16 / q4_0 / q8_0 / q4_K ~6400 / 5250 / 5450 / 7100 us): (1) fewer moves: the loop's
+  accumulators are scalar 16-bit phis that land on misaligned half-registers (r26h:r27l), so each matrix op gathers
+  its accumulator with two moves and the loop ends in a ~30-move parallel copy; a Mesa pass packing 16-bit vec2 phis
+  into 32-bit ones before scalarizing (my driver build in `_tmp/claude-mesa`, agxperf) cuts the moves 90 to 73 (8x8x8:
+  73 to 57), tests pass, and the times stay or worsen (16x16x16 f16 6424 to 7926): the loop is not issue-bound by its
+  moves; (2) f32 accumulators (Metal's form): 13-50 % slower; (3) shared-memory row padding 0-12: even, except q4_K at
+  padding 0, 7100 to 5850 us (-18 %, three rounds), which moves prompts little (Gemma 858 / 1005 / 952 to 876 / 994 /
+  917, GPT-OSS 120B 526 / 709 / 857 to 568 / 750 / 861) because the padding applies to every type.
 - 30 Oct, VERIFIED (run 5203, Mesa's `AGX_MESA_DEBUG=shaders`, f16 matmul; 212-266 instructions undecoded by Mesa's
   disassembler, so counts are lower bounds): at 16x16x16 the matrix loop runs 224 instructions for 32 matrix ops, 7.0
   per op (8x8x8: 144 for 16, 9.0): 90 mov, 55 iadd, 24 local loads. Local loads per op now 0.75, Metal's figure; moves
