@@ -1,0 +1,41 @@
+From c4ef30dee9776b0231c0caffc6cabaa5b999f9a3 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Fri, 30 Oct 2026 12:27:43 +0000
+Subject: [PATCH 11/11] vulkan: expert matmul tile by tokens per expert
+ (GGML_VK_MMID_S_MAX)
+
+A 128x32 small tile (GGML_VK_WT_S=256,128,32,,32,16) beats the 128x64 medium one at 32-64 tokens an expert by 9-35 % and loses 2-4 % at 80-128 (Qwen, Gemma, GPT-OSS 120B, pp1024 against pp4096 at -ub 8192), so with both built the choice goes by nei0*nei1/n_as.
+---
+ ggml/src/ggml-vulkan/ggml-vulkan.cpp | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index f7877840c..3f29d5651 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -7632,10 +7632,20 @@ static void ggml_vk_mul_mat_id_q_f16(ggml_backend_vk_context * ctx, vk_context&
+                                                   y_decode_vector_staging || y_needs_k_padding);
+     const bool qy_needs_dequant = y_needs_reformat;
+ 
+-    const uint32_t kpad = quantize_y ? 0 : ggml_vk_align_size(ne10, ggml_vk_guess_matmul_pipeline_align_map(ctx, *mmp_map, ne01, nei1, true));
++    // GGML_VK_MMID_S_MAX=N: with the small and the medium tile built (GGML_VK_MMID_SIZES=sm), the small one takes the
++    // matmuls whose experts get N tokens or fewer on average, the medium one the others. On Honeykrisp a 128x32 small
++    // tile is 9-35 % faster than the 128x64 medium one at 32-64 tokens an expert and 2-4 % slower at 80-128.
++    static const int mmid_s_max = getenv("GGML_VK_MMID_S_MAX") ? atoi(getenv("GGML_VK_MMID_S_MAX")) : -1;
++    uint32_t sel_n = (uint32_t)nei1;
++    if (mmid_s_max >= 0 && mmp_map->size() == 2) {
++        const uint64_t per_expert = CEIL_DIV(nei0 * nei1, n_as);
++        sel_n = per_expert <= (uint64_t)mmid_s_max ? 0 : UINT32_MAX;
++    }
++
++    const uint32_t kpad = quantize_y ? 0 : ggml_vk_align_size(ne10, ggml_vk_guess_matmul_pipeline_align_map(ctx, *mmp_map, ne01, sel_n, true));
+     const bool aligned = !quantize_y && ne10 == kpad && ne01 > 8 && nei1 > 8;
+ 
+-    vk_pipeline pipeline = ggml_vk_guess_matmul_pipeline_map(ctx, *mmp_map, ne01, nei1, aligned, true);
++    vk_pipeline pipeline = ggml_vk_guess_matmul_pipeline_map(ctx, *mmp_map, ne01, sel_n, aligned, true);
+ 
+     const uint32_t bn = pipeline->wg_denoms[1];
+     const uint64_t max_tiles = ggml_vk_mul_mat_id_max_tiles(n_as, nei0 * nei1, bn);
+-- 
+2.43.0
+
