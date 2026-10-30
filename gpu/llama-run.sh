@@ -23,7 +23,9 @@ set -euo pipefail
 LAB=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
 # The first that exists: the lab's tree (src/, build/, git-ignored) or where they were before 27 Oct (~/src).
 first() { local p; for p in "$@"; do [[ -e $p ]] && { echo "$p"; return; }; done; echo "$1"; }
-SERVER=$(first "$LAB/src/llama.cpp/build-run/bin/llama-server" "$HOME/src/llama.cpp-tune-prod/build-run/bin/llama-server")
+# The patch series build (src-patches/llama.cpp/honeykrisp, every setting below and every measured number) first;
+# src/llama.cpp/build-run is the older tree with the tile patch alone.
+SERVER=$(first "$LAB/src/llama.cpp-simd/build/bin/llama-server" "$LAB/src/llama.cpp/build-run/bin/llama-server" "$HOME/src/llama.cpp-tune-prod/build-run/bin/llama-server")
 LLM=$HOME/Projects/_llm
 SIDE=${MESA_SIDE:-$(first "$LAB/build/mesa-side" "$HOME/src/mesa-side")}
 MCP=$(first "$LAB/config/mcp.json" "$HOME/src/mcp.json")
