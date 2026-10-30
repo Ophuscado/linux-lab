@@ -146,6 +146,10 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   (`compare-20261030-062340`) the cost is the write itself: `SET_ROWS` of one token 117 us (Llama 2) and 132 us
   (Gemma) at 4k, rope 26-30 us, a norm 27 us; its dispatch is sized by the source row, not the cache (INFERRED: what
   grows is the destination buffer, e.g. a barrier or cache flush over it, not measured yet).
+- 30 Oct, VERIFIED: alone, the write is cheap and flat: `SET_ROWS` of one token into a 256- to 16384-row cache takes
+  7.2-10.0 us (f16) and 11.6-12.5 us (q8_0) in test-backend-ops (patch 0008, `compare-20261030-073750`). So the
+  117-132 us inside a token is not the write (INFERRED: the logger's serialization and the barrier before a write to
+  the cache buffer that the earlier attention reads).
 - 30 Oct: at the real core count (76) instead of 152: Gemma 39.4 / 37.1 / 34.5 / 31.2, GPT-OSS 120B 49.1 / 47.2 /
   45.9 / 41.2, Qwen 33.9 / 32.7 / 33.2 / 31.4 (depth 0 / 1k / 4k / 16k); for these three 76 and 152 are within 2 %. Cases with a short window (`n_kv_max` 512) do not change and
   stay 4-13x behind Metal.
