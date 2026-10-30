@@ -48,9 +48,15 @@ fi
 # STEPS=mmid: MUL_MAT_ID (the experts' matmuls, 3.5-7.4x Metal's time at 32-512 tokens) over the tile sizes built
 # for it (GGML_VK_MMID_SIZES, letters of "sml"; patch 0001).
 if on mmid; then
-    for sz in ${MMID_SWEEP:-m s sm l ml sml}; do
-        GGML_VK_MMID_SIZES=$sz "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID -p 'type_a=(q8_0|q4_K|f16|mxfp4),' 2>&1 |
-            sed -nE "s/^ *MUL_MAT_ID\((type_a=[^,]+),type_b=f32,n_mats=([0-9]+),n_used=([0-9]+),.*m=([0-9]+),n=([0-9]+),k=([0-9]+),.* ([0-9.]+) us\/run.*/$sz \1 e\2 u\3 m\4 n\5 k\6 \7/p"
+    # MMID_SWEEP="SIZES[:WT_S] ...": a small tile reshaped through GGML_VK_WT_S serves MUL_MAT_ID alone when the
+    # dense matmuls keep the medium one; each such point first runs the MUL_MAT_ID tests.
+    for pt in ${MMID_SWEEP:-m s sm l ml sml}; do
+        sz=${pt%%:*} wts=; [[ $pt == *:* ]] && wts=${pt#*:}
+        if [[ -n $wts ]]; then
+            echo "$pt tests $(GGML_VK_MMID_SIZES=$sz GGML_VK_WT_S=$wts "$B/test-backend-ops" test -b Vulkan0 -o MUL_MAT_ID 2>&1 | grep -E 'tests passed' | tr -s ' ')"
+        fi
+        env GGML_VK_MMID_SIZES="$sz" ${wts:+GGML_VK_WT_S=$wts} "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID -p 'type_a=(q8_0|q4_K|f16|mxfp4),' 2>&1 |
+            sed -nE "s/^ *MUL_MAT_ID\((type_a=[^,]+),type_b=f32,n_mats=([0-9]+),n_used=([0-9]+),.*m=([0-9]+),n=([0-9]+),k=([0-9]+),.* ([0-9.]+) us\/run.*/$pt \1 e\2 u\3 m\4 n\5 k\6 \7/p"
     done | tee "$OUT/mmid.txt"
 fi
 if on pp; then
