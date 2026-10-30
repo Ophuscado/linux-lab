@@ -574,7 +574,7 @@ status)
     ;;
 indexer | smartd-rescan | kernel-pin | dirty-limit | smartd-quiet | no-llmnr | scrub | quiet-services | flathub | quiet-net | firefox-quiet | noatime)
     f=${1//-/_}
-    case ${2:-} in on | off) "$f" "$2" ;; *) die "usage: $0 $1 on|off" ;; esac
+    case ${2:-} in on | off | status) "$f" "$2" ;; *) die "usage: $0 $1 on|off|status" ;; esac
     ;;
 usb-cap)
     case ${2:-} in on | off) usb_cap "$2" ;; *) die "usage: $0 usb-cap on|off" ;; esac
