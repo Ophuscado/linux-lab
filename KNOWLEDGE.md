@@ -181,6 +181,14 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   45.9 / 41.2, Qwen 33.9 / 32.7 / 33.2 / 31.4 (depth 0 / 1k / 4k / 16k); for these three 76 and 152 are within 2 %.
 - VERIFIED, 25 Oct: the GPU runs at its full 1398 MHz (one dependent multiply-add 1.57 ns, Metal 1.39).
 
+- 30 Oct, VERIFIED (`STEPS=pp`, `compare-20261030-110808`, against `results/macos` llama-ops-mul_mat*.txt): prompt
+  processing is above all the experts' matmuls. Dense 4096x14336 at 512 tokens: 1.8-2.6x Metal's time (q8_0 6706 us
+  against 3383, f16 7971 against 3079); MUL_MAT_ID at 32-512 tokens: 3.5-7.4x (q8_0, 32 experts of 4, 64 tokens:
+  2231 us against 339). A 512-token prompt per op: the MoE layers dominate in all three models (Qwen 1.13 s, Gemma
+  0.72 s, GPT-OSS 120B 1.27 s); the logger books much of a MUL_MAT_ID's time to the op after it (GLU, ADD_ID,
+  TOPK_MOE at 3-10 ms a call, INFERRED from MUL_MAT_ID showing impossible GFLOPS), so the routing ops are not
+  themselves slow.
+
 ### What moved Honeykrisp forward
 
 - One 4096x14336 matrix-vector (test-backend-ops perf, µs), Metal / MoltenVK / Honeykrisp: f16 143 / 161 / 247; q4_0

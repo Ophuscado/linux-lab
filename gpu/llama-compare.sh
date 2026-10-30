@@ -46,7 +46,7 @@ fi
 # STEPS=pp: prompt processing. The n=512 matmuls and MUL_MAT_ID, the cases results/macos's llama-ops-mul_mat*.txt
 # timed on Metal, and per model one 512-token prompt through the per-op logger (llama-NAME-perf-pp512.txt).
 # STEPS=mmid: MUL_MAT_ID (the experts' matmuls, 3.5-7.4x Metal's time at 32-512 tokens) over the tile sizes built
-# for it (GGML_VK_MMID_SIZES, letters of "sml"; patch 0001), each with a Qwen and a Gemma 512-token prompt.
+# for it (GGML_VK_MMID_SIZES, letters of "sml"; patch 0001).
 if on mmid; then
     for sz in ${MMID_SWEEP:-m s sm l ml sml}; do
         GGML_VK_MMID_SIZES=$sz "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID -p 'type_a=(q8_0|q4_K|f16|mxfp4),' 2>&1 |
