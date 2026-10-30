@@ -22,14 +22,15 @@ its own. The findings and their evidence are in [`KNOWLEDGE.md`](KNOWLEDGE.md).
   passing row that turned the chip on by default there.
 
 **llama.cpp on the GPU** ([`gpu/`](gpu/), [`src-patches/llama.cpp/honeykrisp`](src-patches/llama.cpp/honeykrisp))
-- Vulkan (Honeykrisp) measured against Metal on the same machine, and moved forward by twelve patches: prompts +12-23 %
-  (short MoE prompts up to +22 % more from the expert tile, f16 matmuls +14 % from loading each tile once), 9-token
-  batches 3x faster (so speculative decoding pays: a code edit 30 to 55-59 t/s), a Metal-style matrix-vector shader, an
-  abort fixed, and generation over long contexts up to 4.6x faster (Llama 2 at 16k tokens 6.6 to 30.5 t/s: the driver
-  reports no core count, so attention was split for 16 cores).
-- Where the remaining gap is: for prompts, the matrix-multiply code (Mesa's cooperative-matrix lowering spends 10.4
-  instructions per matrix op against 4.4-8.8 in Apple's compiled kernel, most of them operand moves; dense matmuls
-  reach 8.5 of Metal's 19.5 TFLOPS); for generation, the cost of each dependent GPU launch, not fusion and not memory.
+- Vulkan (Honeykrisp) measured against Metal on the same machine, and moved forward by twelve patches and their
+  settings: prompts +12-23 % from the tile shape, Llama 2 +18 % more from 16x16x16 matrices (the driver offers 8x8x8
+  first), short MoE prompts up to +22 % from the expert tile, 9-token batches 3x faster (so speculative decoding pays:
+  a code edit 30 to 55-59 t/s), a Metal-style matrix-vector shader, an abort fixed, and generation over long contexts
+  up to 4.6x faster (Llama 2 at 16k tokens 6.6 to 30.5 t/s: the driver reports no core count, so attention was split
+  for 16 cores).
+- Where the remaining gap is: for prompts, the matmul's reads of the weights, which do not overlap its matrix work
+  (the matrix loop alone runs near the hardware's rate for its grid, 15.4 of 26.5 TFLOPS, see `gpu/vk-chain` mma);
+  for generation, the cost of each dependent GPU launch, not fusion and not memory.
 
 | Tokens/s, pp512 / tg128 | Metal | Vulkan via MoltenVK | Vulkan via Honeykrisp |
 |---|---|---|---|
