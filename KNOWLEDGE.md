@@ -127,7 +127,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   every `vkCmdPipelineBarrier` ("the big hammer ... XXX: perf") and puts a CDM barrier after every launch. The
   coopmat series replaces that with a dependency-tracked barrier, on by default on G13 and on G14X of generation 14,
   which is this M2 Ultra (two clusters or more), so ggml-vulkan's own syncs are what the GPU waits on here.
-  `HK_CDM_DEFER_FLUSH=1` goes further (one barrier per batch): default on M1 only, it lost token parity on M1 Max.
+  `HK_CDM_DEFER_FLUSH=1` goes further (one barrier per batch): default on M1 only, it lost token parity on M1 Max;
+  here it is slower too (tg128 Llama 2 61.7 against 68.7, Qwen 31.5 against 34.2; `compare-20261030-085525`).
+- 30 Oct, VERIFIED (ggml-vulkan's sync logger, `compare-20261030-085409`): a token waits ~292 times for Llama 2
+  (~645 nodes) and ~1048 for Qwen (~3125 nodes), fewer than Metal's ~1290 serial steps for Qwen. Llama 2's 6.3 ms
+  gap to Metal over 292 waits is ~21 us each, against 1.7 us that a wait costs more here (INFERRED: the kernels
+  themselves, above all the matrix-vector ones at ~485 GB/s against 610-655 for a plain read, not the waits).
 - VERIFIED, 29 Oct: not memory. A grid-stride read reaches 610-655 GB/s from 64 MB to 1 GB (`vk-chain.sh bw`), the
   same on both memory types and both Mesas; one vec4 per invocation (65,536 workgroups for 256 MB) only ~290 GB/s:
   launching many small workgroups is the limit. The f16 matrix-vector streams 475 GB/s, below what memory gives
