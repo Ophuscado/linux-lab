@@ -273,8 +273,8 @@ and on four data disks.
   with the two-finger tap, and KWin's `[ButtonRebinds][Mouse]` reads only `ExtraButton1`-`24`
   (`src/plugins/buttonrebinds/buttonrebindsfilter.cpp`). Middle-click paste is off (`ux-fix.sh on`), so a stray tap
   pastes nothing; the driver is where it can go.
-- 17 Oct: the wheel changing a hovered slider or combo box has no setting (KDE bug 399324); `desktop/qt-nowheel` is a
-  Qt style plugin for it.
+- 30 Oct: the wheel changing a hovered slider or combo box has no setting (KDE bug 399324). A Qt style wrapping Breeze
+  that passed the wheel on from unfocused controls did not hold in daily use, so it was dropped (commit history).
 - 17 Oct: KWin's Minimize All script ("Minimize all other windows", Meta+Shift+O) replaces kwin-solo-window, which
   asks KWin for its whole debug report on every window event.
 - 29 Oct: keyboard: layout `us` variant `intl-unicode`, model `applealu_iso`, compose on the right Cmd, Caps Lock as

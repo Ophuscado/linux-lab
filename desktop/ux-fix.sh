@@ -22,9 +22,6 @@
 #                                 as the window shares
 #   ux-fix.sh switcher on|off     Cmd+Tab's Thumbnail Grid without the tiles that vanish when a
 #                                 window is closed from it (a fixed copy of KWin's own layout)
-#   ux-fix.sh wheel on|off        the mouse wheel over a combo box, spin box or slider without the
-#                                 keyboard focus scrolls the page instead of changing it (a style
-#                                 BreezeNoWheel, Breeze with that one change, built from qt-nowheel/)
 #   ux-fix.sh input on|off        pointer and keys as on macOS 15 (results/macos/macos-15): the
 #                                 Magic Mouse flat at 0.875 (macOS: acceleration off, scaling
 #                                 0.875; 43339 points for 49012 counts in its mouse-move log),
@@ -76,14 +73,6 @@
 #   written here, ~/.local/share/kwin-wayland/tabbox/linux-lab-grid, sizes the grid by its own
 #   columns and rows instead of the frame; it is made from the installed layout at each 'on',
 #   so it follows Fedora's updates. off goes back to the layout set before.
-# Wheel: Plasma 6.7 has no setting for it (KDE bug 399324, open since 2018; Qt only has a hint for
-#   combo boxes). qt-nowheel/ is a Qt style that wraps Breeze and lets a control without the focus
-#   pass the wheel to the page around it; a click or Tab gives it the focus, then the wheel changes
-#   it as before. 'on' builds it (cmake, gcc-c++ and qt6-qtbase-devel from Fedora when missing),
-#   installs it into Qt's own plugin folder (the one place every Qt program looks without a new
-#   login) and makes it the widget style: running KDE programs switch at once. Programs written in
-#   QML (System Settings' pages, Plasma itself) draw their controls another way and keep the wheel.
-#   off puts the style before back and removes the plugin.
 # Not settable in Plasma 6.7: four-finger gestures needing a longer swipe than three-finger ones.
 
 set -euo pipefail
@@ -110,7 +99,6 @@ APPS=${APPS:-}
 TABS_CSS=${XDG_DATA_HOME:-$HOME/.local/share}/konsole/linux-lab-tabs.css
 GRID_SRC=${UX_GRID_SRC:-/usr/share/kwin-wayland/tabbox/thumbnail_grid}
 GRID=${XDG_DATA_HOME:-$HOME/.local/share}/kwin-wayland/tabbox/linux-lab-grid
-HERE=$(cd "$(dirname "$0")" && pwd)
 kwin_key() { kwriteconfig6 --file kwinrc --group Wayland --key EnablePrimarySelection "$@"; }
 # KWin rereads its settings and loads or unloads scripts. dbus-send, since this Fedora has no
 # qdbus6; every KWin change made here before 18 Oct was written without this call
@@ -134,7 +122,6 @@ show() {
     echo "edge delay: $(kreadconfig6 --file kwinrc --group Windows --key ElectricBorderDelay --default 75) ms"
     echo "konsole tabs: $(kreadconfig6 --file konsolerc --group TabBar --key TabBarUseUserStyleSheet --default false)"
     echo "switcher: $(kreadconfig6 --file kwinrc --group TabBox --key LayoutName --default thumbnail_grid)"
-    echo "wheel: widget style $(kreadconfig6 --file kdeglobals --group KDE --key widgetStyle --default Breeze), BreezeNoWheel $([[ -f $(nowheel_so) ]] && echo installed || echo 'not installed')"
 }
 
 # The settings input sets: kcminputrc group, key, value. KWin's own names for the devices.
@@ -177,36 +164,6 @@ input() {
     for i in "${INPUT[@]}"; do IFS='|' read -r g k v <<<"$i"; echo "${g#Libinput 76 [0-9]* } $k=$(kin "$g" "$k")"; done
 }
 
-# Where Qt loads styles from: its own plugin folder, as qtpaths6 reports it.
-nowheel_so() { echo "$(qtpaths6 --query QT_INSTALL_PLUGINS 2>/dev/null || echo /usr/lib64/qt6/plugins)/styles/libbreezenowheel.so"; }
-wheel() {
-    local so b=$STATE/build-nowheel need=() p
-    so=$(nowheel_so)
-    case $1 in
-    on)
-        for p in cmake gcc-c++ qt6-qtbase-devel; do rpm -q "$p" >/dev/null 2>&1 || need+=("$p"); done
-        ((${#need[@]} == 0)) || sudo dnf install -y "${need[@]}"
-        mkdir -p "$STATE"
-        cmake -S "$HERE/qt-nowheel" -B "$b" -DCMAKE_BUILD_TYPE=Release >/dev/null
-        cmake --build "$b" -j"$(nproc)" >/dev/null
-        sudo install -D -m 644 "$b/libbreezenowheel.so" "$so"
-        [[ -f $STATE/widgetstyle.before ]] || kreadconfig6 --file kdeglobals --group KDE --key widgetStyle >"$STATE/widgetstyle.before" 2>/dev/null || true
-        kwriteconfig6 --notify --file kdeglobals --group KDE --key widgetStyle BreezeNoWheel
-        ;;
-    off)
-        [[ -f $STATE/widgetstyle.before ]] || die "nothing to put back: wheel on was not run"
-        if [[ -s $STATE/widgetstyle.before ]]; then
-            kwriteconfig6 --notify --file kdeglobals --group KDE --key widgetStyle "$(cat "$STATE/widgetstyle.before")"
-        else
-            kwriteconfig6 --notify --file kdeglobals --group KDE --key widgetStyle --delete
-        fi
-        sudo rm -f "$so"
-        rm -rf "$b" "$STATE/widgetstyle.before"
-        ;;
-    *) die "wheel on|off" ;;
-    esac
-    echo "wheel: widget style $(kreadconfig6 --file kdeglobals --group KDE --key widgetStyle --default Breeze), BreezeNoWheel $([[ -f $so ]] && echo installed || echo 'not installed')"
-}
 
 switcher() {
     local f=$GRID/contents/ui/main.qml
@@ -520,10 +477,9 @@ edge-delay)
 konsole-tabs) konsole_tabs "${2:-}" ;;
 konsole-keys) konsole_keys "${2:-}" ;;
 switcher) switcher "${2:-}" ;;
-wheel) wheel "${2:-}" ;;
 show) show ;;
 *)
-    echo "usage: $0 {on [SPEED] | off | keyboard on|off | input on|off | launchers off|on | animations F|off | borderless on|off | solo on|off | windows on [WxH]|off | edge-delay MS|off | konsole-tabs on|off | konsole-keys on|off | switcher on|off | wheel on|off | show}" >&2
+    echo "usage: $0 {on [SPEED] | off | keyboard on|off | input on|off | launchers off|on | animations F|off | borderless on|off | solo on|off | windows on [WxH]|off | edge-delay MS|off | konsole-tabs on|off | konsole-keys on|off | switcher on|off | show}" >&2
     exit 2
     ;;
 esac
