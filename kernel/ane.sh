@@ -9,6 +9,12 @@
 #                             installed under /usr/lib/firmware/apple/ane only when size and SHA-256 match its pin
 #   kernel/ane.sh load        insmod the module built above (not installed, so it never loads at boot)
 #   kernel/ane.sh check       omarchy-ane-check and the smoke run (20 adds, bit-exact against the golden)
+#   kernel/ane.sh deep [--submit]
+#                             omarchy-mlx's collector with its ANE smoke (scripts/collect_deep.py --ane-smoke), the
+#                             judged row upstream asks for to enable the M2 Ultra by default: src/omarchy-mlx (cloned
+#                             when missing), this checkout's check and smoke tools on PATH, the driver loaded, the
+#                             machine idle (it waits up to 5 min for load < 0.5). Writes var/ane/deep-<date>.tgz and
+#                             its .submission.md, redacted, uploads nothing; --submit also sends them (public receipt)
 #   kernel/ane.sh unload      rmmod
 #   kernel/ane.sh report      everything the runbook asks to send back, into var/ane/report-<date>/
 #   kernel/ane.sh autoload on|off|status
@@ -60,6 +66,13 @@ load)
 check)
     bash "$A/packaging/omarchy-ane-check" | tee "$OUT/check-$stamp.txt" || true
     python3 -I "$A/packaging/omarchy-ane-smoke" --timeout 120 | tee "$OUT/smoke-$stamp.json"
+    ;;
+deep)
+    M=$LAB/src/omarchy-mlx
+    [[ -d $M/.git ]] || git clone -q --depth 1 https://github.com/joshuaswarren/omarchy-mlx "$M"
+    lsmod | grep -q '^ane_t6021 ' || die "the driver is not loaded: kernel/ane.sh load"
+    echo "omarchy-mlx $(git -C "$M" log -1 --format='%h %cs'), linux-ane $(git -C "$A" log -1 --format='%h %cs'), load $(cut -d' ' -f1 /proc/loadavg)"
+    PATH=$A/packaging:$PATH python3 "$M/scripts/collect_deep.py" --ane-smoke --out "$OUT/deep-$stamp.tgz" "${@:2}"
     ;;
 unload)
     sudo rmmod ane_t6021 && echo "unloaded"
