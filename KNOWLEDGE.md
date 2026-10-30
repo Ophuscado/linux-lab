@@ -188,6 +188,9 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   0.72 s, GPT-OSS 120B 1.27 s); the logger books much of a MUL_MAT_ID's time to the op after it (GLU, ADD_ID,
   TOPK_MOE at 3-10 ms a call, INFERRED from MUL_MAT_ID showing impossible GFLOPS), so the routing ops are not
   themselves slow.
+- 30 Oct, VERIFIED (`STEPS=mmid`, `compare-20261030-113238`): the built tile sizes are not the lever. For
+  MUL_MAT_ID at 128-512 tokens the medium tile (today) is best; small 1.5-2x slower, large 3-4x slower; under 64
+  tokens the matrix-vector path runs (patch 0002's limit) and the sizes do not matter.
 
 ### What moved Honeykrisp forward
 
