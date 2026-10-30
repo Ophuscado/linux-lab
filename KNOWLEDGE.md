@@ -133,7 +133,8 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   69.3 on Metal. Attention over the cache is a second gap beside the launch cost.
 - VERIFIED, 30 Oct: that gap was mostly the core count. Honeykrisp reports none, so ggml-vulkan splits flash attention
   for a 16-core placeholder (and turns matmul split_k off); one-token FLASH_ATTN_EXT cases ran 2-13x Metal's time.
-  `GGML_VK_SHADER_CORES` (0007) sets it; 152 (two per core) is best of 76, 152 and 304 (`var/compare-20261030-*`).
+  `GGML_VK_SHADER_CORES` (0007, a local workaround: the count belongs in the driver, which already has it in
+  `agx_get_num_cores()` but exposes no `VK_AMD_shader_core_properties2`) sets it; 152 (two per core) is best of 76, 152 and 304 (`var/compare-20261030-*`).
   tg32 at depth 0 / 1k / 4k / 16k, before and with 152: Llama 2 70.8 / 43.0 / 20.2 / 6.6 to 68.7 / 61.6 / 51.0 / 30.5;
   GPT-OSS 20B 72.2 / 66.4 / 59.2 / 41.3 to 71.2 / 68.5 / 65.9 / 58.5; Qwen 34.4 / 33.9 / 32.0 / 26.5 to
   34.4 / 34.2 / 33.9 / 31.4; Gemma 40.9 / 32.4 / 25.9 / 18.2 to 39.0 / 38.1 / 35.5 / 31.1; GPT-OSS 120B 50.3 / 46.5 /
