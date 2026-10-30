@@ -4,7 +4,7 @@
 # context (depth), speculative decoding on the code edit of macos/spec-req.py (none, ngram-mod 64 and 128, the MTP
 # head where the model has one), test-backend-ops perf of FLASH_ATTN_EXT and SET_ROWS (once), and with STEPS=perf, a few tokens
 # at 4k context through the per-op logger (llama-NAME-perf-d4096.txt); STEPS=sync, one token through ggml-vulkan's
-# sync logger. Models and names from
+# sync logger; STEPS=mmv (no model), the matrix-vector over its settings. Models and names from
 # macos/models.txt (default: all present); the settings of gpu/llama-run.sh. Output: var/compare-<time>/, JSON as on
 # macOS. Takes the GPU lock.
 #
@@ -31,6 +31,15 @@ rows() { [[ -n ${ROWS:-} ]] && { echo "$ROWS"; return; }; case $1 in qwen) echo 
 STEPS=" ${STEPS:-bench batches depth spec ops} "
 on() { [[ $STEPS == *" $1 "* ]]; }
 exec 9>"$HOME/.cache/linux-lab-gpu.lock"; flock 9
+# STEPS=mmv: the one-token 4096x14336 matrix-vector (f16, q4_0, q8_0) over rows per workgroup, workgroup size and
+# the Metal-layout shader, against the read bandwidth (610-655 GB/s) and Metal (f16 131 us, q4_0 37, q8_0 57.5).
+if on mmv; then
+    for simd in 0 1; do for wg in subgroup large; do for rm in 1 2 4 8 16; do
+        GGML_VK_MMV_SIMD=$simd GGML_VK_DMMV_WG=$wg GGML_VK_RM_STDQ=$rm GGML_VK_RM_KQ=$rm "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT \
+            -p 'type_a=(f16|q4_0|q8_0),type_b=f32,m=4096,n=1,k=14336,bs=\[1,1\],nr=\[1,1\],per=\[0,1,2,3\],k_v=0,o=1' 2>&1 |
+            sed -nE "s/^ *MUL_MAT\(type_a=([a-z0-9_]+),.* ([0-9.]+) us\/run.*/simd $simd $wg rm $rm \1 \2 us/p"
+    done; done; done | tee "$OUT/mmv.txt"
+fi
 if on ops; then
     for o in FLASH_ATTN_EXT SET_ROWS; do
         "$B/test-backend-ops" perf -b Vulkan0 -o $o >"$OUT/ops-$o.txt" 2>&1 || echo "ops: test-backend-ops $o failed" >>"$OUT/errors.txt"
