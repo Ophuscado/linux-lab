@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Sourced by the loop tests. They run as root in a scratch Linux box (not on the Mac): each
 # makes loop-device disks under $T (default /var/tmp/migtest), runs migrate-row.sh or
 # snapraid-setup.sh against them and prints what to compare with the expected lines in its
