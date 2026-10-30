@@ -143,6 +143,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   on its own slice, as the matrix-vector does, takes 640-666 GB/s at 512-2048 groups and 751 GB/s (156 us) at 256,
   against 248 us for the matrix-vector. INFERRED: the vector it re-reads in every group (at 2 rows a group, 117 MB
   of vector beside the 117 MB matrix) and its arithmetic.
+- 30 Oct, VERIFIED (`compare-20261030-105648`, patch 0010 `GGML_VK_RM_F16`): fewer vector re-reads help a little.
+  f16 4096x14336 at 1 / 2 / 4 / 8 / 16 rows a group: 314 / 252 / 240 / 234 / 430 us; 8 rows cut the vector's 117 MB
+  to 29 MB and still take 234 us against 156-183 us to read the matrix alone. What is left is the shader's own work
+  per byte (INFERRED: instruction issue and latency per load, not bandwidth): the next step is a kernel built like
+  the read (one load and one multiply-add per element, many loads in flight), not settings. Bound for q4_0: 33 MB
+  read at ~650 GB/s is ~51 us against 69 us now (-26 %).
 - VERIFIED, 29 Oct: not memory. A grid-stride read reaches 610-655 GB/s from 64 MB to 1 GB (`vk-chain.sh bw`), the
   same on both memory types and both Mesas; one vec4 per invocation (65,536 workgroups for 256 MB) only ~290 GB/s:
   launching many small workgroups is the limit. The f16 matrix-vector streams 475 GB/s, below what memory gives
