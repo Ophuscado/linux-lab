@@ -19,7 +19,7 @@ its own. The findings and their evidence are in [`KNOWLEDGE.md`](KNOWLEDGE.md).
 - The M2 Ultra's Neural Engine runs under Linux: omarchy-ane's overlay panicked the boot until its DARTs were moved
   into the `ANE_SYS` power island that macOS's tables name. The smoke test is bit-exact. Merged into omarchy-ane
   ([pull request 278](https://github.com/joshuaswarren/omarchy-ane/pull/278)), its first M2 Ultra report, and the
-  passing row it asked for to turn the chip on by default.
+  passing row that turned the chip on by default there.
 
 **llama.cpp on the GPU** ([`gpu/`](gpu/), [`src-patches/llama.cpp/honeykrisp`](src-patches/llama.cpp/honeykrisp))
 - Vulkan (Honeykrisp) measured against Metal on the same machine, and moved forward by seven patches: prompts +12-23 %,
