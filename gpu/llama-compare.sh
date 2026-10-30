@@ -4,7 +4,7 @@
 # context (depth), speculative decoding on the code edit of macos/spec-req.py (none, ngram-mod 64 and 128, the MTP
 # head where the model has one), test-backend-ops perf of FLASH_ATTN_EXT and SET_ROWS (once), and with STEPS=perf, a few tokens
 # at 4k context through the per-op logger (llama-NAME-perf-d4096.txt); STEPS=sync, one token through ggml-vulkan's
-# sync logger; STEPS=mmv (no model), the matrix-vector over its settings. Models and names from
+# sync logger; STEPS=mmv (no model), the matrix-vector over its settings; STEPS=pp, prompt processing per op. Models and names from
 # macos/models.txt (default: all present); the settings of gpu/llama-run.sh. Output: var/compare-<time>/, JSON as on
 # macOS. Takes the GPU lock.
 #
@@ -43,6 +43,12 @@ if on mmv; then
             sed -nE "s/^ *MUL_MAT\(type_a=([a-z0-9_]+),.* ([0-9.]+) us\/run.*/simd $simd $wg rm $rm large $large rmf16 ${rmf16:-2} \1 \2 us/p"
     done | tee "$OUT/mmv.txt"
 fi
+# STEPS=pp: prompt processing. The n=512 matmuls and MUL_MAT_ID, the cases results/macos's llama-ops-mul_mat*.txt
+# timed on Metal, and per model one 512-token prompt through the per-op logger (llama-NAME-perf-pp512.txt).
+if on pp; then
+    "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT -p 'n=512,' >"$OUT/ops-MUL_MAT-n512.txt" 2>&1 || true
+    "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID >"$OUT/ops-MUL_MAT_ID.txt" 2>&1 || true
+fi
 if on ops; then
     for o in FLASH_ATTN_EXT SET_ROWS; do
         "$B/test-backend-ops" perf -b Vulkan0 -o $o >"$OUT/ops-$o.txt" 2>&1 || echo "ops: test-backend-ops $o failed" >>"$OUT/errors.txt"
@@ -69,6 +75,8 @@ while IFS='|' read -r name file mtp; do
         GGML_VK_SYNC_LOGGER=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 1 -r 1 >"$OUT/llama-$name-sync.txt" 2>&1 || true
         echo "$name: $(grep -c '^sync$' "$OUT/llama-$name-sync.txt") syncs, $(grep -cE '^[0-9]+ ' "$OUT/llama-$name-sync.txt") nodes (warm-up and the token)" | tee -a "$OUT/sync.txt"
     fi
+    on pp && GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512 -n 0 \
+        -r 1 >"$OUT/llama-$name-perf-pp512.txt" 2>&1
     on spec || continue
     for c in "none|" "ngram-mod-64|--spec-type ngram-mod" \
         "ngram-mod-128|--spec-type ngram-mod --spec-ngram-mod-n-max 128 --spec-ngram-mod-n-min 96" \
