@@ -9,7 +9,7 @@
 # macOS. Takes the GPU lock.
 #
 # Environment: STEPS (default "bench batches depth spec ops"), COMPARE_OUT (instead of var/), GPU_LOCK (the lock
-# file, for a sandbox where ~/.cache is read-only), LLAMA_BIN (a build/bin with llama-bench and llama-server; default src/llama.cpp-simd/build/bin, the
+# file, for a sandbox where ~/.cache is read-only), MESA_SIDE (the side Mesas, default build/mesa-side), LLAMA_BIN (a build/bin with llama-bench and llama-server; default src/llama.cpp-simd/build/bin, the
 # honeykrisp series), LLM (models, default ~/Projects/_llm).
 set -euo pipefail
 LAB=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
@@ -21,7 +21,7 @@ die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
 mkdir -p "$OUT"
 
 for d in agxperf coopmat; do
-    icd=$(compgen -G "$LAB/build/mesa-side/$d/share/vulkan/icd.d/asahi_icd.*.json" | head -n 1 || true)
+    icd=$(compgen -G "${MESA_SIDE:-$LAB/build/mesa-side}/$d/share/vulkan/icd.d/asahi_icd.*.json" | head -n 1 || true)
     [[ -n $icd ]] && { export VK_DRIVER_FILES=$icd; echo "driver: $d" | tee "$OUT/driver.txt"; break; }
 done
 export AGX_CLUSTER_OFF=1 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1
