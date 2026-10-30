@@ -29,8 +29,8 @@
 #   gpu    vk-chain's Metal twin (vk-chain/metal-chain.m): one launch's cost, chained and free, the
 #          dependent-FMA clock; the number the Linux generation gap is measured against
 #   llama  llama.cpp with Metal at the same upstream commit as the Linux numbers (src-patches/llama.cpp/
-#          honeykrisp/BASE): llama-bench pp512/pp2048/tg128, generation after 0-16k tokens of context and the 1-512 token batch curve on every model
-#          of models.txt, the code-edit speculation test, test-backend-ops perf for MUL_MAT/MUL_MAT_ID
+#          honeykrisp/BASE): llama-bench pp512/pp2048/tg128, generation after 0-16k tokens of context and the
+#          1-512 token batch curve on every model of models.txt, the code-edit speculation test, test-backend-ops perf for MUL_MAT/MUL_MAT_ID
 #   ablate per model, Metal's fusion, concurrency and graph reordering off one by one (pp512, tg128),
 #          and one token's encoded graph with what was fused
 #   vulkan llama.cpp's Vulkan backend through MoltenVK: llama-bench and the matmul perf tests, for Vulkan's
