@@ -177,7 +177,11 @@ PY
         echo "indexer: original $INDEX_CONF back"
         ;;
     status)
-        if [[ -f $INDEX_CONF.settings-orig ]]; then echo "indexer prune: on ($INDEX_CONF)"; else echo "indexer prune: off"; fi
+        if [[ -f $INDEX_CONF.settings-orig ]]; then
+            # A path missing from PRUNEPATHS (a mount point renamed later, as /mnt/hd to /mnt/data on 28 Oct) is walked.
+            local miss=() w; for w in $paths; do grep -Eq "^PRUNEPATHS *=.*[\" ]${w}[\" ]" "$INDEX_CONF" || miss+=("$w"); done
+            echo "indexer prune: on ($INDEX_CONF)${miss:+; NOT pruned: ${miss[*]} (settings.sh indexer on adds them)}"
+        else echo "indexer prune: off"; fi
         ;;
     esac
 }
