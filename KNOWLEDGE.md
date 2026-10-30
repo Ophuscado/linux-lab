@@ -123,6 +123,11 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   (`vk-chain`) against 2.27 on Metal; over a Qwen token the average is ~16 µs a launch on Vulkan and ~7.4 on Metal.
   Without the wait bit in the barrier word Llama 2 generates 94.6 t/s (Metal 120) but results are wrong;
   `HK_PERFTEST=designedusccdmbarrier` (word 0x17f) is the cheapest correct word, +7-9 % generation.
+- 30 Oct, read (Mesa main 77452b9; the coopmat series 795ae42a71): upstream Honeykrisp ends the whole compute batch at
+  every `vkCmdPipelineBarrier` ("the big hammer ... XXX: perf") and puts a CDM barrier after every launch. The
+  coopmat series replaces that with a dependency-tracked barrier, on by default on G13 and on G14X of generation 14,
+  which is this M2 Ultra (two clusters or more), so ggml-vulkan's own syncs are what the GPU waits on here.
+  `HK_CDM_DEFER_FLUSH=1` goes further (one barrier per batch): default on M1 only, it lost token parity on M1 Max.
 - VERIFIED, 29 Oct: not memory. A grid-stride read reaches 610-655 GB/s from 64 MB to 1 GB (`vk-chain.sh bw`), the
   same on both memory types and both Mesas; one vec4 per invocation (65,536 workgroups for 256 MB) only ~290 GB/s:
   launching many small workgroups is the limit. The f16 matrix-vector streams 475 GB/s, below what memory gives
