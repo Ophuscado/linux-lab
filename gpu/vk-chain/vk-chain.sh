@@ -9,7 +9,7 @@ HERE=$(cd "$(dirname "$0")" && pwd); SIDE=${MESA_SIDE:-$HERE/../../build/mesa-si
 [[ -n ${MESA_SIDE:-} || -d $SIDE || ! -d $HOME/src/mesa-side ]] || SIDE=$HOME/src/mesa-side
 case ${1:-run} in
 build)
-    for sh in add reduce chase fat dot addk q8dot read read8 read4; do
+    for sh in add reduce chase fat dot addk q8dot read read8 read4 readrow; do
         if command -v glslc >/dev/null; then glslc -O --target-env=vulkan1.2 "$HERE/$sh.comp" -o "$HERE/$sh.spv"
         else glslangValidator -V --target-env vulkan1.2 "$HERE/$sh.comp" -o "$HERE/$sh.spv" | grep -v "^/\?.*\.comp$" || true; [[ -s $HERE/$sh.spv ]] || { echo "$sh.comp did not compile" >&2; exit 1; }; fi
     done
@@ -119,6 +119,12 @@ bw)
         c8=$(env ${e[@]+"${e[@]}"} VKCHAIN_GROUPS=1216 "$HERE/vk-chain" $c $n 5 read8 | gbs $n)
         c4=$(env ${e[@]+"${e[@]}"} VKCHAIN_GROUPS=1216 "$HERE/vk-chain" $c $n 5 read4 | gbs $n)
         printf '%5d MB: one vec4 each %s   1216 groups %s   8-byte loads %s   4-byte loads %s\n' "$mb" "$a" "$b" "$c8" "$c4"
+    done
+    # The matrix-vector's pattern: each group reads its own contiguous slice (as its rows), 117 MB as an f16
+    # 4096x14336, over as many groups as the matrix-vector launches (rows / 2) and fewer.
+    for g in 2048 1024 512 1216 256; do
+        r=$(env ${e[@]+"${e[@]}"} VKCHAIN_GROUPS=$g "$HERE/vk-chain" 20 29360128 5 readrow | gbs 29360128)
+        printf '117 MB, %4d groups each on its own slice: %s\n' "$g" "$r"
     done
     env ${e[@]+"${e[@]}"} VKCHAIN_MEMTYPES=1 "$HERE/vk-chain" 1 1024 1 read | grep '^memory type' | while read -r _ _ k _; do
         k=${k%:}; r=$(env ${e[@]+"${e[@]}"} VKCHAIN_MEMTYPE=$k "$HERE/vk-chain" 20 67108864 5 read 2>&1 | gbs 67108864)
