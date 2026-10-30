@@ -2,7 +2,7 @@
 # llama-compare.sh [NAME...]: on Linux, the same llama.cpp tests macos/collect.sh's llama step ran with Metal, so the two
 # sit side by side: llama-bench pp512/pp2048/tg128, the 1-512 token batch curve, generation after 0-16k tokens of
 # context (depth), speculative decoding on the code edit of macos/spec-req.py (none, ngram-mod 64 and 128, the MTP
-# head where the model has one), test-backend-ops perf of FLASH_ATTN_EXT (once), and with STEPS=perf, a few tokens
+# head where the model has one), test-backend-ops perf of FLASH_ATTN_EXT and SET_ROWS (once), and with STEPS=perf, a few tokens
 # at 4k context through the per-op logger (llama-NAME-perf-d4096.txt). Models and names from
 # macos/models.txt (default: all present); the settings of gpu/llama-run.sh. Output: var/compare-<time>/, JSON as on
 # macOS. Takes the GPU lock.
@@ -31,7 +31,9 @@ STEPS=" ${STEPS:-bench batches depth spec ops} "
 on() { [[ $STEPS == *" $1 "* ]]; }
 exec 9>"$HOME/.cache/linux-lab-gpu.lock"; flock 9
 if on ops; then
-    "$B/test-backend-ops" perf -b Vulkan0 -o FLASH_ATTN_EXT >"$OUT/ops-FLASH_ATTN_EXT.txt" 2>&1 || echo "ops: test-backend-ops failed" >>"$OUT/errors.txt"
+    for o in FLASH_ATTN_EXT SET_ROWS; do
+        "$B/test-backend-ops" perf -b Vulkan0 -o $o >"$OUT/ops-$o.txt" 2>&1 || echo "ops: test-backend-ops $o failed" >>"$OUT/errors.txt"
+    done
 fi
 want=" $* "
 while IFS='|' read -r name file mtp; do
