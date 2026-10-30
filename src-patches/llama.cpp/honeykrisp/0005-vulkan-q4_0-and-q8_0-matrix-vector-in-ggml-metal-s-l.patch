@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Thu, 29 Oct 2026 05:34:51 +0000
-Subject: [PATCH 5/9] vulkan: q4_0 and q8_0 matrix-vector in ggml-metal's
+Subject: [PATCH 5/10] vulkan: q4_0 and q8_0 matrix-vector in ggml-metal's
  layout
 
 GGML_VK_MMV_SIMD=1 runs the q4_0 and q8_0 matrix-vector products, plain

@@ -138,6 +138,11 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   rows, ~470 GB/s), q8_0 118-121 us (8 rows, ~516 GB/s); 32-thread groups are slower, and 8-16 rows collapse (q4_0
   1300 us at 16, INFERRED: register spills). 256- and 512-thread groups (0009, `GGML_VK_DMMV_LARGE`) gain 5 % on
   f16 and lose on q4_0: group size is not the limit.
+- 30 Oct, VERIFIED (`vk-chain.sh bw`, cells 89504, 89518): neither load width nor the access pattern limits it. A
+  grid-stride read takes 632-660 GB/s with 16-, 8- or 4-byte loads; reading the f16 matrix's 117 MB with each group
+  on its own slice, as the matrix-vector does, takes 640-666 GB/s at 512-2048 groups and 751 GB/s (156 us) at 256,
+  against 248 us for the matrix-vector. INFERRED: the vector it re-reads in every group (at 2 rows a group, 117 MB
+  of vector beside the 117 MB matrix) and its arithmetic.
 - VERIFIED, 29 Oct: not memory. A grid-stride read reaches 610-655 GB/s from 64 MB to 1 GB (`vk-chain.sh bw`), the
   same on both memory types and both Mesas; one vec4 per invocation (65,536 workgroups for 256 MB) only ~290 GB/s:
   launching many small workgroups is the limit. The f16 matrix-vector streams 475 GB/s, below what memory gives
