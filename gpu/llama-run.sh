@@ -13,6 +13,8 @@
 #            (Qwen 596 to 680, Gemma 770 to 905 at pp2048), 512 threads 128x128 +2-4% more at this -ub 8192; its
 #            matrices 16x16x16, not the driver's first shape 8x8x8: Llama 2 +18%, the MoE models +1-10%; the
 #            experts' matmuls in a 128x32 small tile up to 64 tokens each (0011): short prompts up to +22%
+#            experts on the matrix-vector path past 8 tokens only at 2 tokens an expert or fewer (0013):
+#            Gemma 64-token batches +34%, GPT-OSS 20B +61%
 #   cores    GGML_VK_SHADER_CORES=152 (0007): Honeykrisp reports no core count; long contexts 2.5-4.6x
 #   experts  MoE layers on the matrix-vector path up to 64 tokens, not 8 (src-patches/llama.cpp/honeykrisp): batches
 #            of 9-64 tokens +12-42% on Qwen; dense layers on it up to 16 tokens, not 8
@@ -56,7 +58,7 @@ for d in agxperf coopmat; do
 done
 [[ -n ${VK_DRIVER_FILES:-} ]] || echo "driver: the system's (no mesa-side driver built)"
 [[ ${LLAMA_CLUSTER:-0} == 1 ]] || export AGX_CLUSTER_OFF=1
-export GGML_VK_WT_M=512,128,128,,32,32,,16,16,16 GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_MAX_COLS=16 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1 GGML_VK_RM_STDQ=$rows GGML_VK_RM_KQ=$rows \
+export GGML_VK_WT_M=512,128,128,,32,32,,16,16,16 GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_ID_PER_EXPERT=2 GGML_VK_MMV_MAX_COLS=16 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1 GGML_VK_RM_STDQ=$rows GGML_VK_RM_KQ=$rows \
     GGML_VK_SHADER_CORES=${GGML_VK_SHADER_CORES:-152} \
     GGML_VK_MMID_SIZES=sm GGML_VK_WT_S=256,128,32,,32,16 GGML_VK_MMID_S_MAX=64  # experts: 128x32 up to 64 tokens each (0011)
 

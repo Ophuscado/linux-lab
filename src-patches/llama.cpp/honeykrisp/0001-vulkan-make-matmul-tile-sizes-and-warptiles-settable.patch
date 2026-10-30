@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Mon, 26 Oct 2026 23:40:38 +0000
-Subject: [PATCH 1/12] vulkan: make matmul tile sizes and warptiles settable on
+Subject: [PATCH 1/13] vulkan: make matmul tile sizes and warptiles settable on
  Honeykrisp
 
 Honeykrisp (Asahi Linux) is built with the medium matmul tile only, the choice made for MoltenVK. GGML_VK_MM_SIZES and GGML_VK_MMID_SIZES pick the sizes built (letters of "sml", default m), and GGML_VK_WT_S/M/L replace fields of a size's warptiles ("BLOCK,BM,BN,BK,WM,WN,WMITER,TM,TN,TK,WARP", empty fields kept; the workgroup denominators follow BM and BN). GGML_VK_TILES_PRINT=1 prints what was built.
