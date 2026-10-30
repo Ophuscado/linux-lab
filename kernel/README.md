@@ -7,7 +7,7 @@ upstream yet: Asahi does not take AI-assisted patches, and mainline wants each s
 
 | Series | What it does | State |
 |---|---|---|
-| `tbt-7.1` | USB4/Thunderbolt with PCIe tunnels on Asahi's 7.1.13 (the stock kernel's source): the 7.2 USB4 stack backported, the tunneled PCIe controller, DART address offsets, device trees | Running; both USB4 (ASM2464) and Thunderbolt 3 (Titan Ridge + SAS3008) boxes |
+| `tbt-7.1` | USB4/Thunderbolt with PCIe tunnels on Asahi's 7.1.13 (the stock kernel's source): the 7.2 USB4 stack backported, the tunneled PCIe controller, DART address offsets, device trees | Running; verified with USB4 (ASM2464, until 21 Oct) and Thunderbolt 3 boxes (two M424: Titan Ridge + SAS3008) |
 | `tbt-pcie` | The same work as first written on Asahi's 7.2 work-in-progress tree, which has no GPU driver | Reference for upstream |
 | `asahi-fdinfo` | Per-client GPU memory and time in fdinfo for the Rust `asahi` driver | Running; busy time needs `asahi.busy_stats=1` (patch 3) |
 | `hid-magicmouse` | Magic Mouse: no scroll from a resting finger (`scroll_hold_ms`), two-finger double tap zoom (`smart_zoom`, off: to become the screen zoom) | Running, `magicmouse.sh hold 1` |
