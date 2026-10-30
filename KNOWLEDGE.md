@@ -211,6 +211,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (runs 5260-5266, `vk-chain.sh mma`, agxperf): the matrix hardware itself is fast under Honeykrisp.
+  From registers 23.0 TFLOPS at 8x8x8 and 26.5 at 16x16x16 (of ~27); loading 2 A and 2 B tiles from shared memory
+  per 4 ops, llama.cpp's ratio, 15.7 and 21.3 (B row-major 17.4 and 23.8); a barrier every 2 steps or llama.cpp's
+  padded rows change nothing. One launch alone needs many workgroups: 76 groups of 256 threads 10.0 TFLOPS, 128 16.8,
+  304 16.5, 1216 19.9. So llama.cpp's matmul loop at 11.7 TFLOPS (no global loads) runs at about half of what the
+  same op mix gets here; split-k through `GGML_VK_SHADER_CORES` (304-1216: 128 tiles split 2-8 ways) gains 0-4 %.
 - 30 Oct, VERIFIED (runs 5248, 5250, shaderdb): occupancy is not the bound either. The matmul shader at 8x8x8 has 87
   registers, at 16x16x16 103, both 1024 threads; 64x32 per warp at 16x16x16 (256 threads) has 143 registers and 704
   threads and is the fastest 4096x14336x512 (f16 5702, q4_0 5077 us), yet slower on every prompt than the 512-thread

@@ -1,0 +1,61 @@
+#version 450
+// The matrix hardware's own speed, with no global memory: 8 subgroups a workgroup, each running ITERS steps of
+// 4 cooperative-matrix multiply-adds (NxNxN, f16 in and out, 2 A by 2 B as in llama.cpp's coopmat matmul with
+// its B tiles kept a k step) into 4 accumulators. Built twice, -DN=8 and -DN=16 (mma8.spv, mma16.spv).
+// MODE 0: A and B stay in registers (the op's throughput); MODE 1: each step loads its 2 A (row-major) and
+//   2 B (column-major, as llama.cpp's buf_b) from shared memory; MODE 2: the same with B row-major;
+//   MODE 3: MODE 1 with a workgroup barrier every 2 steps (llama.cpp's BK 32 at 16x16x16 has two per 2 steps);
+//   MODE 4: MODE 1 with llama.cpp's padded row stride, 40 halves (SHMEM_STRIDE 20 f16vec2) instead of N.
+// The accumulators are stored at the end so nothing is dead; the stores are a few KB, the work ~N^3*16*ITERS.
+#extension GL_KHR_cooperative_matrix : require
+#extension GL_KHR_memory_scope_semantics : require
+#extension GL_EXT_shader_explicit_arithmetic_types_float16 : require
+#extension GL_EXT_shader_16bit_storage : require
+layout(local_size_x = 256) in;
+layout(constant_id = 0) const uint MODE = 0;
+layout(constant_id = 1) const uint ITERS = 256;
+layout(std430, binding = 0) buffer D { float16_t d[]; };
+#define T coopmat<float16_t, gl_ScopeSubgroup, N, N, gl_MatrixUseA>
+#define U coopmat<float16_t, gl_ScopeSubgroup, N, N, gl_MatrixUseB>
+#define C coopmat<float16_t, gl_ScopeSubgroup, N, N, gl_MatrixUseAccumulator>
+// 2 sets of 2 A and 2 B tiles for every 2 subgroups (20 KB at N 16 padded), so a step's loads are not the last step's.
+const uint LD = MODE == 4 ? 40 : N, TILE = N * LD, SET = 4 * TILE, SG = 2 * SET;
+shared float16_t sh[2 * SG];
+
+void main() {
+    const uint sg = gl_LocalInvocationID.x / 32;
+    for (uint i = gl_LocalInvocationID.x; i < 2 * SG; i += 256) sh[i] = float16_t(float(i & 7) * 0.001);
+    barrier();
+    T a0 = T(float16_t(0.001));
+    T a1 = T(float16_t(0.002));
+    U b0 = U(float16_t(0.003));
+    U b1 = U(float16_t(0.004));
+    C c0 = C(float16_t(0));
+    C c1 = C(float16_t(0));
+    C c2 = C(float16_t(0));
+    C c3 = C(float16_t(0));
+    for (uint it = 0; it < ITERS; it++) {
+        if (MODE != 0) {
+            const uint o = (sg & 1) * SG + (it & 1) * SET;
+            coopMatLoad(a0, sh, o, LD, gl_CooperativeMatrixLayoutRowMajor);
+            coopMatLoad(a1, sh, o + TILE, LD, gl_CooperativeMatrixLayoutRowMajor);
+            if (MODE != 2) {
+                coopMatLoad(b0, sh, o + 2 * TILE, LD, gl_CooperativeMatrixLayoutColumnMajor);
+                coopMatLoad(b1, sh, o + 3 * TILE, LD, gl_CooperativeMatrixLayoutColumnMajor);
+            } else {
+                coopMatLoad(b0, sh, o + 2 * TILE, LD, gl_CooperativeMatrixLayoutRowMajor);
+                coopMatLoad(b1, sh, o + 3 * TILE, LD, gl_CooperativeMatrixLayoutRowMajor);
+            }
+            if (MODE == 3 && (it & 1) == 1) barrier();
+        }
+        c0 = coopMatMulAdd(a0, b0, c0);
+        c1 = coopMatMulAdd(a0, b1, c1);
+        c2 = coopMatMulAdd(a1, b0, c2);
+        c3 = coopMatMulAdd(a1, b1, c3);
+    }
+    const uint o = ((gl_WorkGroupID.x & 15) * 8 + sg) * 4 * TILE;
+    coopMatStore(c0, d, o, N, gl_CooperativeMatrixLayoutRowMajor);
+    coopMatStore(c1, d, o + TILE, N, gl_CooperativeMatrixLayoutRowMajor);
+    coopMatStore(c2, d, o + 2 * TILE, N, gl_CooperativeMatrixLayoutRowMajor);
+    coopMatStore(c3, d, o + 3 * TILE, N, gl_CooperativeMatrixLayoutRowMajor);
+}
