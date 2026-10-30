@@ -211,6 +211,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (run 5302, test-only edit restored after; MUL_MAT 2275/2275): two shared tiles in turn in
+  mul_mm.comp's coopmat path (the next k block loaded before this one's matrix ops, one barrier a block, no row
+  padding) overlap little. 256 threads 128x64: q4_0 6433 to 6002 us, q8_0 7292 to 6887, q4_K 7855 to 7673, f16 7833
+  to 8067; 512 threads 128x128: f16 6340 to 8160, q4_0 5215 to 6105. Neither beats the single-buffered 512-thread
+  tile `llama-run.sh` uses. Each thread still waits for its own global loads before its matrix ops; overlap would
+  need the loads held in registers across the multiply (a loader split into fetch and store, per weight type).
 - 30 Oct, VERIFIED (run 5268, test-only edit restored after): at 16x16x16 the matmul loop without global loads takes
   3896 us (15.4 TFLOPS; the 11.7 above was 8x8x8), and its two barriers cost 0-2 %. That is about what `vk-chain.sh mma`
   gets from a single launch of 128 workgroups (16.8), and 4096x14336x512 on the 128x128 tile is 128 workgroups: the
