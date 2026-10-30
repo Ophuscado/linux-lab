@@ -1,0 +1,37 @@
+From b97a43a50d125811ed588457c3a5ec844d30b8ca Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Fri, 30 Oct 2026 09:40:37 +0000
+Subject: [PATCH 9/9] vulkan: large matrix-vector workgroup size settable
+ (GGML_VK_DMMV_LARGE)
+
+Honeykrisp's 4096x14336 matrix-vector reads ~470-516 GB/s at any rows per workgroup with 4-subgroup groups, under the 610-655 GB/s a plain read reaches with 256-thread groups. GGML_VK_DMMV_LARGE sets the subgroups per large group (default 4). MUL_MAT one-column tests pass at 8 and 16 on lavapipe (602/602).
+---
+ ggml/src/ggml-vulkan/ggml-vulkan.cpp | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index ed9e8dc2e..38708a7cf 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -3010,9 +3010,16 @@ void ggml_vk_load_shaders(vk_device& device, vk_pipeline requested) {
+ #define OCP_DMMV_DATA(NAME, REDUC) NAME ## _data[REDUC]
+ #endif
+ 
++    // GGML_VK_DMMV_LARGE=N: subgroups in a large matrix-vector workgroup (default 4). On Honeykrisp a 4096x14336
++    // f16 matrix-vector reads ~475 GB/s at 4, under the 610-655 GB/s a plain read reaches with 256-thread groups.
++    uint32_t dmmv_large = 4;
++    if (const char * env = getenv("GGML_VK_DMMV_LARGE"); env && *env) {
++        dmmv_large = std::max(1, std::min(atoi(env), (int)(device->properties.limits.maxComputeWorkGroupInvocations / subgroup_size16)));
++        fprintf(stderr, "ggml_vulkan: large matrix-vector workgroups of %u subgroups\n", dmmv_large);
++    }
+     for (uint32_t w = 0; w < DMMV_WG_SIZE_COUNT; ++w) {
+-        const uint32_t wg_size_subgroup   = (w == DMMV_WG_SIZE_SUBGROUP) ? subgroup_size : (subgroup_size * 4);
+-        const uint32_t wg_size_subgroup16 = (w == DMMV_WG_SIZE_SUBGROUP) ? subgroup_size16 : (subgroup_size16 * 4);
++        const uint32_t wg_size_subgroup   = (w == DMMV_WG_SIZE_SUBGROUP) ? subgroup_size : (subgroup_size * dmmv_large);
++        const uint32_t wg_size_subgroup16 = (w == DMMV_WG_SIZE_SUBGROUP) ? subgroup_size16 : (subgroup_size16 * dmmv_large);
+ 
+         const shader_reduction_mode reduc = (use_subgroups && w == DMMV_WG_SIZE_SUBGROUP) ? SHADER_REDUCTION_MODE_SUBGROUP :
+                                             (use_subgroups && w == DMMV_WG_SIZE_LARGE) ? SHADER_REDUCTION_MODE_HYBRID :
+-- 
+2.43.0
+
