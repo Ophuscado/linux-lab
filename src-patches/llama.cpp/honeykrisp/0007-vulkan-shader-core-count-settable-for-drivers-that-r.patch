@@ -1,0 +1,31 @@
+From ba79027ec8101bc59a22d3ec1f71ea9272e129fc Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Fri, 30 Oct 2026 03:46:35 +0000
+Subject: [PATCH 7/7] vulkan: shader core count settable for drivers that report
+ none
+
+Honeykrisp has no core-count extension, so shader_core_count is 0: matmul split_k is off and flash attention sizes its split for a 16-core placeholder, on a 76-core M2 Ultra. GGML_VK_SHADER_CORES sets the count. FLASH_ATTN_EXT tests with one query token pass at 152 (1325/1325, lavapipe).
+---
+ ggml/src/ggml-vulkan/ggml-vulkan.cpp | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index b95c68b13..ed9e8dc2e 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -4336,6 +4336,12 @@ vk_device ggml_vk_get_device(size_t idx) {
+         } else {
+             device->shader_core_count = 0;
+         }
++        // Drivers without a core-count extension (Honeykrisp on Apple GPUs) report none, which turns matmul
++        // split_k off and leaves flash attention at its 16-core placeholder; GGML_VK_SHADER_CORES gives the count.
++        if (const char *cores = getenv("GGML_VK_SHADER_CORES"); cores && *cores) {
++            device->shader_core_count = (uint32_t) atoi(cores);
++            fprintf(stderr, "ggml_vulkan: shader core count %u (GGML_VK_SHADER_CORES)\n", device->shader_core_count);
++        }
+         device->float_controls_rte_fp16 = vk12_props.shaderRoundingModeRTEFloat16;
+         device->float_controls_denorm_preserve_fp16 = vk12_props.shaderDenormPreserveFloat16;
+ 
+-- 
+2.43.0
+
