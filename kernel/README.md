@@ -11,7 +11,7 @@ upstream yet: Asahi does not take AI-assisted patches, and mainline wants each s
 | `tbt-pcie` | The same work as first written on Asahi's 7.2 work-in-progress tree, which has no GPU driver | Reference for upstream |
 | `asahi-fdinfo` | Per-client GPU memory and time in fdinfo for the Rust `asahi` driver | Running; busy time needs `asahi.busy_stats=1` (patch 3) |
 | `hid-magicmouse` | Magic Mouse: no scroll from a resting finger (`scroll_hold_ms`), two-finger double tap zoom (`smart_zoom`, off: to become the screen zoom) | Running, `magicmouse.sh hold 1` |
-| `hid-apple` | Magic Keyboard: Fn+F, C, P, D as their own keys (`fn_shortcuts`) | Built into the running kernel, off |
+| `hid-apple` | Magic Keyboard: Fn+F, C, P, D as their own keys (`fn_shortcuts`) | Running, `applekbd.sh try` |
 
 Neural Engine: `dt/t6022-ane-dart-power.dts` puts the M2 Ultra's ANE DARTs in `ANE_SYS` (merged into omarchy-ane);
 `ane.sh` builds and loads omarchy-ane's driver by hand.
