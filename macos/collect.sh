@@ -27,7 +27,7 @@
 #   tbt    Thunderbolt and USB4: system_profiler, the acio/apciec/atc-phy nodes (kernel/apciec-dump.sh),
 #          with the disk boxes plugged in
 #   gpu    vk-chain's Metal twin (vk-chain/metal-chain.m): one launch's cost, chained and free, the
-#          dependent-FMA clock; the number the Linux generation gap is measured against
+#          dependent-FMA clock, read bandwidth from 1 MB to 1 GB; the number the Linux generation gap is measured against
 #   llama  llama.cpp with Metal at the same upstream commit as the Linux numbers (src-patches/llama.cpp/
 #          honeykrisp/BASE): llama-bench pp512/pp2048/tg128, generation after 0-16k tokens of context and the
 #          1-512 token batch curve on every model of models.txt, the code-edit speculation test, test-backend-ops perf for MUL_MAT/MUL_MAT_ID
@@ -435,7 +435,7 @@ step_vkchain() {
     [[ -n $icd ]] || { log "vkchain: no MoltenVK_icd.json under $hb; skipped"; return; }
     export VK_DRIVER_FILES=$icd VK_ICD_FILENAMES=$icd
     PATH=$hb/bin:$PATH bash "$LAB/gpu/vk-chain/vk-chain.sh" build >"$OUT/vkchain-build.txt" 2>&1 || { log "vkchain: build failed (see vkchain-build.txt)"; return; }
-    for c in run switch dot clock groups barriers latency; do
+    for c in run switch dot clock groups barriers latency bw; do
         log "vkchain: $c"
         PATH=$hb/bin:$PATH bash "$LAB/gpu/vk-chain/vk-chain.sh" "$c" >"$OUT/vkchain-$c.txt" 2>&1
     done

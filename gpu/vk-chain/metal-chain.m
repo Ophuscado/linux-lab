@@ -37,6 +37,14 @@ static NSString *const kSource = @
 "    threadgroup_barrier(mem_flags::mem_threadgroup);\n"
 "    if (t < 2) x[(m + 1) * k + r0 + t] = sh[t][0] + sh[t][1] + sh[t][2] + sh[t][3];\n"
 "}\n"
+"// Read bandwidth, as read.comp: a grid-stride walk over float4s; nothing is written unless the sum hits an\n"
+"// impossible value (keeps the loads alive).\n"
+"kernel void rd(device float4 *v [[buffer(0)]], constant uint &n [[buffer(1)]], uint i [[thread_position_in_grid]],\n"
+"               uint g [[threads_per_grid]]) {\n"
+"    float4 s = float4(0.0f);\n"
+"    for (uint k = i; k < n / 4; k += g) s += v[k];\n"
+"    if (s.x == 1.2345e-37f) v[0] = s;\n"
+"}\n"
 "// One thread's dependent multiply-adds: 1 or 16 per loop step (mode), iters steps.\n"
 "kernel void clockk(device float *x [[buffer(0)]], constant uint &mode [[buffer(1)]], constant uint &iters [[buffer(2)]],\n"
 "                   uint i [[thread_position_in_grid]]) {\n"
@@ -113,7 +121,8 @@ int main(int argc, const char **argv) {
         id<MTLComputePipelineState> p_addk = [dev newComputePipelineStateWithFunction:[lib newFunctionWithName:@"addk"] error:&err];
         id<MTLComputePipelineState> p_dot = [dev newComputePipelineStateWithFunction:[lib newFunctionWithName:@"dot"] error:&err];
         id<MTLComputePipelineState> p_clk = [dev newComputePipelineStateWithFunction:[strict newFunctionWithName:@"clockk"] error:&err];
-        if (!p_add || !p_addk || !p_dot || !p_clk) { fprintf(stderr, "pipeline: %s\n", err.description.UTF8String); return 1; }
+        id<MTLComputePipelineState> p_rd = [dev newComputePipelineStateWithFunction:[lib newFunctionWithName:@"rd"] error:&err];
+        if (!p_add || !p_addk || !p_dot || !p_clk || !p_rd) { fprintf(stderr, "pipeline: %s\n", err.description.UTF8String); return 1; }
         id<MTLCommandQueue> q = [dev newCommandQueue];
         id<MTLBuffer> buf = [dev newBufferWithLength:(4096u + 2) * 16384u * 4 options:MTLResourceStorageModePrivate];
         printf("device %s\n", dev.name.UTF8String);
@@ -144,6 +153,17 @@ int main(int argc, const char **argv) {
                 double us = run(q, p_dot, buf, m, 1500, MTLSizeMake(shapes[s][0] / 2, 1, 1), MTLSizeMake(128, 1, 1), c, 2, 10);
                 printf("%ux%u f32 %-7s %8.2f us per launch\n", shapes[s][0], shapes[s][1], mode_name[m], us);
             }
+
+        printf("== bw: read bandwidth, as vk-chain.sh bw: one float4 per thread, and 1216 threadgroups walking the buffer\n");
+        id<MTLBuffer> big = [dev newBufferWithLength:1024u << 20 options:MTLResourceStorageModePrivate];
+        uint32_t sizes_mb[] = { 1, 16, 64, 256, 1024 };
+        for (int s = 0; s < 5; s++) {
+            uint32_t mb = sizes_mb[s], n = mb * 262144u, c[1] = { n }, count = mb >= 256 ? 20 : 200;
+            double a = run(q, p_rd, big, FREE, count, MTLSizeMake(n / 4 / 256, 1, 1), MTLSizeMake(256, 1, 1), c, 1, 5);
+            double b = run(q, p_rd, big, FREE, count, MTLSizeMake(1216, 1, 1), MTLSizeMake(256, 1, 1), c, 1, 5);
+            printf("%5u MB: one float4 each %8.1f GB/s (%.1f us)   1216 groups %8.1f GB/s (%.1f us)\n",
+                   mb, n * 4 / (a * 1000), a, n * 4 / (b * 1000), b);
+        }
 
         printf("== clock: one thread's dependent multiply-adds (16 per step against 1, 100k steps)\n");
         uint32_t c1[2] = { 1, 100000 }, c2[2] = { 2, 100000 };
