@@ -9,8 +9,10 @@
 #            4252, 89035); q4_0 and q8_0 through the Metal-layout shader (src-patches/llama.cpp/honeykrisp 0005,
 #            GGML_VK_MMV_SIMD=1): Llama 2 65.1 to 69.7 t/s, Qwen 33.6 to 34.8; a build without 0005 ignores it
 #   batch    -ub/-b 8192: prompts 593 to 676 on Qwen
-#   tiles    the medium matmul tile at 256 threads, 128x64 (src-patches/llama.cpp/honeykrisp): prompts +12-23%
-#            (Qwen 596 to 680, Gemma 770 to 905 at pp2048)
+#   tiles    the medium matmul tile at 512 threads, 128x128 (honeykrisp 0001): prompts +12-23% at 256 threads 128x64
+#            (Qwen 596 to 680, Gemma 770 to 905 at pp2048), 512 threads 128x128 +2-4% more at this -ub 8192; the
+#            experts' matmuls in a 128x32 small tile up to 64 tokens each (0011): short prompts up to +22%
+#   cores    GGML_VK_SHADER_CORES=152 (0007): Honeykrisp reports no core count; long contexts 2.5-4.6x
 #   experts  MoE layers on the matrix-vector path up to 64 tokens, not 8 (src-patches/llama.cpp/honeykrisp): batches
 #            of 9-64 tokens +12-42% on Qwen; dense layers on it up to 16 tokens, not 8
 #            (src-patches/llama.cpp/honeykrisp): 9-16 token batches 2-4x (Qwen 9 tokens 37 to 107 t/s)
@@ -53,7 +55,7 @@ for d in agxperf coopmat; do
 done
 [[ -n ${VK_DRIVER_FILES:-} ]] || echo "driver: the system's (no mesa-side driver built)"
 [[ ${LLAMA_CLUSTER:-0} == 1 ]] || export AGX_CLUSTER_OFF=1
-export GGML_VK_WT_M=256,128,64,,32,32 GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_MAX_COLS=16 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1 GGML_VK_RM_STDQ=$rows GGML_VK_RM_KQ=$rows \
+export GGML_VK_WT_M=512,128,128,,32,32 GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_MAX_COLS=16 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1 GGML_VK_RM_STDQ=$rows GGML_VK_RM_KQ=$rows \
     GGML_VK_SHADER_CORES=${GGML_VK_SHADER_CORES:-152} \
     GGML_VK_MMID_SIZES=sm GGML_VK_WT_S=256,128,32,,32,16 GGML_VK_MMID_S_MAX=64  # experts: 128x32 up to 64 tokens each (0011)
 

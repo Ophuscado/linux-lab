@@ -200,6 +200,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   Medium alone against the pair, pp512 / pp2048 at -ub 2048 and pp1024 / pp4096 at -ub 8192: Qwen 466 / 684 / 594 /
   739 to 541 / 710 / 648 / 739; GPT-OSS 120B 410 / 653 / 537 / 721 to 502 / 680 / 596 / 730; Gemma 726 / 908 / 826 /
   825 to 764 / 893 / 843 / 832. Up to +22 % on short prompts, nothing lost on long ones.
+- 30 Oct, VERIFIED (runs 5052, 5055): the medium tile's shape is worth only a few percent. 4096x14336 at 512 tokens:
+  128x128 at 256 threads f16 -12 %, q8_0 -4 %; 128x128 at 512 threads q8_0 -6 %, f16 +8 %; BK 8 gives wrong results.
+  On prompts (pp512 / pp2048 / pp4096 at -ub 8192), 512 threads 128x128 against today: Qwen 540 / 712 / 728 to 551 /
+  714 / 744, Gemma 765 / 905 / 853 to 805 / 909 / 885, GPT-OSS 120B 503 / 681 / 730 to 505 / 687 / 758, Llama 2 763 /
+  805 / 794 to 740 / 809 / 806. `llama-run.sh` (the server, -ub 8192) takes it: +2-4 % there; the dense gap to Metal
+  (2x) is not in the tile shape.
 
 ### What moved Honeykrisp forward
 
