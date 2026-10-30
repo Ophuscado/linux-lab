@@ -8,13 +8,13 @@
 # macos/models.txt (default: all present); the settings of gpu/llama-run.sh. Output: var/compare-<time>/, JSON as on
 # macOS. Takes the GPU lock.
 #
-# Environment: STEPS (default "bench batches depth spec ops"), LLAMA_BIN (a build/bin with llama-bench and llama-server; default src/llama.cpp-simd/build/bin, the
+# Environment: STEPS (default "bench batches depth spec ops"), COMPARE_OUT (instead of var/), LLAMA_BIN (a build/bin with llama-bench and llama-server; default src/llama.cpp-simd/build/bin, the
 # honeykrisp series), LLM (models, default ~/Projects/_llm).
 set -euo pipefail
 LAB=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
 B=${LLAMA_BIN:-$LAB/src/llama.cpp-simd/build/bin}
 LLM=${LLM:-$HOME/Projects/_llm}
-OUT=$LAB/var/compare-$(date +%Y%m%d-%H%M%S)
+OUT=${COMPARE_OUT:-$LAB/var}/compare-$(date +%Y%m%d-%H%M%S)
 die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
 [[ -x $B/llama-bench && -x $B/llama-server ]] || die "no llama-bench and llama-server in $B"
 mkdir -p "$OUT"
@@ -45,6 +45,14 @@ if on mmv; then
 fi
 # STEPS=pp: prompt processing. The n=512 matmuls and MUL_MAT_ID, the cases results/macos's llama-ops-mul_mat*.txt
 # timed on Metal, and per model one 512-token prompt through the per-op logger (llama-NAME-perf-pp512.txt).
+# STEPS=mmid: MUL_MAT_ID (the experts' matmuls, 3.5-7.4x Metal's time at 32-512 tokens) over the tile sizes built
+# for it (GGML_VK_MMID_SIZES, letters of "sml"; patch 0001), each with a Qwen and a Gemma 512-token prompt.
+if on mmid; then
+    for sz in ${MMID_SWEEP:-m s sm l ml sml}; do
+        GGML_VK_MMID_SIZES=$sz "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID -p 'type_a=(q8_0|q4_K|f16|mxfp4),' 2>&1 |
+            sed -nE "s/^ *MUL_MAT_ID\((type_a=[^,]+),type_b=f32,n_mats=([0-9]+),n_used=([0-9]+),.*m=([0-9]+),n=([0-9]+),k=([0-9]+),.* ([0-9.]+) us\/run.*/$sz \1 e\2 u\3 m\4 n\5 k\6 \7/p"
+    done | tee "$OUT/mmid.txt"
+fi
 if on pp; then
     "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT -p 'n=512,' >"$OUT/ops-MUL_MAT-n512.txt" 2>&1 || true
     "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID >"$OUT/ops-MUL_MAT_ID.txt" 2>&1 || true
