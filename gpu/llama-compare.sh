@@ -34,11 +34,13 @@ exec 9>"$HOME/.cache/linux-lab-gpu.lock"; flock 9
 # STEPS=mmv: the one-token 4096x14336 matrix-vector (f16, q4_0, q8_0) over rows per workgroup, workgroup size and
 # the Metal-layout shader, against the read bandwidth (610-655 GB/s) and Metal (f16 131 us, q4_0 37, q8_0 57.5).
 if on mmv; then
-    for simd in 0 1; do for wg in subgroup large; do for rm in 1 2 4 8 16; do
-        GGML_VK_MMV_SIMD=$simd GGML_VK_DMMV_WG=$wg GGML_VK_RM_STDQ=$rm GGML_VK_RM_KQ=$rm "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT \
+    # MMV_SWEEP="SIMD,WG,RM,LARGE ..." picks the points (LARGE: subgroups in a large group, patch 0009).
+    for pt in ${MMV_SWEEP:-0,subgroup,1,4 0,large,1,4 1,large,2,4 1,large,4,4 1,large,8,4 1,large,2,8 1,large,4,8 1,large,2,16 1,large,4,16}; do
+        IFS=, read -r simd wg rm large <<<"$pt"
+        GGML_VK_MMV_SIMD=$simd GGML_VK_DMMV_WG=$wg GGML_VK_RM_STDQ=$rm GGML_VK_RM_KQ=$rm GGML_VK_DMMV_LARGE=$large "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT \
             -p 'type_a=(f16|q4_0|q8_0),type_b=f32,m=4096,n=1,k=14336,bs=\[1,1\],nr=\[1,1\],per=\[0,1,2,3\],k_v=0,o=1' 2>&1 |
-            sed -nE "s/^ *MUL_MAT\(type_a=([a-z0-9_]+),.* ([0-9.]+) us\/run.*/simd $simd $wg rm $rm \1 \2 us/p"
-    done; done; done | tee "$OUT/mmv.txt"
+            sed -nE "s/^ *MUL_MAT\(type_a=([a-z0-9_]+),.* ([0-9.]+) us\/run.*/simd $simd $wg rm $rm large $large \1 \2 us/p"
+    done | tee "$OUT/mmv.txt"
 fi
 if on ops; then
     for o in FLASH_ATTN_EXT SET_ROWS; do
