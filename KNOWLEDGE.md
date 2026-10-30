@@ -211,6 +211,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (run 5245, test-only edit restored after): Mesa keeps the coopmat k-step loop rolled (`while r31 <
+  32`); unrolled by hand in mul_mm.comp, 16x16x16 runs 7.8 instructions a matrix op for the whole k loop with its
+  loader (about 11 before) and is slower: f16 6400 to 7905 us, q4_0 5250 to 5768; at 8x8x8 the unrolled form spills
+  into 400 csel and doubles the time. Tests pass. With fewer moves (runs 5212-5229) and fewer instructions both
+  failing, the loop's bound is not issue (INFERRED): latency or occupancy, next to read in shaderdb's registers and
+  threads per variant.
 - 30 Oct, VERIFIED (runs 5212-5229; test-only switches in my builds, restored after), what does not move the
   512-token matmul at 16x16x16 (f16 / q4_0 / q8_0 / q4_K ~6400 / 5250 / 5450 / 7100 us): (1) fewer moves: the loop's
   accumulators are scalar 16-bit phis that land on misaligned half-registers (r26h:r27l), so each matrix op gathers
