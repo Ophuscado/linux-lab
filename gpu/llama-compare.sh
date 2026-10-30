@@ -3,7 +3,8 @@
 # sit side by side: llama-bench pp512/pp2048/tg128, the 1-512 token batch curve, generation after 0-16k tokens of
 # context (depth), speculative decoding on the code edit of macos/spec-req.py (none, ngram-mod 64 and 128, the MTP
 # head where the model has one), test-backend-ops perf of FLASH_ATTN_EXT and SET_ROWS (once), and with STEPS=perf, a few tokens
-# at 4k context through the per-op logger (llama-NAME-perf-d4096.txt). Models and names from
+# at 4k context through the per-op logger (llama-NAME-perf-d4096.txt); STEPS=sync, one token through ggml-vulkan's
+# sync logger. Models and names from
 # macos/models.txt (default: all present); the settings of gpu/llama-run.sh. Output: var/compare-<time>/, JSON as on
 # macOS. Takes the GPU lock.
 #
@@ -50,6 +51,12 @@ while IFS='|' read -r name file mtp; do
         >"$OUT/llama-$name-depth.json" 2>>"$OUT/errors.txt"
     on perf && GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 4 \
         -d 4096 -r 1 >"$OUT/llama-$name-perf-d4096.txt" 2>&1
+    # Where ggml-vulkan makes the GPU wait: one generated token with its sync logger (a "sync" line before each
+    # barrier, then the node or fused nodes it records), and the count of each.
+    if on sync; then
+        GGML_VK_SYNC_LOGGER=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 1 -r 1 >"$OUT/llama-$name-sync.txt" 2>&1 || true
+        echo "$name: $(grep -c '^sync$' "$OUT/llama-$name-sync.txt") syncs, $(grep -cE '^[0-9]+ ' "$OUT/llama-$name-sync.txt") nodes (warm-up and the token)" | tee -a "$OUT/sync.txt"
+    fi
     on spec || continue
     for c in "none|" "ngram-mod-64|--spec-type ngram-mod" \
         "ngram-mod-128|--spec-type ngram-mod --spec-ngram-mod-n-max 128 --spec-ngram-mod-n-min 96" \
