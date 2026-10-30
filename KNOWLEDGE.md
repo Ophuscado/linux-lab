@@ -211,6 +211,16 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (runs 5174-5199, my build with 0012): where a 512-token matmul's time goes, by removing parts
+  of mul_mm.comp (timings only): without any global load every type takes ~5120 us (11.7 TFLOPS), so the shared-memory
+  matrix loop alone caps it; without the matrix ops q4_0 takes 1620 us, f16 4110. Honeykrisp's first coopmat shape is
+  8x8x8 (INFERRED: the default times equal `GGML_VK_COOPMAT_SIZE=8`'s in a test build), which llama.cpp takes; 0001's
+  warptile fields pick 16x16x16 without a patch (`GGML_VK_WT_M=512,128,128,,32,32,,16,16,16`). 4096x14336x512: f16
+  6879 to 6324 us, q4_0 6267 to 5220, q4_K 6771 to 7062; MUL_MAT 2275/2275 and MUL_MAT_ID 1109/1109 pass. Prompts
+  (pp512 / pp2048 / pp4096), 8x8x8 to the medium tile at 16x16x16 with the small expert tile kept at 8x8x8 (16 there
+  costs short MoE prompts 4-14 %): Llama 2 734 / 807 / 807 to 875 / 949 / 937, Qwen 565 / 722 / 753 to 587 / 749 /
+  806, Gemma 817 / 923 / 867 to 858 / 1008 / 955, GPT-OSS 120B 523 / 703 / 798 to 527 / 711 / 858. `llama-run.sh`
+  takes it. Metal's own tile shape (64x32 at 128 threads) is 15-40 % slower here.
 - 30 Oct, VERIFIED (runs 5141, 5142, my build of the series with 0012; 0011's numbers in runs 5052/5055): the coopmat
   loop reloaded every B tile for each A tile; patch 0012 keeps a k step's B tiles in registers. f16 4096x14336x512
   8020 to 7060 us (7.5 to 8.5 TFLOPS), q4_0 and q8_0 unchanged (their time is in the loader's dequantization),
