@@ -114,16 +114,12 @@ restore_boot() {
 
 stage_repo() {
     command -v git >/dev/null || sudo dnf install -y git-core
-    local r d
-    for r in "$REPO $LAB"; do
-        d=${r#* }
-        if [[ -d $d/.git ]]; then
-            git -C "$d" pull --ff-only
-        else
-            git clone "${r%% *}" "$d"
-        fi
-        echo "scripts are in $d at $(git -C "$d" log -1 --format='%h %s')"
-    done
+    if [[ -d $LAB/.git ]]; then
+        git -C "$LAB" pull --ff-only
+    else
+        git clone "$REPO" "$LAB"
+    fi
+    echo "scripts are in $LAB at $(git -C "$LAB" log -1 --format='%h %s')"
 }
 
 need_repo() {
