@@ -133,6 +133,11 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   (~645 nodes) and ~1048 for Qwen (~3125 nodes), fewer than Metal's ~1290 serial steps for Qwen. Llama 2's 6.3 ms
   gap to Metal over 292 waits is ~21 us each, against 1.7 us that a wait costs more here (INFERRED: the kernels
   themselves, above all the matrix-vector ones at ~485 GB/s against 610-655 for a plain read, not the waits).
+- 30 Oct, VERIFIED (`STEPS=mmv`, `compare-20261030-091657`, `-094206`): no setting brings the 4096x14336
+  matrix-vector near memory speed. f16 248 us (~473 GB/s) at any rows; q4_0 best 69-70 us (Metal-layout shader, 4
+  rows, ~470 GB/s), q8_0 118-121 us (8 rows, ~516 GB/s); 32-thread groups are slower, and 8-16 rows collapse (q4_0
+  1300 us at 16, INFERRED: register spills). 256- and 512-thread groups (0009, `GGML_VK_DMMV_LARGE`) gain 5 % on
+  f16 and lose on q4_0: group size is not the limit.
 - VERIFIED, 29 Oct: not memory. A grid-stride read reaches 610-655 GB/s from 64 MB to 1 GB (`vk-chain.sh bw`), the
   same on both memory types and both Mesas; one vec4 per invocation (65,536 workgroups for 256 MB) only ~290 GB/s:
   launching many small workgroups is the limit. The f16 matrix-vector streams 475 GB/s, below what memory gives
