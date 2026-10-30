@@ -1,7 +1,7 @@
 From ba79027ec8101bc59a22d3ec1f71ea9272e129fc Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Fri, 30 Oct 2026 03:46:35 +0000
-Subject: [PATCH 7/10] vulkan: shader core count settable for drivers that report
+Subject: [PATCH 7/11] vulkan: shader core count settable for drivers that report
  none
 
 Honeykrisp has no core-count extension, so shader_core_count is 0: matmul split_k is off and flash attention sizes its split for a 16-core placeholder, on a 76-core M2 Ultra. GGML_VK_SHADER_CORES sets the count. FLASH_ATTN_EXT tests with one query token pass at 152 (1325/1325, lavapipe).
