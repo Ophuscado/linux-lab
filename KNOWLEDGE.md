@@ -123,36 +123,36 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   (`vk-chain`) against 2.27 on Metal; over a Qwen token the average is ~16 µs a launch on Vulkan and ~7.4 on Metal.
   Without the wait bit in the barrier word Llama 2 generates 94.6 t/s (Metal 120) but results are wrong;
   `HK_PERFTEST=designedusccdmbarrier` (word 0x17f) is the cheapest correct word, +7-9 % generation.
-- VERIFIED, 29 Oct: not memory. A grid-stride read reaches 610-655 GB/s from 64 MB to 1 GB (`vk-chain.sh bw`), the same
-  on both memory types and both Mesas; one vec4 per invocation (65,536 workgroups for 256 MB) only ~290 GB/s:
+- VERIFIED, 29 Oct: not memory. A grid-stride read reaches 610-655 GB/s from 64 MB to 1 GB (`vk-chain.sh bw`), the
+  same on both memory types and both Mesas; one vec4 per invocation (65,536 workgroups for 256 MB) only ~290 GB/s:
   launching many small workgroups is the limit. The f16 matrix-vector streams 475 GB/s, below what memory gives
-  (INFERRED: its shape). Metal's matrix-vector figures re-read a 117 MB matrix partly held in the 96 MB system cache,
-  an upper bound; Metal's own read bandwidth is not measured yet.
+  (INFERRED: its shape). Metal's matrix-vector figures re-read a 117 MB matrix partly held in the 96 MB system
+  cache, an upper bound; Metal's own read bandwidth is not measured yet.
 - VERIFIED, 29 Oct: generation over a long context. With the ~4,000-token prompt of the speculation test, Llama 2
   generates 24.7 t/s on Honeykrisp against 68.7 in tg128 (36 %), Metal 90.4 against 120.4 (75 %); Gemma 20.2 against
   69.3 on Metal. Attention over the cache is a second gap beside the launch cost.
-- VERIFIED, 30 Oct: that gap was mostly the core count. Honeykrisp reports none, so ggml-vulkan splits flash attention
-  for a 16-core placeholder (and turns matmul split_k off); one-token FLASH_ATTN_EXT cases ran 2-13x Metal's time.
-  `GGML_VK_SHADER_CORES` (0007, a local workaround: the count belongs in the driver, which already has it in
-  `agx_get_num_cores()` but exposes no `VK_AMD_shader_core_properties2`) sets it; 152 (two per core) is best of 76, 152 and 304 (`var/compare-20261030-*`).
-  tg32 at depth 0 / 1k / 4k / 16k, before and with 152: Llama 2 70.8 / 43.0 / 20.2 / 6.6 to 68.7 / 61.6 / 51.0 / 30.5;
-  GPT-OSS 20B 72.2 / 66.4 / 59.2 / 41.3 to 71.2 / 68.5 / 65.9 / 58.5; Qwen 34.4 / 33.9 / 32.0 / 26.5 to
-  34.4 / 34.2 / 33.9 / 31.4; Gemma 40.9 / 32.4 / 25.9 / 18.2 to 39.0 / 38.1 / 35.5 / 31.1; GPT-OSS 120B 50.3 / 46.5 /
-  41.1 / 28.3 to 49.2 / 47.6 / 45.4 / 40.7; prompts unchanged or +2 %.
+- VERIFIED, 30 Oct: that gap was mostly the core count. Honeykrisp reports none, so ggml-vulkan splits flash
+  attention for a 16-core placeholder (and turns matmul split_k off); one-token FLASH_ATTN_EXT cases ran 2-13x
+  Metal's time. `GGML_VK_SHADER_CORES` (0007, a local workaround: the count belongs in the driver, which already has
+  it in `agx_get_num_cores()` but exposes no `VK_AMD_shader_core_properties2`) sets it; 152 (two per core) is best
+  of 76, 152 and 304 (`var/compare-20261030-*`). tg32 at depth 0 / 1k / 4k / 16k, before and with 152: Llama 2 70.8
+  / 43.0 / 20.2 / 6.6 to 68.7 / 61.6 / 51.0 / 30.5; GPT-OSS 20B 72.2 / 66.4 / 59.2 / 41.3 to 71.2 / 68.5 / 65.9 /
+  58.5; Qwen 34.4 / 33.9 / 32.0 / 26.5 to 34.4 / 34.2 / 33.9 / 31.4; Gemma 40.9 / 32.4 / 25.9 / 18.2 to 39.0 / 38.1
+  / 35.5 / 31.1; GPT-OSS 120B 50.3 / 46.5 / 41.1 / 28.3 to 49.2 / 47.6 / 45.4 / 40.7; prompts unchanged or +2 %.
+  Cases with a short window (`n_kv_max` 512) do not change and stay 4-13x behind Metal.
 - 30 Oct, per-op logger, one token at 4k context (`var/compare-20261030-055101`, times inflated by the logger):
-  attention is now 2.0 of 31 ms for Llama 2 and 1.9 of 50 ms for Gemma. What grows with depth instead is the KV-cache
-  write fused with rope (Llama 2 `ROPE_VIEW_SET_ROWS` 71 us at depth 0, 203 at 4k); Gemma's V-cache write fused with
-  its norm (`RMS_NORM_VIEW_SET_ROWS`) costs 177-479 us a layer against 42 for the K side with rope. With fusion off
-  (`compare-20261030-062340`) the cost is the write itself: `SET_ROWS` of one token 117 us (Llama 2) and 132 us
-  (Gemma) at 4k, rope 26-30 us, a norm 27 us; its dispatch is sized by the source row, not the cache (INFERRED: what
-  grows is the destination buffer, e.g. a barrier or cache flush over it, not measured yet).
+  attention is now 2.0 of 31 ms for Llama 2 and 1.9 of 50 ms for Gemma. What grows with depth instead is the
+  KV-cache write fused with rope (Llama 2 `ROPE_VIEW_SET_ROWS` 71 us at depth 0, 203 at 4k); Gemma's V-cache write
+  fused with its norm (`RMS_NORM_VIEW_SET_ROWS`) costs 177-479 us a layer against 42 for the K side with rope. With
+  fusion off (`compare-20261030-062340`) the cost is the write itself: `SET_ROWS` of one token 117 us (Llama 2) and
+  132 us (Gemma) at 4k, rope 26-30 us, a norm 27 us; its dispatch is sized by the source row, not the cache
+  (INFERRED: what grows is the destination buffer, e.g. a barrier or cache flush over it, not measured yet).
 - 30 Oct, VERIFIED: alone, the write is cheap and flat: `SET_ROWS` of one token into a 256- to 16384-row cache takes
   7.2-10.0 us (f16) and 11.6-12.5 us (q8_0) in test-backend-ops (patch 0008, `compare-20261030-073750`). So the
   117-132 us inside a token is not the write (INFERRED: the logger's serialization and the barrier before a write to
   the cache buffer that the earlier attention reads).
 - 30 Oct: at the real core count (76) instead of 152: Gemma 39.4 / 37.1 / 34.5 / 31.2, GPT-OSS 120B 49.1 / 47.2 /
-  45.9 / 41.2, Qwen 33.9 / 32.7 / 33.2 / 31.4 (depth 0 / 1k / 4k / 16k); for these three 76 and 152 are within 2 %. Cases with a short window (`n_kv_max` 512) do not change and
-  stay 4-13x behind Metal.
+  45.9 / 41.2, Qwen 33.9 / 32.7 / 33.2 / 31.4 (depth 0 / 1k / 4k / 16k); for these three 76 and 152 are within 2 %.
 - VERIFIED, 25 Oct: the GPU runs at its full 1398 MHz (one dependent multiply-add 1.57 ns, Metal 1.39).
 
 ### What moved Honeykrisp forward
