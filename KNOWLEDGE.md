@@ -135,7 +135,13 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   `GGML_VK_SHADER_CORES` (0007) sets it; 152 (two per core) is best of 76, 152 and 304 (`var/compare-20261030-*`).
   tg32 at depth 0 / 1k / 4k / 16k, before and with 152: Llama 2 70.8 / 43.0 / 20.2 / 6.6 to 68.7 / 61.6 / 51.0 / 30.5;
   GPT-OSS 20B 72.2 / 66.4 / 59.2 / 41.3 to 71.2 / 68.5 / 65.9 / 58.5; Qwen 34.4 / 33.9 / 32.0 / 26.5 to
-  34.4 / 34.2 / 33.9 / 31.4; prompts unchanged or +2 %. Cases with a short window (`n_kv_max` 512) do not change and
+  34.4 / 34.2 / 33.9 / 31.4; Gemma 40.9 / 32.4 / 25.9 / 18.2 to 39.0 / 38.1 / 35.5 / 31.1; GPT-OSS 120B 50.3 / 46.5 /
+  41.1 / 28.3 to 49.2 / 47.6 / 45.4 / 40.7; prompts unchanged or +2 %.
+- 30 Oct, per-op logger, one token at 4k context (`var/compare-20261030-055101`, times inflated by the logger):
+  attention is now 2.0 of 31 ms for Llama 2 and 1.9 of 50 ms for Gemma. What grows with depth instead is the KV-cache
+  write fused with rope (Llama 2 `ROPE_VIEW_SET_ROWS` 71 us at depth 0, 203 at 4k); Gemma's V-cache write fused with
+  its norm (`RMS_NORM_VIEW_SET_ROWS`) costs 177-479 us a layer against 42 for the K side with rope (INFERRED: the
+  fused shader, not the write). Cases with a short window (`n_kv_max` 512) do not change and
   stay 4-13x behind Metal.
 - VERIFIED, 25 Oct: the GPU runs at its full 1398 MHz (one dependent multiply-add 1.57 ns, Metal 1.39).
 
