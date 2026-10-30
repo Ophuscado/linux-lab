@@ -1,0 +1,33 @@
+From 8a49b07864026e830838019ad435b490e555675e Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Fri, 30 Oct 2026 07:35:49 +0000
+Subject: [PATCH 8/8] tests: SET_ROWS perf cases, one token into caches of 256 to
+ 16k rows
+
+One token's KV write took 117-132 us at 4k context on Honeykrisp (llama-bench per-op logger, fusion off) while its dispatch is sized by the source row; these cases time the write alone against the cache length.
+---
+ tests/test-backend-ops.cpp | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/tests/test-backend-ops.cpp b/tests/test-backend-ops.cpp
+index b7ce747fd..7591715b1 100644
+--- a/tests/test-backend-ops.cpp
++++ b/tests/test-backend-ops.cpp
+@@ -12820,6 +12820,14 @@ static std::vector<std::unique_ptr<test_case>> make_test_cases_perf() {
+     }
+ 
+     // Qwen3-VL-8B https://github.com/ggml-org/llama.cpp/issues/17012
++    // One token's KV-cache write (K or V of a layer: 4096 values as in Llama 2 7B, 2048 as in Gemma's sliding
++    // layers) into caches of growing length: the write itself should not depend on the cache.
++    for (int kv : { 256, 4096, 16384 }) {
++        for (int n : { 2048, 4096 }) {
++            test_cases.emplace_back(new test_set_rows(GGML_TYPE_F32, GGML_TYPE_F16, GGML_TYPE_I64, { n, kv, 1, 1 }, { 1, 1 }, 1, false));
++            test_cases.emplace_back(new test_set_rows(GGML_TYPE_F32, GGML_TYPE_Q8_0, GGML_TYPE_I64, { n, kv, 1, 1 }, { 1, 1 }, 1, false));
++        }
++    }
+     test_cases.emplace_back(new test_flash_attn_ext(72, 72, 16, {1, 1}, 5776, 5776, false, false, 0, 0, GGML_PREC_F32, GGML_TYPE_F16, GGML_TYPE_F16));
+ 
+     // Sparse flash attention (n_kv_max hint) decode across KV depths.
+-- 
+2.43.0
+
