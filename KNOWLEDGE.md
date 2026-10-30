@@ -195,6 +195,11 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   to 128x32 at 256 threads (`GGML_VK_MMID_SIZES=s GGML_VK_WT_S=256,128,32,,32,16`, the experts alone; dense matmuls
   keep the medium one) is faster at 128-512 tokens: 128 experts of 8, q8_0, 512 tokens 3946 to 3228 us (-18 %), 128
   tokens -35 %; 32 experts of 4 at 512 tokens -12 %; mxfp4 -9 %. 128x32 at 128 threads and 64x32 are slower.
+- 30 Oct, VERIFIED (runs 5029, 5047, my build of the series with 0011): the 128x32 tile alone loses 2-4 % on long
+  prompts (80-128 tokens an expert), so 0011 (`GGML_VK_MMID_S_MAX=64`) keeps both and picks by tokens per expert.
+  Medium alone against the pair, pp512 / pp2048 at -ub 2048 and pp1024 / pp4096 at -ub 8192: Qwen 466 / 684 / 594 /
+  739 to 541 / 710 / 648 / 739; GPT-OSS 120B 410 / 653 / 537 / 721 to 502 / 680 / 596 / 730; Gemma 726 / 908 / 826 /
+  825 to 764 / 893 / 843 / 832. Up to +22 % on short prompts, nothing lost on long ones.
 
 ### What moved Honeykrisp forward
 
