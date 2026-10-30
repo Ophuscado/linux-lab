@@ -128,8 +128,14 @@ layers on the GPU, the mean of 2-5 runs. More tables under [Metal and Honeykrisp
   an upper bound; Metal's own read bandwidth is not measured yet.
 - VERIFIED, 29 Oct: generation over a long context. With the ~4,000-token prompt of the speculation test, Llama 2
   generates 24.7 t/s on Honeykrisp against 68.7 in tg128 (36 %), Metal 90.4 against 120.4 (75 %); Gemma 20.2 against
-  69.3 on Metal. Attention over the cache is a second gap beside the launch cost (INFERRED: flash attention with the
-  q8_0 cache, not traced yet).
+  69.3 on Metal. Attention over the cache is a second gap beside the launch cost.
+- VERIFIED, 30 Oct: that gap was mostly the core count. Honeykrisp reports none, so ggml-vulkan splits flash attention
+  for a 16-core placeholder (and turns matmul split_k off); one-token FLASH_ATTN_EXT cases ran 2-13x Metal's time.
+  `GGML_VK_SHADER_CORES` (0007) sets it; 152 (two per core) is best of 76, 152 and 304 (`var/compare-20261030-*`).
+  tg32 at depth 0 / 1k / 4k / 16k, before and with 152: Llama 2 70.8 / 43.0 / 20.2 / 6.6 to 68.7 / 61.6 / 51.0 / 30.5;
+  GPT-OSS 20B 72.2 / 66.4 / 59.2 / 41.3 to 71.2 / 68.5 / 65.9 / 58.5; Qwen 34.4 / 33.9 / 32.0 / 26.5 to
+  34.4 / 34.2 / 33.9 / 31.4; prompts unchanged or +2 %. Cases with a short window (`n_kv_max` 512) do not change and
+  stay 4-13x behind Metal.
 - VERIFIED, 25 Oct: the GPU runs at its full 1398 MHz (one dependent multiply-add 1.57 ns, Metal 1.39).
 
 ### What moved Honeykrisp forward
