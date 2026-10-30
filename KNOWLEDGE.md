@@ -209,6 +209,13 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (runs 5141, 5142, my build of the series with 0012; 0011's numbers in runs 5052/5055): the coopmat
+  loop reloaded every B tile for each A tile; patch 0012 keeps a k step's B tiles in registers. f16 4096x14336x512
+  8020 to 7060 us (7.5 to 8.5 TFLOPS), q4_0 and q8_0 unchanged (their time is in the loader's dequantization),
+  MUL_MAT and MUL_MAT_ID tests pass. Prompts (pp512 / pp2048 / pp4096, 512,128,128): Qwen 551 / 714 / 744 to 565 / 722
+  / 753, Gemma 805 / 909 / 885 to 817 / 923 / 867, GPT-OSS 120B 505 / 687 / 758 to 523 / 703 / 798, Llama 2 (q4_0)
+  even. `GGML_VK_DISABLE_INTEGER_DOT_PRODUCT=1` changes no type: every quantized matmul here already runs the
+  coopmat loop (9-10 TFLOPS), so their gap to Metal is the loader. Honeykrisp has `VK_EXT_pipeline_robustness`.
 - 30 Oct, VERIFIED counts, INFERRED kernel names (dougallj/applegpu 28dd804 on the shader cache of macOS run
   20261028-025320, Mesa's final code from run 5094; innermost loop = the range of its backward branch): Metal's
   `kernel_mul_mm` family, the loops with 32 `simd_matrix_fmadd32`, 24 threadgroup loads, ~17 threadgroup stores and
