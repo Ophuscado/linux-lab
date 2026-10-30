@@ -85,7 +85,8 @@ and in two M424 Thunderbolt 3 boxes since 22 Oct.
   DARTs in always-on islands, while macOS's power table on this machine gates them under `ANE_SYS` (pmgr 0x260).
   `kernel/dt/t6022-ane-dart-power.dts` fixes it. Merged into omarchy-ane on 29 Oct (pull request 278, b5c6abb), the
   maintainer's own 13.5 device trees agreeing; whether T6020/T6021 need it is open (their iBoot may leave ANE_SYS on).
-- 30 Oct, VERIFIED: the judged row that turns the M2 Ultra on by default upstream, submitted (receipt 316ea37e,
+- 30 Oct: omarchy-ane turned the M2 Ultra on by default (the operator, from the thread).
+- 30 Oct, VERIFIED: the judged row for that, submitted (receipt 316ea37e,
   `var/ane/deep-20261030-014719`): omarchy-mlx's `collect_deep.py --ane-smoke`, check ready, 20/20 bit-exact,
   median 0.399 ms. Its smoke runs only when `omarchy-ane-check` is ready, which needs the module where `modinfo` finds
   it (`kernel/ane.sh deep` installs it for the run, blacklisted at boot), and only at load1 < 0.5 with CPU PSI 0:
