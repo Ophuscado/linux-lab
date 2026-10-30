@@ -29,7 +29,7 @@
 #   gpu    vk-chain's Metal twin (vk-chain/metal-chain.m): one launch's cost, chained and free, the
 #          dependent-FMA clock; the number the Linux generation gap is measured against
 #   llama  llama.cpp with Metal at the same upstream commit as the Linux numbers (src-patches/llama.cpp/
-#          honeykrisp/BASE): llama-bench pp512/pp2048/tg128 and the 1-512 token batch curve on every model
+#          honeykrisp/BASE): llama-bench pp512/pp2048/tg128, generation after 0-16k tokens of context and the 1-512 token batch curve on every model
 #          of models.txt, the code-edit speculation test, test-backend-ops perf for MUL_MAT/MUL_MAT_ID
 #   ablate per model, Metal's fusion, concurrency and graph reordering off one by one (pp512, tg128),
 #          and one token's encoded graph with what was fused
@@ -235,6 +235,8 @@ step_llama() {
         log "llama: $name: $f${m:+ with $m}${LOCAL:+, copied to $LOCAL first}"
         f=$(fetch "$name" "$f"); [[ -n $m ]] && mf=$(fetch "${name}_mtp" "$m")
         "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512,2048 -n 128 -r 3 -o json >"$OUT/llama-$name-bench.json" 2>>"$OUT/llama-errors.txt"
+        "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 32 -d 0,1024,4096,16384 -r 2 -o json \
+            >"$OUT/llama-$name-depth.json" 2>>"$OUT/llama-errors.txt"
         "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 8192 -b 8192 -p 1,2,4,8,9,12,16,24,32,48,64,128,512 -n 0 -r 2 -o json \
             >"$OUT/llama-$name-batches.json" 2>>"$OUT/llama-errors.txt"
         spec "$name" "$f" "$mf"
