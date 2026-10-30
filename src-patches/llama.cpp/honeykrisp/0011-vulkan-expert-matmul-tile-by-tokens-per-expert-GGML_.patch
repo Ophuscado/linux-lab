@@ -1,7 +1,7 @@
 From c4ef30dee9776b0231c0caffc6cabaa5b999f9a3 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Fri, 30 Oct 2026 12:27:43 +0000
-Subject: [PATCH 11/12] vulkan: expert matmul tile by tokens per expert
+Subject: [PATCH 11/13] vulkan: expert matmul tile by tokens per expert
  (GGML_VK_MMID_S_MAX)
 
 A 128x32 small tile (GGML_VK_WT_S=256,128,32,,32,16) beats the 128x64 medium one at 32-64 tokens an expert by 9-35 % and loses 2-4 % at 80-128 (Qwen, Gemma, GPT-OSS 120B, pp1024 against pp4096 at -ub 8192), so with both built the choice goes by nei0*nei1/n_as.

@@ -211,6 +211,15 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (runs 5339-5363, my build of the series with 0013; MUL_MAT_ID 1109/1109): against Metal's
+  MUL_MAT_ID (macOS run 20261028-022802) the worst cases were 32-64 tokens over 32 experts (q8_0 6.6x, iq4_xs 8.7x):
+  `GGML_VK_MMV_ID_MAX=64` kept them on the matrix-vector path, which reloads an expert's weights per token. It wins at
+  2 tokens an expert (q4_0 e128 u8 n32: 628 against 1128 us), is even at 4, loses at 8 (q4_0 e32 u4 n64: 1343 against
+  793). Patch 0013, `GGML_VK_MMV_ID_PER_EXPERT=2`: llama-bench batches of 9 / 16 / 24 / 32 / 48 / 64 tokens, Gemma 136
+  / 149 / 103 / 124 / 155 / 178 to 136 / 149 / 103 / 124 / 184 / 239, GPT-OSS 20B 148 / 160 / 115 / 133 / 157 / 173
+  to 147 / 161 / 119 / 154 / 214 / 279; Qwen (512 experts) and GPT-OSS 120B (128 of 4) even. 3 an expert is worse
+  on Gemma's 48. `llama-run.sh` and `llama-compare.sh` set 2. The other MUL_MAT_ID cases are 2-4x Metal, as the
+  dense matmuls.
 - 30 Oct, VERIFIED (runs 5304-5306, test-only edit restored after; MUL_MAT 2275/2275): fetching the next k block of
   B (llama.cpp's aligned 8-wide loads) into registers before this block's matrix ops, stored to shared memory at the
   next block, is slower: 512 threads 128x128 f16 6340 to 8994 us, q4_0 5226 to 7034; 256 threads 128x64 f16 +7 %,

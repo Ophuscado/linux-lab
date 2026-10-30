@@ -1,7 +1,7 @@
 From 8a49b07864026e830838019ad435b490e555675e Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Fri, 30 Oct 2026 07:35:49 +0000
-Subject: [PATCH 8/12] tests: SET_ROWS perf cases, one token into caches of 256 to
+Subject: [PATCH 8/13] tests: SET_ROWS perf cases, one token into caches of 256 to
  16k rows
 
 One token's KV write took 117-132 us at 4k context on Honeykrisp (llama-bench per-op logger, fusion off) while its dispatch is sized by the source row; these cases time the write alone against the cache length.

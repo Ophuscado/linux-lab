@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Fri, 30 Oct 2026 22:17:44 +0000
+Subject: [PATCH 13/13] vulkan: expert matrix-vector path by tokens per expert
+ (GGML_VK_MMV_ID_PER_EXPERT)
+
+GGML_VK_MMV_ID_MAX (0002) keeps MUL_MAT_ID on the matrix-vector path up to a token count, whatever the expert count. That path reloads an expert's weights per token: on an M2 Ultra under Honeykrisp it beats the matmul path at 2 tokens an expert (q4_0 e128 u8 n32: 628 against 1128 us) and loses from 4 (q8_0 e32 u4 n32: 1119 against 919) to 8 (q4_0 e32 u4 n64: 1343 against 793). GGML_VK_MMV_ID_PER_EXPERT=N limits it, past 8 tokens, to N tokens an expert on average; unset, nothing changes.
+---
+ ggml/src/ggml-vulkan/ggml-vulkan.cpp | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index 3f29d5651..328767a90 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -8149,10 +8149,25 @@ static bool ggml_vk_mmv_id_unoffset(const ggml_tensor * dst) {
+     return true;
+ }
+ 
++// Tuning: GGML_VK_MMV_ID_PER_EXPERT, past 8 tokens the matrix-vector path only while each expert averages at most
++// this many tokens (unset: no limit). It reloads an expert's weights per token, so it wins at 1-2 tokens an expert
++// and loses to the matmul path at 4 or more: GGML_VK_MMV_ID_MAX alone keeps it for a model's every batch size.
++static int64_t ggml_vk_mmv_id_per_expert() {
++    static const int64_t v = [] {
++        const char * e = getenv("GGML_VK_MMV_ID_PER_EXPERT");
++        return e ? (int64_t)strtoll(e, nullptr, 10) : int64_t(-1);
++    }();
++    return v;
++}
++
+ static bool ggml_vk_use_mul_mat_vec_id(const ggml_tensor * dst) {
+     const ggml_tensor * src0 = dst->src[0];
+     const ggml_tensor * ids = dst->src[2];
+-    return ((uint64_t)ids->ne[1] <= 8 || ((uint64_t)ids->ne[1] <= ggml_vk_mmv_id_max() && ggml_vk_mmv_id_unoffset(dst))) && (src0->type == GGML_TYPE_F32 || src0->type == GGML_TYPE_F16 || ggml_is_quantized(src0->type));
++    const uint64_t tokens = ids->ne[1];
++    const int64_t per_expert_max = ggml_vk_mmv_id_per_expert();
++    const bool few_per_expert = per_expert_max < 0 ||
++        CEIL_DIV(tokens * (uint64_t)ids->ne[0], (uint64_t)src0->ne[2]) <= (uint64_t)per_expert_max;
++    return (tokens <= 8 || (tokens <= ggml_vk_mmv_id_max() && few_per_expert && ggml_vk_mmv_id_unoffset(dst))) && (src0->type == GGML_TYPE_F32 || src0->type == GGML_TYPE_F16 || ggml_is_quantized(src0->type));
+ }
+ 
+ bool ggml_vk_use_mul_mat_vec_id(const struct ggml_cgraph * cgraph, int node_idx) {
