@@ -191,6 +191,10 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, VERIFIED (`STEPS=mmid`, `compare-20261030-113238`): the built tile sizes are not the lever. For
   MUL_MAT_ID at 128-512 tokens the medium tile (today) is best; small 1.5-2x slower, large 3-4x slower; under 64
   tokens the matrix-vector path runs (patch 0002's limit) and the sizes do not matter.
+- 30 Oct, VERIFIED (`compare-20261030-114859`, MUL_MAT_ID tests 1109/1109 for each shape): a small tile reshaped
+  to 128x32 at 256 threads (`GGML_VK_MMID_SIZES=s GGML_VK_WT_S=256,128,32,,32,16`, the experts alone; dense matmuls
+  keep the medium one) is faster at 128-512 tokens: 128 experts of 8, q8_0, 512 tokens 3946 to 3228 us (-18 %), 128
+  tokens -35 %; 32 experts of 4 at 512 tokens -12 %; mxfp4 -9 %. 128x32 at 128 threads and 64x32 are slower.
 
 ### What moved Honeykrisp forward
 
