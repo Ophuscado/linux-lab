@@ -54,7 +54,8 @@ done
 [[ -n ${VK_DRIVER_FILES:-} ]] || echo "driver: the system's (no mesa-side driver built)"
 [[ ${LLAMA_CLUSTER:-0} == 1 ]] || export AGX_CLUSTER_OFF=1
 export GGML_VK_WT_M=256,128,64,,32,32 GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_MAX_COLS=16 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1 GGML_VK_RM_STDQ=$rows GGML_VK_RM_KQ=$rows \
-    GGML_VK_SHADER_CORES=${GGML_VK_SHADER_CORES:-152}  # Honeykrisp reports none; 152 = 2 x 76 cores (KNOWLEDGE, 30 Oct)
+    GGML_VK_SHADER_CORES=${GGML_VK_SHADER_CORES:-152} \
+    GGML_VK_MMID_SIZES=sm GGML_VK_WT_S=256,128,32,,32,16 GGML_VK_MMID_S_MAX=64  # experts: 128x32 up to 64 tokens each (0011)
 
 exec "$SERVER" -m "$M" "${draft[@]}" \
     -ngl all -t 16 -fa on -np 1 -ub 8192 -b 8192 \

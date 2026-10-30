@@ -26,6 +26,7 @@ for d in agxperf coopmat; do
 done
 export AGX_CLUSTER_OFF=1 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1
 export GGML_VK_WT_M=256,128,64,,32,32 GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_MAX_COLS=16 GGML_VK_SHADER_CORES=${GGML_VK_SHADER_CORES:-152}
+export GGML_VK_MMID_SIZES=${GGML_VK_MMID_SIZES:-sm} GGML_VK_WT_S=${GGML_VK_WT_S:-256,128,32,,32,16} GGML_VK_MMID_S_MAX=${GGML_VK_MMID_S_MAX:-64}
 # Rows per workgroup as llama-run.sh sets them; ROWS=N for every model instead.
 rows() { [[ -n ${ROWS:-} ]] && { echo "$ROWS"; return; }; case $1 in qwen) echo 4 ;; gemma) echo 2 ;; *) echo 1 ;; esac; }
 
