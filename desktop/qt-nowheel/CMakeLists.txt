@@ -1,6 +1,0 @@
-cmake_minimum_required(VERSION 3.16)
-project(nowheel LANGUAGES CXX)
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-set(CMAKE_AUTOMOC ON)
-add_library(breezenowheel MODULE nowheel.cpp)
-target_link_libraries(breezenowheel PRIVATE Qt6::Widgets)

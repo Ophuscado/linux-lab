@@ -52,8 +52,8 @@ its own. The findings and their evidence are in [`KNOWLEDGE.md`](KNOWLEDGE.md).
   no acceleration), key repeat and scrolling matched, and no scrolling from a finger resting on the mouse. Magic
   Keyboard Fn shortcuts: Fn+F maximize, Fn+C centre, Fn+P keep above, Fn+D on all desktops. Still to come: a screen
   zoom from a tap (two fingers on the mouse, three on the trackpad).
-- The KDE task switcher bug traced to libplasma, a Qt style that keeps the wheel off unfocused controls, the WhiteSur
-  look, macOS's colour profile for the TV, Bluetooth pairings from macOS.
+- The KDE task switcher bug traced to libplasma, the WhiteSur look, macOS's colour profile for the TV, Bluetooth
+  pairings from macOS.
 
 ## Layout
 
