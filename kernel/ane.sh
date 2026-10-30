@@ -13,8 +13,10 @@
 #                             omarchy-mlx's collector with its ANE smoke (scripts/collect_deep.py --ane-smoke), the
 #                             judged row upstream asks for to enable the M2 Ultra by default: src/omarchy-mlx (cloned
 #                             when missing), this checkout's check and smoke tools on PATH, the driver loaded, the
-#                             machine idle (it waits up to 5 min for load < 0.5). Writes var/ane/deep-<date>.tgz and
-#                             its .submission.md, redacted, uploads nothing; --submit also sends them (public receipt)
+#                             machine idle (it waits up to 5 min for load < 0.5). omarchy-ane-check wants the module
+#                             where modinfo finds it, so for the run it sits in updates/ with a blacklist line (no
+#                             load at boot), both removed after. Writes var/ane/deep-<date>.tgz and its
+#                             .submission.md, redacted, uploads nothing; --submit also sends them (public receipt)
 #   kernel/ane.sh unload      rmmod
 #   kernel/ane.sh report      everything the runbook asks to send back, into var/ane/report-<date>/
 #   kernel/ane.sh autoload on|off|status
@@ -71,7 +73,13 @@ deep)
     M=$LAB/src/omarchy-mlx
     [[ -d $M/.git ]] || git clone -q --depth 1 https://github.com/joshuaswarren/omarchy-mlx "$M"
     lsmod | grep -q '^ane_t6021 ' || die "the driver is not loaded: kernel/ane.sh load"
-    echo "omarchy-mlx $(git -C "$M" log -1 --format='%h %cs'), linux-ane $(git -C "$A" log -1 --format='%h %cs'), load $(cut -d' ' -f1 /proc/loadavg)"
+    U=/usr/lib/modules/$(uname -r)/updates/ane_t6021.ko BL=/etc/modprobe.d/ane-lab-noautoload.conf
+    trap 'sudo rm -f "$U" "$BL"; sudo depmod -a' EXIT
+    echo 'blacklist ane_t6021' | sudo tee "$BL" >/dev/null
+    sudo install -D -m 644 "$MOD" "$U" && sudo depmod -a
+    echo "omarchy-mlx $(git -C "$M" log -1 --format='%h %cs'), linux-ane $(git -C "$A" log -1 --format='%h %cs'), load $(cut -d' ' -f1-3 /proc/loadavg), CPU PSI $(sed -n 's/^some avg10=\([^ ]*\).*/\1/p' /proc/pressure/cpu)"
+    # What keeps the load up: tasks running (R) or waiting on I/O (D), counted by name.
+    ps -eo stat=,comm= | awk '$1 ~ /^[RD]/ { n[$1 " " $2]++ } END { for (k in n) print "  " n[k], k }' | sort -rn | head -n 8
     PATH=$A/packaging:$PATH python3 "$M/scripts/collect_deep.py" --ane-smoke --out "$OUT/deep-$stamp.tgz" "${@:2}"
     ;;
 unload)
