@@ -209,9 +209,18 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED counts, INFERRED kernel names (dougallj/applegpu 28dd804 on the shader cache of macOS run
+  20261028-025320, Mesa's final code from run 5094; innermost loop = the range of its backward branch): Metal's
+  `kernel_mul_mm` family, the loops with 32 `simd_matrix_fmadd32`, 24 threadgroup loads, ~17 threadgroup stores and
+  2 barriers (llama.cpp's 4x2 8x8 fragments per simdgroup over a 32-wide k step), runs 142-280 instructions per
+  iteration, 4.4-8.8 per matrix op, with the next tile's device loads and dequantization inside and 4 movs in most
+  variants. Mesa's coopmat inner loop runs 167 instructions for 16 `simd_matrix_fmadd16`, 10.4 per matrix op without
+  its device loads: 72 mov, 36 local loads, 28 iadd. Per matrix op: local loads 0.75 against 2.25, moves ~0.1 against
+  4.5. Apple loads each fragment once into the registers the matrix op reads and reuses it; Mesa's lowering loads
+  more and copies everything into place. Metal's flash attention: 128 matrix ops in 601-678 instructions.
 - 30 Oct, VERIFIED (`AGX_MESA_DEBUG=shaderdb` and `shaders`, run 5093-5094): the matmul shader has 93-97 registers,
   1024 threads, no spills; its inner loop issues 16 `simd_matrix_fmadd16` among ~190 instructions (36 local loads,
-  ~90 mov/collect/split to assemble the operands, 28 iadd), and its loader 128 `icmpsel` (bounds clamps) for 32
+  ~90 mov/collect/split to assemble the operands, 28 iadd; 167 in the final code, below), and its loader 128 `icmpsel` (bounds clamps) for 32
   device loads. Larger per-warp tiles that reuse operands more: 64x32 per warp (`256,128,128,,64,32`) f16 -23 % in
   test-backend-ops, q8_0 -2 %, and nothing on real prompts (Llama 2 744 / 809 / 809 to 739 / 802 / 791); WMITER 4 is
   fast but wrong. The lever left is the operand assembly the compiler emits, a Mesa matter.
