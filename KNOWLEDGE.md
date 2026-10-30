@@ -211,6 +211,10 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (run 5203, Mesa's `AGX_MESA_DEBUG=shaders`, f16 matmul; 212-266 instructions undecoded by Mesa's
+  disassembler, so counts are lower bounds): at 16x16x16 the matrix loop runs 224 instructions for 32 matrix ops, 7.0
+  per op (8x8x8: 144 for 16, 9.0): 90 mov, 55 iadd, 24 local loads. Local loads per op now 0.75, Metal's figure; moves
+  2.8 per op against Metal's ~0.1 are what is left in the loop.
 - 30 Oct, VERIFIED (runs 5174-5199, my build with 0012): where a 512-token matmul's time goes, by removing parts
   of mul_mm.comp (timings only): without any global load every type takes ~5120 us (11.7 TFLOPS), so the shared-memory
   matrix loop alone caps it; without the matrix ops q4_0 takes 1620 us, f16 4110. Honeykrisp's first coopmat shape is
