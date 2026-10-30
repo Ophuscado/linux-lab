@@ -8,7 +8,8 @@
 # macos/models.txt (default: all present); the settings of gpu/llama-run.sh. Output: var/compare-<time>/, JSON as on
 # macOS. Takes the GPU lock.
 #
-# Environment: STEPS (default "bench batches depth spec ops"), COMPARE_OUT (instead of var/), LLAMA_BIN (a build/bin with llama-bench and llama-server; default src/llama.cpp-simd/build/bin, the
+# Environment: STEPS (default "bench batches depth spec ops"), COMPARE_OUT (instead of var/), GPU_LOCK (the lock
+# file, for a sandbox where ~/.cache is read-only), LLAMA_BIN (a build/bin with llama-bench and llama-server; default src/llama.cpp-simd/build/bin, the
 # honeykrisp series), LLM (models, default ~/Projects/_llm).
 set -euo pipefail
 LAB=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
@@ -30,7 +31,7 @@ rows() { [[ -n ${ROWS:-} ]] && { echo "$ROWS"; return; }; case $1 in qwen) echo 
 
 STEPS=" ${STEPS:-bench batches depth spec ops} "
 on() { [[ $STEPS == *" $1 "* ]]; }
-exec 9>"$HOME/.cache/linux-lab-gpu.lock"; flock 9
+exec 9>"${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}"; flock 9
 # STEPS=mmv: the one-token 4096x14336 matrix-vector (f16, q4_0, q8_0) over rows per workgroup, workgroup size and
 # the Metal-layout shader, against the read bandwidth (610-655 GB/s) and Metal (f16 131 us, q4_0 37, q8_0 57.5).
 if on mmv; then
