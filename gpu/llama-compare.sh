@@ -2,7 +2,8 @@
 # llama-compare.sh [NAME...]: on Linux, the same llama.cpp tests macos/collect.sh's llama step ran with Metal, so the two
 # sit side by side: llama-bench pp512/pp2048/tg128, the 1-512 token batch curve, generation after 0-16k tokens of
 # context (depth), speculative decoding on the code edit of macos/spec-req.py (none, ngram-mod 64 and 128, the MTP
-# head where the model has one), and test-backend-ops perf of FLASH_ATTN_EXT (once). Models and names from
+# head where the model has one), test-backend-ops perf of FLASH_ATTN_EXT (once), and with STEPS=perf, a few tokens
+# at 4k context through the per-op logger (llama-NAME-perf-d4096.txt). Models and names from
 # macos/models.txt (default: all present); the settings of gpu/llama-run.sh. Output: var/compare-<time>/, JSON as on
 # macOS. Takes the GPU lock.
 #
@@ -45,6 +46,8 @@ while IFS='|' read -r name file mtp; do
         >"$OUT/llama-$name-batches.json" 2>>"$OUT/errors.txt"
     on depth && "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 32 -d 0,1024,4096,16384 -r 2 -o json \
         >"$OUT/llama-$name-depth.json" 2>>"$OUT/errors.txt"
+    on perf && GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 4 \
+        -d 4096 -r 1 >"$OUT/llama-$name-perf-d4096.txt" 2>&1
     on spec || continue
     for c in "none|" "ngram-mod-64|--spec-type ngram-mod" \
         "ngram-mod-128|--spec-type ngram-mod --spec-ngram-mod-n-max 128 --spec-ngram-mod-n-min 96" \
