@@ -142,7 +142,6 @@ layers on the GPU, the mean of 2-5 runs. More tables under [Metal and Honeykrisp
   path is slower.
 - Driver: agxperf (coopmat Mesa plus a third-party compiler series) with bit 47 on local loads only (on stores it
   breaks ARGMAX) and clustering off: prompts +17 %, generation +1-3 %, all 21303 operator tests pass.
-- llama.cpp cannot read a model from the mergerfs pool ("read error: Bad address"); models load from `~/Projects/_llm`.
 - Benchmarks take `~/.cache/linux-lab-gpu.lock` (flock): two runs sharing the GPU halve each other.
 
 ### GPU usage per client
