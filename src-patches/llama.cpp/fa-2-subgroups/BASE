@@ -1,0 +1,6 @@
+# One upstream pull request candidate: this change alone on llama.cpp master; the operator writes its commit message and PR text.
+UPSTREAM=https://github.com/ggml-org/llama.cpp
+BASE=5047748f114564fcf271e6a648f60e2d2eae6264  # master of 2026-10-31
+FORK=https://github.com/Ophuscado/llama.cpp
+BRANCH=fa-2-subgroups
+CLONE=src/llama.cpp

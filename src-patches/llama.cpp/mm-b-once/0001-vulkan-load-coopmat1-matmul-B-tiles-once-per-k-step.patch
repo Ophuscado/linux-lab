@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Sat, 31 Oct 2026 01:22:08 +0000
+Subject: [PATCH] vulkan: load coopmat1 matmul B tiles once per k step
+
+---
+ ggml/src/ggml-vulkan/vulkan-shaders/mul_mm.comp | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/ggml/src/ggml-vulkan/vulkan-shaders/mul_mm.comp b/ggml/src/ggml-vulkan/vulkan-shaders/mul_mm.comp
+index 19d37870b..43d89c32a 100644
+--- a/ggml/src/ggml-vulkan/vulkan-shaders/mul_mm.comp
++++ b/ggml/src/ggml-vulkan/vulkan-shaders/mul_mm.comp
+@@ -317,7 +317,7 @@ void main() {
+ 
+ #ifdef COOPMAT
+     coopmat<FLOAT_TYPE, gl_ScopeSubgroup, TM, TK, gl_MatrixUseA> cache_a;
+-    coopmat<FLOAT_TYPE, gl_ScopeSubgroup, TK, TN, gl_MatrixUseB> cache_b;
++    coopmat<FLOAT_TYPE, gl_ScopeSubgroup, TK, TN, gl_MatrixUseB> cache_b[cms_per_col];
+     coopmat<ACC_TYPE, gl_ScopeSubgroup, TM, TN, gl_MatrixUseAccumulator> sums[cms_per_row * cms_per_col];
+ 
+     [[unroll]] for (uint i = 0; i < cms_per_row * cms_per_col; i++) {
+@@ -366,14 +366,16 @@ void main() {
+         if (warp_c < required_warp_c) {
+ #endif
+         [[unroll]] for (uint i = 0; i < BK; i += TK) {
++            // Load each B tile once per k step, not once per A tile
++            [[unroll]] for (uint cm_col = 0; cm_col < cms_per_col; cm_col++) {
++                coopMatLoad(cache_b[cm_col], buf_b, (warp_c * WN + cm_col * TN) * SHMEM_STRIDE + i / 2, SHMEM_STRIDE, gl_CooperativeMatrixLayoutColumnMajor);
++            }
+             [[unroll]] for (uint cm_row = 0; cm_row < cms_per_row; cm_row++) {
+                 // Load from shared into cache
+                 coopMatLoad(cache_a, buf_a, a_shmem_index(warp_r * WM + cm_row * TM, i / 2), a_shmem_stride(), gl_CooperativeMatrixLayoutRowMajor);
+ 
+                 [[unroll]] for (uint cm_col = 0; cm_col < cms_per_col; cm_col++) {
+-                    coopMatLoad(cache_b, buf_b, (warp_c * WN + cm_col * TN) * SHMEM_STRIDE + i / 2, SHMEM_STRIDE, gl_CooperativeMatrixLayoutColumnMajor);
+-
+-                    sums[cm_col * cms_per_row + cm_row] = coopMatMulAdd(cache_a, cache_b, sums[cm_col * cms_per_row + cm_row]);
++                    sums[cm_col * cms_per_row + cm_row] = coopMatMulAdd(cache_a, cache_b[cm_col], sums[cm_col * cms_per_row + cm_row]);
+                 }
+             }
+         }
