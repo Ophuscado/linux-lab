@@ -215,6 +215,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 31 Oct, VERIFIED (runs 5669-5672, Mesa's `AGX_MESA_DEBUG=shaders`, 12 instructions undecoded): the stock q4_K
+  matrix-vector loop at 2 rows is 339 instructions a block: 64 ffma, 62 and, 48 u8_to_f, 41 iadd, 39 mov, 34 shr,
+  16 loads, 8 waits, each wait a few instructions after its load, so no load's latency is hidden inside a thread.
+  Issuing every row's A loads first in the shader (tests pass) is slower too: 102 to 107 us at 2 rows, Gemma tg64
+  38.7 to 37.0. Three shader rewrites failed; the lever is the compiler's scheduling (agxperf's post-RA scheduler
+  does not move these loads up).
 - 31 Oct, VERIFIED (runs 5660, 5662; test-only edits restored after): the stock q4_K matrix-vector shader at 2 rows,
   4096x14336, takes 102 us; with its arithmetic replaced by one xor and add (every load kept) 77, with A's loads alone
   64, against a 55 us read of the same 33 MB: arithmetic ~25 us, B ~14, A's pattern ~9. Loading B and its sums once
