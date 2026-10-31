@@ -215,6 +215,11 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 31 Oct, VERIFIED (runs 5683-5704, my agxperf build in `_tmp/claude-mesa`, the same library as the installed one):
+  keeping NIR from sinking storage-buffer loads to their uses (nir_move_load_ssbo out of agx_compile.c's two sink
+  sets) changes nothing: q4_K matrix-vector 108.7 to 106.4 us, q4_0 matmul 5334 to 5429, Llama 2 pp512/tg64 851/63.5
+  to 842/63.3; tests pass. The waits' placement comes from the backend's own scheduling. Timings drift 5 % between
+  runs today (Llama 2 tg64 63.3-67.9): other agents share the GPU.
 - 31 Oct, VERIFIED (runs 5669-5672, Mesa's `AGX_MESA_DEBUG=shaders`, 12 instructions undecoded): the stock q4_K
   matrix-vector loop at 2 rows is 339 instructions a block: 64 ffma, 62 and, 48 u8_to_f, 41 iadd, 39 mov, 34 shr,
   16 loads, 8 waits, each wait a few instructions after its load, so no load's latency is hidden inside a thread.
