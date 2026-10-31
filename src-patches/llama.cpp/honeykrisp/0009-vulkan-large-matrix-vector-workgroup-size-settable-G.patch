@@ -1,7 +1,7 @@
 From b97a43a50d125811ed588457c3a5ec844d30b8ca Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Fri, 30 Oct 2026 09:40:37 +0000
-Subject: [PATCH 9/13] vulkan: large matrix-vector workgroup size settable
+Subject: [PATCH 9/14] vulkan: large matrix-vector workgroup size settable
  (GGML_VK_DMMV_LARGE)
 
 Honeykrisp's 4096x14336 matrix-vector reads ~470-516 GB/s at any rows per workgroup with 4-subgroup groups, under the 610-655 GB/s a plain read reaches with 256-thread groups. GGML_VK_DMMV_LARGE sets the subgroups per large group (default 4). MUL_MAT one-column tests pass at 8 and 16 on lavapipe (602/602).

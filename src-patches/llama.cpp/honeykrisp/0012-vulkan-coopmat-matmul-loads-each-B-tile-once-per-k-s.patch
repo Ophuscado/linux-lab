@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Fri, 30 Oct 2026 14:28:20 +0000
-Subject: [PATCH 12/13] vulkan: coopmat matmul loads each B tile once per k
+Subject: [PATCH 12/14] vulkan: coopmat matmul loads each B tile once per k
  step
 
 The coopmat1 inner loop reloaded every B tile from shared memory for each A tile (cms_per_row times). Keep the cms_per_col B tiles of a k step in registers instead, as Metal's kernel_mul_mm keeps its fragments; the arithmetic and its order are unchanged.

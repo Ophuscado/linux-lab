@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Fri, 30 Oct 2026 23:38:14 +0000
+Subject: [PATCH 14/14] vulkan: coopmat flash attention at 2 subgroups when 4
+ overflow shared memory
+
+With f32 accumulation, heads of 512 (Gemma 4's global layers) need about 34 KB of shared memory at 4 subgroups, past the 32 KB Honeykrisp (Asahi Linux) offers, so FLASH_ATTN_EXT fell back to the scalar shader for every prompt. At 2 subgroups (32 key columns a block) the coopmat1 shader fits.
+---
+ ggml/src/ggml-vulkan/ggml-vulkan.cpp | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index 328767a90..f5e0da513 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -1272,7 +1272,7 @@ static vk_fa_tuning_params get_fa_tuning_params_scalar(const vk_device& device,
+     return result;
+ }
+ 
+-static vk_fa_tuning_params get_fa_tuning_params_coopmat1(const vk_device& device, uint32_t hsk, uint32_t hsv, uint32_t n_rows, uint32_t n_kv, ggml_type k_type, ggml_type v_type, bool f32acc) {
++static vk_fa_tuning_params get_fa_tuning_params_coopmat1(const vk_device& device, uint32_t hsk, uint32_t hsv, uint32_t n_rows, uint32_t n_kv, ggml_type k_type, ggml_type v_type, bool f32acc, uint32_t num_subgroups = 4) {
+     GGML_UNUSED(n_rows);
+     GGML_UNUSED(n_kv);
+     GGML_UNUSED(k_type);
+@@ -1287,8 +1287,6 @@ static vk_fa_tuning_params get_fa_tuning_params_coopmat1(const vk_device& device
+     const uint32_t coopmat_block_rows = 16;
+     const uint32_t coopmat_block_cols = 16;
+ 
+-    const uint32_t num_subgroups = 4;
+-
+     result.block_rows = coopmat_block_rows;
+     result.block_cols = coopmat_block_cols * num_subgroups;
+     result.row_split = num_subgroups;
+@@ -1353,6 +1351,15 @@ vk_fa_tuning_params get_fa_tuning_params(const vk_device& device, uint32_t hsk,
+         const vk_fa_tuning_params params = get_fa_tuning_params_coopmat1(device, hsk, hsv, n_rows, n_kv, k_type, v_type, f32acc);
+         bool shmem_ok = ggml_vk_flash_attn_coopmat_shmem_support(device, params, hsk, hsv, f32acc, k_type, v_type);
+ 
++        // Large heads (512) with f32 accumulation overflow 32 KB of shared memory at 4 subgroups; 2 subgroups (half
++        // the key columns a block) fit, and the matrix path stays faster than the scalar one there.
++        if (shape_ok && !shmem_ok && n_rows > 1) {
++            const vk_fa_tuning_params half = get_fa_tuning_params_coopmat1(device, hsk, hsv, n_rows, n_kv, k_type, v_type, f32acc, 2);
++            if (ggml_vk_flash_attn_coopmat_shmem_support(device, half, hsk, hsv, f32acc, k_type, v_type)) {
++                return half;
++            }
++        }
++
+         if (!shape_ok || !shmem_ok) {
+             path = FA_SCALAR;
+         }
