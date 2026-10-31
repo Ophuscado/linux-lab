@@ -1,0 +1,4 @@
+# One opt-in feature for the operator's build and, once used, a KDE merge request in his words; 26.08.1 is what Fedora 44 ships.
+UPSTREAM=https://invent.kde.org/network/falkon
+BASE=7f69b2dcb78ce6d12c8b56ed6834b8aa9f35e137  # tag v26.08.1 (falkon-26.08.1-1.fc44); applies on master a583803e56 (2026-10-31) too
+BRANCH=maximized-toolbar
