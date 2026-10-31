@@ -215,6 +215,14 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 31 Oct, VERIFIED (runs 5567-5573): generation. Llama 2 Q4_0 tg64 67.9 t/s (Metal 120). Matrix-vector n=1 against
+  Metal (macOS run 20261028-022802), us: q4_K 4096x4096 40 / 17.4, 4096x14336 100 / 53, q6_K 4096x14336 114 / 63, f16
+  249 / 143, q4_0 69 / 37 (0005). One dependent launch reading 9.4 MB takes 19.4 us here, 33 MB 54.7, 117 MB 191
+  (vk-chain read, chain): the shaders run at about twice that floor. Back-to-back launches re-reading 9.4 MB reach
+  2700 GB/s, so the system cache serves the GPU under Linux too. Kernel_mul_mv_q4_K_f32's layout ported to
+  mul_mat_vec_simd.comp (tests pass) is no faster than the stock q4_K shader: 16-bit loads 25-30 % slower, 32-bit
+  loads even at 2-4 rows. Small ops run 2.4-2.6x Metal (ADD of 4096 floats 8.2 against 3.8 us, ROPE 2.4x): a fixed
+  per-dispatch cost.
 - 30 Oct, VERIFIED (runs 5386-5423; Metal from macOS run 20261028-005632; head sizes from the GGUF metadata):
   FLASH_ATTN_EXT against Metal by head size, geometric mean over test-backend-ops' cases: 64 (GPT-OSS) prompts 1.95x,
   generation 2.96x; 128 (Llama 2) 2.05x / 2.65x; 256 (Qwen, Gemma's sliding layers) 2.32x / 2.18x (q8_0 caches
