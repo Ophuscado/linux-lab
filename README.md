@@ -34,11 +34,13 @@ its own. The findings and their evidence are in [`KNOWLEDGE.md`](KNOWLEDGE.md).
 
 | Tokens/s, pp512 / tg128 | Metal | Vulkan via MoltenVK | Vulkan via Honeykrisp |
 |---|---|---|---|
-| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 762 / 68.7 |
-| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 819 / 71.6 |
-| GPT-OSS 120B Q4_K | 1001 / 94.2 | - | 390 / 50.1 |
-| Gemma 4 26B-A4B Q4_K | 2100 / 95.2 | - | 709 / 39.9 |
-| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 449 / 34.2 |
+| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 874 / 68.1 |
+| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 1005 / 70.6 |
+| GPT-OSS 120B Q4_K | 1001 / 94.2 | - | 526 / 49.5 |
+| Gemma 4 26B-A4B Q4_K | 2100 / 95.2 | - | 836 / 38.6 |
+| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 583 / 34.5 |
+
+Honeykrisp column: 31 Oct, the 14 patches at `llama-run.sh`'s settings ([`results/linux/compare-20261031-063537`](results/linux/compare-20261031-063537), `llama-compare.sh STEPS=bench`); the Metal and MoltenVK columns: macOS 15.8.1, 28 Oct ([`results/macos`](results/macos)).
 
 **GPU usage per program** (`src-patches/linux/asahi-fdinfo`)
 - fdinfo lines for the Rust `asahi` driver, through a `show_fdinfo` hook the Rust DRM layer lacked; memory works, busy
