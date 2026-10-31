@@ -1,0 +1,6 @@
+# tbt-pcie (src-patches/linux/tbt-pcie) rebased on asahi-wip of 30 Oct (7.2.14), where DRM_ASAHI no longer depends on BROKEN; 0007 applied with 2 lines of context (the file gained nodes at its end).
+UPSTREAM=https://github.com/AsahiLinux/linux
+BASE=414e55da7a0afaca2a97b29603be88ce0a6fd6de  # asahi-wip of 2026-10-30, 7.2.14, the GPU driver no longer BROKEN
+FORK=https://github.com/Ophuscado/linux
+BRANCH=tbt/pcie-wip
+CLONE=src/linux
