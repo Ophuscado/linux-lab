@@ -336,13 +336,15 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   variants. Mesa's coopmat inner loop runs 167 instructions for 16 `simd_matrix_fmadd16`, 10.4 per matrix op without
   its device loads: 72 mov, 36 local loads, 28 iadd. Per matrix op: local loads 0.75 against 2.25, moves ~0.1 against
   4.5. Apple loads each fragment once into the registers the matrix op reads and reuses it; Mesa's lowering loads
-  more and copies everything into place. Metal's flash attention: 128 matrix ops in 601-678 instructions.
+  more and copies everything into place (the moves turned out not to bound the loop: runs 5212-5229, above). Metal's
+  flash attention: 128 matrix ops in 601-678 instructions.
 - 30 Oct, VERIFIED (`AGX_MESA_DEBUG=shaderdb` and `shaders`, run 5093-5094): the matmul shader has 93-97 registers,
   1024 threads, no spills; its inner loop issues 16 `simd_matrix_fmadd16` among ~190 instructions (36 local loads,
   ~90 mov/collect/split to assemble the operands, 28 iadd; 167 in the final code, below), and its loader 128 `icmpsel` (bounds clamps) for 32
   device loads. Larger per-warp tiles that reuse operands more: 64x32 per warp (`256,128,128,,64,32`) f16 -23 % in
   test-backend-ops, q8_0 -2 %, and nothing on real prompts (Llama 2 744 / 809 / 809 to 739 / 802 / 791); WMITER 4 is
-  fast but wrong. The lever left is the operand assembly the compiler emits, a Mesa matter.
+  fast but wrong. The lever left is the operand assembly the compiler emits, a Mesa matter (superseded, 30-31 Oct:
+  16x16x16 matrices gained 18 %, moves and instruction counts were not the bound, the global loads are; above).
 
 ### What moved Honeykrisp forward
 
