@@ -215,6 +215,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 31 Oct, VERIFIED (runs 5660, 5662; test-only edits restored after): the stock q4_K matrix-vector shader at 2 rows,
+  4096x14336, takes 102 us; with its arithmetic replaced by one xor and add (every load kept) 77, with A's loads alone
+  64, against a 55 us read of the same 33 MB: arithmetic ~25 us, B ~14, A's pattern ~9. Loading B and its sums once
+  for all rows (one column; the min term 4 fma instead of 16) passes MUL_MAT and MUL_MAT_ID and is slower: 100 to
+  121 us at 1 row, 101 to 117 at 2, Gemma tg64 38.7 to 36.4, GPT-OSS 120B 49.0 to 46.5. As with the matmul, fewer
+  instructions do not mean faster under this compiler (INFERRED: its scheduling of loads against their uses).
 - 31 Oct, VERIFIED (runs 5567-5573): generation. Llama 2 Q4_0 tg64 67.9 t/s (Metal 120). Matrix-vector n=1 against
   Metal (macOS run 20261028-022802), us: q4_K 4096x4096 40 / 17.4, 4096x14336 100 / 53, q6_K 4096x14336 114 / 63, f16
   249 / 143, q4_0 69 / 37 (0005). One dependent launch reading 9.4 MB takes 19.4 us here, 33 MB 54.7, 117 MB 191
