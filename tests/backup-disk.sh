@@ -4,7 +4,7 @@
 # leaving the port alone when the disk is present.
 set -u
 REPO=$(cd "$(dirname "$0")/.." && pwd)
-T=$(mktemp -d /var/tmp/backup-disk.XXXX); S=$T/sys; fail=0
+T=$(mktemp -d "${TMPDIR:-/var/tmp}/backup-disk.XXXX"); S=$T/sys; fail=0
 hub=$S/devices/platform/xhci/usb2
 mkdir -p "$hub/2-0:1.0/usb2-port1" "$hub/2-0:1.0/usb2-port2" "$S/bus/usb/devices" "$T/etc"
 echo 0 >"$hub/2-0:1.0/usb2-port1/disable"; echo 0 >"$hub/2-0:1.0/usb2-port2/disable"
