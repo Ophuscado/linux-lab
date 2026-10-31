@@ -38,7 +38,7 @@ if PRIVATE:
 TEXT = {".txt", ".json", ".tsv", ".log", ".csv", ".md", ".xml"}
 UUID = re.compile(rb"\b[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\b")
 MAC = re.compile(rb"\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b")
-# Lines dropped whole: serial numbers (the owner of these runs publishes device identifiers otherwise, 29 Oct) and
+# Lines dropped whole: serial numbers (other device identifiers may be published, KNOWLEDGE decision of 29 Oct) and
 # anything that could be a credential. UUIDs are replaced, not dropped, so paths through Preboot volumes stay.
 SERIAL = re.compile(rb"serial|region-info|mobileme-token|auth-?token", re.I)
 
