@@ -16,7 +16,6 @@ After the migration: data maintenance on the pool: mergerfs.dedup/consolidate/ba
 Send kernel messages to the second Mac over the network with netconsole · check: a test line written on the Mac Studio shows on the MacBook · waits: operator runs netlog.sh listen on the MacBook, then netlog.sh on and test on the Mac Studio
 Confirm the Bluetooth-after-suspend fault and pick a mitigation · check: journal shows hci0 command tx timeout after resume
 Check settings.sh install on the Mac: every setting holds after a reboot and a replug, uninstall leaves no file behind · check: settings.sh status before and after a reboot, ls of the files it owns after uninstall
-Load a model larger than the GPU memory the driver reports · check: all layers on the GPU, no allocation failure
 ? Report the two driver bugs to Asahi in the operator's own words, disclosing LLM use · options: report, or keep local · default: operator decides later
 ? Give each bus behind a tunnel its own IOMMU stream, as the 2023 tree did · options: per-bus streams (isolation between devices), or keep one shared stream (simpler) · default: keep one stream
 Drop the DEBUG cable_info_or commit from the branch once cable handling is settled · check: branch builds and links without it
