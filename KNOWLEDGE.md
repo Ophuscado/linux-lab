@@ -216,6 +216,11 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 31 Oct, VERIFIED (run 5820, `llama-compare.sh STEPS=bench`, the production build a1d9c37 with 0011-0014 at
+  `llama-run.sh`'s settings, -ub 2048; results/linux/compare-20261031-063537): pp512 / pp2048 / tg128 Llama 2 874 /
+  949 / 68.1, GPT-OSS 20B 1005 / 1418 / 70.6, GPT-OSS 120B 526 / 709 / 49.5, Gemma 4 836 / 1014 / 38.6, Qwen 583 / 727
+  / 34.5, GLM-4.7-Flash 354 / 447 / 18.7. Against Metal (28 Oct) prompts are 0.52-0.58x, generation 0.39-0.57x.
+  (Commit a2f998e's body names the run wrongly; it is 5820.)
 - 31 Oct, VERIFIED (runs 5683-5704, my agxperf build in `_tmp/claude-mesa`, the same library as the installed one):
   keeping NIR from sinking storage-buffer loads to their uses (nir_move_load_ssbo out of agx_compile.c's two sink
   sets) changes nothing: q4_K matrix-vector 108.7 to 106.4 us, q4_0 matmul 5334 to 5429, Llama 2 pp512/tg64 851/63.5
