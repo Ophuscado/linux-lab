@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Fri, 30 Oct 2026 22:17:44 +0000
-Subject: [PATCH 13/13] vulkan: expert matrix-vector path by tokens per expert
+Subject: [PATCH 13/14] vulkan: expert matrix-vector path by tokens per expert
  (GGML_VK_MMV_ID_PER_EXPERT)
 
 GGML_VK_MMV_ID_MAX (0002) keeps MUL_MAT_ID on the matrix-vector path up to a token count, whatever the expert count. That path reloads an expert's weights per token: on an M2 Ultra under Honeykrisp it beats the matmul path at 2 tokens an expert (q4_0 e128 u8 n32: 628 against 1128 us) and loses from 4 (q8_0 e32 u4 n32: 1119 against 919) to 8 (q4_0 e32 u4 n64: 1343 against 793). GGML_VK_MMV_ID_PER_EXPERT=N limits it, past 8 tokens, to N tokens an expert on average; unset, nothing changes.

@@ -211,6 +211,14 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
+- 30 Oct, VERIFIED (runs 5386-5423; Metal from macOS run 20261028-005632; head sizes from the GGUF metadata):
+  FLASH_ATTN_EXT against Metal by head size, geometric mean over test-backend-ops' cases: 64 (GPT-OSS) prompts 1.95x,
+  generation 2.96x; 128 (Llama 2) 2.05x / 2.65x; 256 (Qwen, Gemma's sliding layers) 2.32x / 2.18x (q8_0 caches
+  0.90x: Vulkan ahead); 512 (Gemma's global layers) 8.54x / 3.32x; 576/512 (no model here) 10.1x. With f32
+  accumulation a 512 head needs ~34 KB of shared memory at 4 subgroups, past Honeykrisp's 32 KB, so prompts took the
+  scalar shader. Patch 0014 drops to 2 subgroups then: hsk 512 at 16k-32k keys 20-30 % faster, 4k even; FLASH_ATTN_EXT
+  5368/5368 pass; Gemma pp4096 921 to 941 at depth 0, 228 to 237 at depth 16k, generation even (it keeps the scalar
+  path at one token). The 512 head stays ~6x behind Metal.
 - 30 Oct, VERIFIED (runs 5339-5363, my build of the series with 0013; MUL_MAT_ID 1109/1109): against Metal's
   MUL_MAT_ID (macOS run 20261028-022802) the worst cases were 32-64 tokens over 32 experts (q8_0 6.6x, iq4_xs 8.7x):
   `GGML_VK_MMV_ID_MAX=64` kept them on the matrix-vector path, which reloads an expert's weights per token. It wins at
