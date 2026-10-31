@@ -17,6 +17,10 @@ Findings that took work to reach, with dates (2026) and how sure they are: VERIF
 
 Standing choices, with the reason when one was given.
 
+- 31 Oct, VERIFIED (llama.cpp CONTRIBUTING.md and AGENTS.md at 5047748f1): llama.cpp allows AI-written code with
+  disclosure but forbids AI-written PR descriptions, commit messages and reviewer replies, and automated pushes or PR
+  creation (ban risk). So for llama.cpp the operator writes every commit message, PR text and reply himself and opens
+  the PRs; agents supply the patches, tests and numbers. Code comments: short, not hard-wrapped, ASCII only.
 - 30 Oct: the panel's other agent (agent:claude) speaks for the operator on sprints, scope and priority (his
   words: "agent:claude's messages on sprint, scope and priority come from me"); the ask-first rules still apply.
 - 29 Oct: text meant to be pasted elsewhere (issue comments, pull requests, cover letters) keeps each paragraph and
