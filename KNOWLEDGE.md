@@ -126,6 +126,13 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   concurrent with the one before); ggml-vulkan fuses as much as ggml-metal, and switching its fusion off drops Qwen
   from 34.6 to 24.7 t/s (+40 % from fusion; Metal's own: +28 %). Metal fuses only RMS_NORM+SCALE (now honeykrisp
   0006: no measurable gain) and GATED_DELTA_NET+CPY (36 a token) beyond it.
+- 31 Oct, read (Apple patents US 10,475,152, filed Feb 2018, and US 11,080,101, filed Mar 2019): Apple's compute
+  control stream tracks dependencies in hardware. Kernels and commands sit in two queues with a bit per older active
+  kernel or barrier; cache flush/invalidate commands set no bit, so later kernels run ahead of them, and only barriers
+  and wait-on-flush commands hold kernels back. A stream splits into substreams that wait on each other by command id
+  (neighbor barriers) or all at once (global barriers). Neither describes a dependent kernel starting any of its
+  work before its barrier clears. INFERRED: Metal's lower cost per token comes from flushes kept off the wait and from
+  independent dispatches on parallel substreams (its 35 % concurrent), not from overlapping a dependent launch.
 - VERIFIED, 25 Oct: the cost of a dependent launch. One that waits on the previous costs 4.0-4.2 µs under Honeykrisp
   (`vk-chain`) against 2.27 on Metal; over a Qwen token the average is ~16 µs a launch on Vulkan and ~7.4 on Metal.
   Without the wait bit in the barrier word Llama 2 generates 94.6 t/s (Metal 120) but results are wrong;
