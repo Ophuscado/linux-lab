@@ -17,6 +17,7 @@ Findings that took work to reach, with dates (2026) and how sure they are: VERIF
 
 Standing choices, with the reason when one was given.
 
+- 31 Oct: the operator publishes to GitHub himself (publish.sh or by hand); agents propose cells only when convenient.
 - 31 Oct, VERIFIED (llama.cpp CONTRIBUTING.md and AGENTS.md at 5047748f1): llama.cpp allows AI-written code with
   disclosure but forbids AI-written PR descriptions, commit messages and reviewer replies, and automated pushes or PR
   creation (ban risk). So for llama.cpp the operator writes every commit message, PR text and reply himself and opens
