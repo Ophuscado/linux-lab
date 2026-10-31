@@ -1,0 +1,4 @@
+# One fix for the operator's build and, once tested, a KDE merge request in his words; 6.7.5 is what Fedora 44 ships.
+UPSTREAM=https://invent.kde.org/plasma/libplasma
+BASE=3992079c1036f18c78f8fdda78be3697b689071c  # tag v6.7.5 (libplasma-6.7.5-1.fc44); applies on master 65f819cc89 (2026-10-31) too
+BRANCH=dialog-rounding
