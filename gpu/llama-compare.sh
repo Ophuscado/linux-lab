@@ -63,7 +63,10 @@ if on mmid; then
     for pt in ${MMID_SWEEP:-m s sm l ml sml}; do
         sz=${pt%%:*} wts=; [[ $pt == *:* ]] && wts=${pt#*:}
         if [[ -n $wts ]]; then
-            echo "$pt tests $(GGML_VK_MMID_SIZES=$sz GGML_VK_WT_S=$wts "$B/test-backend-ops" test -b Vulkan0 -o MUL_MAT_ID 2>&1 | grep -E 'tests passed' | tr -s ' ')"
+            if ! GGML_VK_MMID_SIZES=$sz GGML_VK_WT_S=$wts "$B/test-backend-ops" test -b Vulkan0 -o MUL_MAT_ID >"$OUT/mmid-tests.txt" 2>&1; then
+                die "$pt: MUL_MAT_ID correctness failed (see $OUT/mmid-tests.txt)"
+            fi
+            echo "$pt tests $(grep -E 'tests passed' "$OUT/mmid-tests.txt" | tr -s ' ')"
         fi
         env GGML_VK_MMID_SIZES="$sz" ${wts:+GGML_VK_WT_S=$wts} "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID -p 'type_a=(q8_0|q4_K|f16|mxfp4),' 2>&1 |
             sed -nE "s/^ *MUL_MAT_ID\((type_a=[^,]+),type_b=f32,n_mats=([0-9]+),n_used=([0-9]+),.*m=([0-9]+),n=([0-9]+),k=([0-9]+),.* ([0-9.]+) us\/run.*/$pt \1 e\2 u\3 m\4 n\5 k\6 \7/p"
