@@ -56,9 +56,15 @@ WORK=${WORK:-$HOME/linux-lab-macos}
 OUT=$WORK/$(date +%Y%m%d-%H%M%S)
 mkdir -p "$OUT"
 log() { printf '%s %s\n' "$(date +%T)" "$*" | tee -a "$OUT/collect.log"; }
-# Lines that would identify this Mac: serial numbers, UUIDs, MAC and IP addresses.
-scrub() { grep -v -i -E 'serial|uuid|udid|IOMACAddress|mac-address|local-mac|ip-address|"?(provisioning|ecid|chip-id-?unique)' |
-    sed -E 's/([0-9a-f]{2}:){5}[0-9a-f]{2}/<mac>/gI; s/[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}/<uuid>/g'; }
+# Lines that would identify this Mac or its owner: serial numbers, UUIDs, MAC and IP addresses, the computer, host and
+# user names, the network it sits on. The results are published: whatever survives here is public (audit 2026-11-01).
+NAMES=$( { scutil --get ComputerName; scutil --get LocalHostName; hostname -s; hostname; id -un; id -F; } 2>/dev/null |
+    awk 'length >= 3' | sort -u | sed 's/[][\\.*^$/|]/\\&/g' | paste -sd'|' -)
+scrub() { grep -v -i -E 'serial|uuid|udid|IOMACAddress|mac-address|local-mac|ip-address|"?(provisioning|ecid|chip-id-?unique)|computer name|user name|host ?name|network signature|ipv[46] address|router|dns|search domain|server address' |
+    sed -E 's/([0-9a-f]{2}:){5}[0-9a-f]{2}/<mac>/gI; s/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/<uuid>/gI' |
+    if [[ -n $NAMES ]]; then sed -E "s/($NAMES)/<name>/gI"; else cat; fi; }
+# system_profiler's types that describe the owner rather than the hardware: left out of the full dump
+PERSONAL='SP(Applications|InstallHistory|Network|NetworkLocation|AirPort|Firewall|Logs|SyncServices|SecureElement|Printers|PrintersSoftware|International|Bluetooth|ManagedClient|ConfigurationProfile|DeveloperTools|Disabled|Extensions|Frameworks|Fonts|PrefPane|StartupItem|Universal(Access)?)DataType'
 have() { command -v "$1" >/dev/null 2>&1; }
 
 step_hw() {
@@ -125,7 +131,8 @@ step_re() {
         "$WORK/metal-info" >"$OUT/re-metal-info.txt" 2>&1
     { pmset -g; pmset -g custom; pmset -g cap; pmset -g therm; pmset -g assertions; } 2>&1 | scrub >"$OUT/re-pmset.txt"
     sysctl -a 2>/dev/null | scrub | gzip >"$OUT/re-sysctl.txt.gz"
-    system_profiler -detailLevel full 2>/dev/null | scrub | gzip >"$OUT/re-system-profiler-full.txt.gz"
+    system_profiler -detailLevel full $(system_profiler -listDataTypes 2>/dev/null | grep '^SP' | grep -v -E "^$PERSONAL$") 2>/dev/null |
+        scrub | gzip >"$OUT/re-system-profiler-full.txt.gz"
     powermetrics -h 2>&1 | sed -n '/samplers/,/^$/p' >"$OUT/re-powermetrics-samplers.txt"
     if sudo -n true 2>/dev/null || sudo -v; then
         sudo powermetrics --samplers all -i 1000 -n 5 2>&1 | scrub >"$OUT/re-powermetrics-all.txt"

@@ -1,7 +1,7 @@
 ProductName:		macOS
 ProductVersion:		14.8.9
 BuildVersion:		23J631
-Darwin <host>.local 23.6.0 Darwin Kernel Version 23.6.0: Tue Jul 21 21:56:54 PDT 2026; root:xnu-10063.141.1.713.39~1/RELEASE_ARM64_T6020 arm64
+Darwin <name> 23.6.0 Darwin Kernel Version 23.6.0: Tue Jul 21 21:56:54 PDT 2026; root:xnu-10063.141.1.713.39~1/RELEASE_ARM64_T6020 arm64
 hw.ncpu: 24
 hw.byteorder: 1234
 hw.memsize: 206158430208
