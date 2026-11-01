@@ -121,6 +121,9 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 
 ### Where the generation gap is
 
+- 1 Nov, VERIFIED (runs 8419, 8420, with the hoist): today's tiles stay best (pp512 Llama 2 876, Qwen 739, Gemma 904;
+  11 other dense/expert pairs 487-853, 615-720, 691-891), and a wider hoist window (`AGX_HOIST_WINDOW` 128, 256, 1000
+  by a tuning patch; tests pass at 1000) changes nothing beyond 1 %.
 - 1 Nov, VERIFIED (run 8404, with the hoist): the series' other G13-only choice, shared-offset folding (opened to G14
   by a one-line patch, `AGX_LOCAL_FOLD=1`), passes MUL_MAT, MUL_MAT_ID, FLASH_ATTN_EXT and SOFT_MAX here but moves
   Llama 2, Qwen and Gemma by under 1.2 %; sync-wait polling (`HK_SUBMIT_POLL_US` 50 or 500) by under 2.5 %. Neither kept.
