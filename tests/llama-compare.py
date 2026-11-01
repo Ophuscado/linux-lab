@@ -134,5 +134,71 @@ esac
         self.run_case("success")
 
 
+class PerfSweeps(unittest.TestCase):
+    def run_case(self, mode):
+        for family in ("mmv", "mmid"):
+            with self.subTest(family=family), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                (root / "bin").mkdir()
+                backend = root / "bin/test-backend-ops"
+                backend.write_text("""#!/bin/sh
+case "$MODE" in
+    empty) exit 0 ;;
+    unmatched) echo "not a timing"; exit 0 ;;
+    failed) echo "backend failed" >&2; exit 7 ;;
+    partial)
+        if [ "$FAMILY" = mmv ] && [ "$GGML_VK_RM_F16" = 2 ]; then exit 0; fi
+        if [ "$FAMILY" = mmid ] && [ "$GGML_VK_MMID_SIZES" = s ]; then exit 0; fi ;;
+esac
+if [ "$FAMILY" = mmv ]; then
+    echo "MUL_MAT(type_a=f16,example 1.0 us/run)"
+else
+    echo "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=32,n_used=4,b=0,m=4096,n=32,k=14336,m_v=0) 12.5 us/run"
+fi
+""")
+                backend.chmod(0o755)
+                env = dict(
+                    os.environ,
+                    STEPS=family,
+                    FAMILY=family,
+                    MODE=mode,
+                    LLAMA_BIN=str(root / "bin"),
+                    GPU_LOCK=str(root / "gpu.lock"),
+                    COMPARE_OUT=str(root / "out"),
+                    MESA_SIDE=str(root / "mesa"),
+                    LLM=str(root / "models"),
+                    MMV_SWEEP="1,large,4,4,1 1,large,4,4,2" if mode == "partial" else "1,large,4,4,1",
+                    MMID_SWEEP="m s" if mode == "partial" else "m",
+                )
+                result = subprocess.run(
+                    ["bash", str(REPO / "gpu/llama-compare.sh")],
+                    env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=15,
+                )
+                out = next((root / "out").glob("compare-*"))
+                rows = (out / f"{family}.txt").read_text().splitlines()
+                self.assertEqual(len(rows), 1 if mode in ("valid", "partial") else 0, result.stdout)
+                self.assertTrue(list(out.glob(f"{family}-*.log")), result.stdout)
+                if mode == "valid":
+                    self.assertEqual(result.returncode, 0, result.stdout)
+                else:
+                    self.assertNotEqual(result.returncode, 0, result.stdout)
+                    self.assertTrue((out / "failed.txt").exists(), result.stdout)
+
+    def test_empty_output(self):
+        self.run_case("empty")
+
+    def test_unmatched_output(self):
+        self.run_case("unmatched")
+
+    def test_backend_failure(self):
+        self.run_case("failed")
+
+    def test_valid_timings(self):
+        self.run_case("valid")
+
+    def test_later_empty_point(self):
+        self.run_case("partial")
+
+
 if __name__ == "__main__":
     unittest.main()

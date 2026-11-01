@@ -71,11 +71,19 @@ trap 'exit 143' TERM
 if on mmv; then
     # LARGE: subgroups in a large group (patch 0009).
     # MMV_SWEEP="SIMD,WG,RM,LARGE,RMF16 ..." (RMF16: rows of an f16 group, patch 0010).
+    point=0
     for pt in ${MMV_SWEEP:-1,large,4,4,1 1,large,4,4,2 1,large,4,4,4 1,large,4,4,8 1,large,4,4,16 1,large,4,8,8}; do
+        point=$((point + 1))
         IFS=, read -r simd wg rm large rmf16 <<<"$pt"
-        GGML_VK_MMV_SIMD=$simd GGML_VK_DMMV_WG=$wg GGML_VK_RM_STDQ=$rm GGML_VK_RM_KQ=$rm GGML_VK_DMMV_LARGE=$large GGML_VK_RM_F16=${rmf16:-2} "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT \
+        if ! GGML_VK_MMV_SIMD=$simd GGML_VK_DMMV_WG=$wg GGML_VK_RM_STDQ=$rm GGML_VK_RM_KQ=$rm GGML_VK_DMMV_LARGE=$large GGML_VK_RM_F16=${rmf16:-2} "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT \
             -p 'type_a=(f16|q4_0|q8_0),type_b=f32,m=4096,n=1,k=14336,bs=\[1,1\],nr=\[1,1\],per=\[0,1,2,3\],k_v=0,o=1' 2>&1 |
-            sed -nE "s/^ *MUL_MAT\(type_a=([a-z0-9_]+),.* ([0-9.]+) us\/run.*/simd $simd $wg rm $rm large $large rmf16 ${rmf16:-2} \1 \2 us/p"
+            tee "$OUT/mmv-$point.log" |
+            sed -nE "s/^ *MUL_MAT\(type_a=([a-z0-9_]+),.* ([0-9.]+) us\/run.*/simd $simd $wg rm $rm large $large rmf16 ${rmf16:-2} \1 \2 us/p" |
+            tee "$OUT/mmv-$point.txt"; then
+            failure "$pt: matrix-vector performance failed (see $OUT/mmv-$point.log)"
+            exit 1
+        fi
+        [[ -s $OUT/mmv-$point.txt ]] || { failure "$pt: no matching timings (see $OUT/mmv-$point.log)"; exit 1; }
     done | tee "$OUT/mmv.txt"
 fi
 # STEPS=pp: prompt processing. The n=512 matmuls and MUL_MAT_ID, the cases results/macos's llama-ops-mul_mat*.txt
@@ -85,7 +93,9 @@ fi
 if on mmid; then
     # MMID_SWEEP="SIZES[:WT_S] ...": a small tile reshaped through GGML_VK_WT_S serves MUL_MAT_ID alone when the
     # dense matmuls keep the medium one; each such point first runs the MUL_MAT_ID tests.
+    point=0
     for pt in ${MMID_SWEEP:-m s sm l ml sml}; do
+        point=$((point + 1))
         sz=${pt%%:*} wts=; [[ $pt == *:* ]] && wts=${pt#*:}
         if [[ -n $wts ]]; then
             if ! GGML_VK_MMID_SIZES=$sz GGML_VK_WT_S=$wts "$B/test-backend-ops" test -b Vulkan0 -o MUL_MAT_ID >"$OUT/mmid-tests.txt" 2>&1; then
@@ -93,8 +103,14 @@ if on mmid; then
             fi
             echo "$pt tests $(grep -E 'tests passed' "$OUT/mmid-tests.txt" | tr -s ' ')"
         fi
-        env GGML_VK_MMID_SIZES="$sz" ${wts:+GGML_VK_WT_S=$wts} "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID -p 'type_a=(q8_0|q4_K|f16|mxfp4),' 2>&1 |
-            sed -nE "s/^ *MUL_MAT_ID\((type_a=[^,]+),type_b=f32,n_mats=([0-9]+),n_used=([0-9]+),.*m=([0-9]+),n=([0-9]+),k=([0-9]+),.* ([0-9.]+) us\/run.*/$pt \1 e\2 u\3 m\4 n\5 k\6 \7/p"
+        if ! env GGML_VK_MMID_SIZES="$sz" ${wts:+GGML_VK_WT_S=$wts} "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID -p 'type_a=(q8_0|q4_K|f16|mxfp4),' 2>&1 |
+            tee "$OUT/mmid-$point.log" |
+            sed -nE "s/^ *MUL_MAT_ID\((type_a=[^,]+),type_b=f32,n_mats=([0-9]+),n_used=([0-9]+),.*m=([0-9]+),n=([0-9]+),k=([0-9]+),.* ([0-9.]+) us\/run.*/$pt \1 e\2 u\3 m\4 n\5 k\6 \7/p" |
+            tee "$OUT/mmid-$point.txt"; then
+            failure "$pt: expert performance failed (see $OUT/mmid-$point.log)"
+            exit 1
+        fi
+        [[ -s $OUT/mmid-$point.txt ]] || { failure "$pt: no matching timings (see $OUT/mmid-$point.log)"; exit 1; }
     done | tee "$OUT/mmid.txt"
 fi
 if on pp; then
