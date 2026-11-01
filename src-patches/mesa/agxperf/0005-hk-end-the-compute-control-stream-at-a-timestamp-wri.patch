@@ -1,0 +1,31 @@
+From 7f0ac5af6580fdbfe3f07cc7257b4ea3612c2732 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Sun, 1 Nov 2026 02:36:06 +0000
+Subject: [PATCH 5/5] hk: end the compute control stream at a timestamp write
+
+A compute timestamp is the end of the control stream it is attached to, but the stream stayed open, so the dispatches recorded after the write ran before it. Each interval between two timestamps then measured the work recorded after its end: llama.cpp's per-op logger booked every op's time to the op before it.
+---
+ src/asahi/vulkan/hk_query_pool.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/asahi/vulkan/hk_query_pool.c b/src/asahi/vulkan/hk_query_pool.c
+index ae600bb..812542c 100644
+--- a/src/asahi/vulkan/hk_query_pool.c
++++ b/src/asahi/vulkan/hk_query_pool.c
+@@ -412,6 +412,13 @@ hk_CmdWriteTimestamp2(VkCommandBuffer commandBuffer,
+          .handle = pool->handle,
+          .offset_B = hk_query_offset(pool, query),
+       };
++
++      /* The timestamp is written when this control stream ends, so it must end
++       * here: dispatches recorded after the write would otherwise run before it
++       * and be counted in the interval before.
++       */
++      if (!after_gfx)
++         hk_cmd_buffer_end_compute(cmd);
+    }
+ 
+    /* From the Vulkan spec:
+-- 
+2.43.0
+

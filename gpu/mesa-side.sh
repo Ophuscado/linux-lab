@@ -17,7 +17,7 @@
 #            llama.cpp issue 10982 with pp512 +42% on a 7B model (not submitted to Mesa either):
 #            a post-RA instruction scheduler for parallelism, bit 47 on local-memory loads and
 #            stores, and more headroom in the pressure scheduler so local loads cluster
-#            (src-patches/mesa/agxperf: his three commits rebased onto the coopmat commit, and ours, the AGX_BIT47 switch)
+#            (src-patches/mesa/agxperf: his three commits rebased onto the coopmat commit, and ours: the AGX_BIT47 switch, and compute timestamps that bound their own work)
 #            AGX_BIT47 (0 off, 1 loads and stores, 2 loads, 3 stores) chooses where bit 47 is set
 #            AGX_NO_ILP_SCHED=1 and AGX_CLUSTER_OFF=1 switch its scheduler changes off at run time
 #   next     the series as its pull request stands on 25 Oct (9323171c), newer than coopmat's 795ae42a71

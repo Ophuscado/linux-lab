@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: xingjianll <4396kevinliu@gmail.com>
 Date: Thu, 18 Jun 2026 13:43:51 -0400
-Subject: [PATCH 2/4] agx: add post-RA ILP scheduler
+Subject: [PATCH 2/5] agx: add post-RA ILP scheduler
 
 ---
  src/asahi/compiler/agx_compile.c      |   4 +

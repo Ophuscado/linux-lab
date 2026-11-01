@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Tue, 27 Oct 2026 01:27:37 +0000
-Subject: [PATCH 4/4] agx: bit 47 of lload/lstore on loads only by default,
+Subject: [PATCH 4/5] agx: bit 47 of lload/lstore on loads only by default,
  AGX_BIT47 to choose
 
 On the M2 Ultra (G14D) with the coopmat series, bit 47 on both lload and lstore fails test-backend-ops' ARGMAX (0/7) and COUNT_EQUAL (0/2): those shaders write threadgroup memory and read the same words back after a barrier. Llama 2 7B Q4_0, clustering off, pp512/tg128: bit 47 off 546/65.6, loads and stores 618/65.4 (the failures), loads only 617/65.8 (all 21303 tests pass), stores only 547/65.4. So the gain is the load bit and the fault the store bit.

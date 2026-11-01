@@ -1,4 +1,4 @@
-# xingjianll's agx-llm-perf (cd118a8, 3d81a6a, 09a3107 of his branch) rebased on the coopmat series, with his authorship, and the AGX_BIT47 switch after them.
+# xingjianll's agx-llm-perf (cd118a8, 3d81a6a, 09a3107 of his branch) rebased on the coopmat series, with his authorship, then ours: the AGX_BIT47 switch and a compute timestamp fix (0005, so per-dispatch timestamps bound their own work).
 UPSTREAM=https://github.com/omacom/mesa
 BASE=795ae42a71c8889dd3b629d03a3aeb657501f20f  # coopmat series, pull request 6
 FORK=

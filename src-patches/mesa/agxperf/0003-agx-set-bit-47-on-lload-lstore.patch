@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: xingjianll <4396kevinliu@gmail.com>
 Date: Thu, 18 Jun 2026 13:41:08 -0400
-Subject: [PATCH 3/4] agx: set bit 47 on lload/lstore
+Subject: [PATCH 3/5] agx: set bit 47 on lload/lstore
 
 ---
  src/asahi/compiler/agx_pack.c | 3 ++-

@@ -120,6 +120,19 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 
 ### Where the generation gap is
 
+- 1 Nov, VERIFIED (runs 6295, 6296): count_experts, the single workgroup before every MUL_MAT_ID, had each of
+  its 256 invocations read every id in `zero_skipped_rows` (5120 for a Qwen pp512) before the matmul could start.
+  Strided over the invocations (honeykrisp 0015; PR candidate `src-patches/llama.cpp/count-experts-skip`):
+  pp512 / pp2048 Qwen 583 / 743 to 641 / 858, Gemma 835 / 1005 to 881 / 1083, GPT-OSS 120B 521 / 710 to 541 /
+  740; generation even; MUL_MAT_ID tests 1109/1109.
+- 1 Nov, VERIFIED (Mesa 795ae42a71 `hk_query_pool.c`; runs 6264, 6289): Honeykrisp's per-op timings were shifted
+  by one op. A compute timestamp is the end of the control stream it is attached to, and the stream stayed open,
+  so the dispatches recorded after it ran before it: ggml-vulkan's logger booked each op's time to the op before
+  (the routing ops, GLU and RMS_NORM_MUL "slow"; earlier entries' per-op tables). Ending the stream at the write
+  (`src-patches/mesa/agxperf/0005`) gives totals 9-11 % above the unlogged prompt time (the logger's barrier per op) and, at pp512, MUL_MAT_ID
+  54 % of Qwen (q8_0, ~10 tokens an expert, ~2.8 TFLOPS), 80 % of GPT-OSS 120B (mxfp4, 4.2 TFLOPS), 49 % of
+  Gemma (q4_K, q5_1); dense q8_0 matmuls 18-29 %; Llama 2's q4_0 matmuls 93 %; GATED_DELTA_NET 9 % of Qwen;
+  attention 1-8 %.
 - VERIFIED, 28 Oct: Vulkan through MoltenVK is no faster than Honeykrisp, so most of the 2-3x lies in llama.cpp's
   Vulkan shaders and graph on this GPU, not in Mesa or the kernel (INFERRED from that).
 - VERIFIED, 29 Oct: not fusion. A Qwen token is 1805 Vulkan launches against 1996 Metal dispatches (703 of them

@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Fri, 30 Oct 2026 23:38:14 +0000
-Subject: [PATCH 14/14] vulkan: coopmat flash attention at 2 subgroups when 4
+Subject: [PATCH 14/15] vulkan: coopmat flash attention at 2 subgroups when 4
  overflow shared memory
 
 With f32 accumulation, heads of 512 (Gemma 4's global layers) need about 34 KB of shared memory at 4 subgroups, past the 32 KB Honeykrisp (Asahi Linux) offers, so FLASH_ATTN_EXT fell back to the scalar shader for every prompt. At 2 subgroups (32 key columns a block) the coopmat1 shader fits.
