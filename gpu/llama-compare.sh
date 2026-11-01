@@ -24,7 +24,7 @@ for d in agxperf coopmat; do
     icd=$(compgen -G "${MESA_SIDE:-$LAB/build/mesa-side}/$d/share/vulkan/icd.d/asahi_icd.*.json" | head -n 1 || true)
     [[ -n $icd ]] && { export VK_DRIVER_FILES=$icd; echo "driver: $d" | tee "$OUT/driver.txt"; break; }
 done
-export AGX_CLUSTER_OFF=1 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1
+export AGX_CLUSTER_OFF=1 AGX_HOIST_LOADS=${AGX_HOIST_LOADS:-1} HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1
 # The server's settings (llama-run.sh), so these numbers are its; each can be overridden from the environment.
 export GGML_VK_WT_M=${GGML_VK_WT_M:-512,128,128,,32,32,,16,16,16} GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_ID_PER_EXPERT=2 GGML_VK_MMV_MAX_COLS=16 GGML_VK_SHADER_CORES=${GGML_VK_SHADER_CORES:-152}
 export GGML_VK_MMID_SIZES=${GGML_VK_MMID_SIZES:-sm} GGML_VK_WT_S=${GGML_VK_WT_S:-256,128,32,,32,16} GGML_VK_MMID_S_MAX=${GGML_VK_MMID_S_MAX:-64}

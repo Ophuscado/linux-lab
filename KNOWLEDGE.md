@@ -121,6 +121,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 
 ### Where the generation gap is
 
+- 1 Nov, VERIFIED (runs 8213, 8383): Mesa's compute load hoist (`AGX_HOIST_LOADS=1`, from the coopmat series: on by
+  default on G13, opt-in on G14) moves device loads up to 64 instructions above independent work. On this M2 Ultra
+  every op test passes with it (MUL_MAT 2426, MUL_MAT_ID 1109, FLASH_ATTN_EXT 5368 and 13 more) and tg128 rises on every
+  model: Llama 2 68.4 to 70.8, GPT-OSS 20B 71.3 to 74.0, GPT-OSS 120B 49.5 to 52.0, Gemma 38.9 to 40.6, Qwen 34.7 to
+  37.0, Flash-Next 18.7 to 19.2; prompts even. Skipping the pressure scheduler too (`AGX_MESA_DEBUG=nosched`, G13's
+  default) loses 2-5 % on prompts. llama-run.sh and llama-compare.sh set the hoist.
 - 1 Nov, VERIFIED (run 8167, series with 0016, timestamp fix): a 512-token prompt is now matmuls. Qwen 767 ms:
   MUL_MAT_ID 55 %, dense q8_0 23 %, GATED_DELTA_NET 4 %; Gemma 618 ms: MUL_MAT_ID 47 %, dense 31 %, attention 9 % (the
   512 head); GPT-OSS 120B 1038 ms: MUL_MAT_ID mxfp4 79 %; Llama 2 646 ms: q4_0 matmuls 93 %. Every other op is under

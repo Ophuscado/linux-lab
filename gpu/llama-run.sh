@@ -58,6 +58,9 @@ for d in agxperf coopmat; do
 done
 [[ -n ${VK_DRIVER_FILES:-} ]] || echo "driver: the system's (no mesa-side driver built)"
 [[ ${LLAMA_CLUSTER:-0} == 1 ]] || export AGX_CLUSTER_OFF=1
+# Mesa hoists compute device loads above independent work on G13 by default; on this G14 only when asked
+# (generation +3-7 % on every model, prompts even, every op test passing; KNOWLEDGE 1 Nov).
+export AGX_HOIST_LOADS=${AGX_HOIST_LOADS:-1}
 export GGML_VK_WT_M=512,128,128,,32,32,,16,16,16 GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_ID_PER_EXPERT=2 GGML_VK_MMV_MAX_COLS=16 HK_PERFTEST=designedusccdmbarrier GGML_VK_DMMV_WG=large GGML_VK_MMV_SIMD=1 GGML_VK_RM_STDQ=$rows GGML_VK_RM_KQ=$rows \
     GGML_VK_SHADER_CORES=${GGML_VK_SHADER_CORES:-152} \
     GGML_VK_MMID_SIZES=sm GGML_VK_WT_S=256,128,32,,32,16 GGML_VK_MMID_S_MAX=64  # experts: 128x32 up to 64 tokens each (0011)
