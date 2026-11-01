@@ -9,7 +9,7 @@
 # macOS. Takes the GPU lock.
 #
 # Environment: STEPS (default "bench batches depth spec ops"), COMPARE_OUT (instead of var/), GPU_LOCK (the lock
-# file, default ~/.cache/linux-lab-gpu.lock), MESA_SIDE (the side Mesas, default build/mesa-side), LLAMA_BIN (a build/bin with llama-bench and llama-server; default src/llama.cpp-simd/build/bin, the
+# file, default ~/.cache/linux-lab-gpu.lock), MESA_SIDE (the side Mesas, default build/mesa-side), LLAMA_BIN (the binaries needed by STEPS; default src/llama.cpp-simd/build/bin, the
 # honeykrisp series), LLM (models, default ~/Projects/_llm).
 set -euo pipefail
 LAB=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
@@ -17,7 +17,21 @@ B=${LLAMA_BIN:-$LAB/src/llama.cpp-simd/build/bin}
 LLM=${LLM:-$HOME/Projects/_llm}
 OUT=${COMPARE_OUT:-$LAB/var}/compare-$(date +%Y%m%d-%H%M%S)
 die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
-[[ -x $B/llama-bench && -x $B/llama-server ]] || die "no llama-bench and llama-server in $B"
+STEPS=" ${STEPS:-bench batches depth spec ops} "
+on() { [[ $STEPS == *" $1 "* ]]; }
+require_binary() {
+    local binary=$1 step
+    shift
+    for step; do
+        if on "$step"; then
+            [[ -x $B/$binary ]] || die "no $binary in $B (step: $step)"
+            return
+        fi
+    done
+}
+require_binary test-backend-ops mmv mmid ops pp
+require_binary llama-bench bench batches depth perf sync pp
+require_binary llama-server spec
 mkdir -p "$OUT"
 
 for d in agxperf coopmat; do
@@ -31,8 +45,6 @@ export GGML_VK_MMID_SIZES=${GGML_VK_MMID_SIZES:-sm} GGML_VK_WT_S=${GGML_VK_WT_S:
 # Rows per workgroup as llama-run.sh sets them; ROWS=N for every model instead.
 rows() { [[ -n ${ROWS:-} ]] && { echo "$ROWS"; return; }; case $1 in qwen) echo 4 ;; gemma) echo 2 ;; *) echo 1 ;; esac; }
 
-STEPS=" ${STEPS:-bench batches depth spec ops} "
-on() { [[ $STEPS == *" $1 "* ]]; }
 # A step that fails is noted and the run goes on to the next step and model (set -e would end the whole run at the
 # first failing llama-bench, losing every model after it). Called as `on STEP && cmd || failed "NAME STEP"`: a step
 # that is off ends the && early, and that is not a failure.
