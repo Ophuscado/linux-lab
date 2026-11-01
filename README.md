@@ -60,9 +60,17 @@ A fresh clone reaches this with `gpu/llama-build.sh` (clones llama.cpp at `src-p
 
 **Desktop** ([`desktop/`](desktop/), `src-patches/linux/hid-*`)
 - Magic Mouse and Trackpad as smooth as on my macOS settings, or better: the pointer speed measured from macOS (0.875,
-  no acceleration), key repeat and scrolling matched, and no scrolling from a finger resting on the mouse. Magic
-  Keyboard Fn shortcuts: Fn+F maximize, Fn+C centre, Fn+P keep above, Fn+D on all desktops. Still to come: a screen
+  no acceleration), key repeat and scrolling matched (natural scrolling off, as this Mac has it; `NATURAL_SCROLL=true
+  desktop/ux-fix.sh input on` picks macOS's own factory default instead), and no scrolling from a finger resting on
+  the mouse. Magic Keyboard Fn shortcuts (Fn+F maximize, Fn+C centre, Fn+P keep above, Fn+D on all desktops) need the
+  lab's hid-apple patch active — `kernel/applekbd.sh try` turns it on against the running kernel without a reboot —
+  then the four keys it frees are bound in System Settings > Keyboard > Shortcuts > KWin. Still to come: a screen
   zoom from a tap (two fingers on the mouse, three on the trackpad).
+- Keyboard layout as on macOS (`desktop/ux-fix.sh keyboard on`): UK ISO by default (`gb`/`mac`/`applealu_iso`); a US
+  ANSI keyboard is `XKB_LAYOUT=us XKB_VARIANT=mac XKB_MODEL=applealu_ansi ux-fix.sh keyboard on`. Cmd becomes Linux's
+  own modifier key (Super): it opens launchers and the Cmd+Tab switcher, and keeps a couple of KWin's own shortcuts
+  (Cmd+Up/Down tiles a window); Ctrl still does the ordinary in-app shortcuts (copy, paste, save) that macOS gives to
+  Cmd. Right Cmd composes accents instead (right Cmd, `~`, `n` → `ñ`).
 - The KDE task switcher bug traced to libplasma, the WhiteSur look, macOS's colour profile for the TV, Bluetooth
   pairings from macOS.
 
