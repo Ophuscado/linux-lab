@@ -24,4 +24,4 @@ What the data showed: [`KNOWLEDGE.md`](../../KNOWLEDGE.md#gpu-llamacpp-on-vulkan
 
 `macos-15/extra/`: the Neural Engine firmware hashes of all three macOS versions, and the Thunderbolt controller dump and PCI devices with a Thunderbolt 3 box (Intel Titan Ridge) attached.
 
-A run with one to four files is a step that failed to start (its `collect.log` says why) or a single-step rerun. Not collected yet: vk-chain on MoltenVK, and the Neural Engine benchmark's 1x1-convolution shapes (every `anebench` here is the first version: adds and `linear` layers, which Core ML planned on the CPU except at batch 64).
+A run with one to four files is a step that failed to start (its `collect.log` says why) or a single-step rerun. `macos-15/20261028-021506`'s `llama-qwen-bench.json` is a cut-off array (one pp2048 result, no closing bracket): the run stopped partway, not llama-bench itself; its `llama-errors.txt` is stderr up to that point and holds no error. Not collected yet: vk-chain on MoltenVK, and the Neural Engine benchmark's 1x1-convolution shapes (every `anebench` here is the first version: adds and `linear` layers, which Core ML planned on the CPU except at batch 64).

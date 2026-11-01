@@ -18,7 +18,6 @@ ux audit 1 Nov: README Start states time (~45 min), risks (trial kernel default,
 ux audit 1 Nov: README Desktop explains Ctrl vs Cmd, the hid-apple need and ux-fix.sh's XKB_*/NATURAL_SCROLL options · check: a US ANSI reader finds the flags from the README
 ux audit 1 Nov: README says what does not work yet (HDR, video decode, Bluetooth after suspend, now only in BACKLOG) · check: a "Not yet" list in README links each line
 ux audit 1 Nov: public text without panel run/cell IDs (38+ in KNOWLEDGE, also count-experts-skip/FACTS.md meant for PR text); migrate-row.sh off the root; setup.sh tools stops printing DOING.md (:163-164) · check: grep -E "run [0-9]{4}|cell [0-9]{5}" on public files is empty
-ux audit 1 Nov: invalid or orphan results removed or labelled (results/macos/macos-15/20261028-021506/llama-qwen-bench.json truncated; results/linux/2026-10-20-llama-bench.txt unlinked) · check: every results JSON parses; every file is linked or under an archive note
 security: llama-run.sh serves --tools all with MCP and no --api-key (gpu/llama-run.sh:67-70); add --api-key-file, an explicit tool list, check CORS · check: curl without the key gets 401
 security: kernel frozen at 7.1.13 (system/settings.sh:457 excludepkgs, kernel/tbt-kernel.sh:68 COMMIT); system-audit warns when >30 days behind the newest Asahi tag · check: system-audit prints kernel age and newest tag
 security: tbt-disks.sh authorize rule matches the M424/ASM2464 vendor:device or unique_id, not every Thunderbolt device · check: an unknown USB4 device stays authorized=0
