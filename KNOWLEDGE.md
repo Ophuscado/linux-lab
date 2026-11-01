@@ -121,6 +121,10 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 
 ### Where the generation gap is
 
+- 1 Nov, VERIFIED (run 8167, series with 0016, timestamp fix): a 512-token prompt is now matmuls. Qwen 767 ms:
+  MUL_MAT_ID 55 %, dense q8_0 23 %, GATED_DELTA_NET 4 %; Gemma 618 ms: MUL_MAT_ID 47 %, dense 31 %, attention 9 % (the
+  512 head); GPT-OSS 120B 1038 ms: MUL_MAT_ID mxfp4 79 %; Llama 2 646 ms: q4_0 matmuls 93 %. Every other op is under
+  2.5 %.
 - 1 Nov, VERIFIED (run 7600): GATED_DELTA_NET's cost on Honeykrisp was its lane split, not latency. For 128-wide
   states ggml-vulkan splits a column over 4 invocations (32 state rows each); a whole subgroup, as ggml-metal does,
   takes a 512-token step from 2143 to 772 us at 32 heads and 2159 to 539 at 4 (8 lanes 1377, 16 lanes 1283), tests
