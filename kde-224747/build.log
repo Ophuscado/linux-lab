@@ -1,0 +1,1826 @@
+ninja: Entering directory `b'
+[1/1126] Generating ECMPoQm/ar/falkon_sitesettingsview_qt.qm
+[2/1126] Generating ECMPoQm/ar/falkon_kdeframeworksintegration_qt.qm
+[3/1126] Generating ECMPoQm/ar/falkon_mousegestures_qt.qm
+[4/1126] Generating ECMPoQm/ar/falkon_testplugin_qt.qm
+[5/1126] Generating ECMPoQm/ar/falkon_flashcookiemanager_qt.qm
+[6/1126] Generating ECMPoQm/ar/falkon_greasemonkey_qt.qm
+[7/1126] Generating ts...
+[8/1126] Generating ECMPoQm/ar/falkon_gnomekeyringpasswords_qt.qm
+[9/1126] Generating ECMPoQm/ar/falkon_autoscroll_qt.qm
+[10/1126] Generating ECMPoQm/ar/falkon_verticaltabs_qt.qm
+[11/1126] Generating ECMPoQm/ar/falkon_pim_qt.qm
+[12/1126] Generating ECMPoQm/ast/falkon_autoscroll_qt.qm
+[13/1126] Generating ECMPoQm/ar/falkon_statusbaricons_qt.qm
+[14/1126] Generating ECMPoQm/ar/falkon_tabmanager_qt.qm
+[15/1126] Generating ECMPoQm/ast/falkon_greasemonkey_qt.qm
+[16/1126] Generating ECMPoQm/ast/falkon_pim_qt.qm
+[17/1126] Generating ECMPoQm/ast/falkon_tabmanager_qt.qm
+[18/1126] Generating ECMPoQm/ast/falkon_gnomekeyringpasswords_qt.qm
+[19/1126] Generating ECMPoQm/ast/falkon_flashcookiemanager_qt.qm
+[20/1126] Generating ECMPoQm/ast/falkon_kdeframeworksintegration_qt.qm
+[21/1126] Generating ECMPoQm/ast/falkon_mousegestures_qt.qm
+[22/1126] Generating ECMPoQm/ast/falkon_statusbaricons_qt.qm
+[23/1126] Generating ECMPoQm/az/falkon_autoscroll_qt.qm
+[24/1126] Generating ECMPoQm/az/falkon_kdeframeworksintegration_qt.qm
+[25/1126] Generating ECMPoQm/ast/falkon_testplugin_qt.qm
+[26/1126] Generating ECMPoQm/az/falkon_greasemonkey_qt.qm
+[27/1126] Generating ECMPoQm/az/falkon_mousegestures_qt.qm
+[28/1126] Generating ECMPoQm/az/falkon_pim_qt.qm
+[29/1126] Generating ECMPoQm/ast/falkon_verticaltabs_qt.qm
+[30/1126] Generating ECMPoQm/az/falkon_flashcookiemanager_qt.qm
+[31/1126] Generating ECMPoQm/az/falkon_gnomekeyringpasswords_qt.qm
+[32/1126] Generating ECMPoQm/bg/falkon_autoscroll_qt.qm
+[33/1126] Generating ECMPoQm/az/falkon_verticaltabs_qt.qm
+[34/1126] Generating ECMPoQm/az/falkon_sitesettingsview_qt.qm
+[35/1126] Generating ECMPoQm/az/falkon_statusbaricons_qt.qm
+[36/1126] Generating ECMPoQm/az/falkon_testplugin_qt.qm
+[37/1126] Generating ECMPoQm/bg/falkon_gnomekeyringpasswords_qt.qm
+[38/1126] Generating ECMPoQm/ar/falkon_qt.qm
+[39/1126] Generating ECMPoQm/az/falkon_tabmanager_qt.qm
+[40/1126] Generating ECMPoQm/bg/falkon_flashcookiemanager_qt.qm
+[41/1126] Generating ECMPoQm/bg/falkon_greasemonkey_qt.qm
+[42/1126] Generating ECMPoQm/bg/falkon_kdeframeworksintegration_qt.qm
+[43/1126] Generating ECMPoQm/bg/falkon_mousegestures_qt.qm
+[44/1126] Generating ECMPoQm/bg/falkon_pim_qt.qm
+[45/1126] Generating ECMPoQm/bg/falkon_sitesettingsview_qt.qm
+[46/1126] Generating ECMPoQm/ast/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[47/1126] Generating ECMPoQm/az/falkon_qt.qm
+[48/1126] Generating ECMPoQm/bg/falkon_statusbaricons_qt.qm
+[49/1126] Generating ECMPoQm/bg/falkon_testplugin_qt.qm
+[50/1126] Generating ECMPoQm/bg/falkon_tabmanager_qt.qm
+[51/1126] Generating ECMPoQm/bg/falkon_verticaltabs_qt.qm
+[52/1126] Generating ECMPoQm/ca/falkon_autoscroll_qt.qm
+[53/1126] Generating ECMPoQm/ca/falkon_gnomekeyringpasswords_qt.qm
+[54/1126] Generating ECMPoQm/ca/falkon_kdeframeworksintegration_qt.qm
+[55/1126] Generating ECMPoQm/ca/falkon_flashcookiemanager_qt.qm
+[56/1126] Generating ECMPoQm/ca/falkon_greasemonkey_qt.qm
+[57/1126] Generating ECMPoQm/ca/falkon_mousegestures_qt.qm
+[58/1126] Generating ECMPoQm/ca/falkon_pim_qt.qm
+[59/1126] Generating ECMPoQm/ca/falkon_sitesettingsview_qt.qm
+[60/1126] Generating ECMPoQm/ca/falkon_testplugin_qt.qm
+[61/1126] Generating ECMPoQm/ca/falkon_verticaltabs_qt.qm
+[62/1126] Generating ECMPoQm/ca/falkon_statusbaricons_qt.qm
+[63/1126] Generating ECMPoQm/ca/falkon_tabmanager_qt.qm
+[64/1126] Generating ECMPoQm/ca@valencia/falkon_autoscroll_qt.qm
+[65/1126] Generating ECMPoQm/ca@valencia/falkon_greasemonkey_qt.qm
+[66/1126] Generating ECMPoQm/ca@valencia/falkon_flashcookiemanager_qt.qm
+[67/1126] Generating ECMPoQm/ca@valencia/falkon_gnomekeyringpasswords_qt.qm
+[68/1126] Generating ECMPoQm/ca@valencia/falkon_mousegestures_qt.qm
+[69/1126] Generating ECMPoQm/ca@valencia/falkon_kdeframeworksintegration_qt.qm
+[70/1126] Generating ECMPoQm/ca@valencia/falkon_statusbaricons_qt.qm
+[71/1126] Generating ECMPoQm/ca@valencia/falkon_tabmanager_qt.qm
+[72/1126] Generating ECMPoQm/ca@valencia/falkon_verticaltabs_qt.qm
+[73/1126] Generating ECMPoQm/cs/falkon_autoscroll_qt.qm
+[74/1126] Generating ECMPoQm/ca@valencia/falkon_sitesettingsview_qt.qm
+[75/1126] Generating ECMPoQm/ca@valencia/falkon_pim_qt.qm
+[76/1126] Generating ECMPoQm/ca@valencia/falkon_testplugin_qt.qm
+[77/1126] Generating ECMPoQm/cs/falkon_gnomekeyringpasswords_qt.qm
+[78/1126] Generating ECMPoQm/cs/falkon_greasemonkey_qt.qm
+[79/1126] Generating ECMPoQm/cs/falkon_flashcookiemanager_qt.qm
+[80/1126] Generating ECMPoQm/ca@valencia/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[81/1126] Generating ECMPoQm/cs/falkon_sitesettingsview_qt.qm
+[82/1126] Generating ECMPoQm/cs/falkon_pim_qt.qm
+[83/1126] Generating ECMPoQm/da/falkon_autoscroll_qt.qm
+[84/1126] Generating ECMPoQm/cs/falkon_mousegestures_qt.qm
+[85/1126] Generating ECMPoQm/cs/falkon_verticaltabs_qt.qm
+[86/1126] Generating ECMPoQm/da/falkon_flashcookiemanager_qt.qm
+[87/1126] Generating ECMPoQm/da/falkon_greasemonkey_qt.qm
+[88/1126] Generating ECMPoQm/bg/falkon_qt.qm
+[89/1126] Generating ECMPoQm/ca/falkon_qt.qm
+[90/1126] Generating ECMPoQm/cs/falkon_kdeframeworksintegration_qt.qm
+[91/1126] Generating ECMPoQm/cs/falkon_statusbaricons_qt.qm
+[92/1126] Generating ECMPoQm/cs/falkon_tabmanager_qt.qm
+[93/1126] Generating ECMPoQm/cs/falkon_testplugin_qt.qm
+[94/1126] Generating ECMPoQm/da/falkon_kdeframeworksintegration_qt.qm
+[95/1126] Generating ECMPoQm/da/falkon_mousegestures_qt.qm
+[96/1126] Generating ECMPoQm/da/falkon_pim_qt.qm
+[97/1126] Generating ECMPoQm/da/falkon_statusbaricons_qt.qm
+[98/1126] Generating ECMPoQm/da/falkon_tabmanager_qt.qm
+[99/1126] Generating ECMPoQm/da/falkon_testplugin_qt.qm
+[100/1126] Generating ECMPoQm/de/falkon_mousegestures_qt.qm
+[101/1126] Generating ECMPoQm/de/falkon_greasemonkey_qt.qm
+[102/1126] Generating ECMPoQm/de/falkon_pim_qt.qm
+[103/1126] Generating ECMPoQm/da/falkon_verticaltabs_qt.qm
+[104/1126] Generating ECMPoQm/de/falkon_autoscroll_qt.qm
+[105/1126] Generating ECMPoQm/de/falkon_gnomekeyringpasswords_qt.qm
+[106/1126] Generating ECMPoQm/de/falkon_sitesettingsview_qt.qm
+[107/1126] Generating ECMPoQm/de/falkon_flashcookiemanager_qt.qm
+[108/1126] Generating ECMPoQm/de/falkon_kdeframeworksintegration_qt.qm
+[109/1126] Generating ECMPoQm/de/falkon_tabmanager_qt.qm
+[110/1126] Generating ECMPoQm/de/falkon_testplugin_qt.qm
+[111/1126] Generating ECMPoQm/el/falkon_autoscroll_qt.qm
+[112/1126] Generating ECMPoQm/el/falkon_gnomekeyringpasswords_qt.qm
+[113/1126] Generating ECMPoQm/de/falkon_statusbaricons_qt.qm
+[114/1126] Generating ECMPoQm/de/falkon_verticaltabs_qt.qm
+[115/1126] Generating ECMPoQm/el/falkon_flashcookiemanager_qt.qm
+[116/1126] Generating ECMPoQm/el/falkon_greasemonkey_qt.qm
+[117/1126] Generating ECMPoQm/el/falkon_mousegestures_qt.qm
+[118/1126] Generating ECMPoQm/el/falkon_kdeframeworksintegration_qt.qm
+[119/1126] Generating ECMPoQm/el/falkon_pim_qt.qm
+[120/1126] Generating ECMPoQm/el/falkon_testplugin_qt.qm
+[121/1126] Generating ECMPoQm/el/falkon_statusbaricons_qt.qm
+[122/1126] Generating ECMPoQm/el/falkon_tabmanager_qt.qm
+[123/1126] Generating ECMPoQm/el/falkon_verticaltabs_qt.qm
+[124/1126] Generating ECMPoQm/en/falkon_qt.qm
+[125/1126] Generating ECMPoQm/en_GB/falkon_autoscroll_qt.qm
+[126/1126] Generating ECMPoQm/cs/falkon_qt.qm
+[127/1126] Generating ECMPoQm/da/falkon_qt.qm
+[128/1126] Generating ECMPoQm/en_GB/falkon_gnomekeyringpasswords_qt.qm
+[129/1126] Generating ECMPoQm/en_GB/falkon_kdeframeworksintegration_qt.qm
+[130/1126] Generating ECMPoQm/en_GB/falkon_flashcookiemanager_qt.qm
+[131/1126] Generating ECMPoQm/en_GB/falkon_greasemonkey_qt.qm
+[132/1126] Generating ECMPoQm/en_GB/falkon_mousegestures_qt.qm
+[133/1126] Generating ECMPoQm/en_GB/falkon_pim_qt.qm
+[134/1126] Generating ECMPoQm/en_GB/falkon_statusbaricons_qt.qm
+[135/1126] Generating ECMPoQm/en_GB/falkon_sitesettingsview_qt.qm
+[136/1126] Generating ECMPoQm/en_GB/falkon_testplugin_qt.qm
+[137/1126] Generating ECMPoQm/en_GB/falkon_verticaltabs_qt.qm
+[138/1126] Generating ECMPoQm/eo/falkon_autoscroll_qt.qm
+[139/1126] Generating ECMPoQm/de/falkon_qt.qm
+[140/1126] Generating ECMPoQm/en_GB/falkon_tabmanager_qt.qm
+[141/1126] Generating ECMPoQm/eo/falkon_flashcookiemanager_qt.qm
+[142/1126] Generating ECMPoQm/eo/falkon_gnomekeyringpasswords_qt.qm
+[143/1126] Generating ECMPoQm/eo/falkon_greasemonkey_qt.qm
+[144/1126] Generating ECMPoQm/eo/falkon_kdeframeworksintegration_qt.qm
+[145/1126] Generating ECMPoQm/eo/falkon_mousegestures_qt.qm
+[146/1126] Generating ECMPoQm/eo/falkon_pim_qt.qm
+[147/1126] Generating ECMPoQm/el/falkon_qt.qm
+[148/1126] Generating ECMPoQm/eo/falkon_sitesettingsview_qt.qm
+[149/1126] Generating ECMPoQm/eo/falkon_tabmanager_qt.qm
+[150/1126] Generating ECMPoQm/es/falkon_autoscroll_qt.qm
+[151/1126] Generating ECMPoQm/eo/falkon_verticaltabs_qt.qm
+[152/1126] Generating ECMPoQm/eo/falkon_testplugin_qt.qm
+[153/1126] Generating ECMPoQm/es/falkon_flashcookiemanager_qt.qm
+[154/1126] Generating ECMPoQm/eo/falkon_statusbaricons_qt.qm
+[155/1126] Generating ECMPoQm/es/falkon_gnomekeyringpasswords_qt.qm
+[156/1126] Generating ECMPoQm/es/falkon_greasemonkey_qt.qm
+[157/1126] Generating ECMPoQm/es/falkon_kdeframeworksintegration_qt.qm
+[158/1126] Generating ECMPoQm/es/falkon_mousegestures_qt.qm
+[159/1126] Generating ECMPoQm/es/falkon_pim_qt.qm
+[160/1126] Generating ECMPoQm/es/falkon_sitesettingsview_qt.qm
+[161/1126] Generating ECMPoQm/es/falkon_tabmanager_qt.qm
+[162/1126] Generating ECMPoQm/en_GB/falkon_qt.qm
+[163/1126] Generating ECMPoQm/es/falkon_statusbaricons_qt.qm
+[164/1126] Generating ECMPoQm/es/falkon_testplugin_qt.qm
+[165/1126] Generating ECMPoQm/es/falkon_verticaltabs_qt.qm
+[166/1126] Generating ECMPoQm/et/falkon_flashcookiemanager_qt.qm
+[167/1126] Generating ECMPoQm/et/falkon_autoscroll_qt.qm
+[168/1126] Generating ECMPoQm/et/falkon_pim_qt.qm
+[169/1126] Generating ECMPoQm/et/falkon_statusbaricons_qt.qm
+[170/1126] Generating ECMPoQm/et/falkon_greasemonkey_qt.qm
+[171/1126] Generating ECMPoQm/et/falkon_kdeframeworksintegration_qt.qm
+[172/1126] Generating ECMPoQm/et/falkon_mousegestures_qt.qm
+[173/1126] Generating ECMPoQm/et/falkon_verticaltabs_qt.qm
+[174/1126] Generating ECMPoQm/eo/falkon_qt.qm
+[175/1126] Generating ECMPoQm/es/falkon_qt.qm
+[176/1126] Generating ECMPoQm/et/falkon_tabmanager_qt.qm
+[177/1126] Generating ECMPoQm/et/falkon_testplugin_qt.qm
+[178/1126] Generating ECMPoQm/eu/falkon_autoscroll_qt.qm
+[179/1126] Generating ECMPoQm/eu/falkon_flashcookiemanager_qt.qm
+[180/1126] Generating ECMPoQm/eu/falkon_gnomekeyringpasswords_qt.qm
+[181/1126] Generating ECMPoQm/eu/falkon_greasemonkey_qt.qm
+[182/1126] Generating ECMPoQm/eu/falkon_kdeframeworksintegration_qt.qm
+[183/1126] Generating ECMPoQm/eu/falkon_pim_qt.qm
+[184/1126] Generating ECMPoQm/eu/falkon_sitesettingsview_qt.qm
+[185/1126] Generating ECMPoQm/eu/falkon_testplugin_qt.qm
+[186/1126] Generating ECMPoQm/eu/falkon_mousegestures_qt.qm
+[187/1126] Generating ECMPoQm/eu/falkon_statusbaricons_qt.qm
+[188/1126] Generating ECMPoQm/eu/falkon_tabmanager_qt.qm
+[189/1126] Generating ECMPoQm/eu/falkon_verticaltabs_qt.qm
+[190/1126] Generating ECMPoQm/fa/falkon_flashcookiemanager_qt.qm
+[191/1126] Generating ECMPoQm/et/falkon_qt.qm
+[192/1126] Generating ECMPoQm/fa/falkon_greasemonkey_qt.qm
+[193/1126] Generating ECMPoQm/fa/falkon_kdeframeworksintegration_qt.qm
+[194/1126] Generating ECMPoQm/fi/falkon_autoscroll_qt.qm
+[195/1126] Generating ECMPoQm/fa/falkon_mousegestures_qt.qm
+[196/1126] Generating ECMPoQm/eu/falkon_qt.qm
+[197/1126] Generating ECMPoQm/fa/falkon_pim_qt.qm
+[198/1126] Generating ECMPoQm/fa/falkon_statusbaricons_qt.qm
+[199/1126] Generating ECMPoQm/fa/falkon_tabmanager_qt.qm
+[200/1126] Generating ECMPoQm/fa/falkon_testplugin_qt.qm
+[201/1126] Generating ECMPoQm/fi/falkon_flashcookiemanager_qt.qm
+[202/1126] Generating ECMPoQm/fi/falkon_gnomekeyringpasswords_qt.qm
+[203/1126] Generating ECMPoQm/fi/falkon_greasemonkey_qt.qm
+[204/1126] Generating ECMPoQm/fi/falkon_mousegestures_qt.qm
+[205/1126] Generating ECMPoQm/fi/falkon_pim_qt.qm
+[206/1126] Generating ECMPoQm/fi/falkon_kdeframeworksintegration_qt.qm
+[207/1126] Generating ECMPoQm/fi/falkon_sitesettingsview_qt.qm
+[208/1126] Generating ECMPoQm/fa/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[209/1126] Generating ECMPoQm/fi/falkon_statusbaricons_qt.qm
+[210/1126] Generating ECMPoQm/fr/falkon_autoscroll_qt.qm
+[211/1126] Generating ECMPoQm/fi/falkon_tabmanager_qt.qm
+[212/1126] Generating ECMPoQm/fr/falkon_mousegestures_qt.qm
+[213/1126] Generating ECMPoQm/fi/falkon_testplugin_qt.qm
+[214/1126] Generating ECMPoQm/fi/falkon_verticaltabs_qt.qm
+[215/1126] Generating ECMPoQm/fr/falkon_gnomekeyringpasswords_qt.qm
+[216/1126] Generating ECMPoQm/fr/falkon_greasemonkey_qt.qm
+[217/1126] Generating ECMPoQm/fr/falkon_pim_qt.qm
+[218/1126] Generating ECMPoQm/fr/falkon_flashcookiemanager_qt.qm
+[219/1126] Generating ECMPoQm/fr/falkon_kdeframeworksintegration_qt.qm
+[220/1126] Generating ECMPoQm/fr/falkon_statusbaricons_qt.qm
+[221/1126] Generating ECMPoQm/fr/falkon_sitesettingsview_qt.qm
+[222/1126] Generating ECMPoQm/fr/falkon_tabmanager_qt.qm
+[223/1126] Generating ECMPoQm/ga/falkon_gnomekeyringpasswords_qt.qm
+[224/1126] Generating ECMPoQm/fr/falkon_testplugin_qt.qm
+[225/1126] Generating ECMPoQm/fr/falkon_verticaltabs_qt.qm
+[226/1126] Generating ECMPoQm/ga/falkon_greasemonkey_qt.qm
+[227/1126] Generating ECMPoQm/ga/falkon_mousegestures_qt.qm
+[228/1126] Generating ECMPoQm/ga/falkon_autoscroll_qt.qm
+[229/1126] Generating ECMPoQm/ga/falkon_kdeframeworksintegration_qt.qm
+[230/1126] Generating mo...
+[231/1126] Generating ECMPoQm/ga/falkon_flashcookiemanager_qt.qm
+[232/1126] Generating ECMPoQm/ga/falkon_pim_qt.qm
+[233/1126] Generating ECMPoQm/ga/falkon_sitesettingsview_qt.qm
+[234/1126] Generating ECMPoQm/ga/falkon_statusbaricons_qt.qm
+[235/1126] Generating ECMPoQm/ga/falkon_tabmanager_qt.qm
+[236/1126] Generating ECMPoQm/gl/falkon_autoscroll_qt.qm
+[237/1126] Generating ECMPoQm/ga/falkon_testplugin_qt.qm
+[238/1126] Generating ECMPoQm/gl/falkon_kdeframeworksintegration_qt.qm
+[239/1126] Generating ECMPoQm/gl/falkon_mousegestures_qt.qm
+[240/1126] Generating ECMPoQm/fi/falkon_qt.qm
+[241/1126] Generating ECMPoQm/ga/falkon_verticaltabs_qt.qm
+[242/1126] Generating ECMPoQm/gl/falkon_gnomekeyringpasswords_qt.qm
+[243/1126] Generating ECMPoQm/gl/falkon_statusbaricons_qt.qm
+[244/1126] Generating ECMPoQm/gl/falkon_flashcookiemanager_qt.qm
+[245/1126] Generating ECMPoQm/gl/falkon_greasemonkey_qt.qm
+[246/1126] Generating ECMPoQm/gl/falkon_pim_qt.qm
+[247/1126] Generating ECMPoQm/gl/falkon_sitesettingsview_qt.qm
+[248/1126] Generating ECMPoQm/gl/falkon_tabmanager_qt.qm
+[249/1126] Generating ECMPoQm/gl/falkon_testplugin_qt.qm
+[250/1126] Generating ECMPoQm/fr/falkon_qt.qm
+[251/1126] Generating ECMPoQm/gl/falkon_verticaltabs_qt.qm
+[252/1126] Generating ECMPoQm/he/falkon_autoscroll_qt.qm
+[253/1126] Generating ECMPoQm/he/falkon_flashcookiemanager_qt.qm
+[254/1126] Generating ECMPoQm/he/falkon_gnomekeyringpasswords_qt.qm
+[255/1126] Generating ECMPoQm/he/falkon_mousegestures_qt.qm
+[256/1126] Generating ECMPoQm/he/falkon_kdeframeworksintegration_qt.qm
+[257/1126] Generating ECMPoQm/he/falkon_sitesettingsview_qt.qm
+[258/1126] Generating ECMPoQm/he/falkon_greasemonkey_qt.qm
+[259/1126] Generating ECMPoQm/he/falkon_pim_qt.qm
+[260/1126] Generating ECMPoQm/he/falkon_statusbaricons_qt.qm
+[261/1126] Generating ECMPoQm/he/falkon_tabmanager_qt.qm
+[262/1126] Generating ECMPoQm/he/falkon_testplugin_qt.qm
+[263/1126] Generating ECMPoQm/ga/falkon_qt.qm
+[264/1126] Generating ECMPoQm/he/falkon_verticaltabs_qt.qm
+[265/1126] Generating ECMPoQm/hi/falkon_autoscroll_qt.qm
+[266/1126] Generating ECMPoQm/hi/falkon_flashcookiemanager_qt.qm
+[267/1126] Generating ECMPoQm/hi/falkon_gnomekeyringpasswords_qt.qm
+[268/1126] Generating ECMPoQm/hi/falkon_greasemonkey_qt.qm
+[269/1126] Generating ECMPoQm/hi/falkon_kdeframeworksintegration_qt.qm
+[270/1126] Generating ECMPoQm/hi/falkon_sitesettingsview_qt.qm
+[271/1126] Generating ECMPoQm/hi/falkon_testplugin_qt.qm
+[272/1126] Generating ECMPoQm/hi/falkon_mousegestures_qt.qm
+[273/1126] Generating ECMPoQm/hi/falkon_pim_qt.qm
+[274/1126] Generating ECMPoQm/hi/falkon_verticaltabs_qt.qm
+[275/1126] Generating ECMPoQm/hi/falkon_statusbaricons_qt.qm
+[276/1126] Generating ECMPoQm/hi/falkon_tabmanager_qt.qm
+[277/1126] Generating ECMPoQm/hu/falkon_autoscroll_qt.qm
+[278/1126] Generating ECMPoQm/hu/falkon_flashcookiemanager_qt.qm
+[279/1126] Generating ECMPoQm/hu/falkon_greasemonkey_qt.qm
+[280/1126] Generating ECMPoQm/hu/falkon_kdeframeworksintegration_qt.qm
+[281/1126] Generating ECMPoQm/hu/falkon_mousegestures_qt.qm
+[282/1126] Generating ECMPoQm/hu/falkon_pim_qt.qm
+[283/1126] Generating ECMPoQm/gl/falkon_qt.qm
+[284/1126] Generating ECMPoQm/hu/falkon_gnomekeyringpasswords_qt.qm
+[285/1126] Generating ECMPoQm/hu/falkon_sitesettingsview_qt.qm
+[286/1126] Generating ECMPoQm/hu/falkon_statusbaricons_qt.qm
+[287/1126] Generating ECMPoQm/hu/falkon_testplugin_qt.qm
+[288/1126] Generating ECMPoQm/ia/falkon_autoscroll_qt.qm
+[289/1126] Generating ECMPoQm/he/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[290/1126] Generating ECMPoQm/hu/falkon_tabmanager_qt.qm
+[291/1126] Generating ECMPoQm/hu/falkon_verticaltabs_qt.qm
+[292/1126] Generating ECMPoQm/ia/falkon_flashcookiemanager_qt.qm
+[293/1126] Generating ECMPoQm/ia/falkon_gnomekeyringpasswords_qt.qm
+[294/1126] Generating ECMPoQm/ia/falkon_tabmanager_qt.qm
+[295/1126] Generating ECMPoQm/ia/falkon_mousegestures_qt.qm
+[296/1126] Generating ECMPoQm/ia/falkon_pim_qt.qm
+[297/1126] Generating ECMPoQm/ia/falkon_sitesettingsview_qt.qm
+[298/1126] Generating ECMPoQm/ia/falkon_testplugin_qt.qm
+[299/1126] Generating ECMPoQm/ia/falkon_statusbaricons_qt.qm
+[300/1126] Generating ECMPoQm/ia/falkon_kdeframeworksintegration_qt.qm
+[301/1126] Generating ECMPoQm/id/falkon_greasemonkey_qt.qm
+[302/1126] Generating ECMPoQm/ia/falkon_greasemonkey_qt.qm
+[303/1126] Generating ECMPoQm/ia/falkon_verticaltabs_qt.qm
+[304/1126] Generating ECMPoQm/id/falkon_autoscroll_qt.qm
+[305/1126] Generating ECMPoQm/id/falkon_flashcookiemanager_qt.qm
+[306/1126] Generating ECMPoQm/id/falkon_kdeframeworksintegration_qt.qm
+[307/1126] Generating ECMPoQm/id/falkon_mousegestures_qt.qm
+[308/1126] Generating ECMPoQm/id/falkon_tabmanager_qt.qm
+[309/1126] Generating ECMPoQm/id/falkon_pim_qt.qm
+[310/1126] Generating ECMPoQm/id/falkon_statusbaricons_qt.qm
+[311/1126] Generating ECMPoQm/id/falkon_testplugin_qt.qm
+[312/1126] Generating ECMPoQm/id/falkon_verticaltabs_qt.qm
+[313/1126] Generating ECMPoQm/hi/falkon_qt.qm
+[314/1126] Generating ECMPoQm/is/falkon_autoscroll_qt.qm
+[315/1126] Generating ECMPoQm/is/falkon_gnomekeyringpasswords_qt.qm
+[316/1126] Generating ECMPoQm/is/falkon_greasemonkey_qt.qm
+[317/1126] Generating ECMPoQm/is/falkon_mousegestures_qt.qm
+[318/1126] Generating ECMPoQm/is/falkon_flashcookiemanager_qt.qm
+[319/1126] Generating ECMPoQm/is/falkon_kdeframeworksintegration_qt.qm
+[320/1126] Generating ECMPoQm/is/falkon_pim_qt.qm
+[321/1126] Generating ECMPoQm/is/falkon_sitesettingsview_qt.qm
+[322/1126] Generating ECMPoQm/is/falkon_testplugin_qt.qm
+[323/1126] Generating ECMPoQm/hu/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[324/1126] Generating ECMPoQm/ia/falkon_qt.qm
+[325/1126] Generating ECMPoQm/is/falkon_statusbaricons_qt.qm
+[326/1126] Generating ECMPoQm/is/falkon_tabmanager_qt.qm
+[327/1126] Generating ECMPoQm/is/falkon_verticaltabs_qt.qm
+[328/1126] Generating ECMPoQm/it/falkon_autoscroll_qt.qm
+[329/1126] Generating ECMPoQm/it/falkon_flashcookiemanager_qt.qm
+[330/1126] Generating ECMPoQm/it/falkon_gnomekeyringpasswords_qt.qm
+[331/1126] Generating ECMPoQm/it/falkon_kdeframeworksintegration_qt.qm
+[332/1126] Generating ECMPoQm/it/falkon_greasemonkey_qt.qm
+[333/1126] Generating ECMPoQm/it/falkon_mousegestures_qt.qm
+[334/1126] Generating ECMPoQm/it/falkon_pim_qt.qm
+[335/1126] Generating ECMPoQm/it/falkon_tabmanager_qt.qm
+[336/1126] Generating ECMPoQm/it/falkon_sitesettingsview_qt.qm
+[337/1126] Generating ECMPoQm/it/falkon_verticaltabs_qt.qm
+[338/1126] Generating ECMPoQm/it/falkon_testplugin_qt.qm
+[339/1126] Generating ECMPoQm/it/falkon_statusbaricons_qt.qm
+[340/1126] Generating ECMPoQm/ja/falkon_greasemonkey_qt.qm
+[341/1126] Generating ECMPoQm/ja/falkon_autoscroll_qt.qm
+[342/1126] Generating ECMPoQm/ja/falkon_tabmanager_qt.qm
+[343/1126] Generating ECMPoQm/ja/falkon_gnomekeyringpasswords_qt.qm
+[344/1126] Generating ECMPoQm/ja/falkon_testplugin_qt.qm
+[345/1126] Generating ECMPoQm/ja/falkon_verticaltabs_qt.qm
+[346/1126] Generating ECMPoQm/ka/falkon_autoscroll_qt.qm
+[347/1126] Generating ECMPoQm/ja/falkon_flashcookiemanager_qt.qm
+[348/1126] Generating ECMPoQm/ka/falkon_gnomekeyringpasswords_qt.qm
+[349/1126] Generating ECMPoQm/ja/falkon_kdeframeworksintegration_qt.qm
+[350/1126] Generating ECMPoQm/ja/falkon_mousegestures_qt.qm
+[351/1126] Generating ECMPoQm/ja/falkon_pim_qt.qm
+[352/1126] Generating ECMPoQm/ja/falkon_statusbaricons_qt.qm
+[353/1126] Generating ECMPoQm/ka/falkon_flashcookiemanager_qt.qm
+[354/1126] Generating ECMPoQm/ka/falkon_greasemonkey_qt.qm
+[355/1126] Generating ECMPoQm/ka/falkon_kdeframeworksintegration_qt.qm
+[356/1126] Generating ECMPoQm/ka/falkon_mousegestures_qt.qm
+[357/1126] Generating ECMPoQm/ka/falkon_pim_qt.qm
+[358/1126] Generating ECMPoQm/ka/falkon_sitesettingsview_qt.qm
+[359/1126] Generating ECMPoQm/ka/falkon_statusbaricons_qt.qm
+[360/1126] Generating ECMPoQm/is/falkon_qt.qm
+[361/1126] Generating ECMPoQm/ka/falkon_verticaltabs_qt.qm
+[362/1126] Generating ECMPoQm/ko/falkon_mousegestures_qt.qm
+[363/1126] Generating ECMPoQm/ka/falkon_testplugin_qt.qm
+[364/1126] Generating ECMPoQm/ko/falkon_autoscroll_qt.qm
+[365/1126] Generating ECMPoQm/ko/falkon_flashcookiemanager_qt.qm
+[366/1126] Generating ECMPoQm/id/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[367/1126] Generating ECMPoQm/ka/falkon_tabmanager_qt.qm
+[368/1126] Generating ECMPoQm/ko/falkon_gnomekeyringpasswords_qt.qm
+[369/1126] Generating ECMPoQm/ko/falkon_greasemonkey_qt.qm
+[370/1126] Generating ECMPoQm/ko/falkon_kdeframeworksintegration_qt.qm
+[371/1126] Generating ECMPoQm/ko/falkon_pim_qt.qm
+[372/1126] Generating ECMPoQm/ko/falkon_sitesettingsview_qt.qm
+[373/1126] Generating ECMPoQm/it/falkon_qt.qm
+[374/1126] Generating ECMPoQm/ko/falkon_statusbaricons_qt.qm
+[375/1126] Generating ECMPoQm/ko/falkon_tabmanager_qt.qm
+[376/1126] Generating ECMPoQm/lg/falkon_gnomekeyringpasswords_qt.qm
+[377/1126] Generating ECMPoQm/ko/falkon_testplugin_qt.qm
+[378/1126] Generating ECMPoQm/ko/falkon_verticaltabs_qt.qm
+[379/1126] Generating ECMPoQm/lg/falkon_autoscroll_qt.qm
+[380/1126] Generating ECMPoQm/lg/falkon_kdeframeworksintegration_qt.qm
+[381/1126] Generating ECMPoQm/lg/falkon_greasemonkey_qt.qm
+[382/1126] Generating ECMPoQm/lg/falkon_mousegestures_qt.qm
+[383/1126] Generating ECMPoQm/lg/falkon_flashcookiemanager_qt.qm
+[384/1126] Generating ECMPoQm/lg/falkon_pim_qt.qm
+[385/1126] Generating ECMPoQm/lg/falkon_sitesettingsview_qt.qm
+[386/1126] Generating ECMPoQm/lg/falkon_statusbaricons_qt.qm
+[387/1126] Generating ECMPoQm/ka/falkon_qt.qm
+[388/1126] Generating ECMPoQm/lt/falkon_autoscroll_qt.qm
+[389/1126] Generating ECMPoQm/lt/falkon_gnomekeyringpasswords_qt.qm
+[390/1126] Generating ECMPoQm/lg/falkon_tabmanager_qt.qm
+[391/1126] Generating ECMPoQm/lg/falkon_testplugin_qt.qm
+[392/1126] Generating ECMPoQm/lt/falkon_flashcookiemanager_qt.qm
+[393/1126] Generating ECMPoQm/lt/falkon_greasemonkey_qt.qm
+[394/1126] Generating ECMPoQm/lt/falkon_kdeframeworksintegration_qt.qm
+[395/1126] Generating ECMPoQm/lg/falkon_verticaltabs_qt.qm
+[396/1126] Generating ECMPoQm/lt/falkon_pim_qt.qm
+[397/1126] Generating ECMPoQm/ko/falkon_qt.qm
+[398/1126] Generating ECMPoQm/lt/falkon_mousegestures_qt.qm
+[399/1126] Generating ECMPoQm/lt/falkon_sitesettingsview_qt.qm
+[400/1126] Generating ECMPoQm/lt/falkon_statusbaricons_qt.qm
+[401/1126] Generating ECMPoQm/lt/falkon_testplugin_qt.qm
+[402/1126] Generating ECMPoQm/ja/falkon_qt.qm
+[403/1126] Generating ECMPoQm/lt/falkon_tabmanager_qt.qm
+[404/1126] Generating ECMPoQm/lt/falkon_verticaltabs_qt.qm
+[405/1126] Generating ECMPoQm/lv/falkon_autoscroll_qt.qm
+[406/1126] Generating ECMPoQm/lv/falkon_flashcookiemanager_qt.qm
+[407/1126] Generating ECMPoQm/lv/falkon_gnomekeyringpasswords_qt.qm
+[408/1126] Generating ECMPoQm/lv/falkon_greasemonkey_qt.qm
+[409/1126] Generating ECMPoQm/lv/falkon_kdeframeworksintegration_qt.qm
+[410/1126] Generating ECMPoQm/lv/falkon_mousegestures_qt.qm
+[411/1126] Generating ECMPoQm/lg/falkon_qt.qm
+[412/1126] Generating ECMPoQm/lv/falkon_pim_qt.qm
+[413/1126] Generating ECMPoQm/lv/falkon_sitesettingsview_qt.qm
+[414/1126] Generating ECMPoQm/lv/falkon_statusbaricons_qt.qm
+[415/1126] Generating ECMPoQm/lv/falkon_tabmanager_qt.qm
+[416/1126] Generating ECMPoQm/lv/falkon_testplugin_qt.qm
+[417/1126] Generating ECMPoQm/lt/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[418/1126] Generating ECMPoQm/lv/falkon_verticaltabs_qt.qm
+[419/1126] Generating ECMPoQm/nb/falkon_autoscroll_qt.qm
+[420/1126] Generating ECMPoQm/nb/falkon_flashcookiemanager_qt.qm
+[421/1126] Generating ECMPoQm/nb/falkon_gnomekeyringpasswords_qt.qm
+[422/1126] Generating ECMPoQm/nb/falkon_greasemonkey_qt.qm
+[423/1126] Generating ECMPoQm/nb/falkon_kdeframeworksintegration_qt.qm
+[424/1126] Generating ECMPoQm/nb/falkon_pim_qt.qm
+[425/1126] Generating ECMPoQm/nb/falkon_tabmanager_qt.qm
+[426/1126] Generating ECMPoQm/nb/falkon_statusbaricons_qt.qm
+[427/1126] Generating ECMPoQm/nl/falkon_gnomekeyringpasswords_qt.qm
+[428/1126] Generating ECMPoQm/nl/falkon_autoscroll_qt.qm
+[429/1126] Generating ECMPoQm/nb/falkon_testplugin_qt.qm
+[430/1126] Generating ECMPoQm/nl/falkon_kdeframeworksintegration_qt.qm
+[431/1126] Generating ECMPoQm/lv/falkon_qt.qm
+[432/1126] Generating ECMPoQm/nl/falkon_flashcookiemanager_qt.qm
+[433/1126] Generating ECMPoQm/nl/falkon_greasemonkey_qt.qm
+[434/1126] Generating ECMPoQm/nl/falkon_mousegestures_qt.qm
+[435/1126] Generating ECMPoQm/nl/falkon_pim_qt.qm
+[436/1126] Generating ECMPoQm/nl/falkon_sitesettingsview_qt.qm
+[437/1126] Generating ECMPoQm/nl/falkon_testplugin_qt.qm
+[438/1126] Generating ECMPoQm/nb/falkon_mousegestures_qt.qm
+[439/1126] Generating ECMPoQm/nl/falkon_statusbaricons_qt.qm
+[440/1126] Generating ECMPoQm/nl/falkon_tabmanager_qt.qm
+[441/1126] Generating ECMPoQm/nl/falkon_verticaltabs_qt.qm
+[442/1126] Generating ECMPoQm/nn/falkon_autoscroll_qt.qm
+[443/1126] Generating ECMPoQm/nn/falkon_flashcookiemanager_qt.qm
+[444/1126] Generating ECMPoQm/nn/falkon_gnomekeyringpasswords_qt.qm
+[445/1126] Generating ECMPoQm/nn/falkon_kdeframeworksintegration_qt.qm
+[446/1126] Generating ECMPoQm/nn/falkon_greasemonkey_qt.qm
+[447/1126] Generating ECMPoQm/nn/falkon_mousegestures_qt.qm
+[448/1126] Generating ECMPoQm/nn/falkon_statusbaricons_qt.qm
+[449/1126] Generating ECMPoQm/nn/falkon_testplugin_qt.qm
+[450/1126] Generating ECMPoQm/nn/falkon_tabmanager_qt.qm
+[451/1126] Generating ECMPoQm/nl/falkon_qt.qm
+[452/1126] Generating ECMPoQm/nn/falkon_pim_qt.qm
+[453/1126] Generating ECMPoQm/pl/falkon_sitesettingsview_qt.qm
+[454/1126] Generating ECMPoQm/nn/falkon_verticaltabs_qt.qm
+[455/1126] Generating ECMPoQm/pl/falkon_autoscroll_qt.qm
+[456/1126] Generating ECMPoQm/pl/falkon_flashcookiemanager_qt.qm
+[457/1126] Generating ECMPoQm/pl/falkon_gnomekeyringpasswords_qt.qm
+[458/1126] Generating ECMPoQm/pl/falkon_greasemonkey_qt.qm
+[459/1126] Generating ECMPoQm/pl/falkon_kdeframeworksintegration_qt.qm
+[460/1126] Generating ECMPoQm/pl/falkon_pim_qt.qm
+[461/1126] Generating ECMPoQm/pl/falkon_statusbaricons_qt.qm
+[462/1126] Generating ECMPoQm/pl/falkon_tabmanager_qt.qm
+[463/1126] Generating ECMPoQm/pl/falkon_testplugin_qt.qm
+[464/1126] Generating ECMPoQm/nb/falkon_qt.qm
+[465/1126] Generating ECMPoQm/pa/falkon_qt.qm
+[466/1126] Generating ECMPoQm/pl/falkon_mousegestures_qt.qm
+[467/1126] Generating ECMPoQm/pl/falkon_verticaltabs_qt.qm
+[468/1126] Generating ECMPoQm/pt/falkon_autoscroll_qt.qm
+[469/1126] Generating ECMPoQm/nn/falkon_qt.qm
+[470/1126] Generating ECMPoQm/pt/falkon_flashcookiemanager_qt.qm
+[471/1126] Generating ECMPoQm/pt/falkon_gnomekeyringpasswords_qt.qm
+[472/1126] Generating ECMPoQm/pt/falkon_kdeframeworksintegration_qt.qm
+[473/1126] Generating ECMPoQm/pt/falkon_pim_qt.qm
+[474/1126] Generating ECMPoQm/pt/falkon_greasemonkey_qt.qm
+[475/1126] Generating ECMPoQm/pt/falkon_statusbaricons_qt.qm
+[476/1126] Generating ECMPoQm/pt/falkon_tabmanager_qt.qm
+[477/1126] Generating ECMPoQm/pt/falkon_testplugin_qt.qm
+[478/1126] Generating ECMPoQm/pt_BR/falkon_autoscroll_qt.qm
+[479/1126] Generating ECMPoQm/pt_BR/falkon_greasemonkey_qt.qm
+[480/1126] Generating ECMPoQm/pt_BR/falkon_kdeframeworksintegration_qt.qm
+[481/1126] Generating ECMPoQm/pt/falkon_mousegestures_qt.qm
+[482/1126] Generating ECMPoQm/pt/falkon_verticaltabs_qt.qm
+[483/1126] Generating ECMPoQm/pt_BR/falkon_flashcookiemanager_qt.qm
+[484/1126] Generating ECMPoQm/pt_BR/falkon_gnomekeyringpasswords_qt.qm
+[485/1126] Generating ECMPoQm/pt_BR/falkon_mousegestures_qt.qm
+[486/1126] Generating ECMPoQm/pt_BR/falkon_pim_qt.qm
+[487/1126] Generating ECMPoQm/pt_BR/falkon_sitesettingsview_qt.qm
+[488/1126] Generating ECMPoQm/pt_BR/falkon_statusbaricons_qt.qm
+[489/1126] Generating ECMPoQm/pt_BR/falkon_testplugin_qt.qm
+[490/1126] Generating ECMPoQm/pt_BR/falkon_tabmanager_qt.qm
+[491/1126] Generating ECMPoQm/pt_BR/falkon_verticaltabs_qt.qm
+[492/1126] Generating ECMPoQm/ru/falkon_autoscroll_qt.qm
+[493/1126] Generating ECMPoQm/ru/falkon_greasemonkey_qt.qm
+[494/1126] Generating ECMPoQm/ru/falkon_flashcookiemanager_qt.qm
+[495/1126] Generating ECMPoQm/ru/falkon_kdeframeworksintegration_qt.qm
+[496/1126] Generating ECMPoQm/ru/falkon_mousegestures_qt.qm
+[497/1126] Generating ECMPoQm/ru/falkon_gnomekeyringpasswords_qt.qm
+[498/1126] Generating ECMPoQm/ru/falkon_sitesettingsview_qt.qm
+[499/1126] Generating ECMPoQm/ru/falkon_testplugin_qt.qm
+[500/1126] Generating ECMPoQm/pl/falkon_qt.qm
+[501/1126] Generating ECMPoQm/ru/falkon_pim_qt.qm
+[502/1126] Generating ECMPoQm/ru/falkon_statusbaricons_qt.qm
+[503/1126] Generating ECMPoQm/ru/falkon_tabmanager_qt.qm
+[504/1126] Generating ECMPoQm/ru/falkon_verticaltabs_qt.qm
+[505/1126] Generating ECMPoQm/sa/falkon_autoscroll_qt.qm
+[506/1126] Generating ECMPoQm/sa/falkon_flashcookiemanager_qt.qm
+[507/1126] Generating ECMPoQm/sa/falkon_gnomekeyringpasswords_qt.qm
+[508/1126] Generating ECMPoQm/sa/falkon_kdeframeworksintegration_qt.qm
+[509/1126] Generating ECMPoQm/sa/falkon_greasemonkey_qt.qm
+[510/1126] Generating ECMPoQm/sa/falkon_mousegestures_qt.qm
+[511/1126] Generating ECMPoQm/pt_BR/falkon_qt.qm
+[512/1126] Generating ECMPoQm/pt/falkon_qt.qm
+[513/1126] Generating ECMPoQm/sa/falkon_pim_qt.qm
+[514/1126] Generating ECMPoQm/sa/falkon_statusbaricons_qt.qm
+[515/1126] Generating ECMPoQm/sk/falkon_greasemonkey_qt.qm
+[516/1126] Generating ECMPoQm/sa/falkon_sitesettingsview_qt.qm
+[517/1126] Generating ECMPoQm/sa/falkon_testplugin_qt.qm
+[518/1126] Generating ECMPoQm/sk/falkon_autoscroll_qt.qm
+[519/1126] Generating ECMPoQm/sk/falkon_gnomekeyringpasswords_qt.qm
+[520/1126] Generating ECMPoQm/sa/falkon_tabmanager_qt.qm
+[521/1126] Generating ECMPoQm/sa/falkon_verticaltabs_qt.qm
+[522/1126] Generating ECMPoQm/sk/falkon_kdeframeworksintegration_qt.qm
+[523/1126] Generating ECMPoQm/sk/falkon_flashcookiemanager_qt.qm
+[524/1126] Generating ECMPoQm/sk/falkon_mousegestures_qt.qm
+[525/1126] Generating ECMPoQm/sk/falkon_pim_qt.qm
+[526/1126] Generating ECMPoQm/sk/falkon_sitesettingsview_qt.qm
+[527/1126] Generating ECMPoQm/sk/falkon_tabmanager_qt.qm
+[528/1126] Generating ECMPoQm/sl/falkon_gnomekeyringpasswords_qt.qm
+[529/1126] Generating ECMPoQm/sk/falkon_statusbaricons_qt.qm
+[530/1126] Generating ECMPoQm/sk/falkon_verticaltabs_qt.qm
+[531/1126] Generating ECMPoQm/sl/falkon_autoscroll_qt.qm
+[532/1126] Generating ECMPoQm/sl/falkon_mousegestures_qt.qm
+[533/1126] Generating ECMPoQm/sl/falkon_flashcookiemanager_qt.qm
+[534/1126] Generating ECMPoQm/sl/falkon_kdeframeworksintegration_qt.qm
+[535/1126] Generating ECMPoQm/sl/falkon_pim_qt.qm
+[536/1126] Generating ECMPoQm/sk/falkon_testplugin_qt.qm
+[537/1126] Generating ECMPoQm/sl/falkon_greasemonkey_qt.qm
+[538/1126] Generating ECMPoQm/sr/falkon_autoscroll_qt.qm
+[539/1126] Generating ECMPoQm/sl/falkon_testplugin_qt.qm
+[540/1126] Generating ECMPoQm/sl/falkon_statusbaricons_qt.qm
+[541/1126] Generating ECMPoQm/sl/falkon_tabmanager_qt.qm
+[542/1126] Generating ECMPoQm/sl/falkon_verticaltabs_qt.qm
+[543/1126] Generating ECMPoQm/sr/falkon_flashcookiemanager_qt.qm
+[544/1126] Generating ECMPoQm/ru/falkon_qt.qm
+[545/1126] Generating ECMPoQm/sa/falkon_qt.qm
+[546/1126] Generating ECMPoQm/sk/falkon_qt.qm
+[547/1126] Generating ECMPoQm/sl/falkon_sitesettingsview_qt.qm
+[548/1126] Generating ECMPoQm/sr/falkon_greasemonkey_qt.qm
+[549/1126] Generating ECMPoQm/sr/falkon_kdeframeworksintegration_qt.qm
+[550/1126] Generating ECMPoQm/sr/falkon_mousegestures_qt.qm
+[551/1126] Generating ECMPoQm/sr/falkon_pim_qt.qm
+[552/1126] Generating ECMPoQm/sr/falkon_tabmanager_qt.qm
+[553/1126] Generating ECMPoQm/sr/falkon_testplugin_qt.qm
+[554/1126] Generating ECMPoQm/sr@ijekavian/falkon_autoscroll_qt.qm
+[555/1126] Generating ECMPoQm/sr@ijekavian/falkon_greasemonkey_qt.qm
+[556/1126] Generating ECMPoQm/sr/falkon_statusbaricons_qt.qm
+[557/1126] Generating ECMPoQm/sr@ijekavian/falkon_kdeframeworksintegration_qt.qm
+[558/1126] Generating ECMPoQm/sr@ijekavian/falkon_statusbaricons_qt.qm
+[559/1126] Generating ECMPoQm/sl/falkon_qt.qm
+[560/1126] Generating ECMPoQm/sr/falkon_qt.qm
+[561/1126] Generating ECMPoQm/sr@ijekavian/falkon_flashcookiemanager_qt.qm
+[562/1126] Generating ECMPoQm/sr@ijekavian/falkon_mousegestures_qt.qm
+[563/1126] Generating ECMPoQm/sr@ijekavian/falkon_tabmanager_qt.qm
+[564/1126] Generating ECMPoQm/sr@ijekavian/falkon_testplugin_qt.qm
+[565/1126] Generating ECMPoQm/sr@ijekavianlatin/falkon_autoscroll_qt.qm
+[566/1126] Generating ECMPoQm/sr@ijekavianlatin/falkon_flashcookiemanager_qt.qm
+[567/1126] Generating ECMPoQm/sr@ijekavianlatin/falkon_greasemonkey_qt.qm
+[568/1126] Generating ECMPoQm/sr@ijekavianlatin/falkon_kdeframeworksintegration_qt.qm
+[569/1126] Generating ECMPoQm/sr@ijekavian/falkon_pim_qt.qm
+[570/1126] Generating ECMPoQm/sr@ijekavianlatin/falkon_mousegestures_qt.qm
+[571/1126] Generating ECMPoQm/sr@ijekavianlatin/falkon_pim_qt.qm
+[572/1126] Generating ECMPoQm/sr@ijekavianlatin/falkon_statusbaricons_qt.qm
+[573/1126] Generating ECMPoQm/sr@ijekavianlatin/falkon_tabmanager_qt.qm
+[574/1126] Generating ECMPoQm/sr@ijekavianlatin/falkon_testplugin_qt.qm
+[575/1126] Generating ECMPoQm/sr@latin/falkon_autoscroll_qt.qm
+[576/1126] Generating ECMPoQm/sr@latin/falkon_flashcookiemanager_qt.qm
+[577/1126] Generating ECMPoQm/sr@latin/falkon_pim_qt.qm
+[578/1126] Generating ECMPoQm/sr@latin/falkon_greasemonkey_qt.qm
+[579/1126] Generating ECMPoQm/sr@latin/falkon_kdeframeworksintegration_qt.qm
+[580/1126] Generating ECMPoQm/sr@latin/falkon_mousegestures_qt.qm
+[581/1126] Generating ECMPoQm/sr@latin/falkon_tabmanager_qt.qm
+[582/1126] Generating ECMPoQm/sv/falkon_autoscroll_qt.qm
+[583/1126] Generating ECMPoQm/sr@ijekavianlatin/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[584/1126] Generating ECMPoQm/sr@latin/falkon_statusbaricons_qt.qm
+[585/1126] Generating ECMPoQm/sr@latin/falkon_testplugin_qt.qm
+[586/1126] Generating ECMPoQm/sv/falkon_gnomekeyringpasswords_qt.qm
+[587/1126] Generating ECMPoQm/sv/falkon_flashcookiemanager_qt.qm
+[588/1126] Generating ECMPoQm/sv/falkon_kdeframeworksintegration_qt.qm
+[589/1126] Generating ECMPoQm/sv/falkon_sitesettingsview_qt.qm
+[590/1126] Generating ECMPoQm/tr/falkon_autoscroll_qt.qm
+[591/1126] Generating ECMPoQm/sv/falkon_pim_qt.qm
+[592/1126] Generating ECMPoQm/sv/falkon_statusbaricons_qt.qm
+[593/1126] Generating ECMPoQm/sv/falkon_tabmanager_qt.qm
+[594/1126] Generating ECMPoQm/sv/falkon_greasemonkey_qt.qm
+[595/1126] Generating ECMPoQm/sv/falkon_mousegestures_qt.qm
+[596/1126] Generating ECMPoQm/sv/falkon_testplugin_qt.qm
+[597/1126] Generating ECMPoQm/sv/falkon_verticaltabs_qt.qm
+[598/1126] Generating ECMPoQm/tr/falkon_flashcookiemanager_qt.qm
+[599/1126] Generating ECMPoQm/tr/falkon_gnomekeyringpasswords_qt.qm
+[600/1126] Generating ECMPoQm/tr/falkon_greasemonkey_qt.qm
+[601/1126] Generating ECMPoQm/tr/falkon_kdeframeworksintegration_qt.qm
+[602/1126] Generating ECMPoQm/tr/falkon_mousegestures_qt.qm
+[603/1126] Generating ECMPoQm/tr/falkon_sitesettingsview_qt.qm
+[604/1126] Generating ECMPoQm/tr/falkon_statusbaricons_qt.qm
+[605/1126] Generating ECMPoQm/tr/falkon_testplugin_qt.qm
+[606/1126] Generating ECMPoQm/sr@latin/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[607/1126] Generating ECMPoQm/ta/falkon_qt.qm
+[608/1126] Generating ECMPoQm/tr/falkon_pim_qt.qm
+[609/1126] Generating ECMPoQm/tr/falkon_tabmanager_qt.qm
+[610/1126] Generating ECMPoQm/ug/falkon_autoscroll_qt.qm
+[611/1126] Generating ECMPoQm/tr/falkon_verticaltabs_qt.qm
+[612/1126] Generating ECMPoQm/tr/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[613/1126] Generating ECMPoQm/ug/falkon_gnomekeyringpasswords_qt.qm
+[614/1126] Generating ECMPoQm/ug/falkon_kdeframeworksintegration_qt.qm
+[615/1126] Generating ECMPoQm/ug/falkon_statusbaricons_qt.qm
+[616/1126] Generating ECMPoQm/sr@ijekavian/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[617/1126] Generating ECMPoQm/ug/falkon_flashcookiemanager_qt.qm
+[618/1126] Generating ECMPoQm/ug/falkon_greasemonkey_qt.qm
+[619/1126] Generating ECMPoQm/ug/falkon_mousegestures_qt.qm
+[620/1126] Generating ECMPoQm/ug/falkon_testplugin_qt.qm
+[621/1126] Generating ECMPoQm/ug/falkon_pim_qt.qm
+[622/1126] Generating ECMPoQm/ug/falkon_sitesettingsview_qt.qm
+[623/1126] Generating ECMPoQm/ug/falkon_tabmanager_qt.qm
+[624/1126] Generating ECMPoQm/uk/falkon_autoscroll_qt.qm
+[625/1126] Generating ECMPoQm/sv/falkon_qt.qm
+[626/1126] Generating ECMPoQm/ug/falkon_verticaltabs_qt.qm
+[627/1126] Generating ECMPoQm/uk/falkon_flashcookiemanager_qt.qm
+[628/1126] Generating ECMPoQm/uk/falkon_gnomekeyringpasswords_qt.qm
+[629/1126] Generating ECMPoQm/uk/falkon_kdeframeworksintegration_qt.qm
+[630/1126] Generating ECMPoQm/uk/falkon_mousegestures_qt.qm
+[631/1126] Generating ECMPoQm/uk/falkon_pim_qt.qm
+[632/1126] Generating ECMPoQm/uk/falkon_sitesettingsview_qt.qm
+[633/1126] Generating ECMPoQm/uk/falkon_statusbaricons_qt.qm
+[634/1126] Generating ECMPoQm/uk/falkon_testplugin_qt.qm
+[635/1126] Generating ECMPoQm/uk/falkon_greasemonkey_qt.qm
+[636/1126] Generating ECMPoQm/uk/falkon_tabmanager_qt.qm
+[637/1126] Generating ECMPoQm/uk/falkon_verticaltabs_qt.qm
+[638/1126] Generating ECMPoQm/zh_CN/falkon_autoscroll_qt.qm
+[639/1126] Generating ECMPoQm/zh_CN/falkon_flashcookiemanager_qt.qm
+[640/1126] Generating ECMPoQm/zh_CN/falkon_gnomekeyringpasswords_qt.qm
+[641/1126] Generating ECMPoQm/zh_CN/falkon_greasemonkey_qt.qm
+[642/1126] Generating ECMPoQm/zh_CN/falkon_kdeframeworksintegration_qt.qm
+[643/1126] Generating ECMPoQm/zh_CN/falkon_mousegestures_qt.qm
+[644/1126] Generating ECMPoQm/zh_CN/falkon_pim_qt.qm
+[645/1126] Generating ECMPoQm/zh_CN/falkon_sitesettingsview_qt.qm
+[646/1126] Generating ECMPoQm/zh_CN/falkon_tabmanager_qt.qm
+[647/1126] Generating ECMPoQm/zh_HK/falkon_mousegestures_qt.qm
+[648/1126] Generating ECMPoQm/uk/falkon_qt.qm
+Removed plural forms as the target language has less forms.
+If this sounds wrong, possibly the target language is not set or recognized.
+[649/1126] Generating ECMPoQm/zh_CN/falkon_statusbaricons_qt.qm
+[650/1126] Generating ECMPoQm/zh_CN/falkon_testplugin_qt.qm
+[651/1126] Generating ECMPoQm/zh_CN/falkon_verticaltabs_qt.qm
+[652/1126] Generating ECMPoQm/zh_HK/falkon_autoscroll_qt.qm
+[653/1126] Generating ECMPoQm/zh_HK/falkon_flashcookiemanager_qt.qm
+[654/1126] Generating ECMPoQm/zh_HK/falkon_greasemonkey_qt.qm
+[655/1126] Generating ECMPoQm/zh_HK/falkon_kdeframeworksintegration_qt.qm
+[656/1126] Generating ECMPoQm/zh_HK/falkon_statusbaricons_qt.qm
+[657/1126] Generating ECMPoQm/ug/falkon_qt.qm
+[658/1126] Generating ECMPoQm/zh_HK/falkon_pim_qt.qm
+[659/1126] Generating ECMPoQm/zh_HK/falkon_tabmanager_qt.qm
+[660/1126] Generating ECMPoQm/zh_HK/falkon_testplugin_qt.qm
+[661/1126] Generating ECMPoQm/zh_TW/falkon_autoscroll_qt.qm
+[662/1126] Generating ECMPoQm/zh_TW/falkon_flashcookiemanager_qt.qm
+[663/1126] Generating ECMPoQm/zh_TW/falkon_greasemonkey_qt.qm
+[664/1126] Generating ECMPoQm/zh_TW/falkon_testplugin_qt.qm
+[665/1126] Generating ECMPoQm/zh_TW/falkon_statusbaricons_qt.qm
+[666/1126] Generating ECMPoQm/zh_TW/falkon_mousegestures_qt.qm
+[667/1126] Generating ECMPoQm/zh_TW/falkon_gnomekeyringpasswords_qt.qm
+[668/1126] Generating ECMPoQm/zh_TW/falkon_sitesettingsview_qt.qm
+[669/1126] Generating ECMPoQm/zh_TW/falkon_kdeframeworksintegration_qt.qm
+[670/1126] Generating ECMPoQm/zh_TW/falkon_tabmanager_qt.qm
+[671/1126] Generating ECMPoQm/zh_TW/falkon_pim_qt.qm
+[672/1126] Generating ECMPoQm/zh_TW/falkon_verticaltabs_qt.qm
+[673/1126] Generating ECMPoQm/zh_CN/falkon_qt.qm
+[674/1126] Generating ECMPoQm/zh_HK/falkon_qt.qm
+[675/1126] Generating ECMPoQm/zh_TW/falkon_qt.qm
+[676/1126] Automatic MOC for target FalkonPrivate
+[677/1126] Generating ui_bookmarksexportdialog.h
+[678/1126] Generating ui_bookmarkswidget.h
+[679/1126] Generating ui_adblockaddsubscriptiondialog.h
+[680/1126] Generating ui_autofillnotification.h
+[681/1126] Generating ui_autofillwidget.h
+[682/1126] Generating ui_masterpassworddialog.h
+[683/1126] Generating ui_cookiemanager.h
+[684/1126] Generating ui_downloaditem.h
+[685/1126] Generating ui_downloadmanager.h
+[686/1126] Generating ui_sslerrordialog.h
+[687/1126] Generating ui_bookmarksmanager.h
+[688/1126] Generating ui_adblockdialog.h
+[689/1126] Generating ui_historymanager.h
+[690/1126] Generating ui_navigationbarconfigdialog.h
+[691/1126] Generating ui_bookmarksimportdialog.h
+[692/1126] Generating ui_downloadoptionsdialog.h
+[693/1126] Generating ui_desktopnotification.h
+[694/1126] Generating ui_editsearchengine.h
+[695/1126] Generating ui_searchenginesdialog.h
+[696/1126] Generating ui_clearprivatedata.h
+[697/1126] Generating ui_iconchooser.h
+[698/1126] Generating ui_browsinglibrary.h
+[699/1126] Generating ui_protocolhandlerdialog.h
+[700/1126] Generating ui_siteinfo.h
+[701/1126] Generating ui_siteinfopermissionitem.h
+[702/1126] Generating ui_siteinfowidget.h
+[703/1126] Generating ui_addacceptlanguage.h
+[704/1126] Generating ui_pluginslist.h
+[705/1126] Generating ui_certificatemanager.h
+[706/1126] Generating ui_jsoptions.h
+[707/1126] Generating ui_aboutdialog.h
+[708/1126] Generating ui_schememanager.h
+[709/1126] Generating ui_sitesettingsattributesitem.h
+[710/1126] Generating ui_sitesettingshtml5item.h
+[711/1126] Generating ui_autofillmanager.h
+[712/1126] Generating ui_autoopenprotocolsdialog.h
+[713/1126] Generating ui_sessionmanagerdialog.h
+[714/1126] Generating ui_bookmarkssidebar.h
+[715/1126] Generating ui_acceptlanguage.h
+[716/1126] Generating ui_preferences.h
+[717/1126] Generating ui_html5permissionsnotification.h
+[718/1126] Generating ui_docktitlebarwidget.h
+[719/1126] Generating ui_sitesettingsbrowsedialog.h
+[720/1126] Generating ui_thememanager.h
+[721/1126] Generating ui_searchtoolbar.h
+[722/1126] Generating qrc_data.cpp
+[723/1126] Generating ui_useragentdialog.h
+[724/1126] Generating ui_jsprompt.h
+[725/1126] Generating ui_jsconfirm.h
+[726/1126] Generating ui_historysidebar.h
+[727/1126] Generating ui_certificateinfowidget.h
+[728/1126] Generating ui_jsalert.h
+[729/1126] Generating qrc_adblock.cpp
+[730/1126] Generating qrc_breeze-fallback.cpp
+[731/1126] Generating qrc_icons.cpp
+[732/1126] Generating qrc_html.cpp
+[733/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/3rdparty/processinfo.cpp.o
+[734/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblocknetworkrequest.cpp.o
+[735/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/3rdparty/squeezelabelv1.cpp.o
+[736/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/3rdparty/squeezelabelv2.cpp.o
+[737/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/3rdparty/stylehelper.cpp.o
+[738/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/3rdparty/qtsingleapplication/qtsingleapplication.cpp.o
+[739/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/3rdparty/qtsingleapplication/qtlocalpeer.cpp.o
+[740/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblockurlinterceptor.cpp.o
+[741/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblockicon.cpp.o
+[742/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblockaddsubscriptiondialog.cpp.o
+[743/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/3rdparty/lineedit.cpp.o
+[744/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblockmatcher.cpp.o
+[745/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblockdialog.cpp.o
+[746/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblockresourceschemehandler.cpp.o
+[747/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblockscripts.cpp.o
+[748/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/3rdparty/fancytabwidget.cpp.o
+[749/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblocksearchtree.cpp.o
+[750/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/app/autosaver.cpp.o
+[751/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblocktreemodel.cpp.o
+[752/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblocktreewidget.cpp.o
+[753/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblockmanager.cpp.o
+[754/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblockplugin.cpp.o
+[755/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/app/qzcommon.cpp.o
+[756/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblockrule.cpp.o
+[757/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/app/proxystyle.cpp.o
+[758/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/app/commandlineoptions.cpp.o
+[759/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/adblock/adblocksubscription.cpp.o
+[760/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/app/settings.cpp.o
+[761/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/app/datapaths.cpp.o
+[762/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/autofill/autofillicon.cpp.o
+[763/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/autofill/autofillnotification.cpp.o
+[764/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/autofill/passwordbackends/passwordbackend.cpp.o
+[765/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/autofill/autofillwidget.cpp.o
+[766/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/autofill/passwordbackends/databasepasswordbackend.cpp.o
+[767/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/autofill/autofill.cpp.o
+[768/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/app/mainmenu.cpp.o
+[769/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarkitem.cpp.o
+[770/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/autofill/passwordmanager.cpp.o
+[771/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksexport/bookmarksexporter.cpp.o
+[772/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/app/profilemanager.cpp.o
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp: In member function ‘void ProfileManager::updateDatabase()’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:451:30: warning: ‘QWebEnginePage::Notifications’ is deprecated: Use QWebEnginePermission::PermissionType::Notifications instead [-Wdeprecated-declarations]
+  451 |             {QWebEnginePage::Notifications, QSL("Notifications")},
+      |                              ^~~~~~~~~~~~~
+In file included from /usr/include/qt6/QtWebEngineCore/QWebEnginePage:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.h:23,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:24:
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:179:9: note: declared here
+  179 |         Notifications Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:452:30: warning: ‘QWebEnginePage::Geolocation’ is deprecated: Use QWebEnginePermission::PermissionType::Geolocation instead [-Wdeprecated-declarations]
+  452 |             {QWebEnginePage::Geolocation, QSL("Geolocation")},
+      |                              ^~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:181:9: note: declared here
+  181 |         Geolocation Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:453:30: warning: ‘QWebEnginePage::MediaAudioCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioCapture instead [-Wdeprecated-declarations]
+  453 |             {QWebEnginePage::MediaAudioCapture, QSL("MediaAudioCapture")},
+      |                              ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:183:9: note: declared here
+  183 |         MediaAudioCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:454:30: warning: ‘QWebEnginePage::MediaVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaVideoCapture instead [-Wdeprecated-declarations]
+  454 |             {QWebEnginePage::MediaVideoCapture, QSL("MediaVideoCapture")},
+      |                              ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:185:9: note: declared here
+  185 |         MediaVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:455:30: warning: ‘QWebEnginePage::MediaAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioVideoCapture instead [-Wdeprecated-declarations]
+  455 |             {QWebEnginePage::MediaAudioVideoCapture, QSL("MediaAudioVideoCapture")},
+      |                              ^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:187:9: note: declared here
+  187 |         MediaAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:456:30: warning: ‘QWebEnginePage::MouseLock’ is deprecated: Use QWebEnginePermission::PermissionType::MouseLock instead [-Wdeprecated-declarations]
+  456 |             {QWebEnginePage::MouseLock, QSL("MouseLock")},
+      |                              ^~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:189:9: note: declared here
+  189 |         MouseLock Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:457:30: warning: ‘QWebEnginePage::DesktopVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopVideoCapture instead [-Wdeprecated-declarations]
+  457 |             {QWebEnginePage::DesktopVideoCapture, QSL("DesktopVideoCapture")},
+      |                              ^~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:191:9: note: declared here
+  191 |         DesktopVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:458:30: warning: ‘QWebEnginePage::DesktopAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopAudioVideoCapture instead [-Wdeprecated-declarations]
+  458 |             {QWebEnginePage::DesktopAudioVideoCapture,QSL("DesktopAudioVideoCapture")}
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:193:9: note: declared here
+  193 |         DesktopAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:534:69: warning: ‘QWebEnginePage::Notifications’ is deprecated: Use QWebEnginePermission::PermissionType::Notifications instead [-Wdeprecated-declarations]
+  534 |             query.bindValue(2, siteSetting.features[QWebEnginePage::Notifications]);
+      |                                                                     ^~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:179:9: note: declared here
+  179 |         Notifications Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:535:69: warning: ‘QWebEnginePage::Geolocation’ is deprecated: Use QWebEnginePermission::PermissionType::Geolocation instead [-Wdeprecated-declarations]
+  535 |             query.bindValue(3, siteSetting.features[QWebEnginePage::Geolocation]);
+      |                                                                     ^~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:181:9: note: declared here
+  181 |         Geolocation Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:536:69: warning: ‘QWebEnginePage::MediaAudioCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioCapture instead [-Wdeprecated-declarations]
+  536 |             query.bindValue(4, siteSetting.features[QWebEnginePage::MediaAudioCapture]);
+      |                                                                     ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:183:9: note: declared here
+  183 |         MediaAudioCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:537:69: warning: ‘QWebEnginePage::MediaVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaVideoCapture instead [-Wdeprecated-declarations]
+  537 |             query.bindValue(5, siteSetting.features[QWebEnginePage::MediaVideoCapture]);
+      |                                                                     ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:185:9: note: declared here
+  185 |         MediaVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:538:69: warning: ‘QWebEnginePage::MediaAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioVideoCapture instead [-Wdeprecated-declarations]
+  538 |             query.bindValue(6, siteSetting.features[QWebEnginePage::MediaAudioVideoCapture]);
+      |                                                                     ^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:187:9: note: declared here
+  187 |         MediaAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:539:69: warning: ‘QWebEnginePage::MouseLock’ is deprecated: Use QWebEnginePermission::PermissionType::MouseLock instead [-Wdeprecated-declarations]
+  539 |             query.bindValue(7, siteSetting.features[QWebEnginePage::MouseLock]);
+      |                                                                     ^~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:189:9: note: declared here
+  189 |         MouseLock Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:540:69: warning: ‘QWebEnginePage::DesktopVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopVideoCapture instead [-Wdeprecated-declarations]
+  540 |             query.bindValue(8, siteSetting.features[QWebEnginePage::DesktopVideoCapture]);
+      |                                                                     ^~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:191:9: note: declared here
+  191 |         DesktopVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/profilemanager.cpp:541:69: warning: ‘QWebEnginePage::DesktopAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopAudioVideoCapture instead [-Wdeprecated-declarations]
+  541 |             query.bindValue(9, siteSetting.features[QWebEnginePage::DesktopAudioVideoCapture]);
+      |                                                                     ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:193:9: note: declared here
+  193 |         DesktopAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+[773/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksexport/bookmarksexportdialog.cpp.o
+[774/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksimport/bookmarksimporter.cpp.o
+[775/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/autofill/passwordbackends/databaseencryptedpasswordbackend.cpp.o
+[776/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksexport/htmlexporter.cpp.o
+[777/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/app/mainapplication.cpp.o
+[778/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarks.cpp.o
+[779/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksicon.cpp.o
+[780/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/app/browserwindow.cpp.o
+[781/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksitemdelegate.cpp.o
+[782/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksimport/ieimporter.cpp.o
+[783/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksimport/htmlimporter.cpp.o
+[784/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksimport/bookmarksimportdialog.cpp.o
+[785/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksimport/firefoximporter.cpp.o
+[786/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksimport/operaimporter.cpp.o
+[787/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksimport/chromeimporter.cpp.o
+[788/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksmenu.cpp.o
+[789/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksmodel.cpp.o
+[790/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarksmanager.cpp.o
+[791/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarkstoolbarbutton.cpp.o
+[792/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarkstreeview.cpp.o
+[793/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarkswidget.cpp.o
+[794/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/downloads/downloadsbutton.cpp.o
+[795/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarkstoolbar.cpp.o
+[796/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/downloads/downloadmanagermodel.cpp.o
+[797/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/bookmarks/bookmarkstools.cpp.o
+[798/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/downloads/downloadoptionsdialog.cpp.o
+[799/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/cookies/cookiejar.cpp.o
+[800/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/downloads/downloaditem.cpp.o
+[801/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/history/historyitem.cpp.o
+[802/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/history/history.cpp.o
+[803/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/history/historymanager.cpp.o
+[804/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/downloads/downloadmanager.cpp.o
+[805/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/downicon.cpp.o
+[806/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/history/historymodel.cpp.o
+[807/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/history/historymenu.cpp.o
+[808/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/history/historytreeview.cpp.o
+[809/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/completer/locationcompletermodel.cpp.o
+[810/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/goicon.cpp.o
+[811/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/completer/locationcompleterview.cpp.o
+[812/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/cookies/cookiemanager.cpp.o
+[813/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/completer/locationcompleter.cpp.o
+[814/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/locationbarpopup.cpp.o
+[815/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/completer/locationcompleterrefreshjob.cpp.o
+[816/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/completer/locationcompleterdelegate.cpp.o
+[817/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/reloadstopbutton.cpp.o
+[818/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/navigationbartoolbutton.cpp.o
+[819/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/navigationcontainer.cpp.o
+[820/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/network/schemehandlers/extensionschemehandler.cpp.o
+[821/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/navigationbarconfigdialog.cpp.o
+[822/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/zoomlabel.cpp.o
+[823/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/siteicon.cpp.o
+[824/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/network/networkurlinterceptor.cpp.o
+[825/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/notifications/desktopnotification.cpp.o
+[826/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/locationbar.cpp.o
+[827/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/network/sslerrordialog.cpp.o
+[828/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/websearchbar.cpp.o
+[829/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/opensearch/opensearchenginedelegate.cpp.o
+[830/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/navigation/navigationbar.cpp.o
+[831/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/network/networkmanager.cpp.o
+[832/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/opensearch/editsearchengine.cpp.o
+[833/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/notifications/desktopnotificationsfactory.cpp.o
+[834/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/checkboxdialog.cpp.o
+[835/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/network/schemehandlers/falkonschemehandler.cpp.o
+[836/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/opensearch/opensearchengine.cpp.o
+[837/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/opensearch/opensearchreader.cpp.o
+[838/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/aboutdialog.cpp.o
+[839/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/browsinglibrary.cpp.o
+[840/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/opensearch/searchenginesdialog.cpp.o
+[841/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/licenseviewer.cpp.o
+[842/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/clearprivatedata.cpp.o
+[843/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/opensearch/searchenginesmanager.cpp.o
+[844/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/siteinfopermissionitem.cpp.o
+[845/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/qzsettings.cpp.o
+[846/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/FalkonPrivate_autogen/mocs_compilation.cpp.o
+In file included from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/VG6RADSQJA/../../../../../src/lib/navigation/locationbar.h:24,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/VG6RADSQJA/moc_locationbar.cpp:9,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/mocs_compilation.cpp:61:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/loadrequest.h:26:21: warning: defining ‘LoadRequest’, which previously failed to be complete in a SFINAE context [-Wsfinae-incomplete=]
+   26 | class FALKON_EXPORT LoadRequest
+      |                     ^~~~~~~~~~~
+In file included from /usr/include/qt6/QtCore/qsharedpointer_impl.h:31,
+                 from /usr/include/qt6/QtCore/qsharedpointer.h:13,
+                 from /usr/include/qt6/QtCore/qdebug.h:21,
+                 from /usr/include/qt6/QtCore/QDebug:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/app/qzcommon.h:22,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/WWFCTI4UCT/../../../../../src/lib/3rdparty/fancytabwidget.h:33,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/WWFCTI4UCT/moc_fancytabwidget.cpp:9,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/mocs_compilation.cpp:2:
+/usr/include/qt6/QtCore/qmetatype.h:344:64: note: here.  Use ‘-Wsfinae-incomplete=2’ for a diagnostic at that point
+  344 |         static auto check(U *) -> std::integral_constant<bool, sizeof(U) != 0>;
+      |                                                                ^~~~~~~~~
+In file included from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/AGZFLHPRWK/../../../../../src/lib/plugins/qml/api/extensionscheme/qmlextensionscheme.h:21,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/AGZFLHPRWK/moc_qmlextensionscheme.cpp:9,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/mocs_compilation.cpp:105:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/AGZFLHPRWK/../../../../../src/lib/plugins/qml/api/extensionscheme/qmlwebengineurlrequestjob.h:45:44: warning: ‘QWebEngineUrlRequestJob::NoError’ is deprecated: This attribute has no effect. [-Wdeprecated-declarations]
+   45 |         NoError = QWebEngineUrlRequestJob::NoError,               //!< No error
+      |                                            ^~~~~~~
+In file included from /usr/include/qt6/QtWebEngineCore/QWebEngineUrlRequestJob:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/AGZFLHPRWK/../../../../../src/lib/plugins/qml/api/extensionscheme/qmlwebengineurlrequestjob.h:20:
+/usr/include/qt6/QtWebEngineCore/qwebengineurlrequestjob.h:31:9: note: declared here
+   31 |         NoError Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~
+In file included from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/M7Q36T4IWA/../../../../../src/lib/popupwindow/popupwebview.h:24,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/M7Q36T4IWA/moc_popupwebview.cpp:9,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/mocs_compilation.cpp:133:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webview.h:33:21: warning: defining ‘WebView’, which previously failed to be complete in a SFINAE context [-Wsfinae-incomplete=]
+   33 | class FALKON_EXPORT WebView : public QWebEngineView
+      |                     ^~~~~~~
+/usr/include/qt6/QtCore/qmetatype.h:344:64: note: here.  Use ‘-Wsfinae-incomplete=2’ for a diagnostic at that point
+  344 |         static auto check(U *) -> std::integral_constant<bool, sizeof(U) != 0>;
+      |                                                                ^~~~~~~~~
+In file included from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/7SG7ZFFOTM/../../../../../src/lib/tools/html5permissions/html5permissionsnotification.h:26,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/7SG7ZFFOTM/moc_html5permissionsnotification.cpp:9,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/mocs_compilation.cpp:173:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.h:38:21: warning: defining ‘WebPage’, which previously failed to be complete in a SFINAE context [-Wsfinae-incomplete=]
+   38 | class FALKON_EXPORT WebPage : public QWebEnginePage
+      |                     ^~~~~~~
+/usr/include/qt6/QtCore/qmetatype.h:344:64: note: here.  Use ‘-Wsfinae-incomplete=2’ for a diagnostic at that point
+  344 |         static auto check(U *) -> std::integral_constant<bool, sizeof(U) != 0>;
+      |                                                                ^~~~~~~~~
+In file included from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/2FW6LYN3XI/moc_tabbedwebview.cpp:9,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/mocs_compilation.cpp:190:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/b/src/lib/FalkonPrivate_autogen/2FW6LYN3XI/../../../../../src/lib/webtab/tabbedwebview.h:34:21: warning: defining ‘TabbedWebView’, which previously failed to be complete in a SFINAE context [-Wsfinae-incomplete=]
+   34 | class FALKON_EXPORT TabbedWebView : public WebView
+      |                     ^~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qmetatype.h:344:64: note: here.  Use ‘-Wsfinae-incomplete=2’ for a diagnostic at that point
+  344 |         static auto check(U *) -> std::integral_constant<bool, sizeof(U) != 0>;
+      |                                                                ^~~~~~~~~
+[847/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/iconchooser.cpp.o
+[848/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/protocolhandlerdialog.cpp.o
+[849/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/updater.cpp.o
+[850/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/useragentmanager.cpp.o
+[851/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/siteinfowidget.cpp.o
+[852/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/protocolhandlermanager.cpp.o
+[853/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/statusbar.cpp.o
+[854/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/pluginproxy.cpp.o
+[855/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/sitesettingsmanager.cpp.o
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:48:21: warning: ‘QWebEnginePage::Notifications’ is deprecated: Use QWebEnginePermission::PermissionType::Notifications instead [-Wdeprecated-declarations]
+   48 |     QWebEnginePage::Notifications
+      |                     ^~~~~~~~~~~~~
+In file included from /usr/include/qt6/QtWebEngineCore/QWebEnginePage:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.h:23,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:19:
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:179:9: note: declared here
+  179 |         Notifications Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:49:22: warning: ‘QWebEnginePage::Geolocation’ is deprecated: Use QWebEnginePermission::PermissionType::Geolocation instead [-Wdeprecated-declarations]
+   49 |     ,QWebEnginePage::Geolocation
+      |                      ^~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:181:9: note: declared here
+  181 |         Geolocation Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:50:22: warning: ‘QWebEnginePage::MediaAudioCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioCapture instead [-Wdeprecated-declarations]
+   50 |     ,QWebEnginePage::MediaAudioCapture
+      |                      ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:183:9: note: declared here
+  183 |         MediaAudioCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:51:22: warning: ‘QWebEnginePage::MediaVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaVideoCapture instead [-Wdeprecated-declarations]
+   51 |     ,QWebEnginePage::MediaVideoCapture
+      |                      ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:185:9: note: declared here
+  185 |         MediaVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:52:22: warning: ‘QWebEnginePage::MediaAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioVideoCapture instead [-Wdeprecated-declarations]
+   52 |     ,QWebEnginePage::MediaAudioVideoCapture
+      |                      ^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:187:9: note: declared here
+  187 |         MediaAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:53:22: warning: ‘QWebEnginePage::MouseLock’ is deprecated: Use QWebEnginePermission::PermissionType::MouseLock instead [-Wdeprecated-declarations]
+   53 |     ,QWebEnginePage::MouseLock
+      |                      ^~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:189:9: note: declared here
+  189 |         MouseLock Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:54:22: warning: ‘QWebEnginePage::DesktopVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopVideoCapture instead [-Wdeprecated-declarations]
+   54 |     ,QWebEnginePage::DesktopVideoCapture
+      |                      ^~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:191:9: note: declared here
+  191 |         DesktopVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:55:22: warning: ‘QWebEnginePage::DesktopAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopAudioVideoCapture instead [-Wdeprecated-declarations]
+   55 |     ,QWebEnginePage::DesktopAudioVideoCapture
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:193:9: note: declared here
+  193 |         DesktopAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp: In member function ‘QString SiteSettingsManager::getOptionName(QWebEnginePage::Feature) const’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:336:30: warning: ‘QWebEnginePage::Notifications’ is deprecated: Use QWebEnginePermission::PermissionType::Notifications instead [-Wdeprecated-declarations]
+  336 |         case QWebEnginePage::Notifications:
+      |                              ^~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:179:9: note: declared here
+  179 |         Notifications Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:338:30: warning: ‘QWebEnginePage::Geolocation’ is deprecated: Use QWebEnginePermission::PermissionType::Geolocation instead [-Wdeprecated-declarations]
+  338 |         case QWebEnginePage::Geolocation:
+      |                              ^~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:181:9: note: declared here
+  181 |         Geolocation Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:340:30: warning: ‘QWebEnginePage::MediaAudioCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioCapture instead [-Wdeprecated-declarations]
+  340 |         case QWebEnginePage::MediaAudioCapture:
+      |                              ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:183:9: note: declared here
+  183 |         MediaAudioCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:342:30: warning: ‘QWebEnginePage::MediaVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaVideoCapture instead [-Wdeprecated-declarations]
+  342 |         case QWebEnginePage::MediaVideoCapture:
+      |                              ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:185:9: note: declared here
+  185 |         MediaVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:344:30: warning: ‘QWebEnginePage::MediaAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioVideoCapture instead [-Wdeprecated-declarations]
+  344 |         case QWebEnginePage::MediaAudioVideoCapture:
+      |                              ^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:187:9: note: declared here
+  187 |         MediaAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:346:30: warning: ‘QWebEnginePage::MouseLock’ is deprecated: Use QWebEnginePermission::PermissionType::MouseLock instead [-Wdeprecated-declarations]
+  346 |         case QWebEnginePage::MouseLock:
+      |                              ^~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:189:9: note: declared here
+  189 |         MouseLock Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:348:30: warning: ‘QWebEnginePage::DesktopVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopVideoCapture instead [-Wdeprecated-declarations]
+  348 |         case QWebEnginePage::DesktopVideoCapture:
+      |                              ^~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:191:9: note: declared here
+  191 |         DesktopVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:350:30: warning: ‘QWebEnginePage::DesktopAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopAudioVideoCapture instead [-Wdeprecated-declarations]
+  350 |         case QWebEnginePage::DesktopAudioVideoCapture:
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:193:9: note: declared here
+  193 |         DesktopAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp: In member function ‘QString SiteSettingsManager::featureToSqlColumn(QWebEnginePage::Feature) const’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:431:30: warning: ‘QWebEnginePage::Notifications’ is deprecated: Use QWebEnginePermission::PermissionType::Notifications instead [-Wdeprecated-declarations]
+  431 |         case QWebEnginePage::Notifications:
+      |                              ^~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:179:9: note: declared here
+  179 |         Notifications Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:433:30: warning: ‘QWebEnginePage::Geolocation’ is deprecated: Use QWebEnginePermission::PermissionType::Geolocation instead [-Wdeprecated-declarations]
+  433 |         case QWebEnginePage::Geolocation:
+      |                              ^~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:181:9: note: declared here
+  181 |         Geolocation Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:435:30: warning: ‘QWebEnginePage::MediaAudioCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioCapture instead [-Wdeprecated-declarations]
+  435 |         case QWebEnginePage::MediaAudioCapture:
+      |                              ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:183:9: note: declared here
+  183 |         MediaAudioCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:437:30: warning: ‘QWebEnginePage::MediaVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaVideoCapture instead [-Wdeprecated-declarations]
+  437 |         case QWebEnginePage::MediaVideoCapture:
+      |                              ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:185:9: note: declared here
+  185 |         MediaVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:439:30: warning: ‘QWebEnginePage::MediaAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioVideoCapture instead [-Wdeprecated-declarations]
+  439 |         case QWebEnginePage::MediaAudioVideoCapture:
+      |                              ^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:187:9: note: declared here
+  187 |         MediaAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:441:30: warning: ‘QWebEnginePage::MouseLock’ is deprecated: Use QWebEnginePermission::PermissionType::MouseLock instead [-Wdeprecated-declarations]
+  441 |         case QWebEnginePage::MouseLock:
+      |                              ^~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:189:9: note: declared here
+  189 |         MouseLock Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:443:30: warning: ‘QWebEnginePage::DesktopVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopVideoCapture instead [-Wdeprecated-declarations]
+  443 |         case QWebEnginePage::DesktopVideoCapture:
+      |                              ^~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:191:9: note: declared here
+  191 |         DesktopVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/other/sitesettingsmanager.cpp:445:30: warning: ‘QWebEnginePage::DesktopAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopAudioVideoCapture instead [-Wdeprecated-declarations]
+  445 |         case QWebEnginePage::DesktopAudioVideoCapture:
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:193:9: note: declared here
+  193 |         DesktopAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+[856/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/qmlpluginloader.cpp.o
+[857/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/qmlplugin.cpp.o
+[858/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/qmlengine.cpp.o
+[859/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/ocssupport.cpp.o
+[860/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/topsites/qmlmostvisitedurl.cpp.o
+[861/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/other/siteinfo.cpp.o
+[862/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/history/qmlhistoryitem.cpp.o
+[863/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/bookmarks/qmlbookmarktreenode.cpp.o
+[864/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/qmlplugininterface.cpp.o
+[865/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/speeddial.cpp.o
+[866/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/cookies/qmlcookie.cpp.o
+[867/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/bookmarks/qmlbookmarks.cpp.o
+[868/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/plugins.cpp.o
+[869/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/topsites/qmltopsites.cpp.o
+[870/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/qmlplugins.cpp.o
+In file included from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/api/extensionscheme/qmlextensionscheme.h:21,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/qmlplugins.cpp:48:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/api/extensionscheme/qmlwebengineurlrequestjob.h:45:44: warning: ‘QWebEngineUrlRequestJob::NoError’ is deprecated: This attribute has no effect. [-Wdeprecated-declarations]
+   45 |         NoError = QWebEngineUrlRequestJob::NoError,               //!< No error
+      |                                            ^~~~~~~
+In file included from /usr/include/qt6/QtWebEngineCore/QWebEngineUrlRequestJob:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/api/extensionscheme/qmlwebengineurlrequestjob.h:20:
+/usr/include/qt6/QtWebEngineCore/qwebengineurlrequestjob.h:31:9: note: declared here
+   31 |         NoError Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~
+[871/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/history/qmlhistory.cpp.o
+[872/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/clipboard/qmlclipboard.cpp.o
+[873/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/tabs/qmltab.cpp.o
+[874/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/notifications/qmlnotifications.cpp.o
+[875/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/events/qmlqzobjects.cpp.o
+[876/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/qmlstaticdata.cpp.o
+[877/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/settings/qmlsettings.cpp.o
+[878/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/cookies/qmlcookies.cpp.o
+[879/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/menus/qmlwebhittestresult.cpp.o
+[880/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/windows/qmlwindow.cpp.o
+[881/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/windows/qmlwindows.cpp.o
+[882/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/tabs/qmltabs.cpp.o
+[883/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/menus/qmlaction.cpp.o
+[884/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/menus/qmlmenu.cpp.o
+[885/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/events/qmlmouseevent.cpp.o
+[886/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/sidebar/qmlsidebar.cpp.o
+[887/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/browseraction/qmlbrowseraction.cpp.o
+[888/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/qmlenums.cpp.o
+[889/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/events/qmlwheelevent.cpp.o
+[890/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/events/qmlkeyevent.cpp.o
+[891/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/userscript/qmlexternaljsobject.cpp.o
+[892/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/userscript/qmluserscript.cpp.o
+[893/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/extensionscheme/qmlextensionscheme.cpp.o
+In file included from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/api/extensionscheme/qmlextensionscheme.h:21,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/api/extensionscheme/qmlextensionscheme.cpp:18:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/api/extensionscheme/qmlwebengineurlrequestjob.h:45:44: warning: ‘QWebEngineUrlRequestJob::NoError’ is deprecated: This attribute has no effect. [-Wdeprecated-declarations]
+   45 |         NoError = QWebEngineUrlRequestJob::NoError,               //!< No error
+      |                                            ^~~~~~~
+In file included from /usr/include/qt6/QtWebEngineCore/QWebEngineUrlRequestJob:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/api/extensionscheme/qmlwebengineurlrequestjob.h:20:
+/usr/include/qt6/QtWebEngineCore/qwebengineurlrequestjob.h:31:9: note: declared here
+   31 |         NoError Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~
+[894/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/userscript/qmluserscripts.cpp.o
+[895/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/extensionscheme/qmlwebengineurlrequestjob.cpp.o
+In file included from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/api/extensionscheme/qmlwebengineurlrequestjob.cpp:18:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/api/extensionscheme/qmlwebengineurlrequestjob.h:45:44: warning: ‘QWebEngineUrlRequestJob::NoError’ is deprecated: This attribute has no effect. [-Wdeprecated-declarations]
+   45 |         NoError = QWebEngineUrlRequestJob::NoError,               //!< No error
+      |                                            ^~~~~~~
+In file included from /usr/include/qt6/QtWebEngineCore/QWebEngineUrlRequestJob:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/plugins/qml/api/extensionscheme/qmlwebengineurlrequestjob.h:20:
+/usr/include/qt6/QtWebEngineCore/qwebengineurlrequestjob.h:31:9: note: declared here
+   31 |         NoError Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~
+[896/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/fileutils/qmlfileutils.cpp.o
+[897/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/popupwindow/popupstatusbarmessage.cpp.o
+[898/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/popupwindow/popupwebview.cpp.o
+[899/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/popupwindow/popuplocationbar.cpp.o
+[900/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/jsoptions.cpp.o
+[901/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/autoopenprotocolsdialog.cpp.o
+[902/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/pluginlistdelegate.cpp.o
+[903/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/acceptlanguage.cpp.o
+[904/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/popupwindow/popupwindow.cpp.o
+[905/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/sitesettingsattributesitem.cpp.o
+[906/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/certificatemanager.cpp.o
+[907/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/schememanager.cpp.o
+[908/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/sitesettingshtml5item.cpp.o
+[909/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/autofillmanager.cpp.o
+[910/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/sitesettingsbrowsedialog.cpp.o
+[911/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/pluginsmanager.cpp.o
+[912/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/session/recoveryjsobject.cpp.o
+[913/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/thememanager.cpp.o
+[914/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/session/sessionmanagerdialog.cpp.o
+[915/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/useragentdialog.cpp.o
+[916/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/sidebar/historysidebar.cpp.o
+[917/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/sidebar/bookmarkssidebar.cpp.o
+[918/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/session/restoremanager.cpp.o
+[919/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/sidebar/sidebar.cpp.o
+[920/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tabwidget/tabicon.cpp.o
+[921/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tabwidget/tabmodel.cpp.o
+[922/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/session/sessionmanager.cpp.o
+[923/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tabwidget/combotabbar.cpp.o
+[924/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tabwidget/tabmrumodel.cpp.o
+[925/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/abstractbuttoninterface.cpp.o
+[926/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tabwidget/tabstackedwidget.cpp.o
+[927/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tabwidget/tabbar.cpp.o
+[928/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/aesinterface.cpp.o
+[929/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/animatedwidget.cpp.o
+[930/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tabwidget/tabtreemodel.cpp.o
+[931/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tabwidget/tabcontextmenu.cpp.o
+[932/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/clickablelabel.cpp.o
+[933/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/buttonwithmenu.cpp.o
+[934/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/desktopfile.cpp.o
+[935/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/delayedfilewatcher.cpp.o
+[936/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/colors.cpp.o
+[937/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/certificateinfowidget.cpp.o
+[938/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/closedtabsmanager.cpp.o
+[939/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/docktitlebarwidget.cpp.o
+[940/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/focusselectlineedit.cpp.o
+[941/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/enhancedmenu.cpp.o
+[942/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/closedwindowsmanager.cpp.o
+[943/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/headerview.cpp.o
+[944/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/horizontallistwidget.cpp.o
+[945/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/html5permissions/html5permissionsmanager.cpp.o
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsmanager.cpp: In member function ‘void HTML5PermissionsManager::requestPermissions(WebPage*, const QUrl&, const QWebEnginePage::Feature&)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsmanager.cpp:50:69: warning: ‘QWebEnginePage::PermissionGrantedByUser’ is deprecated: Use QWebEnginePermission::State::Granted instead [-Wdeprecated-declarations]
+   50 |         page->setFeaturePermission(origin, feature, QWebEnginePage::PermissionGrantedByUser);
+      |                                                                     ^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/qt6/QtWebEngineCore/QWebEnginePage:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.h:21,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsmanager.h:25,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsmanager.cpp:18:
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:157:9: note: declared here
+  157 |         PermissionGrantedByUser Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsmanager.cpp:50:35: warning: ‘void QWebEnginePage::setFeaturePermission(const QUrl&, Feature, PermissionPolicy)’ is deprecated: Setting permissions through QWebEnginePage has been deprecated. Please use QWebEnginePermission instead. [-Wdeprecated-declarations]
+   50 |         page->setFeaturePermission(origin, feature, QWebEnginePage::PermissionGrantedByUser);
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:262:10: note: declared here
+  262 |     void setFeaturePermission(const QUrl &securityOrigin, Feature feature, PermissionPolicy policy);
+      |          ^~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsmanager.cpp:53:69: warning: ‘QWebEnginePage::PermissionDeniedByUser’ is deprecated: Use QWebEnginePermission::State::Denied instead [-Wdeprecated-declarations]
+   53 |         page->setFeaturePermission(origin, feature, QWebEnginePage::PermissionDeniedByUser);
+      |                                                                     ^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:159:9: note: declared here
+  159 |         PermissionDeniedByUser Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsmanager.cpp:53:35: warning: ‘void QWebEnginePage::setFeaturePermission(const QUrl&, Feature, PermissionPolicy)’ is deprecated: Setting permissions through QWebEnginePage has been deprecated. Please use QWebEnginePermission instead. [-Wdeprecated-declarations]
+   53 |         page->setFeaturePermission(origin, feature, QWebEnginePage::PermissionDeniedByUser);
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:262:10: note: declared here
+  262 |     void setFeaturePermission(const QUrl &securityOrigin, Feature feature, PermissionPolicy policy);
+      |          ^~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsmanager.cpp: In member function ‘void HTML5PermissionsManager::rememberPermissions(const QUrl&, const QWebEnginePage::Feature&, const QWebEnginePage::PermissionPolicy&)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsmanager.cpp:68:35: warning: ‘QWebEnginePage::PermissionGrantedByUser’ is deprecated: Use QWebEnginePermission::State::Granted instead [-Wdeprecated-declarations]
+   68 |     if (policy == QWebEnginePage::PermissionGrantedByUser) {
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:157:9: note: declared here
+  157 |         PermissionGrantedByUser Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+[946/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tabwidget/tabwidget.cpp.o
+[947/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/mactoolbutton.cpp.o
+[948/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/menubar.cpp.o
+[949/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/html5permissions/html5permissionsnotification.cpp.o
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp: In constructor ‘HTML5PermissionsNotification::HTML5PermissionsNotification(const QUrl&, QWebEnginePage*, const QWebEnginePage::Feature&)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:45:26: warning: ‘QWebEnginePage::Notifications’ is deprecated: Use QWebEnginePermission::PermissionType::Notifications instead [-Wdeprecated-declarations]
+   45 |     case QWebEnginePage::Notifications:
+      |                          ^~~~~~~~~~~~~
+In file included from /usr/include/qt6/QtWebEngineCore/QWebEnginePage:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.h:21,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.h:26,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:19:
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:179:9: note: declared here
+  179 |         Notifications Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:49:26: warning: ‘QWebEnginePage::Geolocation’ is deprecated: Use QWebEnginePermission::PermissionType::Geolocation instead [-Wdeprecated-declarations]
+   49 |     case QWebEnginePage::Geolocation:
+      |                          ^~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:181:9: note: declared here
+  181 |         Geolocation Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:53:26: warning: ‘QWebEnginePage::MediaAudioCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioCapture instead [-Wdeprecated-declarations]
+   53 |     case QWebEnginePage::MediaAudioCapture:
+      |                          ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:183:9: note: declared here
+  183 |         MediaAudioCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:57:26: warning: ‘QWebEnginePage::MediaVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaVideoCapture instead [-Wdeprecated-declarations]
+   57 |     case QWebEnginePage::MediaVideoCapture:
+      |                          ^~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:185:9: note: declared here
+  185 |         MediaVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:61:26: warning: ‘QWebEnginePage::MediaAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::MediaAudioVideoCapture instead [-Wdeprecated-declarations]
+   61 |     case QWebEnginePage::MediaAudioVideoCapture:
+      |                          ^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:187:9: note: declared here
+  187 |         MediaAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:65:26: warning: ‘QWebEnginePage::MouseLock’ is deprecated: Use QWebEnginePermission::PermissionType::MouseLock instead [-Wdeprecated-declarations]
+   65 |     case QWebEnginePage::MouseLock:
+      |                          ^~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:189:9: note: declared here
+  189 |         MouseLock Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:69:26: warning: ‘QWebEnginePage::DesktopVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopVideoCapture instead [-Wdeprecated-declarations]
+   69 |     case QWebEnginePage::DesktopVideoCapture:
+      |                          ^~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:191:9: note: declared here
+  191 |         DesktopVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:73:26: warning: ‘QWebEnginePage::DesktopAudioVideoCapture’ is deprecated: Use QWebEnginePermission::PermissionType::DesktopAudioVideoCapture instead [-Wdeprecated-declarations]
+   73 |     case QWebEnginePage::DesktopAudioVideoCapture:
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:193:9: note: declared here
+  193 |         DesktopAudioVideoCapture Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:86:45: warning: ‘void QWebEnginePage::featurePermissionRequestCanceled(const QUrl&, Feature)’ is deprecated: The signal has been deprecated, and no longer functions. [-Wdeprecated-declarations]
+   86 |     connect(m_page.data(), &QWebEnginePage::featurePermissionRequestCanceled, this, [this](const QUrl &origin, QWebEnginePage::Feature feature) {
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:352:10: note: declared here
+  352 |     void featurePermissionRequestCanceled(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp: In lambda function:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:103:42: warning: ‘QWebEnginePage::MouseLock’ is deprecated: Use QWebEnginePermission::PermissionType::MouseLock instead [-Wdeprecated-declarations]
+  103 |         if (m_feature == QWebEnginePage::MouseLock) {
+      |                                          ^~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:189:9: note: declared here
+  189 |         MouseLock Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:108:75: warning: ‘QWebEnginePage::PermissionGrantedByUser’ is deprecated: Use QWebEnginePermission::State::Granted instead [-Wdeprecated-declarations]
+  108 |         m_page->setFeaturePermission(m_origin, m_feature, QWebEnginePage::PermissionGrantedByUser);
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:157:9: note: declared here
+  157 |         PermissionGrantedByUser Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:108:37: warning: ‘void QWebEnginePage::setFeaturePermission(const QUrl&, Feature, PermissionPolicy)’ is deprecated: Setting permissions through QWebEnginePage has been deprecated. Please use QWebEnginePermission instead. [-Wdeprecated-declarations]
+  108 |         m_page->setFeaturePermission(m_origin, m_feature, QWebEnginePage::PermissionGrantedByUser);
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:262:10: note: declared here
+  262 |     void setFeaturePermission(const QUrl &securityOrigin, Feature feature, PermissionPolicy policy);
+      |          ^~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp: In member function ‘void HTML5PermissionsNotification::grantPermissions()’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:112:99: warning: ‘QWebEnginePage::PermissionGrantedByUser’ is deprecated: Use QWebEnginePermission::State::Granted instead [-Wdeprecated-declarations]
+  112 |         mApp->html5PermissionsManager()->rememberPermissions(m_origin, m_feature, QWebEnginePage::PermissionGrantedByUser);
+      |                                                                                                   ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:157:9: note: declared here
+  157 |         PermissionGrantedByUser Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp: In member function ‘void HTML5PermissionsNotification::denyPermissions()’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:124:71: warning: ‘QWebEnginePage::PermissionDeniedByUser’ is deprecated: Use QWebEnginePermission::State::Denied instead [-Wdeprecated-declarations]
+  124 |     m_page->setFeaturePermission(m_origin, m_feature, QWebEnginePage::PermissionDeniedByUser);
+      |                                                                       ^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:159:9: note: declared here
+  159 |         PermissionDeniedByUser Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:124:33: warning: ‘void QWebEnginePage::setFeaturePermission(const QUrl&, Feature, PermissionPolicy)’ is deprecated: Setting permissions through QWebEnginePage has been deprecated. Please use QWebEnginePermission instead. [-Wdeprecated-declarations]
+  124 |     m_page->setFeaturePermission(m_origin, m_feature, QWebEnginePage::PermissionDeniedByUser);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:262:10: note: declared here
+  262 |     void setFeaturePermission(const QUrl &securityOrigin, Feature feature, PermissionPolicy policy);
+      |          ^~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/tools/html5permissions/html5permissionsnotification.cpp:127:99: warning: ‘QWebEnginePage::PermissionDeniedByUser’ is deprecated: Use QWebEnginePermission::State::Denied instead [-Wdeprecated-declarations]
+  127 |         mApp->html5PermissionsManager()->rememberPermissions(m_origin, m_feature, QWebEnginePage::PermissionDeniedByUser);
+      |                                                                                                   ^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:159:9: note: declared here
+  159 |         PermissionDeniedByUser Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+[950/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/listitemdelegate.cpp.o
+[951/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/progressbar.cpp.o
+[952/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/pagethumbnailer.cpp.o
+[953/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/removeitemfocusdelegate.cpp.o
+[954/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/preferences/preferences.cpp.o
+[955/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/wheelhelper.cpp.o
+[956/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webengine/loadrequest.cpp.o
+[957/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/iconprovider.cpp.o
+[958/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webengine/javascript/autofilljsobject.cpp.o
+[959/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/scripts.cpp.o
+[960/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/toolbutton.cpp.o
+[961/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/qrc_data.cpp.o
+[962/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/qrc_html.cpp.o
+[963/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/qrc_icons.cpp.o
+[964/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/qrc_breeze-fallback.cpp.o
+[965/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/qrc_adblock.cpp.o
+[966/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/treewidget.cpp.o
+[967/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/sqldatabase.cpp.o
+[968/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webengine/webhittestresult.cpp.o
+[969/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webengine/javascript/externaljsobject.cpp.o
+[970/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webengine/webinspector.cpp.o
+[971/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/tools/qztools.cpp.o
+[972/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/falkon_private_debug.cpp.o
+[973/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webengine/webscrollbar.cpp.o
+[974/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/plugins/qml/api/i18n/qmli18n.cpp.o
+[975/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webtab/searchtoolbar.cpp.o
+[976/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webtab/tabbedwebview.cpp.o
+[977/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webengine/webscrollbarmanager.cpp.o
+[978/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webengine/webpage.cpp.o
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.cpp: In constructor ‘WebPage::WebPage(QObject*)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.cpp:95:36: warning: ‘void QWebEnginePage::featurePermissionRequested(const QUrl&, Feature)’ is deprecated: The signal has been deprecated; please use permissionRequested instead. [-Wdeprecated-declarations]
+   95 |     connect(this, &QWebEnginePage::featurePermissionRequested, this, &WebPage::featurePermissionRequested);
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/qt6/QtWebEngineCore/QWebEnginePage:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.h:21,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.cpp:18:
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:349:10: note: declared here
+  349 |     void featurePermissionRequested(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.cpp: In member function ‘void WebPage::featurePermissionRequested(const QUrl&, const QWebEnginePage::Feature&)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.cpp:403:20: warning: ‘QWebEnginePage::MouseLock’ is deprecated: Use QWebEnginePermission::PermissionType::MouseLock instead [-Wdeprecated-declarations]
+  403 |     if (feature == MouseLock && view()->isFullScreen())
+      |                    ^~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:189:9: note: declared here
+  189 |         MouseLock Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.cpp:404:47: warning: ‘QWebEnginePage::PermissionGrantedByUser’ is deprecated: Use QWebEnginePermission::State::Granted instead [-Wdeprecated-declarations]
+  404 |         setFeaturePermission(origin, feature, PermissionGrantedByUser);
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:157:9: note: declared here
+  157 |         PermissionGrantedByUser Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/lib/webengine/webpage.cpp:404:29: warning: ‘void QWebEnginePage::setFeaturePermission(const QUrl&, Feature, PermissionPolicy)’ is deprecated: Setting permissions through QWebEnginePage has been deprecated. Please use QWebEnginePermission instead. [-Wdeprecated-declarations]
+  404 |         setFeaturePermission(origin, feature, PermissionGrantedByUser);
+      |         ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtWebEngineCore/qwebenginepage.h:262:10: note: declared here
+  262 |     void setFeaturePermission(const QUrl &securityOrigin, Feature feature, PermissionPolicy policy);
+      |          ^~~~~~~~~~~~~~~~~~~~
+[979/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webtab/webtab.cpp.o
+[980/1126] Building CXX object src/lib/CMakeFiles/FalkonPrivate.dir/webengine/webview.cpp.o
+[981/1126] Linking CXX shared library bin/libFalkonPrivate.so.26.08.1
+[982/1126] Creating library symlink bin/libFalkonPrivate.so.3 bin/libFalkonPrivate.so
+[983/1126] Automatic MOC for target falkon
+[984/1126] Building CXX object src/main/CMakeFiles/falkon.dir/falkon_autogen/mocs_compilation.cpp.o
+[985/1126] Automatic MOC for target GnomeKeyringPasswords
+[986/1126] Automatic MOC for target PIM
+[987/1126] Generating ui_PIM_settings.h
+[988/1126] Generating qrc_PIM_res.cpp
+[989/1126] Automatic MOC for target KDEFrameworksIntegration
+[990/1126] Generating qrc_kdeframeworksintegration.cpp
+[991/1126] Automatic MOC for target FlashCookieManager
+[992/1126] Generating ui_fcm_dialog.h
+[993/1126] Generating ui_fcm_notification.h
+[994/1126] Automatic MOC for target TabManager
+[995/1126] Generating ui_tabmanagerwidget.h
+[996/1126] Generating qrc_flashcookiemanager.cpp
+[997/1126] Generating ui_tabmanagersettings.h
+[998/1126] Generating qrc_tabmanagerplugin.cpp
+[999/1126] Automatic MOC for target AutoScroll
+[1000/1126] Generating ui_autoscrollsettings.h
+[1001/1126] Generating qrc_autoscroll.cpp
+[1002/1126] Automatic MOC for target VerticalTabs
+[1003/1126] Automatic MOC for target GreaseMonkey
+[1004/1126] Generating ui_verticaltabssettings.h
+[1005/1126] Automatic MOC for target MouseGestures
+[1006/1126] Generating ui_gm_addscriptdialog.h
+[1007/1126] Generating ui_gm_settings.h
+[1008/1126] Generating ui_gm_notification.h
+[1009/1126] Generating ui_gm_settingsscriptinfo.h
+[1010/1126] Generating qrc_greasemonkey.cpp
+[1011/1126] Generating ui_mousegesturessettingsdialog.h
+[1012/1126] Automatic MOC for target StatusBarIcons
+[1013/1126] Generating qrc_tldextractor.cpp
+[1014/1126] Generating qrc_mousegestures.cpp
+[1015/1126] Generating qrc_verticaltabs.cpp
+[1016/1126] Generating ui_sbi_settingsdialog.h
+[1017/1126] Generating ui_sbi_proxywidget.h
+[1018/1126] Generating ui_sbi_networkicondialog.h
+[1019/1126] Generating qrc_statusbaricons.cpp
+[1020/1126] Building CXX object src/main/CMakeFiles/falkon.dir/main.cpp.o
+[1021/1126] Building CXX object src/plugins/AutoScroll/CMakeFiles/AutoScroll.dir/qrc_autoscroll.cpp.o
+[1022/1126] Building CXX object src/main/CMakeFiles/falkon.dir/ECMQmLoader-falkon_qt.cpp.o
+[1023/1126] Building CXX object src/plugins/GnomeKeyringPasswords/CMakeFiles/GnomeKeyringPasswords.dir/GnomeKeyringPasswords_autogen/mocs_compilation.cpp.o
+[1024/1126] Building CXX object src/plugins/GnomeKeyringPasswords/CMakeFiles/GnomeKeyringPasswords.dir/ECMQmLoader-falkon_gnomekeyringpasswords_qt.cpp.o
+[1025/1126] Building CXX object src/plugins/GnomeKeyringPasswords/CMakeFiles/GnomeKeyringPasswords.dir/gnomekeyringplugin.cpp.o
+[1026/1126] Building CXX object src/plugins/FlashCookieManager/CMakeFiles/FlashCookieManager.dir/qrc_flashcookiemanager.cpp.o
+[1027/1126] Building CXX object src/plugins/PIM/CMakeFiles/PIM.dir/PIM_plugin.cpp.o
+[1028/1126] Building CXX object src/plugins/AutoScroll/CMakeFiles/AutoScroll.dir/framescroller.cpp.o
+[1029/1126] Building CXX object src/plugins/PIM/CMakeFiles/PIM.dir/PIM_autogen/mocs_compilation.cpp.o
+[1030/1126] Building CXX object src/plugins/AutoScroll/CMakeFiles/AutoScroll.dir/autoscrollsettings.cpp.o
+[1031/1126] Building CXX object src/plugins/AutoScroll/CMakeFiles/AutoScroll.dir/autoscrollplugin.cpp.o
+[1032/1126] Building CXX object src/plugins/AutoScroll/CMakeFiles/AutoScroll.dir/AutoScroll_autogen/mocs_compilation.cpp.o
+[1033/1126] Building CXX object src/plugins/AutoScroll/CMakeFiles/AutoScroll.dir/autoscroller.cpp.o
+[1034/1126] Building CXX object src/plugins/AutoScroll/CMakeFiles/AutoScroll.dir/ECMQmLoader-falkon_autoscroll_qt.cpp.o
+[1035/1126] Building CXX object src/plugins/FlashCookieManager/CMakeFiles/FlashCookieManager.dir/FlashCookieManager_autogen/mocs_compilation.cpp.o
+[1036/1126] Building CXX object src/plugins/GnomeKeyringPasswords/CMakeFiles/GnomeKeyringPasswords.dir/gnomekeyringpasswordbackend.cpp.o
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp: In function ‘GnomeKeyringAttributeList* createAttributes(const PasswordEntry&)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:68:77: warning: ‘GnomeKeyringAttributeList* gnome_keyring_attribute_list_new()’ is deprecated: Use 'g_hash_table_new' instead [-Wdeprecated-declarations]
+   68 |     GnomeKeyringAttributeList* attributes = gnome_keyring_attribute_list_new();
+      |                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+In file included from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:24:
+/usr/include/gnome-keyring-1/gnome-keyring.h:153:28: note: declared here
+  153 | GnomeKeyringAttributeList *gnome_keyring_attribute_list_new           (void);
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:70:47: warning: ‘void gnome_keyring_attribute_list_append_string(GnomeKeyringAttributeList*, const char*, const char*)’ is deprecated: Use 'g_hash_table_replace' instead [-Wdeprecated-declarations]
+   70 |     gnome_keyring_attribute_list_append_string(attributes, "application", "Falkon");
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:145:28: note: declared here
+  145 | void                       gnome_keyring_attribute_list_append_string (GnomeKeyringAttributeList *attributes,
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:73:47: warning: ‘void gnome_keyring_attribute_list_append_string(GnomeKeyringAttributeList*, const char*, const char*)’ is deprecated: Use 'g_hash_table_replace' instead [-Wdeprecated-declarations]
+   73 |     gnome_keyring_attribute_list_append_string(attributes, "username", value.constData());
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:145:28: note: declared here
+  145 | void                       gnome_keyring_attribute_list_append_string (GnomeKeyringAttributeList *attributes,
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:77:47: warning: ‘void gnome_keyring_attribute_list_append_string(GnomeKeyringAttributeList*, const char*, const char*)’ is deprecated: Use 'g_hash_table_replace' instead [-Wdeprecated-declarations]
+   77 |     gnome_keyring_attribute_list_append_string(attributes, "data", value.constData());
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:145:28: note: declared here
+  145 | void                       gnome_keyring_attribute_list_append_string (GnomeKeyringAttributeList *attributes,
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:80:47: warning: ‘void gnome_keyring_attribute_list_append_string(GnomeKeyringAttributeList*, const char*, const char*)’ is deprecated: Use 'g_hash_table_replace' instead [-Wdeprecated-declarations]
+   80 |     gnome_keyring_attribute_list_append_string(attributes, "host", value.constData());
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:145:28: note: declared here
+  145 | void                       gnome_keyring_attribute_list_append_string (GnomeKeyringAttributeList *attributes,
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:82:47: warning: ‘void gnome_keyring_attribute_list_append_uint32(GnomeKeyringAttributeList*, const char*, guint32)’ is deprecated [-Wdeprecated-declarations]
+   82 |     gnome_keyring_attribute_list_append_uint32(attributes, "updated", entry.updated);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:149:28: note: declared here
+  149 | void                       gnome_keyring_attribute_list_append_uint32 (GnomeKeyringAttributeList *attributes,
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp: In function ‘void storeEntry(PasswordEntry&)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:95:63: warning: ‘GnomeKeyringResult gnome_keyring_item_create_sync(const char*, GnomeKeyringItemType, const char*, GnomeKeyringAttributeList*, const char*, gboolean, guint32*)’ is deprecated: Use 'secret_item_create_sync' instead [-Wdeprecated-declarations]
+   95 |     GnomeKeyringResult result = gnome_keyring_item_create_sync(GNOME_KEYRING_DEFAULT,
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+   96 |                                 GNOME_KEYRING_ITEM_GENERIC_SECRET,
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   97 |                                 host.constData(),
+      |                                 ~~~~~~~~~~~~~~~~~              
+   98 |                                 attributes,
+      |                                 ~~~~~~~~~~~                    
+   99 |                                 pass.constData(),
+      |                                 ~~~~~~~~~~~~~~~~~              
+  100 |                                 TRUE, // Update if exists
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~      
+  101 |                                 &itemId);
+      |                                 ~~~~~~~~                       
+/usr/include/gnome-keyring-1/gnome-keyring.h:340:20: note: declared here
+  340 | GnomeKeyringResult gnome_keyring_item_create_sync         (const char                                 *keyring,
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:103:38: warning: ‘void gnome_keyring_attribute_list_free(GnomeKeyringAttributeList*)’ is deprecated: Use 'g_hash_table_unref' instead [-Wdeprecated-declarations]
+  103 |     gnome_keyring_attribute_list_free(attributes);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:155:28: note: declared here
+  155 | void                       gnome_keyring_attribute_list_free          (GnomeKeyringAttributeList *attributes);
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp: In member function ‘virtual bool GnomeKeyringPasswordBackend::updateEntry(const PasswordEntry&)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:169:71: warning: ‘GnomeKeyringResult gnome_keyring_item_set_attributes_sync(const char*, guint32, GnomeKeyringAttributeList*)’ is deprecated: Use 'secret_item_set_attributes_sync' instead [-Wdeprecated-declarations]
+  169 |     GnomeKeyringResult result = gnome_keyring_item_set_attributes_sync(GNOME_KEYRING_DEFAULT,
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+  170 |                                 entry.id.toUInt(),
+      |                                 ~~~~~~~~~~~~~~~~~~                     
+  171 |                                 attributes);
+      |                                 ~~~~~~~~~~~                            
+/usr/include/gnome-keyring-1/gnome-keyring.h:407:20: note: declared here
+  407 | GnomeKeyringResult gnome_keyring_item_set_attributes_sync (const char                                 *keyring,
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:173:38: warning: ‘void gnome_keyring_attribute_list_free(GnomeKeyringAttributeList*)’ is deprecated: Use 'g_hash_table_unref' instead [-Wdeprecated-declarations]
+  173 |     gnome_keyring_attribute_list_free(attributes);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:155:28: note: declared here
+  155 | void                       gnome_keyring_attribute_list_free          (GnomeKeyringAttributeList *attributes);
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:182:51: warning: ‘GnomeKeyringResult gnome_keyring_item_get_info_full_sync(const char*, guint32, guint32, GnomeKeyringItemInfo**)’ is deprecated [-Wdeprecated-declarations]
+  182 |     result = gnome_keyring_item_get_info_full_sync(GNOME_KEYRING_DEFAULT, entry.id.toUInt(),
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  183 |              GNOME_KEYRING_ITEM_INFO_SECRET, &info);
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:374:20: note: declared here
+  374 | GnomeKeyringResult gnome_keyring_item_get_info_full_sync  (const char                                 *keyring,
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:191:39: warning: ‘void gnome_keyring_item_info_set_secret(GnomeKeyringItemInfo*, const char*)’ is deprecated: Use 'secret_item_set_secret' instead [-Wdeprecated-declarations]
+  191 |     gnome_keyring_item_info_set_secret(info, pass.constData());
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:427:23: note: declared here
+  427 | void                  gnome_keyring_item_info_set_secret       (GnomeKeyringItemInfo *item_info,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:193:46: warning: ‘GnomeKeyringResult gnome_keyring_item_set_info_sync(const char*, guint32, GnomeKeyringItemInfo*)’ is deprecated [-Wdeprecated-declarations]
+  193 |     result = gnome_keyring_item_set_info_sync(GNOME_KEYRING_DEFAULT, entry.id.toUInt(), info);
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:386:20: note: declared here
+  386 | GnomeKeyringResult gnome_keyring_item_set_info_sync       (const char                                 *keyring,
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:195:33: warning: ‘void gnome_keyring_item_info_free(GnomeKeyringItemInfo*)’ is deprecated [-Wdeprecated-declarations]
+  195 |     gnome_keyring_item_info_free(info);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:412:23: note: declared here
+  412 | void                  gnome_keyring_item_info_free             (GnomeKeyringItemInfo *item_info);
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp: In member function ‘virtual void GnomeKeyringPasswordBackend::updateLastUsed(PasswordEntry&)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:219:71: warning: ‘GnomeKeyringResult gnome_keyring_item_set_attributes_sync(const char*, guint32, GnomeKeyringAttributeList*)’ is deprecated: Use 'secret_item_set_attributes_sync' instead [-Wdeprecated-declarations]
+  219 |     GnomeKeyringResult result = gnome_keyring_item_set_attributes_sync(GNOME_KEYRING_DEFAULT,
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+  220 |                                 entry.id.toUInt(),
+      |                                 ~~~~~~~~~~~~~~~~~~                     
+  221 |                                 attributes);
+      |                                 ~~~~~~~~~~~                            
+/usr/include/gnome-keyring-1/gnome-keyring.h:407:20: note: declared here
+  407 | GnomeKeyringResult gnome_keyring_item_set_attributes_sync (const char                                 *keyring,
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:223:38: warning: ‘void gnome_keyring_attribute_list_free(GnomeKeyringAttributeList*)’ is deprecated: Use 'g_hash_table_unref' instead [-Wdeprecated-declarations]
+  223 |     gnome_keyring_attribute_list_free(attributes);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:155:28: note: declared here
+  155 | void                       gnome_keyring_attribute_list_free          (GnomeKeyringAttributeList *attributes);
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp: In member function ‘virtual void GnomeKeyringPasswordBackend::removeEntry(const PasswordEntry&)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:241:63: warning: ‘GnomeKeyringResult gnome_keyring_item_delete_sync(const char*, guint32)’ is deprecated: Use 'secret_item_delete_sync' instead [-Wdeprecated-declarations]
+  241 |     GnomeKeyringResult result = gnome_keyring_item_delete_sync(GNOME_KEYRING_DEFAULT, entry.id.toUInt());
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:354:20: note: declared here
+  354 | GnomeKeyringResult gnome_keyring_item_delete_sync         (const char                                 *keyring,
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp: In member function ‘void GnomeKeyringPasswordBackend::initialize()’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:273:63: warning: ‘GnomeKeyringResult gnome_keyring_find_itemsv_sync(GnomeKeyringItemType, GList**, ...)’ is deprecated: Use 'secret_service_search_sync' instead [-Wdeprecated-declarations]
+  273 |     GnomeKeyringResult result = gnome_keyring_find_itemsv_sync(GNOME_KEYRING_ITEM_GENERIC_SECRET, &found,
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  274 |                                 "application", GNOME_KEYRING_ATTRIBUTE_TYPE_STRING, "Falkon",
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  275 |                                 NULL);
+      |                                 ~~~~~                          
+/usr/include/gnome-keyring-1/gnome-keyring.h:325:20: note: declared here
+  325 | GnomeKeyringResult gnome_keyring_find_itemsv_sync (GnomeKeyringItemType        type,
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:284:48: warning: ‘GnomeKeyringResult gnome_keyring_find_itemsv_sync(GnomeKeyringItemType, GList**, ...)’ is deprecated: Use 'secret_service_search_sync' instead [-Wdeprecated-declarations]
+  284 |         result = gnome_keyring_find_itemsv_sync(GNOME_KEYRING_ITEM_GENERIC_SECRET, &found,
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  285 |                  "application", GNOME_KEYRING_ATTRIBUTE_TYPE_STRING, "QupZilla",
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  286 |                  NULL);
+      |                  ~~~~~                          
+/usr/include/gnome-keyring-1/gnome-keyring.h:325:20: note: declared here
+  325 | GnomeKeyringResult gnome_keyring_find_itemsv_sync (GnomeKeyringItemType        type,
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/GnomeKeyringPasswords/gnomekeyringpasswordbackend.cpp:306:34: warning: ‘void gnome_keyring_found_list_free(GList*)’ is deprecated [-Wdeprecated-declarations]
+  306 |     gnome_keyring_found_list_free(found);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+/usr/include/gnome-keyring-1/gnome-keyring.h:174:6: note: declared here
+  174 | void gnome_keyring_found_list_free          (GList *found_list);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1037/1126] Building CXX object src/plugins/PIM/CMakeFiles/PIM.dir/PIM_handler.cpp.o
+[1038/1126] Building CXX object src/plugins/FlashCookieManager/CMakeFiles/FlashCookieManager.dir/fcm_notification.cpp.o
+[1039/1126] Building CXX object src/plugins/FlashCookieManager/CMakeFiles/FlashCookieManager.dir/ECMQmLoader-falkon_flashcookiemanager_qt.cpp.o
+[1040/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/gm_jsobject.cpp.o
+[1041/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/gm_plugin.cpp.o
+[1042/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/qrc_greasemonkey.cpp.o
+[1043/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/gm_icon.cpp.o
+[1044/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/gm_notification.cpp.o
+[1045/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/GreaseMonkey_autogen/mocs_compilation.cpp.o
+[1046/1126] Building CXX object src/plugins/MouseGestures/CMakeFiles/MouseGestures.dir/3rdparty/mousegesturerecognizer.cpp.o
+[1047/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/gm_downloader.cpp.o
+[1048/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/gm_addscriptdialog.cpp.o
+[1049/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/gm_script.cpp.o
+[1050/1126] Building CXX object src/plugins/MouseGestures/CMakeFiles/MouseGestures.dir/3rdparty/adv_recognizer.cpp.o
+[1051/1126] Building CXX object src/plugins/MouseGestures/CMakeFiles/MouseGestures.dir/qrc_mousegestures.cpp.o
+[1052/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/settings/gm_settingsscriptinfo.cpp.o
+[1053/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/settings/gm_settingslistdelegate.cpp.o
+[1054/1126] Building CXX object src/plugins/PIM/CMakeFiles/PIM.dir/qrc_PIM_res.cpp.o
+[1055/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/gm_manager.cpp.o
+[1056/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/settings/gm_settingslistwidget.cpp.o
+[1057/1126] Building CXX object src/plugins/MouseGestures/CMakeFiles/MouseGestures.dir/3rdparty/QjtMouseGesture.cpp.o
+[1058/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/settings/gm_settings.cpp.o
+[1059/1126] Building CXX object src/plugins/GreaseMonkey/CMakeFiles/GreaseMonkey.dir/ECMQmLoader-falkon_greasemonkey_qt.cpp.o
+[1060/1126] Building CXX object src/plugins/FlashCookieManager/CMakeFiles/FlashCookieManager.dir/fcm_plugin.cpp.o
+[1061/1126] Building CXX object src/plugins/MouseGestures/CMakeFiles/MouseGestures.dir/MouseGestures_autogen/mocs_compilation.cpp.o
+[1062/1126] Building CXX object src/plugins/MouseGestures/CMakeFiles/MouseGestures.dir/mousegesturesplugin.cpp.o
+[1063/1126] Building CXX object src/plugins/MouseGestures/CMakeFiles/MouseGestures.dir/3rdparty/QjtMouseGestureFilter.cpp.o
+[1064/1126] Building CXX object src/plugins/FlashCookieManager/CMakeFiles/FlashCookieManager.dir/fcm_dialog.cpp.o
+[1065/1126] Building CXX object src/plugins/MouseGestures/CMakeFiles/MouseGestures.dir/ECMQmLoader-falkon_mousegestures_qt.cpp.o
+[1066/1126] Building CXX object src/plugins/MouseGestures/CMakeFiles/MouseGestures.dir/mousegesturessettingsdialog.cpp.o
+[1067/1126] Building CXX object src/plugins/MouseGestures/CMakeFiles/MouseGestures.dir/mousegestures.cpp.o
+[1068/1126] Building CXX object src/plugins/PIM/CMakeFiles/PIM.dir/ECMQmLoader-falkon_pim_qt.cpp.o
+[1069/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/statusbariconsplugin.cpp.o
+[1070/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/qrc_statusbaricons.cpp.o
+[1071/1126] Building CXX object src/plugins/PIM/CMakeFiles/PIM.dir/PIM_settings.cpp.o
+[1072/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_imagesicon.cpp.o
+[1073/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_networkproxy.cpp.o
+[1074/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_iconsmanager.cpp.o
+[1075/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_javascripticon.cpp.o
+[1076/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/StatusBarIcons_autogen/mocs_compilation.cpp.o
+[1077/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_networkicon.cpp.o
+[1078/1126] Building CXX object src/plugins/TabManager/CMakeFiles/TabManager.dir/qrc_tabmanagerplugin.cpp.o
+[1079/1126] Building CXX object src/plugins/TabManager/CMakeFiles/TabManager.dir/qrc_tldextractor.cpp.o
+[1080/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_proxywidget.cpp.o
+[1081/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_icon.cpp.o
+[1082/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_settingsdialog.cpp.o
+[1083/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_zoomwidget.cpp.o
+[1084/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_networkicondialog.cpp.o
+[1085/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/sbi_networkmanager.cpp.o
+[1086/1126] Building CXX object src/plugins/StatusBarIcons/CMakeFiles/StatusBarIcons.dir/ECMQmLoader-falkon_statusbaricons_qt.cpp.o
+[1087/1126] Building CXX object src/plugins/TabManager/CMakeFiles/TabManager.dir/tabmanagerplugin.cpp.o
+[1088/1126] Building CXX object src/plugins/TabManager/CMakeFiles/TabManager.dir/tabmanagersettings.cpp.o
+[1089/1126] Building CXX object src/plugins/TabManager/CMakeFiles/TabManager.dir/TabManager_autogen/mocs_compilation.cpp.o
+[1090/1126] Building CXX object src/plugins/TabManager/CMakeFiles/TabManager.dir/ECMQmLoader-falkon_tabmanager_qt.cpp.o
+[1091/1126] Building CXX object src/plugins/TabManager/CMakeFiles/TabManager.dir/tabmanagerwidgetcontroller.cpp.o
+[1092/1126] Building CXX object src/plugins/TabManager/CMakeFiles/TabManager.dir/tabmanagerdelegate.cpp.o
+[1093/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/VerticalTabs_autogen/mocs_compilation.cpp.o
+[1094/1126] Building CXX object src/plugins/TabManager/CMakeFiles/TabManager.dir/tldextractor/tldextractor.cpp.o
+[1095/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/qrc_verticaltabs.cpp.o
+[1096/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/verticaltabscontroller.cpp.o
+[1097/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/verticaltabsplugin.cpp.o
+[1098/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/tabfiltermodel.cpp.o
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/VerticalTabs/tabfiltermodel.cpp: In member function ‘void TabFilterModel::resetFilter()’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/VerticalTabs/tabfiltermodel.cpp:30:21: warning: ‘void QSortFilterProxyModel::invalidateFilter()’ is deprecated: Use begin/endFilterChange() instead [-Wdeprecated-declarations]
+   30 |     invalidateFilter();
+      |     ~~~~~~~~~~~~~~~~^~
+In file included from /usr/include/qt6/QtCore/QSortFilterProxyModel:1,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/VerticalTabs/tabfiltermodel.h:20,
+                 from /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/VerticalTabs/tabfiltermodel.cpp:18:
+/usr/include/qt6/QtCore/qsortfilterproxymodel.h:128:10: note: declared here
+  128 |     void invalidateFilter();
+      |          ^~~~~~~~~~~~~~~~
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/VerticalTabs/tabfiltermodel.cpp: In member function ‘void TabFilterModel::setFilterPinnedTabs(bool)’:
+/home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224747/falkon/src/plugins/VerticalTabs/tabfiltermodel.cpp:37:21: warning: ‘void QSortFilterProxyModel::invalidateFilter()’ is deprecated: Use begin/endFilterChange() instead [-Wdeprecated-declarations]
+   37 |     invalidateFilter();
+      |     ~~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qsortfilterproxymodel.h:128:10: note: declared here
+  128 |     void invalidateFilter();
+      |          ^~~~~~~~~~~~~~~~
+[1099/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/verticaltabswidget.cpp.o
+[1100/1126] Building CXX object src/plugins/KDEFrameworksIntegration/CMakeFiles/KDEFrameworksIntegration.dir/qrc_kdeframeworksintegration.cpp.o
+[1101/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/tabtreedelegate.cpp.o
+[1102/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/loadinganimator.cpp.o
+[1103/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/verticaltabssettings.cpp.o
+[1104/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/tablistdelegate.cpp.o
+[1105/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/tabtreeview.cpp.o
+[1106/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/tablistview.cpp.o
+[1107/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/verticaltabsschemehandler.cpp.o
+[1108/1126] Building CXX object src/plugins/VerticalTabs/CMakeFiles/VerticalTabs.dir/ECMQmLoader-falkon_verticaltabs_qt.cpp.o
+[1109/1126] Linking CXX shared module bin/plugins/AutoScroll.so
+[1110/1126] Linking CXX shared module bin/plugins/FlashCookieManager.so
+[1111/1126] Linking CXX shared module bin/plugins/GreaseMonkey.so
+[1112/1126] Building CXX object src/plugins/KDEFrameworksIntegration/CMakeFiles/KDEFrameworksIntegration.dir/downloadkjob.cpp.o
+[1113/1126] Building CXX object src/plugins/TabManager/CMakeFiles/TabManager.dir/tabmanagerwidget.cpp.o
+[1114/1126] Linking CXX shared module bin/plugins/PIM.so
+[1115/1126] Linking CXX shared module bin/plugins/MouseGestures.so
+[1116/1126] Linking CXX shared module bin/plugins/GnomeKeyringPasswords.so
+[1117/1126] Building CXX object src/plugins/KDEFrameworksIntegration/CMakeFiles/KDEFrameworksIntegration.dir/KDEFrameworksIntegration_autogen/mocs_compilation.cpp.o
+[1118/1126] Linking CXX executable bin/falkon
+[1119/1126] Linking CXX shared module bin/plugins/StatusBarIcons.so
+[1120/1126] Linking CXX shared module bin/plugins/VerticalTabs.so
+[1121/1126] Building CXX object src/plugins/KDEFrameworksIntegration/CMakeFiles/KDEFrameworksIntegration.dir/kioschemehandler.cpp.o
+[1122/1126] Building CXX object src/plugins/KDEFrameworksIntegration/CMakeFiles/KDEFrameworksIntegration.dir/ECMQmLoader-falkon_kdeframeworksintegration_qt.cpp.o
+[1123/1126] Linking CXX shared module bin/plugins/TabManager.so
+[1124/1126] Building CXX object src/plugins/KDEFrameworksIntegration/CMakeFiles/KDEFrameworksIntegration.dir/kdeframeworksintegrationplugin.cpp.o
+[1125/1126] Building CXX object src/plugins/KDEFrameworksIntegration/CMakeFiles/KDEFrameworksIntegration.dir/kwalletpasswordbackend.cpp.o
+[1126/1126] Linking CXX shared module bin/plugins/KDEFrameworksIntegration.so

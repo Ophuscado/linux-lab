@@ -1,0 +1,34 @@
+The Meson build system
+Version: 1.11.2
+Source dir: /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/ts-023621/src
+Build dir: /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/ts-023621/src/build
+Build type: native build
+Project name: mesa
+Project version: 26.3.0-devel
+C compiler for the host machine: /usr/bin/ccache cc (gcc 16.2.1 "cc (GCC) 16.2.1 20260819 (Red Hat 16.2.1-2)")
+C linker for the host machine: cc ld.bfd 2.46.1-1
+C++ compiler for the host machine: /usr/bin/ccache c++ (gcc 16.2.1 "c++ (GCC) 16.2.1 20260819 (Red Hat 16.2.1-2)")
+C++ linker for the host machine: c++ ld.bfd 2.46.1-1
+Host machine cpu family: aarch64
+Host machine cpu: aarch64
+Checking for size of "void*" : 8 
+Checking if "-mtls-dialect=gnu2" runs: DID NOT COMPILE
+Checking if "-mtls-dialect=desc" runs: YES
+Dependency libglvnd for host machine skipped: feature glvnd disabled
+Program glslangValidator found: YES (/usr/bin/glslangValidator)
+Found pkg-config: YES (/usr/bin/pkg-config) 2.5.1
+Run-time dependency libdrm found: YES 2.4.134
+Dependency libva for host machine skipped: feature gallium-va disabled
+Program python3.16 found: NO
+Program python3.15 found: NO
+Program python3.14 found: YES 3.14.8 3.14.8 (/home/ophuscado/.pyvenv/bin/python3.14)
+Program python3.13 found: NO
+Program python3.12 found: NO
+Program python3.11 found: NO
+Program python3.10 found: NO
+Program python3 found: YES 3.14.8 3.14.8 (/home/ophuscado/.pyvenv/bin/python3)
+Program python found: YES 3.14.8 3.14.8 (/home/ophuscado/.pyvenv/bin/python)
+
+meson.build:1227:2: ERROR: Problem encountered: Python (3.x) mako module >= 0.8.0 required to build mesa.
+
+A full log can be found at /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/ts-023621/src/build/meson-logs/meson-log.txt

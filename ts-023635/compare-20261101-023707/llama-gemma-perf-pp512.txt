@@ -1,0 +1,158 @@
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Apple M2 Ultra (G14D B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat
+ggml_vulkan: shader core count 152 (GGML_VK_SHADER_CORES)
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=2 rm_kq=2 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+| model                          |       size |     params | backend    | ngl | n_ubatch |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | -------: | --: | --------------: | -------------------: |
+----------------
+Vulkan Timings:
+FLASH_ATTN_EXT dst(256,16,512,1),  q(256,512,16,1),  k(256,512,8,1),  v(256,512,8,1),  m(512,512,1,1): 25 x 837.556 us = 20938.9 us (5127.97 GFLOPS/s)
+FLASH_ATTN_EXT dst(512,16,512,1),  q(512,512,16,1),  k(512,512,2,1),  v(512,512,2,1),  m(512,512,1,1): 5 x 6409.05 us = 32045.2 us (1340.28 GFLOPS/s)
+GET_ROWS: 32 x 47.878 us = 1532.12 us
+GLU: 60 x 66.167 us = 3970.04 us
+MUL: 90 x 173.26 us = 15593.4 us
+MULTI_ADD ADD: 30 x 134.873 us = 4046.21 us
+MUL_MAT f32 m=128 n=512 k=2816: 29 x 284.068 us = 8238 us (1299.1 GFLOPS/s)
+MUL_MAT q8_0 m=1024 n=512 k=2816: 5 x 385.791 us = 1928.96 us (7652.49 GFLOPS/s)
+MUL_MAT q8_0 m=2048 n=512 k=2816: 50 x 21143.7 us = 1.05719e+06 us (279.257 GFLOPS/s)
+MUL_MAT q8_0 m=2112 n=512 k=2816: 58 x 947.618 us = 54961.9 us (6425.63 GFLOPS/s)
+MUL_MAT q8_0 m=2816 n=512 k=2112: 29 x 49146.6 us = 1.42525e+06 us (123.888 GFLOPS/s)
+MUL_MAT q8_0 m=2816 n=512 k=4096: 25 x 15493.2 us = 387329 us (762.253 GFLOPS/s)
+MUL_MAT q8_0 m=2816 n=512 k=8192: 5 x 2938.94 us = 14694.7 us (8037.21 GFLOPS/s)
+MUL_MAT q8_0 m=4096 n=512 k=2816: 25 x 2610.98 us = 65274.5 us (4522.84 GFLOPS/s)
+MUL_MAT q8_0 m=8192 n=512 k=2816: 5 x 2235.28 us = 11176.4 us (10566.1 GFLOPS/s)
+MUL_MAT_ID q4_K m=1408 n=8 k=2816 n_expert=128 batch=512: 29 x 7803.81 us = 226311 us (4161.42 GFLOPS/s)
+MUL_MAT_ID q5_1 m=2816 n=8 k=704 n_expert=128 batch=512: 29 x 3435.72 us = 99635.9 us (4723.55 GFLOPS/s)
+MUL_MAT_ID_MUL MUL_MAT_ID_VEC q8_0 m=2816 n=8 k=704 n_expert=128: 1 x 72.917 us = 72.917 us (434.698 GFLOPS/s)
+MUL_MAT_ID_VEC q5_K m=1408 n=8 k=2816 n_expert=128: 1 x 142.625 us = 142.625 us (444.716 GFLOPS/s)
+MUL_MAT_VEC f32 m=128 n=1 k=2816: 1 x 39.083 us = 39.083 us (18.442 GFLOPS/s)
+MUL_MAT_VEC q8_0 m=2112 n=1 k=2816: 2 x 50.458 us = 100.917 us (235.692 GFLOPS/s)
+MUL_MAT_VEC q8_0 m=262144 n=1 k=2816: 1 x 1382.75 us = 1382.75 us (1067.53 GFLOPS/s)
+MUL_MAT_VEC q8_0 m=2816 n=1 k=2112: 1 x 42.709 us = 42.709 us (278.442 GFLOPS/s)
+REPEAT: 30 x 51.674 us = 1550.25 us
+RMS_NORM(2816,1,1,1): 1 x 43.875 us = 43.875 us
+RMS_NORM(2816,512,1,1): 29 x 109.247 us = 3168.17 us
+RMS_NORM_MUL RMS_NORM(2816,1,1,1): 4 x 55.229 us = 220.916 us
+RMS_NORM_MUL RMS_NORM(2816,512,1,1): 117 x 124.81 us = 14602.8 us
+RMS_NORM_MUL_ADD RMS_NORM(2816,1,1,1): 2 x 53.791 us = 107.583 us
+RMS_NORM_MUL_ADD RMS_NORM(2816,512,1,1): 58 x 139.119 us = 8068.92 us
+RMS_NORM_MUL_ADD_MUL RMS_NORM(2816,1,1,1): 1 x 65.958 us = 65.958 us
+RMS_NORM_MUL_ADD_MUL RMS_NORM(2816,512,1,1): 29 x 147.767 us = 4285.25 us
+RMS_NORM_MUL_ROPE RMS_NORM(256,16,512,1): 25 x 479.205 us = 11980.1 us
+RMS_NORM_MUL_ROPE RMS_NORM(512,16,512,1): 5 x 530.483 us = 2652.42 us
+RMS_NORM_MUL_ROPE_VIEW_SET_ROWS RMS_NORM(256,8,512,1): 25 x 266.353 us = 6658.83 us
+RMS_NORM_MUL_ROPE_VIEW_SET_ROWS RMS_NORM(512,2,512,1): 5 x 125.533 us = 627.666 us
+RMS_NORM_VIEW_SET_ROWS RMS_NORM(256,8,512,1): 25 x 214.293 us = 5357.33 us
+RMS_NORM_VIEW_SET_ROWS RMS_NORM(512,2,512,1): 5 x 102.725 us = 513.625 us
+SCALE: 32 x 53.16 us = 1701.12 us
+TANH: 1 x 36.167 us = 36.167 us
+TOPK_MOE_EARLY_SOFTMAX_NORM SOFT_MAX: 30 x 51.954 us = 1558.63 us
+Total time: 3.49509e+06 us.
+----------------
+Vulkan Timings:
+FLASH_ATTN_EXT dst(256,16,512,1),  q(256,512,16,1),  k(256,512,8,1),  v(256,512,8,1),  m(512,512,1,1): 25 x 847.436 us = 21185.9 us (5068.19 GFLOPS/s)
+FLASH_ATTN_EXT dst(512,16,512,1),  q(512,512,16,1),  k(512,512,2,1),  v(512,512,2,1),  m(512,512,1,1): 5 x 6370.31 us = 31851.5 us (1348.43 GFLOPS/s)
+GET_ROWS: 32 x 47.334 us = 1514.71 us
+GLU: 60 x 66.583 us = 3995 us
+MUL: 90 x 173.121 us = 15581 us
+MULTI_ADD ADD: 30 x 133.599 us = 4008 us
+MUL_MAT f32 m=128 n=512 k=2816: 29 x 281.695 us = 8169.16 us (1310.04 GFLOPS/s)
+MUL_MAT q8_0 m=1024 n=512 k=2816: 5 x 373.25 us = 1866.25 us (7909.62 GFLOPS/s)
+MUL_MAT q8_0 m=2048 n=512 k=2816: 50 x 649.798 us = 32489.9 us (9086.71 GFLOPS/s)
+MUL_MAT q8_0 m=2112 n=512 k=2816: 58 x 945.019 us = 54811.1 us (6443.3 GFLOPS/s)
+MUL_MAT q8_0 m=2816 n=512 k=2112: 29 x 691.787 us = 20061.8 us (8801.39 GFLOPS/s)
+MUL_MAT q8_0 m=2816 n=512 k=4096: 25 x 1270.57 us = 31764.1 us (9294.86 GFLOPS/s)
+MUL_MAT q8_0 m=2816 n=512 k=8192: 5 x 2233.84 us = 11169.2 us (10574.1 GFLOPS/s)
+MUL_MAT q8_0 m=4096 n=512 k=2816: 25 x 1104.62 us = 27615.6 us (10690.6 GFLOPS/s)
+MUL_MAT q8_0 m=8192 n=512 k=2816: 5 x 2128.53 us = 10642.7 us (11096 GFLOPS/s)
+MUL_MAT_ID q4_K m=1408 n=8 k=2816 n_expert=128 batch=512: 29 x 7744.34 us = 224586 us (4193.37 GFLOPS/s)
+MUL_MAT_ID q5_1 m=2816 n=8 k=704 n_expert=128 batch=512: 29 x 3432.64 us = 99546.5 us (4727.8 GFLOPS/s)
+MUL_MAT_ID_MUL MUL_MAT_ID_VEC q8_0 m=2816 n=8 k=704 n_expert=128: 1 x 88.584 us = 88.584 us (357.817 GFLOPS/s)
+MUL_MAT_ID_VEC q5_K m=1408 n=8 k=2816 n_expert=128: 1 x 151.959 us = 151.959 us (417.399 GFLOPS/s)
+MUL_MAT_VEC f32 m=128 n=1 k=2816: 1 x 38.209 us = 38.209 us (18.8638 GFLOPS/s)
+MUL_MAT_VEC q8_0 m=2112 n=1 k=2816: 2 x 51.875 us = 103.75 us (229.256 GFLOPS/s)
+MUL_MAT_VEC q8_0 m=262144 n=1 k=2816: 1 x 1376.12 us = 1376.12 us (1072.67 GFLOPS/s)
+MUL_MAT_VEC q8_0 m=2816 n=1 k=2112: 1 x 45.75 us = 45.75 us (259.934 GFLOPS/s)
+REPEAT: 30 x 49.59 us = 1487.71 us
+RMS_NORM(2816,1,1,1): 1 x 46.917 us = 46.917 us
+RMS_NORM(2816,512,1,1): 29 x 109.123 us = 3164.58 us
+RMS_NORM_MUL RMS_NORM(2816,1,1,1): 4 x 49.26 us = 197.042 us
+RMS_NORM_MUL RMS_NORM(2816,512,1,1): 117 x 123.149 us = 14408.5 us
+RMS_NORM_MUL_ADD RMS_NORM(2816,1,1,1): 2 x 51.124 us = 102.249 us
+RMS_NORM_MUL_ADD RMS_NORM(2816,512,1,1): 58 x 137.681 us = 7985.55 us
+RMS_NORM_MUL_ADD_MUL RMS_NORM(2816,1,1,1): 1 x 52.25 us = 52.25 us
+RMS_NORM_MUL_ADD_MUL RMS_NORM(2816,512,1,1): 29 x 147.067 us = 4264.96 us
+RMS_NORM_MUL_ROPE RMS_NORM(256,16,512,1): 25 x 472.391 us = 11809.8 us
+RMS_NORM_MUL_ROPE RMS_NORM(512,16,512,1): 5 x 507.391 us = 2536.96 us
+RMS_NORM_MUL_ROPE_VIEW_SET_ROWS RMS_NORM(256,8,512,1): 25 x 264.144 us = 6603.62 us
+RMS_NORM_MUL_ROPE_VIEW_SET_ROWS RMS_NORM(512,2,512,1): 5 x 122.583 us = 612.916 us
+RMS_NORM_VIEW_SET_ROWS RMS_NORM(256,8,512,1): 25 x 212.833 us = 5320.83 us
+RMS_NORM_VIEW_SET_ROWS RMS_NORM(512,2,512,1): 5 x 102.425 us = 512.126 us
+SCALE: 32 x 54.205 us = 1734.58 us
+TANH: 1 x 30.083 us = 30.083 us
+TOPK_MOE_EARLY_SOFTMAX_NORM SOFT_MAX: 30 x 50.931 us = 1527.96 us
+Total time: 665061 us.
+| gemma4 26B.A4B Q4_K - Medium   |  15.83 GiB |    25.23 B | Vulkan     |  99 |     2048 |   1 |           pp512 |        765.58 ± 0.00 |
+
+build: a1d9c37 (342)

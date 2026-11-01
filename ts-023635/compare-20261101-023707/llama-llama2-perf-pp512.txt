@@ -1,0 +1,74 @@
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Apple M2 Ultra (G14D B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat
+ggml_vulkan: shader core count 152 (GGML_VK_SHADER_CORES)
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+ggml_vulkan: tuning overrides: rm_stdq=1 rm_kq=1 dmmv_wg=large int_dot=0
+ggml_vulkan: q4_0 and q8_0 matrix-vector: mul_mat_vec_simd
+| model                          |       size |     params | backend    | ngl | n_ubatch |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | -------: | --: | --------------: | -------------------: |
+----------------
+Vulkan Timings:
+ADD: 63 x 83.978 us = 5290.62 us
+FLASH_ATTN_EXT dst(128,32,512,1),  q(128,512,32,1),  k(128,512,32,1),  v(128,512,32,1),  m(512,512,1,1): 32 x 585.199 us = 18726.4 us (7339.33 GFLOPS/s)
+GET_ROWS: 2 x 42.687 us = 85.375 us
+GLU: 32 x 144.06 us = 4609.92 us
+MUL_MAT q4_0 m=11008 n=512 k=4096: 62 x 4460.92 us = 276577 us (10348.8 GFLOPS/s)
+MUL_MAT q4_0 m=4096 n=512 k=11008: 31 x 4135.98 us = 128215 us (11162.7 GFLOPS/s)
+MUL_MAT q4_0 m=4096 n=512 k=4096: 128 x 3362.11 us = 430350 us (5109.22 GFLOPS/s)
+MUL_MAT_ADD MUL_MAT_VEC q4_0 m=4096 n=1 k=11008: 1 x 90.75 us = 90.75 us (993.647 GFLOPS/s)
+MUL_MAT_VEC q4_0 m=11008 n=1 k=4096: 2 x 95.125 us = 190.25 us (947.874 GFLOPS/s)
+MUL_MAT_VEC q6_K m=32000 n=1 k=4096: 1 x 324.208 us = 324.208 us (808.469 GFLOPS/s)
+RMS_NORM_MUL RMS_NORM(4096,1,1,1): 2 x 55.646 us = 111.292 us
+RMS_NORM_MUL RMS_NORM(4096,512,1,1): 63 x 142.005 us = 8946.33 us
+ROPE: 32 x 116.484 us = 3727.5 us
+ROPE_VIEW_SET_ROWS ROPE: 32 x 104.467 us = 3342.96 us
+SET_ROWS: 32 x 68.066 us = 2178.12 us
+Total time: 882766 us.
+----------------
+Vulkan Timings:
+ADD: 63 x 84.139 us = 5300.79 us
+FLASH_ATTN_EXT dst(128,32,512,1),  q(128,512,32,1),  k(128,512,32,1),  v(128,512,32,1),  m(512,512,1,1): 32 x 587.136 us = 18788.4 us (7315.11 GFLOPS/s)
+GET_ROWS: 2 x 36.479 us = 72.958 us
+GLU: 32 x 140.954 us = 4510.54 us
+MUL_MAT q4_0 m=11008 n=512 k=4096: 62 x 4462.17 us = 276655 us (10345.9 GFLOPS/s)
+MUL_MAT q4_0 m=4096 n=512 k=11008: 31 x 4075 us = 126325 us (11329.8 GFLOPS/s)
+MUL_MAT q4_0 m=4096 n=512 k=4096: 128 x 1541.01 us = 197249 us (11147.1 GFLOPS/s)
+MUL_MAT_ADD MUL_MAT_VEC q4_0 m=4096 n=1 k=11008: 1 x 90.5 us = 90.5 us (996.392 GFLOPS/s)
+MUL_MAT_VEC q4_0 m=11008 n=1 k=4096: 2 x 101.521 us = 203.042 us (888.156 GFLOPS/s)
+MUL_MAT_VEC q6_K m=32000 n=1 k=4096: 1 x 329.209 us = 329.209 us (796.187 GFLOPS/s)
+RMS_NORM_MUL RMS_NORM(4096,1,1,1): 2 x 45.666 us = 91.333 us
+RMS_NORM_MUL RMS_NORM(4096,512,1,1): 63 x 142.589 us = 8983.17 us
+ROPE: 32 x 115.143 us = 3684.59 us
+ROPE_VIEW_SET_ROWS ROPE: 32 x 103.983 us = 3327.46 us
+SET_ROWS: 32 x 69.562 us = 2226 us
+Total time: 647837 us.
+| llama 7B Q4_0                  |   3.56 GiB |     6.74 B | Vulkan     |  99 |     2048 |   1 |           pp512 |        787.19 ± 0.00 |
+
+build: a1d9c37 (342)

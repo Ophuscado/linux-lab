@@ -1,0 +1,79 @@
+From c428a2584c557ff2a97099ed973eb29cc6e7e229 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Sat, 31 Oct 2026 22:18:15 +0000
+Subject: [PATCH] Dialog: round the window size up from the item and margins
+
+syncToMainItemSize truncated the item's size and the margins' sum before adding them, while resizeEvent gives the item the window minus the unrounded margins, so each sync could take a pixel off the item: KWin's Thumbnail Grid switcher lost a column after a window was closed from it.
+---
+ src/plasmaquick/dialog.cpp | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
+
+diff --git a/src/plasmaquick/dialog.cpp b/src/plasmaquick/dialog.cpp
+index 1fd137d..b3b4fae 100644
+--- a/src/plasmaquick/dialog.cpp
++++ b/src/plasmaquick/dialog.cpp
+@@ -23,6 +23,7 @@
+ #include <QPointer>
+ #include <QQuickItem>
+ #include <QScreen>
++#include <QtMath>
+ 
+ #include <KWindowInfo>
+ #include <KWindowSystem>
+@@ -117,6 +118,7 @@ public:
+     void slotWindowPositionChanged();
+ 
+     void syncToMainItemSize();
++    QSize windowSizeFor(const QSizeF &itemSize) const;
+ 
+     bool mainItemContainsPosition(const QPointF &point) const;
+     QPointF positionAdjustedForMainItem(const QPointF &point) const;
+@@ -608,6 +610,14 @@ void DialogPrivate::repositionIfOffScreen()
+     q->setY(y);
+ }
+ 
++// Rounded up, so that the window minus the margins, as resizeEvent and updateLayoutParameters
++// give it back, is never smaller than the item: truncating here shrank the item a pixel at a time.
++QSize DialogPrivate::windowSizeFor(const QSizeF &itemSize) const
++{
++    return QSize(qCeil(itemSize.width() + dialogBackground->leftMargin() + dialogBackground->rightMargin()),
++                 qCeil(itemSize.height() + dialogBackground->topMargin() + dialogBackground->bottomMargin()));
++}
++
+ void DialogPrivate::syncToMainItemSize()
+ {
+     Q_ASSERT(mainItem);
+@@ -622,8 +632,7 @@ void DialogPrivate::syncToMainItemSize()
+ 
+     updateTheme();
+     if (visualParent) {
+-        const QSize fullSize = QSize(mainItem->width(), mainItem->height())
+-            + QSize(dialogBackground->leftMargin() + dialogBackground->rightMargin(), dialogBackground->topMargin() + dialogBackground->bottomMargin());
++        const QSize fullSize = windowSizeFor(mainItem->size());
+ 
+         // We get the popup position with the fullsize as we need the popup
+         // position in order to determine our actual size, as the position
+@@ -638,8 +647,7 @@ void DialogPrivate::syncToMainItemSize()
+         syncBorders(q->geometry());
+     }
+ 
+-    QSize s = QSize(mainItem->width(), mainItem->height())
+-        + QSize(dialogBackground->leftMargin() + dialogBackground->rightMargin(), dialogBackground->topMargin() + dialogBackground->bottomMargin());
++    QSize s = windowSizeFor(mainItem->size());
+ 
+     QSize min;
+     QSize max(DIALOGSIZE_MAX, DIALOGSIZE_MAX);
+@@ -1291,8 +1299,8 @@ void Dialog::resizeEvent(QResizeEvent *re)
+     d->dialogBackground->setSize(QSizeF(re->size().width(), re->size().height()));
+     d->mainItem->setPosition(QPointF(d->dialogBackground->leftMargin(), d->dialogBackground->topMargin()));
+ 
+-    d->mainItem->setSize(QSize(re->size().width() - d->dialogBackground->leftMargin() - d->dialogBackground->rightMargin(),
+-                               re->size().height() - d->dialogBackground->topMargin() - d->dialogBackground->bottomMargin()));
++    d->mainItem->setSize(QSizeF(re->size().width() - d->dialogBackground->leftMargin() - d->dialogBackground->rightMargin(),
++                                re->size().height() - d->dialogBackground->topMargin() - d->dialogBackground->bottomMargin()));
+ 
+     d->updateTheme();
+ 
+-- 
+2.43.0
+

@@ -1,0 +1,486 @@
+ninja: Entering directory `b'
+[0/2] Re-checking globbed directories...
+[1/485] Generating wayland-ext-background-effect-v1-protocol.c
+[2/485] Generating wayland-ext-background-effect-v1-client-protocol.h
+[3/485] Generating qwayland-ext-background-effect-v1.h
+[4/485] Generating qwayland-ext-background-effect-v1.cpp
+[5/485] Copying org_kde_plasmacomponents3 qml resources into build dir
+[6/485] Copying plasmaconfigplugin qml sources into build dir
+[7/485] Copying plasmoidplugin qml resources into build dir
+[8/485] Gzipping default/widgets/actionbutton.svgz
+[9/485] Gzipping default/widgets/action-overlays.svgz
+[10/485] Gzipping default/widgets/arrows.svgz
+[11/485] Gzipping default/widgets/analog_meter.svgz
+[12/485] Copying corebindingsplugin qml sources into build dir
+[13/485] Copying plasmaextracomponentsplugin qml resources into build dir
+[14/485] Copying plasmaconfigplugin qml resources into build dir
+[15/485] Gzipping default/widgets/background.svgz
+[16/485] Gzipping default/widgets/bar_meter_horizontal.svgz
+[17/485] Copying corebindingsplugin qml resources into build dir
+[18/485] Copying plasmoidplugin qml sources into build dir
+[19/485] Gzipping default/widgets/branding.svgz
+[20/485] Copying plasmaextracomponentsplugin qml sources into build dir
+[21/485] Generating ts...
+[22/485] Gzipping default/widgets/bar_meter_vertical.svgz
+[23/485] Gzipping default/widgets/busywidget.svgz
+[24/485] Gzipping default/widgets/calendar.svgz
+[25/485] Gzipping default/widgets/button.svgz
+[26/485] Gzipping default/widgets/checkmarks.svgz
+[27/485] Gzipping default/widgets/configuration-icons.svgz
+[28/485] Gzipping default/widgets/containment-controls.svgz
+[29/485] Gzipping default/widgets/dragger.svgz
+[30/485] Gzipping default/widgets/frame.svgz
+[31/485] Gzipping default/widgets/glowbar.svgz
+[32/485] Gzipping default/widgets/clock.svgz
+[33/485] Gzipping default/widgets/lineedit.svgz
+[34/485] Copying org_kde_plasmacomponents3 qml sources into build dir
+[35/485] Gzipping default/widgets/line.svgz
+[36/485] Gzipping default/widgets/margins-highlight.svgz
+[37/485] Gzipping default/widgets/media-delegate.svgz
+[38/485] Gzipping default/widgets/menubaritem.svgz
+[39/485] Gzipping default/widgets/listitem.svgz
+[40/485] Gzipping default/widgets/panel-background.svgz
+[41/485] Gzipping default/widgets/picker.svgz
+[42/485] Gzipping default/widgets/plot-background.svgz
+[43/485] Populating .qmlls.ini file at /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224615/libplasma/b/.qt/.qmlls.build.ini
+[44/485] Gzipping default/widgets/notes.svgz
+[45/485] Gzipping default/widgets/plasmoidheading.svgz
+[46/485] Gzipping default/widgets/radiobutton.svgz
+[47/485] Gzipping default/widgets/switch.svgz
+[48/485] Gzipping default/widgets/pager.svgz
+[49/485] Gzipping default/widgets/slider.svgz
+[50/485] Gzipping default/widgets/scrollbar.svgz
+[51/485] Gzipping default/widgets/tabbar.svgz
+[52/485] Gzipping default/widgets/scrollwidget.svgz
+[53/485] Gzipping default/widgets/toolbar.svgz
+[54/485] Gzipping default/widgets/tooltip.svgz
+[55/485] Gzipping default/dialogs/background.svgz
+[56/485] Gzipping default/widgets/tasks.svgz
+[57/485] Gzipping default/widgets/translucentbackground.svgz
+[58/485] Gzipping default/widgets/viewitem.svgz
+[59/485] Gzipping default/opaque/dialogs/background.svgz
+[60/485] Gzipping default/opaque/widgets/tooltip.svgz
+[61/485] Gzipping default/translucent/widgets/panel-background.svgz
+[62/485] Gzipping default/opaque/widgets/panel-background.svgz
+[63/485] Gzipping default/translucent/widgets/tooltip.svgz
+[64/485] Gzipping default/translucent/widgets/background.svgz
+[65/485] Gzipping default/translucent/dialogs/background.svgz
+[66/485] Gzipping default/solid/dialogs/background.svgz
+[67/485] Gzipping default/solid/widgets/tooltip.svgz
+[68/485] Gzipping default/icons/akonadi.svgz
+[69/485] Gzipping default/solid/widgets/background.svgz
+[70/485] Gzipping default/icons/applications.svgz
+[71/485] Gzipping default/icons/akregator.svgz
+[72/485] Gzipping default/icons/amarok.svgz
+[73/485] Gzipping default/icons/apport.svgz
+[74/485] Gzipping default/icons/cantata.svgz
+[75/485] Gzipping default/solid/widgets/panel-background.svgz
+[76/485] Gzipping default/icons/audio.svgz
+[77/485] Gzipping default/icons/bookmarks.svgz
+[78/485] Gzipping default/icons/computer.svgz
+[79/485] Gzipping default/icons/battery.svgz
+[80/485] Gzipping default/icons/device.svgz
+[81/485] Gzipping default/icons/configure.svgz
+[82/485] Gzipping default/icons/disk.svgz
+[83/485] Gzipping default/icons/distribute.svgz
+[84/485] Gzipping default/icons/edit.svgz
+[85/485] Gzipping default/icons/drive.svgz
+[86/485] Gzipping default/icons/go.svgz
+[87/485] Gzipping default/icons/input.svgz
+[88/485] Gzipping default/icons/kalarm.svgz
+[89/485] Gzipping default/icons/document.svgz
+[90/485] Gzipping default/icons/keyboard.svgz
+[91/485] Gzipping default/icons/kget.svgz
+[92/485] Gzipping default/icons/kgpg.svgz
+[93/485] Gzipping default/icons/kleopatra.svgz
+[94/485] Gzipping default/icons/fcitx.svgz
+[95/485] Gzipping default/icons/ime.svgz
+[96/485] Gzipping default/icons/kmail.svgz
+[97/485] Gzipping default/icons/konversation.svgz
+[98/485] Gzipping default/icons/kdeconnect.svgz
+[99/485] Gzipping default/icons/klipper.svgz
+[100/485] Gzipping default/icons/konv_message.svgz
+[101/485] Gzipping default/icons/kopete.svgz
+[102/485] Gzipping default/icons/korgac.svgz
+[103/485] Gzipping default/icons/kpackagekit.svgz
+[104/485] Gzipping default/icons/kruler.svgz
+[105/485] Gzipping default/icons/kteatime.svgz
+[106/485] Gzipping default/icons/ktorrent.svgz
+[107/485] Gzipping default/icons/kup.svgz
+[108/485] Gzipping default/icons/list.svgz
+[109/485] Gzipping default/icons/mail.svgz
+[110/485] Gzipping default/icons/media.svgz
+[111/485] Gzipping default/icons/mobile.svgz
+[112/485] Gzipping default/icons/notification.svgz
+[113/485] Gzipping default/icons/osd.svgz
+[114/485] Gzipping default/icons/phone.svgz
+[115/485] Gzipping default/icons/plasmavault.svgz
+[116/485] Gzipping default/icons/plasmavault_error.svgz
+[117/485] Gzipping default/icons/network.svgz
+[118/485] Gzipping default/icons/printer.svgz
+[119/485] Gzipping default/icons/quassel.svgz
+[120/485] Gzipping default/icons/search.svgz
+[121/485] Gzipping default/icons/slc.svgz
+[122/485] Gzipping default/icons/preferences.svgz
+[123/485] Gzipping default/icons/software.svgz
+[124/485] Gzipping default/icons/touchpad.svgz
+[125/485] Gzipping default/icons/video-card.svgz
+[126/485] Gzipping default/icons/start.svgz
+[127/485] Gzipping default/icons/user.svgz
+[128/485] Gzipping default/icons/video.svgz
+[129/485] Gzipping default/icons/view.svgz
+[130/485] Gzipping default/icons/vlc.svgz
+[131/485] Gzipping default/icons/wallet.svgz
+[132/485] Gzipping default/icons/system.svgz
+[133/485] Gzipping default/icons/window.svgz
+[134/485] Gzipping default/icons/yakuake.svgz
+[135/485] Gzipping default/icons/zoom.svgz
+[136/485] Generating ../share/kdevappwizard/templates/plasma6-wallpaper.tar.bz2
+[137/485] Gzipping default/widgets/monitor.svgz
+[138/485] Generating ../share/kdevappwizard/templates/plasma6-wallpaper-with-qml-extension.tar.bz2
+[139/485] Generating ../share/kdevappwizard/templates/cpp-plasmoid6.tar.bz2
+[140/485] Generating ../share/kdevappwizard/templates/qml-plasmoid6.tar.bz2
+[141/485] Generating mo...
+[142/485] Automatic MOC for target plasma_wallpaper
+[143/485] Automatic MOC for target plasma_shell
+[144/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_wallpaper.dir/plasma_wallpaper_autogen/mocs_compilation.cpp.o
+[145/485] Automatic MOC for target org_kde_plasmacomponents3
+[146/485] Running AUTOMOC file extraction for target org_kde_plasmacomponents3
+[147/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_shell.dir/plasma_shell_autogen/mocs_compilation.cpp.o
+[148/485] Running rcc for resource qmake_org_kde_plasma_components
+[149/485] Running rcc for resource org_kde_plasmacomponents3_raw_res_2
+[150/485] Running moc --collect-json for target org_kde_plasmacomponents3
+[151/485] Running rcc for resource org_kde_plasmacomponents3_raw_qml_1
+[152/485] Running rcc for resource org_kde_plasmacomponents3_raw_qml_3
+[153/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_qmlcache_loader.cpp
+[154/485] Automatic MOC for target Plasma
+[155/485] Running AUTOMOC file extraction for target Plasma
+[156/485] Running rcc for resource org_kde_plasmacomponents3_raw_qml_0
+[157/485] Running moc --collect-json for target Plasma
+[158/485] Automatic QML type registration for target org_kde_plasmacomponents3
+[159/485] Building C object src/plasma/CMakeFiles/Plasma.dir/wayland-ext-background-effect-v1-protocol.c.o
+[160/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/qwayland-ext-background-effect-v1.cpp.o
+[161/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_AbstractButton_qml.cpp
+[162/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_BusyIndicator_qml.cpp
+[163/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Button_qml.cpp
+[164/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/debug_p.cpp.o
+[165/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/Plasma_autogen/mocs_compilation.cpp.o
+[166/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_CheckBox_qml.cpp
+[167/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_CheckDelegate_qml.cpp
+[168/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_CheckIndicator_qml.cpp
+[169/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/private/blureffectwatcher.cpp.o
+[170/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ComboBox_qml.cpp
+[171/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Container_qml.cpp
+[172/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Control_qml.cpp
+[173/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Dial_qml.cpp
+[174/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_wallpaper.dir/qmlWallpaper/wallpaper.cpp.o
+[175/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Dialog_qml.cpp
+[176/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Drawer_qml.cpp
+[177/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_shell.dir/shell/shellpackage.cpp.o
+[178/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Frame_qml.cpp
+[179/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_DialogButtonBox_qml.cpp
+[180/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_GroupBox_qml.cpp
+[181/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ItemDelegate_qml.cpp
+[182/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Label_qml.cpp
+[183/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/containmentactions.cpp.o
+[184/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_MenuSeparator_qml.cpp
+[185/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Page_qml.cpp
+[186/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_MenuItem_qml.cpp
+[187/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Menu_qml.cpp
+[188/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Pane_qml.cpp
+[189/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_PageIndicator_qml.cpp
+[190/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/plasma.cpp.o
+[191/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Popup_qml.cpp
+[192/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ProgressBar_qml.cpp
+[193/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_RadioDelegate_qml.cpp
+[194/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_RadioButton_qml.cpp
+[195/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_RadioIndicator_qml.cpp
+[196/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_RangeSlider_qml.cpp
+[197/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_RoundButton_qml.cpp
+[198/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ScrollBar_qml.cpp
+[199/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ScrollView_qml.cpp
+[200/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Slider_qml.cpp
+[201/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_StackView_qml.cpp
+[202/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_SwipeView_qml.cpp
+[203/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_SpinBox_qml.cpp
+[204/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Switch_qml.cpp
+[205/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_SwitchIndicator_qml.cpp
+[206/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_SwitchDelegate_qml.cpp
+[207/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_TabBar_qml.cpp
+[208/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_TabButton_qml.cpp
+[209/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_mobiletextselection_MobileCursor_qml.cpp
+[210/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ToolBar_qml.cpp
+[211/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_TextArea_qml.cpp
+[212/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_TextField_qml.cpp
+[213/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ToolTip_qml.cpp
+[214/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ToolButton_qml.cpp
+[215/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_mobiletextselection_MobileTextActionsToolBar_qml.cpp
+[216/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/theme.cpp.o
+[217/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_ButtonHover_qml.cpp
+[218/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/private/containment_p.cpp.o
+[219/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_mobiletextselection_MobileTextActionsToolBarImpl_qml.cpp
+[220/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_ButtonFocus_qml.cpp
+[221/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_ButtonBackground_qml.cpp
+[222/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_ButtonShadow_qml.cpp
+[223/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_ButtonContent_qml.cpp
+[224/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_DefaultListItemBackground_qml.cpp
+[225/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_FlatButtonBackground_qml.cpp
+[226/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_IconLabel_qml.cpp
+[227/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_TextFieldFocus_qml.cpp
+[228/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_RaisedButtonBackground_qml.cpp
+[229/485] Generating .rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_RoundShadow_qml.cpp
+[230/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/org_kde_plasmacomponents3_autogen/mocs_compilation.cpp.o
+[231/485] Linking CXX shared module bin/kf6/packagestructure/plasma_shell.so
+[232/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.qt/rcc/qrc_qmake_org_kde_plasma_components.cpp.o
+[233/485] Linking CXX shared module bin/kf6/packagestructure/plasma_wallpaper.so
+[234/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/pluginloader.cpp.o
+[235/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/private/theme_p.cpp.o
+[236/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/private/applet_p.cpp.o
+[237/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/corona.cpp.o
+[238/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/applet.cpp.o
+[239/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/org_kde_plasmacomponents3_org_kde_plasma_componentsPlugin.cpp.o
+[240/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/org_kde_plasmacomponents3_qmltyperegistrations.cpp.o
+[241/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_AbstractButton_qml.cpp.o
+[242/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_BusyIndicator_qml.cpp.o
+[243/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_CheckIndicator_qml.cpp.o
+[244/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Container_qml.cpp.o
+[245/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_qmlcache_loader.cpp.o
+[246/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Control_qml.cpp.o
+[247/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_CheckDelegate_qml.cpp.o
+[248/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Button_qml.cpp.o
+[249/485] Building CXX object src/plasma/CMakeFiles/Plasma.dir/containment.cpp.o
+[250/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_CheckBox_qml.cpp.o
+[251/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Dial_qml.cpp.o
+[252/485] Linking CXX shared library bin/libPlasma.so.6.7.5
+[253/485] Creating library symlink bin/libPlasma.so.7 bin/libPlasma.so
+[254/485] Generating wayland-plasma-shell-client-protocol.h
+[255/485] Generating wayland-plasma-shell-protocol.c
+[256/485] Generating qwayland-plasma-shell.h
+[257/485] Generating qwayland-plasma-shell.cpp
+[258/485] Generating wayland-wayland-client-protocol.h
+[259/485] Generating wayland-wayland-protocol.c
+[260/485] Generating qwayland-wayland.h
+[261/485] Generating qwayland-wayland.cpp
+[262/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Frame_qml.cpp.o
+[263/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ComboBox_qml.cpp.o
+[264/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Label_qml.cpp.o
+[265/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Dialog_qml.cpp.o
+[266/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Drawer_qml.cpp.o
+[267/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_MenuSeparator_qml.cpp.o
+[268/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_GroupBox_qml.cpp.o
+[269/485] Automatic MOC for target KirigamiPlasmaStyle
+[270/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_DialogButtonBox_qml.cpp.o
+[271/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ItemDelegate_qml.cpp.o
+[272/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Page_qml.cpp.o
+[273/485] Automatic MOC for target plasma_packagestructure_static
+[274/485] Automatic MOC for target PlasmaQuick
+[275/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_packagestructure_static.dir/plasma_packagestructure_static_autogen/mocs_compilation.cpp.o
+[276/485] Running AUTOMOC file extraction for target PlasmaQuick
+[277/485] Running moc --collect-json for target PlasmaQuick
+[278/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/PlasmaQuick_autogen/mocs_compilation.cpp.o
+[279/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_PageIndicator_qml.cpp.o
+[280/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Menu_qml.cpp.o
+[281/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Pane_qml.cpp.o
+[282/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_MenuItem_qml.cpp.o
+[283/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Popup_qml.cpp.o
+[284/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ScrollView_qml.cpp.o
+[285/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ProgressBar_qml.cpp.o
+[286/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/debug_p.cpp.o
+[287/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/appletcontext.cpp.o
+[288/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_packagestructure_static.dir/packages.cpp.o
+[289/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_RadioDelegate_qml.cpp.o
+[290/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_RadioButton_qml.cpp.o
+[291/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_RangeSlider_qml.cpp.o
+[292/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_RoundButton_qml.cpp.o
+[293/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/appletpopup.cpp.o
+[294/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_RadioIndicator_qml.cpp.o
+[295/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ScrollBar_qml.cpp.o
+[296/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Slider_qml.cpp.o
+[297/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/dialogshadows.cpp.o
+[298/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/edgeeventforwarder.cpp.o
+[299/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/plasmashellwaylandintegration.cpp.o
+[300/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/dialog.cpp.o
+[301/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/configmodel.cpp.o
+[302/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/containmentview.cpp.o
+[303/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/utils.cpp.o
+[304/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/quickviewsharedengine.cpp.o
+[305/485] Building C object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/wayland-plasma-shell-protocol.c.o
+[306/485] Building C object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/wayland-wayland-protocol.c.o
+[307/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/sharedqmlengine.cpp.o
+[308/485] Linking CXX static library lib/libplasma_packagestructure_static.a
+[309/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/plasmawindow.cpp.o
+[310/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/appletquickitem.cpp.o
+[311/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/configcategory_p.cpp.o
+[312/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/transientplacementhint.cpp.o
+[313/485] Automatic MOC for target plasma_generic
+[314/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_generic.dir/plasma_generic_autogen/mocs_compilation.cpp.o
+[315/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/popupplasmawindow.cpp.o
+[316/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/windowresizehandler.cpp.o
+[317/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/configview.cpp.o
+[318/485] Automatic MOC for target plasma_applet
+[319/485] Automatic MOC for target plasma_containmentactions
+[320/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_applet.dir/plasma_applet_autogen/mocs_compilation.cpp.o
+[321/485] Automatic MOC for target plasma_theme
+[322/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_containmentactions.dir/plasma_containmentactions_autogen/mocs_compilation.cpp.o
+[323/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_theme.dir/plasma_theme_autogen/mocs_compilation.cpp.o
+[324/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/qwayland-plasma-shell.cpp.o
+[325/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/qwayland-wayland.cpp.o
+[326/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/dialogbackground_p.cpp.o
+[327/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_generic.dir/plasma_generic_packagestructure.cpp.o
+[328/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/plasmoid/dropmenu.cpp.o
+[329/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_containmentactions.dir/plasma_containmentactions_packagestructure.cpp.o
+[330/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_SwipeView_qml.cpp.o
+[331/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_StackView_qml.cpp.o
+[332/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_applet.dir/plasma_applet_packagestructure.cpp.o
+[333/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.qt/rcc/qrc_org_kde_plasmacomponents3_raw_qml_0.cpp.o
+[334/485] Building CXX object src/plasma/packagestructure/CMakeFiles/plasma_theme.dir/plasma_theme_packagestructure.cpp.o
+[335/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/plasmoid/plasmoiditem.cpp.o
+[336/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_SwitchDelegate_qml.cpp.o
+[337/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.qt/rcc/qrc_org_kde_plasmacomponents3_raw_qml_1.cpp.o
+[338/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_Switch_qml.cpp.o
+[339/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.qt/rcc/qrc_org_kde_plasmacomponents3_raw_res_2.cpp.o
+[340/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_TabBar_qml.cpp.o
+[341/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/plasmoid/wallpaperitem.cpp.o
+[342/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_SwitchIndicator_qml.cpp.o
+[343/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_SpinBox_qml.cpp.o
+[344/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ToolBar_qml.cpp.o
+[345/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_mobiletextselection_MobileTextActionsToolBar_qml.cpp.o
+[346/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_TabButton_qml.cpp.o
+[347/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_mobiletextselection_MobileCursor_qml.cpp.o
+[348/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_mobiletextselection_MobileTextActionsToolBarImpl_qml.cpp.o
+[349/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_TextArea_qml.cpp.o
+[350/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.qt/rcc/qrc_org_kde_plasmacomponents3_raw_qml_3.cpp.o
+[351/485] Building CXX object src/declarativeimports/kirigamiplasmastyle/CMakeFiles/KirigamiPlasmaStyle.dir/KirigamiPlasmaStyle_autogen/mocs_compilation.cpp.o
+[352/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ToolButton_qml.cpp.o
+[353/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_ToolTip_qml.cpp.o
+[354/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_ButtonFocus_qml.cpp.o
+[355/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_ButtonBackground_qml.cpp.o
+[356/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_ButtonHover_qml.cpp.o
+[357/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_ButtonShadow_qml.cpp.o
+[358/485] Linking CXX shared module bin/kf6/packagestructure/plasma_generic.so
+[359/485] Linking CXX shared module bin/kf6/packagestructure/plasma_applet.so
+[360/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_ButtonContent_qml.cpp.o
+[361/485] Linking CXX shared module bin/kf6/packagestructure/plasma_theme.so
+[362/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_DefaultListItemBackground_qml.cpp.o
+[363/485] Linking CXX shared module bin/kf6/packagestructure/plasma_containmentactions.so
+[364/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_TextField_qml.cpp.o
+[365/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_FlatButtonBackground_qml.cpp.o
+[366/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_RaisedButtonBackground_qml.cpp.o
+[367/485] Building CXX object src/plasmaquick/CMakeFiles/PlasmaQuick.dir/plasmoid/containmentitem.cpp.o
+[368/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_RoundShadow_qml.cpp.o
+[369/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_IconLabel_qml.cpp.o
+[370/485] Building CXX object src/declarativeimports/kirigamiplasmastyle/CMakeFiles/KirigamiPlasmaStyle.dir/units.cpp.o
+[371/485] Building CXX object src/declarativeimports/kirigamiplasmastyle/CMakeFiles/KirigamiPlasmaStyle.dir/plugin.cpp.o
+[372/485] Building CXX object src/declarativeimports/CMakeFiles/org_kde_plasmacomponents3.dir/.rcc/qmlcache/org_kde_plasmacomponents3_plasmacomponents3_private_TextFieldFocus_qml.cpp.o
+[373/485] Linking CXX shared library bin/libPlasmaQuick.so.6.7.5
+[374/485] Creating library symlink bin/libPlasmaQuick.so.7 bin/libPlasmaQuick.so
+[375/485] Building CXX object src/declarativeimports/kirigamiplasmastyle/CMakeFiles/KirigamiPlasmaStyle.dir/plasmatheme.cpp.o
+[376/485] Automatic MOC for target plasmaconfigplugin
+[377/485] Running AUTOMOC file extraction for target plasmaconfigplugin
+[378/485] Running rcc for resource qmake_org_kde_plasma_configuration
+[379/485] Running moc --collect-json for target plasmaconfigplugin
+[380/485] Linking CXX shared module bin/org/kde/plasma/components/liborg_kde_plasmacomponents3.so
+[381/485] Automatic MOC for target corebindingsplugin
+[382/485] Running AUTOMOC file extraction for target corebindingsplugin
+[383/485] Running rcc for resource corebindingsplugin_raw_qml_0
+[384/485] Running rcc for resource qmake_org_kde_plasma_core
+[385/485] Running moc --collect-json for target corebindingsplugin
+[386/485] Generating .rcc/qmlcache/corebindingsplugin_qmlcache_loader.cpp
+[387/485] Automatic QML type registration for target plasmaconfigplugin
+[388/485] Building CXX object src/plasmaquick/CMakeFiles/plasmaconfigplugin.dir/.qt/rcc/qrc_qmake_org_kde_plasma_configuration.cpp.o
+[389/485] Automatic QML type registration for target corebindingsplugin
+[390/485] Linking CXX shared module bin/KirigamiPlasmaStyle.so
+[391/485] Generating .rcc/qmlcache/corebindingsplugin_private_DialogBackground_qml.cpp
+[392/485] Generating .rcc/qmlcache/corebindingsplugin_private_DefaultToolTip_qml.cpp
+[393/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/corebindingsplugin_autogen/mocs_compilation.cpp.o
+[394/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/.qt/rcc/qrc_qmake_org_kde_plasma_core.cpp.o
+[395/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/.qt/rcc/qrc_corebindingsplugin_raw_qml_0.cpp.o
+[396/485] Building CXX object src/plasmaquick/CMakeFiles/plasmaconfigplugin.dir/plasmaconfigplugin_autogen/mocs_compilation.cpp.o
+[397/485] Building CXX object src/plasmaquick/CMakeFiles/plasmaconfigplugin.dir/plasmaconfigplugin_org_kde_plasma_configurationPlugin.cpp.o
+[398/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/.rcc/qmlcache/corebindingsplugin_private_DialogBackground_qml.cpp.o
+[399/485] Building CXX object src/plasmaquick/CMakeFiles/plasmaconfigplugin.dir/plasmaconfigplugin_qmltyperegistrations.cpp.o
+[400/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/.rcc/qmlcache/corebindingsplugin_private_DefaultToolTip_qml.cpp.o
+[401/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/.rcc/qmlcache/corebindingsplugin_qmlcache_loader.cpp.o
+[402/485] Linking CXX shared module bin/org/kde/plasma/configuration/libplasmaconfigplugin.so
+[403/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/action.cpp.o
+[404/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/tooltipdialog.cpp.o
+[405/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/tooltiparea.cpp.o
+[406/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/corebindingsplugin.cpp.o
+[407/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/windowthumbnail.cpp.o
+[408/485] Building CXX object src/declarativeimports/core/CMakeFiles/corebindingsplugin.dir/corebindingsplugin_qmltyperegistrations.cpp.o
+[409/485] Linking CXX shared module bin/org/kde/plasma/core/libcorebindingsplugin.so
+[410/485] Automatic MOC for target plasmaextracomponentsplugin
+[411/485] Running AUTOMOC file extraction for target plasmaextracomponentsplugin
+[412/485] Running rcc for resource qmake_org_kde_plasma_extras
+[413/485] Automatic MOC for target plasmoidplugin
+[414/485] Running rcc for resource plasmaextracomponentsplugin_raw_qml_2
+[415/485] Running AUTOMOC file extraction for target plasmoidplugin
+[416/485] Running moc --collect-json for target plasmaextracomponentsplugin
+[417/485] Running rcc for resource plasmaextracomponentsplugin_raw_qml_1
+[418/485] Running rcc for resource qmake_org_kde_plasma_plasmoid
+[419/485] Running moc --collect-json for target plasmoidplugin
+[420/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qmlcache_loader.cpp
+[421/485] Running rcc for resource plasmaextracomponentsplugin_raw_qml_0
+[422/485] Automatic QML type registration for target plasmoidplugin
+[423/485] Automatic QML type registration for target plasmaextracomponentsplugin
+[424/485] Building CXX object src/plasmaquick/plasmoid/CMakeFiles/plasmoidplugin.dir/.qt/rcc/qrc_qmake_org_kde_plasma_plasmoid.cpp.o
+[425/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_ModelContextMenu_qml.cpp
+[426/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_Highlight_qml.cpp
+[427/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_Heading_qml.cpp
+[428/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_DescriptiveLabel_qml.cpp
+[429/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_ListItem_qml.cpp
+[430/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_ListSectionHeader_qml.cpp
+[431/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_ContextualHelpButton_qml.cpp
+[432/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_ActionTextField_qml.cpp
+[433/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_BasicPlasmoidHeading_qml.cpp
+[434/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_ExpandableListItem_qml.cpp
+[435/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_PasswordField_qml.cpp
+[436/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_PlasmoidHeading_qml.cpp
+[437/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_PlaceholderMessage_qml.cpp
+[438/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_animations_AppearAnimation_qml.cpp
+[439/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_animations_ActivateAnimation_qml.cpp
+[440/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_animations_DisappearAnimation_qml.cpp
+[441/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_Representation_qml.cpp
+[442/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_ShadowedLabel_qml.cpp
+[443/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_animations_PressedAnimation_qml.cpp
+[444/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_private_BackgroundMetrics_qml.cpp
+[445/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_SearchField_qml.cpp
+[446/485] Generating .rcc/qmlcache/plasmaextracomponentsplugin_qml_animations_ReleasedAnimation_qml.cpp
+[447/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/plasmaextracomponentsplugin_autogen/mocs_compilation.cpp.o
+[448/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.qt/rcc/qrc_qmake_org_kde_plasma_extras.cpp.o
+[449/485] Building CXX object src/plasmaquick/plasmoid/CMakeFiles/plasmoidplugin.dir/plasmoidplugin_org_kde_plasma_plasmoidPlugin.cpp.o
+[450/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/plasmaextracomponentsplugin_org_kde_plasma_extrasPlugin.cpp.o
+[451/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_DescriptiveLabel_qml.cpp.o
+[452/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_Heading_qml.cpp.o
+[453/485] Building CXX object src/plasmaquick/plasmoid/CMakeFiles/plasmoidplugin.dir/__/plasmoidattached_p.cpp.o
+[454/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/qmenuitem.cpp.o
+[455/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_ContextualHelpButton_qml.cpp.o
+[456/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/plasmaextracomponentsplugin_qmltyperegistrations.cpp.o
+[457/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qmlcache_loader.cpp.o
+[458/485] Building CXX object src/plasmaquick/plasmoid/CMakeFiles/plasmoidplugin.dir/plasmoidplugin_autogen/mocs_compilation.cpp.o
+[459/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.qt/rcc/qrc_plasmaextracomponentsplugin_raw_qml_0.cpp.o
+[460/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_Highlight_qml.cpp.o
+[461/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_BasicPlasmoidHeading_qml.cpp.o
+[462/485] Building CXX object src/plasmaquick/plasmoid/CMakeFiles/plasmoidplugin.dir/plasmoidplugin_qmltyperegistrations.cpp.o
+[463/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_ActionTextField_qml.cpp.o
+[464/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/qmenu.cpp.o
+[465/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.qt/rcc/qrc_plasmaextracomponentsplugin_raw_qml_1.cpp.o
+[466/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_ModelContextMenu_qml.cpp.o
+[467/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_ListSectionHeader_qml.cpp.o
+[468/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.qt/rcc/qrc_plasmaextracomponentsplugin_raw_qml_2.cpp.o
+[469/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_ListItem_qml.cpp.o
+[470/485] Linking CXX shared module bin/org/kde/plasma/plasmoid/libplasmoidplugin.so
+[471/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_animations_ActivateAnimation_qml.cpp.o
+[472/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_PasswordField_qml.cpp.o
+[473/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_Representation_qml.cpp.o
+[474/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_animations_AppearAnimation_qml.cpp.o
+[475/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_ShadowedLabel_qml.cpp.o
+[476/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_SearchField_qml.cpp.o
+[477/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_PlaceholderMessage_qml.cpp.o
+[478/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_animations_PressedAnimation_qml.cpp.o
+[479/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_animations_ReleasedAnimation_qml.cpp.o
+[480/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_ExpandableListItem_qml.cpp.o
+[481/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_animations_DisappearAnimation_qml.cpp.o
+[482/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_PlasmoidHeading_qml.cpp.o
+[483/485] Building CXX object src/declarativeimports/plasmaextracomponents/CMakeFiles/plasmaextracomponentsplugin.dir/.rcc/qmlcache/plasmaextracomponentsplugin_qml_private_BackgroundMetrics_qml.cpp.o
+[484/485] Linking CXX shared module bin/org/kde/plasma/extras/libplasmaextracomponentsplugin.so

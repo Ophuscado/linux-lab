@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Sun, 1 Nov 2026 10:30:42 +0000
+Subject: [PATCH 16/16] vulkan: gated delta net lanes per state column settable
+ (GGML_VK_GDN_LANES)
+
+---
+ ggml/src/ggml-vulkan/ggml-vulkan.cpp | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index 32792021d..09cede179 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -3820,6 +3820,11 @@ void ggml_vk_load_shaders(vk_device& device, vk_pipeline requested) {
+                 lanes_per_column = std::min(S_V, gdn_subgroup_size);
+             }
+ 
++            // Tuning: GGML_VK_GDN_LANES sets the invocations a state column is split over (a power of two up to the
++            // subgroup size); fewer lanes mean more state rows, loads and exps per invocation and token.
++            if (const char * env = getenv("GGML_VK_GDN_LANES")) {
++                lanes_per_column = std::min(std::max(1u, (uint32_t)atoi(env)), std::min(S_V, gdn_subgroup_size));
++            }
+             // gated_delta_net.comp relies on S_V % COLS_PER_WG == 0 and
+             // S_V % LANES_PER_COLUMN == 0 to avoid bounds checks.
+             while (lanes_per_column > 1u) {

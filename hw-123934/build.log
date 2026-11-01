@@ -1,0 +1,657 @@
+ninja: Entering directory `build'
+[1/617] Compiling C object src/c11/impl/libmesa_util_c11.a.p/time.c.o
+[2/617] Compiling C object src/util/blake3/libblake3.a.p/blake3_dispatch.c.o
+[3/617] Compiling C object src/compiler/clc/mesa_clc.p/mesa_clc.c.o
+[4/617] Compiling C object src/c11/impl/libmesa_util_c11.a.p/threads_posix.c.o
+[5/617] Compiling C object src/util/libmesa_util_simd.a.p/streaming-load-memcpy.c.o
+[6/617] Linking static target src/c11/impl/libmesa_util_c11.a
+[7/617] Linking static target src/util/libmesa_util_simd.a
+[8/617] Generating src/asahi/genxml/agx_pack.h with a custom command (wrapped by meson to capture output)
+[9/617] Generating src/compiler/nir/nir_intrinsics.h with a custom command
+[10/617] Generating src/compiler/nir/nir_opcodes.c with a custom command (wrapped by meson to capture output)
+[11/617] Generating src/compiler/nir/nir_intrinsics_indices.h with a custom command
+[12/617] Generating src/compiler/spirv/vtn_generator_ids.h with a custom command
+[13/617] Compiling C object src/util/blake3/libblake3.a.p/blake3_portable.c.o
+[14/617] Generating src/compiler/nir/nir_intrinsic.c with a custom command
+[15/617] Generating src/compiler/spirv/vtn_gather_types.c with a custom command
+[16/617] Generating src/compiler/nir/nir_builder_opcodes.h with a custom command (wrapped by meson to capture output)
+[17/617] Generating src/compiler/nir/nir_opcodes.h with a custom command (wrapped by meson to capture output)
+[18/617] Generating src/compiler/builtin_types.c with a custom command
+[19/617] Generating src/git_sha1.h with a custom command
+[20/617] Generating src/compiler/nir/nir_constant_expressions.c with a custom command (wrapped by meson to capture output)
+[21/617] Generating src/compiler/spirv/spirv_info with a custom command
+[22/617] Generating src/asahi/compiler/agx_opcodes.h with a custom command (wrapped by meson to capture output)
+[23/617] Generating src/asahi/isa/agx2_disasm.c with a custom command (wrapped by meson to capture output)
+[24/617] Generating src/util/shader_stats.h with a custom command (wrapped by meson to capture output)
+[25/617] Compiling C object src/util/blake3/libblake3.a.p/blake3.c.o
+In function ‘compress_parents_parallel’,
+    inlined from ‘compress_subtree_to_parent_node’ at ../src/util/blake3/blake3.c:377:9,
+    inlined from ‘blake3_hasher_update_base’ at ../src/util/blake3/blake3.c:562:7,
+    inlined from ‘blake3_hasher_update.part.0’ at ../src/util/blake3/blake3.c:589:3:
+../src/util/blake3/blake3.c:242:5: warning: ‘memcpy’ offset [64, 95] is out of the bounds [0, 64] of object ‘out_array’ with type ‘uint8_t[64]’ {aka ‘unsigned char[64]’} [-Warray-bounds=]
+  242 |     memcpy(&out[parents_array_len * BLAKE3_OUT_LEN],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  243 |            &child_chaining_values[2 * parents_array_len * BLAKE3_OUT_LEN],
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  244 |            BLAKE3_OUT_LEN);
+      |            ~~~~~~~~~~~~~~~
+../src/util/blake3/blake3.c: In function ‘blake3_hasher_update.part.0’:
+../src/util/blake3/blake3.c:374:11: note: ‘out_array’ declared here
+  374 |   uint8_t out_array[MAX_SIMD_DEGREE_OR_2 * BLAKE3_OUT_LEN / 2];
+      |           ^~~~~~~~~
+In function ‘compress_subtree_to_parent_node’,
+    inlined from ‘blake3_hasher_update_base’ at ../src/util/blake3/blake3.c:562:7,
+    inlined from ‘blake3_hasher_update.part.0’ at ../src/util/blake3/blake3.c:589:3:
+../src/util/blake3/blake3.c:378:5: warning: ‘memcpy’ forming offset [64, 95] is out of the bounds [0, 64] of object ‘out_array’ with type ‘uint8_t[64]’ {aka ‘unsigned char[64]’} [-Warray-bounds=]
+  378 |     memcpy(cv_array, out_array, num_cvs * BLAKE3_OUT_LEN);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../src/util/blake3/blake3.c: In function ‘blake3_hasher_update.part.0’:
+../src/util/blake3/blake3.c:374:11: note: ‘out_array’ declared here
+  374 |   uint8_t out_array[MAX_SIMD_DEGREE_OR_2 * BLAKE3_OUT_LEN / 2];
+      |           ^~~~~~~~~
+[26/617] Generating src/asahi/compiler/agx_opcodes.c with a custom command (wrapped by meson to capture output)
+[27/617] Generating src/util/driconf_static.h with a custom command
+[28/617] Generating src/asahi/compiler/agx_nir_algebraic.c with a custom command (wrapped by meson to capture output)
+[29/617] Generating src/util/format/u_format_gen.h with a custom command (wrapped by meson to capture output)
+[30/617] Generating src/compiler/ir_expression_operation.h with a custom command (wrapped by meson to capture output)
+[31/617] Generating src/vulkan/util/vk_dispatch_table with a custom command
+[32/617] Generating src/vulkan/runtime/vk_common_entrypoints with a custom command
+[33/617] Generating src/vulkan/runtime/vk_synchronization_helpers with a custom command
+[34/617] Generating src/vulkan/runtime/astc_spv.h with a custom command
+[35/617] Generating src/vulkan/util/vk_extensions with a custom command
+[36/617] Generating src/compiler/builtin_types.h with a custom command
+[37/617] Compiling C object src/util/blake3/libblake3.a.p/blake3_neon.c.o
+[38/617] Generating src/asahi/vulkan/hk_drirc with a custom command
+[39/617] Generating src/vulkan/runtime/vk_physical_device_features with a custom command
+[40/617] Generating src/vulkan/wsi/wsi_entrypoints with a custom command
+[41/617] Generating src/util/format/u_format_pack.h with a custom command (wrapped by meson to capture output)
+[42/617] Generating src/vulkan/runtime/vk_cmd_enqueue_entrypoints with a custom command
+[43/617] Generating src/asahi/compiler/agx_builder.h with a custom command (wrapped by meson to capture output)
+[44/617] Compiling C object src/virtio/vdrm/liblibvdrm.a.p/vdrm.c.o
+[45/617] Compiling C object src/util/libmesa_util.a.p/bitscan.c.o
+[46/617] Compiling C object src/compiler/libcompiler.a.p/shader_enums.c.o
+[47/617] Compiling C object src/util/libmesa_util.a.p/anon_file.c.o
+[48/617] Generating src/asahi/vulkan/hk_entrypoints.h with a custom command
+[49/617] Generating src/vulkan/runtime/vk_cmd_queue with a custom command
+[50/617] Compiling C object src/virtio/vdrm/liblibvdrm.a.p/vdrm_virtgpu.c.o
+[51/617] Compiling C object src/util/libmesa_util.a.p/cnd_monotonic.c.o
+[52/617] Generating src/vulkan/runtime/vk_physical_device_properties with a custom command
+[53/617] Compiling C object src/util/libmesa_util.a.p/build_id.c.o
+[54/617] Compiling C object src/util/libmesa_util.a.p/crc32.c.o
+[55/617] Compiling C object src/compiler/nir/libnir.a.p/meson-generated_.._nir_opcodes.c.o
+[56/617] Generating src/util/format/u_format_table.c with a custom command (wrapped by meson to capture output)
+[57/617] Generating src/vulkan/util/vk_struct_type_cast with a custom command
+[58/617] Generating src/vulkan/runtime/vk_physical_device_spirv_caps with a custom command
+[59/617] Compiling C object src/asahi/layout/libasahi_layout.a.p/formats.c.o
+[60/617] Compiling C object src/util/libmesa_util.a.p/thread_sched.c.o
+[61/617] Compiling C object src/util/libmesa_util.a.p/compress.c.o
+[62/617] Compiling C object src/compiler/libcompiler.a.p/meson-generated_.._builtin_types.c.o
+[63/617] Generating src/vulkan/util/vk_enum_to_str with a custom command
+[64/617] Compiling C object src/util/libmesa_util.a.p/double.c.o
+[65/617] Generating src/vulkan/runtime/vk_dispatch_trampolines with a custom command
+[66/617] Compiling C object src/util/libmesa_util.a.p/futex.c.o
+[67/617] Compiling C object src/util/libmesa_util.a.p/helpers.c.o
+[68/617] Compiling C object src/asahi/layout/libasahi_layout.a.p/layout.c.o
+[69/617] Compiling C object src/util/libmesa_util.a.p/fast_idiv_by_const.c.o
+[70/617] Compiling C object src/util/libmesa_util.a.p/blob.c.o
+[71/617] Compiling C object src/util/libmesa_util.a.p/dag.c.o
+[72/617] Compiling C object src/util/libmesa_util.a.p/mesa-blake3.c.o
+[73/617] Compiling C object src/util/libmesa_util.a.p/memstream.c.o
+[74/617] Compiling C object src/util/libmesa_util.a.p/os_file.c.o
+[75/617] Compiling C object src/util/libmesa_util.a.p/lut.c.o
+[76/617] Compiling C object src/util/libmesa_util.a.p/os_time.c.o
+[77/617] Compiling C object src/util/libmesa_util.a.p/half_float.c.o
+[78/617] Compiling C object src/util/libmesa_util.a.p/float8.c.o
+[79/617] Compiling C object src/util/libmesa_util.a.p/os_misc.c.o
+[80/617] Compiling C object src/util/libmesa_util.a.p/os_socket.c.o
+[81/617] Compiling C object src/util/libmesa_util.a.p/os_memory_fd.c.o
+[82/617] Compiling C object src/util/libmesa_util.a.p/os_file_notify.c.o
+[83/617] Compiling C object src/util/libmesa_util.a.p/u_process.c.o
+[84/617] Compiling C object src/util/libmesa_util.a.p/rwlock.c.o
+[85/617] Compiling C object src/util/libmesa_util.a.p/log.c.o
+[86/617] Compiling C object src/util/libmesa_util.a.p/rand_xor.c.o
+[87/617] Compiling C object src/util/libmesa_util.a.p/disk_cache_os.c.o
+[88/617] Compiling C object src/util/libmesa_util.a.p/range_minimum_query.c.o
+[89/617] Compiling C object src/util/libxmlconfig.a.p/xmlconfig.c.o
+[90/617] Compiling C object src/util/libmesa_util.a.p/pb_slab.c.o
+[91/617] Compiling C object src/util/libmesa_util.a.p/disk_cache.c.o
+[92/617] Compiling C object src/util/libmesa_util.a.p/simple_mtx.c.o
+[93/617] Compiling C object src/virtio/vdrm/liblibvdrm.a.p/vdrm_vpipe.c.o
+[94/617] Compiling C++ object src/util/libmesa_util.a.p/u_qsort.cpp.o
+[95/617] Compiling C object src/util/libmesa_util.a.p/fossilize_db.c.o
+[96/617] Compiling C object src/util/libmesa_util.a.p/strndup.c.o
+[97/617] Compiling C object src/util/libmesa_util.a.p/u_atomic.c.o
+[98/617] Compiling C object src/util/libmesa_util.a.p/rb_tree.c.o
+[99/617] Compiling C object src/util/libmesa_util.a.p/slab.c.o
+[100/617] Compiling C object src/util/libmesa_util.a.p/string_buffer.c.o
+[101/617] Compiling C object src/util/libmesa_util.a.p/u_call_once.c.o
+[102/617] Compiling C object src/util/libmesa_util.a.p/strtod.c.o
+[103/617] Compiling C object src/util/libmesa_util.a.p/u_dl.c.o
+[104/617] Compiling C object src/util/libmesa_util.a.p/u_dynarray.c.o
+[105/617] Compiling C object src/util/libmesa_util.a.p/u_idalloc.c.o
+[106/617] Compiling C object src/util/libmesa_util.a.p/u_hash_table.c.o
+[107/617] Compiling C object src/util/libmesa_util.a.p/u_string.c.o
+[108/617] Compiling C object src/util/libmesa_util.a.p/sparse_array.c.o
+[109/617] Compiling C object src/util/libmesa_util.a.p/u_vector.c.o
+[110/617] Compiling C object src/util/libmesa_util.a.p/hash_table.c.o
+[111/617] Compiling C object src/util/libmesa_util.a.p/u_range_remap.c.o
+[112/617] Compiling C object src/util/libmesa_util.a.p/u_thread.c.o
+[113/617] Compiling C object src/util/libmesa_util.a.p/vl_zscan_data.c.o
+[114/617] Compiling C object src/util/libmesa_util.a.p/u_queue.c.o
+[115/617] Compiling C object src/util/libmesa_util.a.p/u_shader_variant_cache.c.o
+[116/617] Compiling C object src/util/libmesa_util.a.p/u_mm.c.o
+[117/617] Compiling C object src/util/libmesa_util.a.p/u_debug_memory.c.o
+[118/617] Compiling C object src/util/libmesa_util.a.p/u_worklist.c.o
+[119/617] Compiling C object src/util/libmesa_util.a.p/register_allocate.c.o
+[120/617] Compiling C object src/util/libmesa_util.a.p/u_math.c.o
+[121/617] Compiling C object src/util/libmesa_util.a.p/u_debug.c.o
+[122/617] Compiling C object src/util/libmesa_util.a.p/vma.c.o
+[123/617] Compiling C object src/util/libmesa_util.a.p/cache_ops_aarch64.c.o
+[124/617] Compiling C object src/util/libmesa_util.a.p/mesa_cache_db_multipart.c.o
+[125/617] Compiling C object src/util/libmesa_util.a.p/u_cpu_detect.c.o
+[126/617] Compiling C object src/util/libmesa_util.a.p/rgtc.c.o
+[127/617] Compiling C object src/util/libmesa_util.a.p/set.c.o
+[128/617] Compiling C++ object src/util/libmesa_util.a.p/texcompress_astc_luts_wrap.cpp.o
+[129/617] Compiling C object src/util/libmesa_util.a.p/ralloc.c.o
+[130/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_latc.c.o
+[131/617] Compiling C++ object src/util/libmesa_util.a.p/texcompress_astc_luts.cpp.o
+[132/617] Compiling C object src/util/libmesa_util.a.p/mesa_cache_db.c.o
+[133/617] Compiling C object src/util/libmesa_util.a.p/u_sync_provider.c.o
+[134/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_tests.c.o
+[135/617] Compiling C object src/util/libmesa_util.a.p/u_printf.c.o
+[136/617] Compiling C object src/util/libmesa_util.a.p/perf_u_trace.c.o
+[137/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_etc.c.o
+[138/617] Compiling C object src/util/libmesa_util.a.p/u_debug_symbol.c.o
+[139/617] Compiling C object src/util/libmesa_util.a.p/format_u_format.c.o
+[140/617] Compiling C object src/util/libmesa_util.a.p/u_debug_stack.c.o
+[141/617] Compiling C object src/asahi/isa/libagx2_disasm.a.p/meson-generated_.._agx2_disasm.c.o
+[142/617] Compiling C object src/util/libmesa_util.a.p/softfloat.c.o
+[143/617] Compiling C object src/compiler/nir/libnir.a.p/meson-generated_.._nir_intrinsics.c.o
+[144/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_unpack_neon.c.o
+[145/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_rgtc.c.o
+[146/617] Generating src/util/format_srgb with a custom command (wrapped by meson to capture output)
+[147/617] Compiling C object src/compiler/nir/libnir.a.p/nir_dominance.c.o
+[148/617] Compiling C object src/compiler/nir/libnir.a.p/nir_fixup_is_exported.c.o
+[149/617] Compiling C object src/compiler/nir/libnir.a.p/nir_dominance_lca.c.o
+[150/617] Compiling C object src/util/libmesa_util.a.p/meson-generated_.._format_srgb.c.o
+[151/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_other.c.o
+[152/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_zs.c.o
+[153/617] Compiling C object src/compiler/libcompiler.a.p/glsl_types.c.o
+[154/617] Compiling C object src/compiler/nir/libnir.a.p/nir_builtin_builder.c.o
+[155/617] Compiling C object src/compiler/nir/libnir.a.p/nir_downgrade_pls_vars.c.o
+[156/617] Compiling C object src/compiler/nir/libnir.a.p/nir_convert_address_format.c.o
+[157/617] Compiling C object src/compiler/nir/libnir.a.p/nir_clip_cull_distance_io_utils.c.o
+[158/617] Generating src/vulkan/runtime/vk_format_info with a custom command
+[159/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_bptc.c.o
+[160/617] Compiling C object src/compiler/nir/libnir.a.p/nir_control_flow.c.o
+[161/617] Compiling C object src/compiler/nir/libnir.a.p/nir_clone.c.o
+[162/617] Compiling C object src/compiler/nir/libnir.a.p/nir_gs_count_vertices.c.o
+[163/617] Compiling C object src/compiler/nir/libnir.a.p/nir_gather_types.c.o
+[164/617] Compiling C object src/compiler/nir/libnir.a.p/nir_gather_tcs_info.c.o
+[165/617] Compiling C object src/compiler/nir/libnir.a.p/nir_functions.c.o
+[166/617] Compiling C object src/compiler/nir/libnir.a.p/nir_gather_info.c.o
+[167/617] Compiling C object src/compiler/nir/libnir.a.p/nir_inline_sysval.c.o
+[168/617] Compiling C object src/compiler/nir/libnir.a.p/nir_gather_xfb_info.c.o
+[169/617] Compiling C object src/compiler/nir/libnir.a.p/nir_io_add_xfb_info.c.o
+[170/617] Compiling C object src/compiler/nir/libnir.a.p/nir_divergence_analysis.c.o
+[171/617] Compiling C object src/compiler/nir/libnir.a.p/nir_legacy.c.o
+[172/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_abort.c.o
+[173/617] Compiling C object src/compiler/nir/libnir.a.p/nir_builder.c.o
+[174/617] Compiling C object src/compiler/nir/libnir.a.p/nir.c.o
+[175/617] Compiling C object src/compiler/nir/libnir.a.p/nir_from_ssa.c.o
+[176/617] Compiling C object src/compiler/nir/libnir.a.p/nir_deref.c.o
+[177/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_fxt1.c.o
+[178/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_amul.c.o
+[179/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_alu.c.o
+[180/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_group_loads.c.o
+[181/617] Compiling C++ object src/util/libmesa_util.a.p/texcompress_astc.cpp.o
+[182/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_alpha.c.o
+[183/617] Compiling C object src/compiler/nir/libnir.a.p/nir_format_convert.c.o
+[184/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_bool_to_int32.c.o
+[185/617] Compiling C object src/compiler/nir/libnir.a.p/nir_instr_set.c.o
+[186/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_clamp_color_outputs.c.o
+[187/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_bool_to_float.c.o
+[188/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_calls_to_builtins.c.o
+[189/617] Compiling C object src/compiler/nir/libnir.a.p/nir_inline_uniforms.c.o
+[190/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_clip_halfz.c.o
+[191/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_clip_disable.c.o
+[192/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_alu_width.c.o
+[193/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_cl_images.c.o
+[194/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_bitmap.c.o
+[195/617] Compiling C object src/compiler/nir/libnir.a.p/nir_linking_helpers.c.o
+[196/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_const_arrays_to_uniforms.c.o
+[197/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_atomics_to_ssbo.c.o
+[198/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_array_deref_of_vec.c.o
+[199/617] Compiling C object src/compiler/nir/libnir.a.p/nir_liveness.c.o
+[200/617] Compiling C object src/compiler/nir/libnir.a.p/nir_loop_analyze.c.o
+[201/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_continue_constructs.c.o
+[202/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_s3tc.c.o
+[203/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_frag_coord_to_pixel_coord.c.o
+[204/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_discard_if.c.o
+[205/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_fragcolor.c.o
+[206/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_variable_initializers.c.o
+[207/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_fragcoord_wtrans.c.o
+[208/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_flatshade.c.o
+[209/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_clip.c.o
+[210/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_convert_alu_types.c.o
+[211/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_global_vars_to_local.c.o
+[212/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_halt_to_return.c.o
+[213/617] Compiling C object src/compiler/nir/libnir.a.p/nir_gather_output_deps.c.o
+[214/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_floats.c.o
+[215/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_fb_read.c.o
+[216/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_flrp.c.o
+[217/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_fp16_conv.c.o
+[218/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_indirect_derefs_to_if_else_trees.c.o
+[219/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_frexp.c.o
+[220/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_helper_writes.c.o
+[221/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_double_ops.c.o
+[222/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_load_const_to_scalar.c.o
+[223/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_idiv.c.o
+[224/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_image.c.o
+[225/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_goto_ifs.c.o
+[226/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_int_to_float.c.o
+[227/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_locals_to_regs.c.o
+[228/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_interpolation.c.o
+[229/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_image_atomics_to_global.c.o
+[230/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_multiview.c.o
+[231/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_io_vars_to_scalar.c.o
+[232/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_memcpy.c.o
+[233/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_passthrough_edgeflags.c.o
+[234/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_gs_intrinsics.c.o
+[235/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_explicit_io.c.o
+[236/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_io_to_scalar.c.o
+[237/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_io_indirect_loads.c.o
+[238/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_is_helper_invocation.c.o
+[239/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_patch_vertices.c.o
+[240/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_blend.c.o
+[241/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_io_array_vars_to_elements.c.o
+[242/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_packing.c.o
+[243/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_pntc_ytransform.c.o
+[244/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_memory_model.c.o
+[245/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_point_smooth.c.o
+[246/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_int64.c.o
+[247/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_point_size.c.o
+[248/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_poly_line_smooth.c.o
+[249/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_phis_to_scalar.c.o
+[250/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_non_uniform_access.c.o
+[251/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_input_attachments.c.o
+[252/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_io_vars_to_temporaries.c.o
+[253/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_cooperative_matrix.c.o
+[254/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_samplers.c.o
+[255/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_returns.c.o
+[256/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_single_sampled.c.o
+[257/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_scratch_to_var.c.o
+[258/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_printf.c.o
+[259/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_robust_access.c.o
+[260/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_io.c.o
+[261/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_scratch.c.o
+[262/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_sample_shading.c.o
+[263/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_readonly_images_to_tex.c.o
+[264/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_ssbo.c.o
+[265/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_tess_coord_z.c.o
+[266/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_terminate_to_demote.c.o
+[267/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_tex_shadow.c.o
+[268/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_reg_intrinsics_to_ssa.c.o
+[269/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_texcoord_replace_late.c.o
+[270/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_two_sided_color.c.o
+[271/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_undef_to_zero.c.o
+[272/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_var_copies.c.o
+[273/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_texcoord_replace.c.o
+[274/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_view_index_to_device_index.c.o
+[275/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_vec3_to_vec4.c.o
+[276/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_mediump.c.o
+[277/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_wpos_center.c.o
+[278/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_viewport_transform.c.o
+[279/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_wrmasks.c.o
+[280/617] Compiling C object src/compiler/nir/libnir.a.p/nir_metadata.c.o
+[281/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_wpos_ytransform.c.o
+[282/617] Compiling C object src/compiler/nir/libnir.a.p/nir_mod_analysis.c.o
+[283/617] Compiling C object src/compiler/nir/libnir.a.p/nir_move_vec_src_uses_to_dest.c.o
+[284/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_system_values.c.o
+[285/617] Compiling C object src/compiler/nir/libnir.a.p/nir_move_output_stores_to_end.c.o
+[286/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_xfb_to_stores.c.o
+[287/617] Compiling C object src/compiler/nir/libnir.a.p/nir_normalize_sin_cos.c.o
+[288/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_bit_size.c.o
+[289/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_uniforms_to_ubo.c.o
+[290/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_task_shader.c.o
+[291/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_access.c.o
+[292/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_barriers.c.o
+[293/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_vec_to_regs.c.o
+[294/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_vars_to_ssa.c.o
+[295/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_barycentric.c.o
+[296/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_clip_cull_const.c.o
+[297/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_comparison_pre.c.o
+[298/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_workgroup_size.c.o
+[299/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_sysvals_to_varyings.c.o
+[300/617] Compiling C object src/compiler/nir/libnir.a.p/nir_normalize_cubemap_coords.c.o
+[301/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_cse.c.o
+[302/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_combine_stores.c.o
+[303/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_dce.c.o
+[304/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_dead_cf.c.o
+[305/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_constant_folding.c.o
+[306/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_copy_propagate.c.o
+[307/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_dead_write_vars.c.o
+[308/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_fragdepth.c.o
+[309/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_fp_math_ctrl.c.o
+[310/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_generate_bfi.c.o
+[311/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_licm.c.o
+[312/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_call.c.o
+[313/617] Compiling C object src/util/libmesa_util.a.p/format_u_format_yuv.c.o
+[314/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_find_array_copies.c.o
+[315/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_move.c.o
+[316/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_frag_coord_to_pixel_coord.c.o
+[317/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_idiv_const.c.o
+[318/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_load_skip_helpers.c.o
+[319/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_move_discards_to_top.c.o
+[320/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_mqsad.c.o
+[321/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_loop.c.o
+[322/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_tex.c.o
+[323/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_copy_prop_vars.c.o
+[324/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_large_constants.c.o
+[325/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_peephole_select.c.o
+[326/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_offsets.c.o
+[327/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_phi_precision.c.o
+[328/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_if.c.o
+[329/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_ubo_vec4.c.o
+[330/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_gcm.c.o
+[331/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_ray_queries.c.o
+[332/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_subgroups.c.o
+[333/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_rematerialize_compares.c.o
+[334/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_reassociate_bfi.c.o
+[335/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_reassociate.c.o
+[336/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_preamble.c.o
+[337/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_non_uniform_access.c.o
+[338/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_move_to_top.c.o
+[339/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_sink.c.o
+[340/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_mem_access_bit_sizes.c.o
+[341/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_memcpy.c.o
+[342/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_phi_to_bool.c.o
+[343/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_scalar_array_vars_to_vec.c.o
+[344/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_loop_unroll.c.o
+[345/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_uniform_atomics.c.o
+[346/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_undef.c.o
+[347/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_remove_phis.c.o
+[348/617] Compiling C object src/compiler/nir/libnir.a.p/nir_phi_builder.c.o
+[349/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_intrinsics.c.o
+[350/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_uniform_subgroup.c.o
+[351/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_shrink_vectors.c.o
+[352/617] Compiling C object src/compiler/nir/libnir.a.p/nir_recompute_io_bases.c.o
+[353/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_shrink_stores.c.o
+[354/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_vectorize_io_vars.c.o
+[355/617] Compiling C object src/compiler/nir/libnir.a.p/nir_remove_dead_variables.c.o
+[356/617] Compiling C object src/compiler/nir/libnir.a.p/nir_passthrough_tcs.c.o
+[357/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_vectorize_io.c.o
+[358/617] Compiling C object src/compiler/nir/libnir.a.p/nir_remove_outputs.c.o
+[359/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_uub.c.o
+[360/617] Compiling C object src/compiler/nir/libnir.a.p/nir_remove_tex_shadow.c.o
+[361/617] Compiling C object src/compiler/nir/libnir.a.p/nir_repair_ssa.c.o
+[362/617] Compiling C object src/compiler/nir/libnir.a.p/nir_scale_fdiv.c.o
+[363/617] Compiling C object src/compiler/nir/libnir.a.p/nir_split_conversions.c.o
+[364/617] Compiling C object src/compiler/nir/libnir.a.p/nir_separate_merged_clip_cull_io.c.o
+[365/617] Compiling C object src/compiler/nir/libnir.a.p/nir_shader_bisect.c.o
+[366/617] Compiling C object src/compiler/nir/libnir.a.p/nir_propagate_invariant.c.o
+[367/617] Compiling C object src/compiler/nir/libnir.a.p/nir_split_var_copies.c.o
+[368/617] Compiling C object src/compiler/nir/libnir.a.p/nir_passthrough_gs.c.o
+[369/617] Compiling C object src/compiler/nir/libnir.a.p/nir_to_lcssa.c.o
+[370/617] Compiling C object src/compiler/nir/libnir.a.p/nir_worklist.c.o
+[371/617] Compiling C object src/compiler/nir/libnir.a.p/nir_validate.c.o
+[372/617] Compiling C object src/compiler/nir/libnir.a.p/nir_split_per_member_structs.c.o
+[373/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_load_store_vectorize.c.o
+[374/617] Compiling C object src/compiler/nir/libnir.a.p/nir_split_64bit_vec3_and_vec4.c.o
+[375/617] Compiling C object src/compiler/nir/libnir.a.p/nir_search.c.o
+[376/617] Compiling C object src/compiler/nir/libnir.a.p/nir_schedule.c.o
+[377/617] Compiling C object src/compiler/nir/libnir.a.p/nir_sweep.c.o
+[378/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_shader_calls.c.o
+[379/617] Compiling C object src/compiler/nir/libnir.a.p/nir_trivialize_registers.c.o
+[380/617] Compiling C object src/compiler/nir/libnir.a.p/nir_use_dominance.c.o
+[381/617] Compiling C object src/compiler/spirv/libvtn.a.p/gl_spirv.c.o
+[382/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_shared_vars_to_subgroup.c.o
+[383/617] Compiling C object src/compiler/spirv/libvtn.a.p/vtn_debug.c.o
+[384/617] Linking static target src/util/blake3/libblake3.a
+[385/617] Linking static target src/compiler/libcompiler.a
+[386/617] Compiling C object src/compiler/clc/liblibmesaclc.a.p/clc.c.o
+[387/617] Linking static target src/asahi/isa/libagx2_disasm.a
+[388/617] Compiling C object src/compiler/spirv/libvtn.a.p/meson-generated_.._spirv_info.c.o
+[389/617] Compiling C object src/compiler/spirv/libvtn.a.p/vtn_amd.c.o
+[390/617] Compiling C object src/compiler/nir/libnir.a.p/nir_serialize.c.o
+[391/617] Compiling C object src/compiler/spirv/libvtn.a.p/vtn_subgroup.c.o
+[392/617] Compiling C object src/compiler/spirv/libvtn.a.p/meson-generated_.._vtn_gather_types.c.o
+[393/617] Compiling C object src/vulkan/util/libvulkan_util.a.p/meson-generated_.._vk_extensions.c.o
+[394/617] Compiling C object src/compiler/nir/libnir.a.p/nir_lower_atomics.c.o
+[395/617] Compiling C object src/compiler/spirv/libvtn.a.p/vtn_cfg.c.o
+[396/617] Compiling C object src/vulkan/util/libvulkan_util.a.p/vk_util.c.o
+[397/617] Compiling C object src/compiler/spirv/libvtn.a.p/vtn_glsl450.c.o
+[398/617] Compiling C object src/compiler/spirv/vtn_bindgen2.p/vtn_bindgen2.c.o
+[399/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/meson-generated_.._vk_cmd_enqueue_entrypoints.c.o
+[400/617] Compiling C object src/compiler/spirv/libvtn.a.p/vtn_cmat.c.o
+[401/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/meson-generated_.._vk_common_entrypoints.c.o
+[402/617] Compiling C object src/compiler/nir/libnir.a.p/nir_print.c.o
+[403/617] Compiling C object src/vulkan/util/libvulkan_util.a.p/vk_alloc.c.o
+[404/617] Compiling C object src/compiler/spirv/libvtn.a.p/vtn_structured_cfg.c.o
+[405/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/meson-generated_.._vk_format_info.c.o
+[406/617] Compiling C object src/asahi/clc/asahi_clc.p/asahi_clc.c.o
+[407/617] Compiling C object src/vulkan/util/libvulkan_util.a.p/vk_format.c.o
+[408/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/meson-generated_.._vk_synchronization_helpers.c.o
+[409/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_blend.c.o
+[410/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_buffer.c.o
+[411/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/meson-generated_.._vk_physical_device_spirv_caps.c.o
+[412/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_cmd_copy.c.o
+[413/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_cmd_enqueue.c.o
+[414/617] Compiling C object src/compiler/nir/libnir.a.p/nir_unlower_io_to_vars.c.o
+[415/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_command_pool.c.o
+[416/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/meson-generated_.._vk_dispatch_trampolines.c.o
+[417/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_deferred_operation.c.o
+[418/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_command_buffer.c.o
+[419/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_debug_report.c.o
+[420/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_vectorize.c.o
+[421/617] Compiling C object src/vulkan/util/libvulkan_util.a.p/meson-generated_.._vk_dispatch_table.c.o
+[422/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/rmv_vk_rmv_common.c.o
+[423/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_debug_utils.c.o
+[424/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_descriptor_update_template.c.o
+[425/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_descriptor_set_layout.c.o
+[426/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_buffer_view.c.o
+[427/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_descriptors.c.o
+[428/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_log.c.o
+[429/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_framebuffer.c.o
+[430/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_device.c.o
+[431/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_device_memory.c.o
+[432/617] Compiling C object src/compiler/spirv/libvtn.a.p/vtn_variables.c.o
+[433/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/rmv_vk_rmv_exporter.c.o
+[434/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_image.c.o
+[435/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_meta_object_list.c.o
+[436/617] Compiling C object src/compiler/nir/libnir.a.p/nir_split_vars.c.o
+[437/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_device_generated_commands.c.o
+[438/617] Compiling C object src/compiler/nir/libnir.a.p/nir_range_analysis.c.o
+[439/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/meson-generated_.._vk_physical_device_properties.c.o
+[440/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_fence.c.o
+[441/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_object.c.o
+[442/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_query_pool.c.o
+[443/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_pipeline_layout.c.o
+[444/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_sync_binary.c.o
+[445/617] Compiling C object src/compiler/spirv/libvtn.a.p/vtn_alu.c.o
+[446/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_standard_sample_locations.c.o
+[447/617] Compiling C object src/compiler/spirv/libvtn.a.p/vtn_opencl.c.o
+[448/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_sync_dummy.c.o
+[449/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_sampler.c.o
+[450/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_semaphore.c.o
+[451/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_physical_device.c.o
+[452/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_sync_timeline.c.o
+[453/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_ycbcr_conversion.c.o
+[454/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_sync.c.o
+[455/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_meta.c.o
+[456/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_synchronization.c.o
+[457/617] Compiling C object src/compiler/nir/libnir.a.p/nir_opt_varyings.c.o
+[458/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_meta_clear.c.o
+[459/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_nir.c.o
+[460/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_meta_blit_resolve.c.o
+[461/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_render_pass.c.o
+[462/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_drm_syncobj.c.o
+[463/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_nir_convert_ycbcr.c.o
+[464/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_shader_module.c.o
+[465/617] Compiling C object src/vulkan/wsi/libvulkan_wsi.a.p/meson-generated_.._wsi_common_entrypoints.c.o
+[466/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_pipeline_cache.c.o
+[467/617] Linking static target src/util/libxmlconfig.a
+[468/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_texcompress_astc.c.o
+[469/617] Compiling C object src/vulkan/runtime/libvulkan_instance.a.p/vk_instance.c.o
+[470/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_queue.c.o
+[471/617] Linking static target src/virtio/vdrm/liblibvdrm.a
+[472/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_meta_draw_rects.c.o
+[473/617] Compiling C object src/vulkan/wsi/libvulkan_wsi.a.p/wsi_common_drm.c.o
+[474/617] Generating src/asahi/vulkan/asahi_devenv_icd.aarch64.json with a custom command
+[475/617] Compiling C object src/vulkan/wsi/libvulkan_wsi.a.p/wsi_common_headless.c.o
+[476/617] Compiling C++ object src/asahi/layout/libasahi_layout.a.p/tiling.cc.o
+[477/617] Linking static target src/asahi/layout/libasahi_layout.a
+[478/617] Generating src/asahi/vulkan/asahi_icd.aarch64.json with a custom command
+[479/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_nir_lower_descriptor_heaps.c.o
+[480/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_shader.c.o
+[481/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_graphics_state.c.o
+[482/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_texcompress_etc2.c.o
+[483/617] Compiling C object src/vulkan/wsi/libvulkan_wsi.a.p/wsi_common.c.o
+[484/617] Compiling C object src/vulkan/wsi/libvulkan_wsi.a.p/wsi_common_display.c.o
+[485/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_meta_copy_fill_update.c.o
+[486/617] Compiling C object src/compiler/spirv/libvtn.a.p/spirv_to_nir.c.o
+[487/617] Linking static target src/compiler/spirv/libvtn.a
+[488/617] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_pipeline.c.o
+[489/617] Compiling C object src/asahi/lib/libasahi_decode.a.p/decode.c.o
+[490/617] Linking static target src/asahi/lib/libasahi_decode.a
+[491/617] Compiling C object src/vulkan/util/libvulkan_util.a.p/meson-generated_.._vk_enum_to_str.c.o
+[492/617] Linking static target src/vulkan/util/libvulkan_util.a
+[493/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/vk_video.c.o
+[494/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/meson-generated_.._vk_cmd_queue.c.o
+[495/617] Compiling C object src/vulkan/runtime/libvulkan_lite_runtime.a.p/meson-generated_.._vk_physical_device_features.c.o
+[496/617] Compiling C object src/compiler/nir/libnir.a.p/meson-generated_.._nir_constant_expressions.c.o
+[497/617] Compiling C++ object src/compiler/clc/liblibmesaclc.a.p/clc_helpers.cpp.o
+[498/617] Linking static target src/compiler/clc/liblibmesaclc.a
+[499/617] Compiling C object src/util/libmesa_util.a.p/meson-generated_.._format_u_format_table.c.o
+[500/617] Linking static target src/util/libmesa_util.a
+[501/617] Generating src/compiler/nir/nir_opt_algebraic with a custom command
+[502/617] Compiling C object src/compiler/nir/libnir.a.p/meson-generated_.._nir_opt_algebraic.c.o
+[503/617] Linking static target src/compiler/nir/libnir.a
+[504/617] Linking target src/compiler/spirv/vtn_bindgen2
+[505/617] Linking target src/compiler/clc/mesa_clc
+[506/617] Generating src/poly/cl/libpoly.spv with a custom command
+[507/617] Generating src/poly/cl/libpoly.cpp with a custom command
+[508/617] Compiling C object src/poly/nir/liblibpoly_nir.a.p/poly_nir_lower_sysvals.c.o
+[509/617] Compiling C object src/poly/nir/liblibpoly_nir.a.p/poly_nir_lower_vs.c.o
+[510/617] Compiling C object src/poly/nir/liblibpoly_nir.a.p/poly_nir_passthrough_gs.c.o
+[511/617] Compiling C++ object src/poly/nir/liblibpoly_nir.a.p/meson-generated_.._.._cl_libpoly.cpp.o
+[512/617] Compiling C object src/poly/nir/liblibpoly_nir.a.p/poly_nir_lower_tess.c.o
+[513/617] Generating src/asahi/libagx/libagx.spv with a custom command
+[514/617] Generating src/asahi/libagx/libagx.cpp with a custom command
+[515/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/meson-generated_.._agx_opcodes.c.o
+[516/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_dce.c.o
+[517/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_shared_bitsize.c.o
+[518/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_lower_spill.c.o
+[519/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_fminmax.c.o
+[520/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_cull_distance.c.o
+[521/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_interpolation.c.o
+[522/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_lower_parallel_copy.c.o
+[523/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/meson-generated_.._agx_nir_algebraic.c.o
+[524/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_lower_divergent_shuffle.c.o
+[525/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_discard_zs_emit.c.o
+[526/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_performance.c.o
+[527/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_insert_waits.c.o
+[528/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_lower_pseudo.c.o
+[529/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_lower_64bit.c.o
+[530/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_liveness.c.o
+[531/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_opt_preamble.c.o
+[532/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_lower_uniform_sources.c.o
+[533/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_print.c.o
+[534/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_opt_jmp_none.c.o
+[535/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_opt_break_if.c.o
+[536/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_opt_compact_constants.c.o
+[537/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_address.c.o
+[538/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_sample_mask.c.o
+[539/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_frag_sidefx.c.o
+[540/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_opt_promote_constants.c.o
+[541/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_ir.c.o
+[542/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_pressure_schedule.c.o
+[543/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_opt_empty_else.c.o
+[544/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_subgroups.c.o
+[545/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_reindex_ssa.c.o
+[546/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_validate_ra.c.o
+[547/617] Compiling C++ object src/asahi/compiler/libasahi_compiler.a.p/meson-generated_.._.._libagx_libagx.cpp.o
+[548/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_cmat.c.o
+[549/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_validate.c.o
+[550/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_repair_ssa.c.o
+[551/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_opt_register_cache.c.o
+[552/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_opt_cse.c.o
+[553/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_optimizer.c.o
+[554/617] Compiling C object src/poly/nir/liblibpoly_nir.a.p/poly_nir_lower_gs.c.o
+[555/617] Linking static target src/poly/nir/liblibpoly_nir.a
+[556/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_math.c.o
+../src/asahi/compiler/agx_nir_lower_math.c: In function ‘is_one’:
+../src/asahi/compiler/agx_nir_lower_math.c:85:59: warning: passing argument 1 of ‘nir_get_scalar’ discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+   85 |    nir_scalar s = nir_scalar_chase_alu_src(nir_get_scalar(&alu->def, 0), i);
+      |                                                           ^~~~~~~~~
+In file included from ../src/asahi/compiler/agx_nir_lower_math.c:8:
+../src/compiler/nir/nir.h:3418:25: note: expected ‘nir_def *’ but argument is of type ‘const nir_def *’
+ 3418 | nir_get_scalar(nir_def *def, unsigned channel)
+      |                ~~~~~~~~~^~~
+At top level:
+cc1: note: unrecognized command-line option ‘-Wno-c2x-extensions’ may have been intended to silence earlier diagnostics
+[557/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_pack.c.o
+[558/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_simdmat.c.o
+[559/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_nir_lower_texture.c.o
+[560/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_spill.c.o
+[561/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_register_allocate.c.o
+[562/617] Compiling C object src/asahi/compiler/libasahi_compiler.a.p/agx_compile.c.o
+[563/617] Linking static target src/asahi/compiler/libasahi_compiler.a
+[564/617] Linking target src/asahi/clc/asahi_clc
+[565/617] Generating src/asahi/lib/libagx_shaders.h with a custom command
+[566/617] Compiling C object src/asahi/vulkan/libhk.a.p/meson-generated_.._hk_drirc.c.o
+[567/617] Compiling C object src/asahi/vulkan/libhk.a.p/meson-generated_.._hk_entrypoints.c.o
+[568/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/pool.c.o
+[569/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_border.c.o
+[570/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_tilebuffer.c.o
+[571/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/meson-generated_.._libagx_shaders.c.o
+[572/617] Compiling C object src/asahi/vulkan/libhk.a.p/meson-generated_.._.._lib_libagx_shaders.c.o
+[573/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_linker.c.o
+[574/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_scratch.c.o
+[575/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_bo.c.o
+[576/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_nir_lower_msaa.c.o
+[577/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_va.c.o
+[578/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_device.c.o
+[579/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_device_virtio.c.o
+[580/617] Compiling C++ object src/asahi/lib/libasahi_lib.a.p/meson-generated_.._.._libagx_libagx.cpp.o
+[581/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_nir_lower_sample_intrinsics.c.o
+[582/617] Compiling C++ object src/asahi/vulkan/libhk.a.p/meson-generated_.._.._libagx_libagx.cpp.o
+[583/617] Compiling C++ object src/asahi/lib/libasahi_lib.a.p/meson-generated_.._.._.._poly_cl_libpoly.cpp.o
+[584/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_descriptor_table.c.o
+[585/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_buffer.c.o
+[586/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_nir_lower_vbo.c.o
+[587/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_bg_eot.c.o
+[588/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_cmd_pool.c.o
+[589/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_cmd_dispatch.c.o
+[590/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_cmd_clear.c.o
+[591/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_nir_lower_tilebuffer.c.o
+[592/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_format.c.o
+[593/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_event.c.o
+[594/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_buffer_view.c.o
+[595/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_instance.c.o
+[596/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_descriptor_set_layout.c.o
+[597/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_wsi.c.o
+[598/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_nir_lower_uvs.c.o
+[599/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_device_memory.c.o
+[600/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_sampler.c.o
+[601/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_device.c.o
+[602/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_image_view.c.o
+[603/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_descriptor_set.c.o
+[604/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_cmd_buffer.c.o
+[605/617] Compiling C object src/asahi/lib/libasahi_lib.a.p/agx_nir_prolog_epilog.c.o
+[606/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_physical_device.c.o
+[607/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_query_pool.c.o
+[608/617] Linking static target src/asahi/lib/libasahi_lib.a
+[609/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_queue.c.o
+[610/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_image.c.o
+[611/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_cmd_meta.c.o
+[612/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_nir_lower_descriptors.c.o
+[613/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_shader.c.o
+[614/617] Compiling C object src/asahi/vulkan/libhk.a.p/hk_cmd_draw.c.o
+[615/617] Linking static target src/asahi/vulkan/libhk.a
+[616/617] Linking target src/asahi/vulkan/libvulkan_asahi.so
+[616/617] Installing files
+Installing src/asahi/vulkan/libvulkan_asahi.so to /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/hw-123934/side/agxperf/lib64
+Installing src/asahi/vulkan/asahi_icd.aarch64.json to /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/hw-123934/side/agxperf/share/vulkan/icd.d
+Installing /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/hw-123934/src/src/util/00-mesa-defaults.conf to /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/hw-123934/side/agxperf/share/drirc.d
+Installing /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/hw-123934/src/src/asahi/vulkan/00-hk-defaults.conf to /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/hw-123934/side/agxperf/share/drirc.d

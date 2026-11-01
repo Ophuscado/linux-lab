@@ -1,0 +1,202 @@
+-- The C compiler identification is GNU 16.2.1
+-- The CXX compiler identification is GNU 16.2.1
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+Installing in /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224615/inst. Run /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224615/libplasma/b/prefix.sh to set the environment for libplasma.
+-- Looking for __GLIBC__
+-- Looking for __GLIBC__ - found
+-- Performing Test _OFFT_IS_64BIT
+-- Performing Test _OFFT_IS_64BIT - Success
+-- Performing Test HAVE_DATE_TIME
+-- Performing Test HAVE_DATE_TIME - Success
+Installing in /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224615/inst. Run /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224615/libplasma/b/prefix.sh to set the environment for libplasma.
+-- Performing Test HAVE_STDATOMIC
+-- Performing Test HAVE_STDATOMIC - Success
+-- Found WrapAtomic: TRUE
+-- Found OpenGL: /usr/lib64/libOpenGL.so
+-- Found WrapOpenGL: TRUE
+-- Found WrapVulkanHeaders: /usr/include
+-- Found XKB: /usr/lib64/libxkbcommon.so (found suitable version "1.13.1", minimum required is "0.9.0")
+-- Found KF6Config: /usr/lib64/cmake/KF6Config/KF6ConfigConfig.cmake (found version "6.31.0")
+-- Found KF6CoreAddons: /usr/lib64/cmake/KF6CoreAddons/KF6CoreAddonsConfig.cmake (found version "6.31.0")
+-- Found KF6GlobalAccel: /usr/lib64/cmake/KF6GlobalAccel/KF6GlobalAccelConfig.cmake (found version "6.31.0")
+-- Found KF6GuiAddons: /usr/lib64/cmake/KF6GuiAddons/KF6GuiAddonsConfig.cmake (found version "6.31.0")
+-- Found Gettext: /usr/bin/msgmerge (found version "0.26")
+-- Found KF6I18n: /usr/lib64/cmake/KF6I18n/KF6I18nConfig.cmake (found version "6.31.0")
+-- Found KF6IconThemes: /usr/lib64/cmake/KF6IconThemes/KF6IconThemesConfig.cmake (found version "6.31.0")
+-- Found X11: /usr/include
+-- Looking for XOpenDisplay in /usr/lib64/libX11.so
+-- Looking for XOpenDisplay in /usr/lib64/libX11.so - found
+-- Looking for gethostbyname
+-- Looking for gethostbyname - found
+-- Looking for connect
+-- Looking for connect - found
+-- Looking for remove
+-- Looking for remove - found
+-- Looking for shmat
+-- Looking for shmat - found
+-- Found KF6KIO: /usr/lib64/cmake/KF6KIO/KF6KIOConfig.cmake (found version "6.31.0")
+-- Found KF6WindowSystem: /usr/lib64/cmake/KF6WindowSystem/KF6WindowSystemConfig.cmake (found version "6.31.0")
+-- Found KF6Notifications: /usr/lib64/cmake/KF6Notifications/KF6NotificationsConfig.cmake (found version "6.31.0")
+-- Found KF6Package: /usr/lib64/cmake/KF6Package/KF6PackageConfig.cmake (found version "6.31.0")
+-- Found KF6KirigamiPlatform: /usr/lib64/cmake/KF6KirigamiPlatform/KF6KirigamiPlatformConfig.cmake (found version "6.31.0")
+-- Found KF6Svg: /usr/lib64/cmake/KF6Svg/KF6SvgConfig.cmake (found version "6.31.0")
+-- Found KF6ColorScheme: /usr/lib64/cmake/KF6ColorScheme/KF6ColorSchemeConfig.cmake (found version "6.31.0")
+-- Found KF6: success (found suitable version "6.31.0", minimum required is "6.26.0") found components: Config CoreAddons GlobalAccel GuiAddons I18n IconThemes KIO WindowSystem Notifications Package KirigamiPlatform Svg ColorScheme
+-- Found Wayland_Client: /usr/lib64/libwayland-client.so (found version "1.26.0")
+-- Found Wayland_Server: /usr/lib64/libwayland-server.so (found version "1.26.0")
+-- Found Wayland_Cursor: /usr/lib64/libwayland-cursor.so (found version "1.26.0")
+-- Found Wayland_Egl: /usr/lib64/libwayland-egl.so (found version "18.1.0")
+-- Found Wayland: /usr/lib64/libwayland-client.so;/usr/lib64/libwayland-server.so;/usr/lib64/libwayland-cursor.so;/usr/lib64/libwayland-egl.so (found version "1.26.0")
+-- Found WaylandScanner: /usr/bin/wayland-scanner
+-- Found Wayland: /usr/lib64/libwayland-client.so;/usr/lib64/libwayland-server.so;/usr/lib64/libwayland-cursor.so;/usr/lib64/libwayland-egl.so (found suitable version "1.26.0", minimum required is "1.9") found components: Client
+-- Found WaylandProtocols: //usr/share/wayland-protocols (found suitable version "1.49", minimum required is "1.46")
+-- XCB: XFIXES requires XCB;RENDER;SHAPE
+-- Found XCB_XCB: /usr/lib64/libxcb.so (found version "1.17.0")
+-- Found XCB_RENDER: /usr/lib64/libxcb-render.so (found version "1.17.0")
+-- Found XCB_SHAPE: /usr/lib64/libxcb-shape.so (found version "1.17.0")
+-- Found XCB_XFIXES: /usr/lib64/libxcb-xfixes.so (found version "1.17.0")
+-- Found XCB_COMPOSITE: /usr/lib64/libxcb-composite.so (found version "1.17.0")
+-- Found XCB_DAMAGE: /usr/lib64/libxcb-damage.so (found version "1.17.0")
+-- Found XCB: /usr/lib64/libxcb.so;/usr/lib64/libxcb-render.so;/usr/lib64/libxcb-shape.so;/usr/lib64/libxcb-xfixes.so;/usr/lib64/libxcb-composite.so;/usr/lib64/libxcb-damage.so (found version "1.17.0") found components: XCB COMPOSITE DAMAGE XFIXES RENDER
+-- Performing Test HAVE_EGL
+-- Performing Test HAVE_EGL - Success
+-- Found EGL: /usr/include (found version "1.5")
+-- Found Qt5Compat.GraphicalEffects-QMLModule: TRUE
+-- Found org.kde.config-QMLModule: TRUE
+-- Found org.kde.kirigami-QMLModule: TRUE
+-- Found org.kde.ksvg-QMLModule: TRUE
+-- Found gzip: /usr/bin/gzip
+-- Performing Test COMPILER_HAS_HIDDEN_VISIBILITY
+-- Performing Test COMPILER_HAS_HIDDEN_VISIBILITY - Success
+-- Performing Test COMPILER_HAS_HIDDEN_INLINE_VISIBILITY
+-- Performing Test COMPILER_HAS_HIDDEN_INLINE_VISIBILITY - Success
+-- Performing Test COMPILER_HAS_DEPRECATED_ATTR
+-- Performing Test COMPILER_HAS_DEPRECATED_ATTR - Success
+CMake Warning (dev) at /usr/lib64/cmake/Qt6Core/Qt6CoreMacros.cmake:3573 (message):
+  Qt policy QTP0004 is not set: You need qmldir files for each extra
+  directory that contains .qml files for your module.  Check
+  https://doc.qt.io/qt-6/qt-cmake-policy-qtp0004.html for policy details.
+  Use the qt_policy command to set the policy and suppress this warning.
+
+Call Stack (most recent call first):
+  /usr/lib64/cmake/Qt6Qml/Qt6QmlMacros.cmake:4040 (__qt_internal_setup_policy)
+  /usr/share/ECM/modules/ECMQmlModule6.cmake:165 (qt6_target_qml_sources)
+  src/declarativeimports/plasmaextracomponents/CMakeLists.txt:29 (ecm_target_qml_sources)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/lib64/cmake/Qt6Core/Qt6CoreMacros.cmake:3573 (message):
+  Qt policy QTP0004 is not set: You need qmldir files for each extra
+  directory that contains .qml files for your module.  Check
+  https://doc.qt.io/qt-6/qt-cmake-policy-qtp0004.html for policy details.
+  Use the qt_policy command to set the policy and suppress this warning.
+
+Call Stack (most recent call first):
+  /usr/lib64/cmake/Qt6Qml/Qt6QmlMacros.cmake:4040 (__qt_internal_setup_policy)
+  /usr/share/ECM/modules/ECMQmlModule6.cmake:165 (qt6_target_qml_sources)
+  src/declarativeimports/plasmaextracomponents/CMakeLists.txt:37 (ecm_target_qml_sources)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/ECM/modules/ECMQmlModule6.cmake:67 (message):
+  The NO_PLUGIN argument to ecm_add_qml_module is deprecated for Qt 6; For Qt
+  6 QML modules always require a plugin library.  Use GENERATE_PLUGIN_SOURCE
+  instead.  If you wish to use the NO_PLUGIN feature from qt_add_qml_module,
+  use QT_NO_PLUGIN.
+Call Stack (most recent call first):
+  src/declarativeimports/CMakeLists.txt:20 (ecm_add_qml_module)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/lib64/cmake/Qt6Core/Qt6CoreMacros.cmake:3573 (message):
+  Qt policy QTP0004 is not set: You need qmldir files for each extra
+  directory that contains .qml files for your module.  Check
+  https://doc.qt.io/qt-6/qt-cmake-policy-qtp0004.html for policy details.
+  Use the qt_policy command to set the policy and suppress this warning.
+
+Call Stack (most recent call first):
+  /usr/lib64/cmake/Qt6Qml/Qt6QmlMacros.cmake:4040 (__qt_internal_setup_policy)
+  /usr/share/ECM/modules/ECMQmlModule6.cmake:165 (qt6_target_qml_sources)
+  src/declarativeimports/CMakeLists.txt:24 (ecm_target_qml_sources)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/lib64/cmake/Qt6Core/Qt6CoreMacros.cmake:3573 (message):
+  Qt policy QTP0004 is not set: You need qmldir files for each extra
+  directory that contains .qml files for your module.  Check
+  https://doc.qt.io/qt-6/qt-cmake-policy-qtp0004.html for policy details.
+  Use the qt_policy command to set the policy and suppress this warning.
+
+Call Stack (most recent call first):
+  /usr/lib64/cmake/Qt6Qml/Qt6QmlMacros.cmake:4040 (__qt_internal_setup_policy)
+  /usr/share/ECM/modules/ECMQmlModule6.cmake:165 (qt6_target_qml_sources)
+  src/declarativeimports/CMakeLists.txt:29 (ecm_target_qml_sources)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- The following features have been enabled:
+
+ * GLX, OpenGL GLX libraries.
+ * EGL, A platform-agnostic mechanism for creating rendering surfaces for use with other graphics libraries, such as OpenGL|ES and OpenVG., <https://www.khronos.org/egl/>
+   Fallback when OpenGL not available because of missing GLVND
+
+-- The following OPTIONAL packages have been found:
+
+ * Qt6Svg (required version >= 6.10.0)
+ * Qt6QuickControls2 (required version >= 6.10.0)
+ * WrapVulkanHeaders
+ * Qt6Qml (required version >= 6.10.0)
+ * Qt6DBusTools (required version >= 6.11.2)
+ * Qt6GuiTools (required version >= 6.11.2)
+ * Qt6WidgetsTools (required version >= 6.11.2)
+ * Qt6QmlTools (required version >= 6.11.2)
+ * Qt6QuickTools (required version >= 6.11.2)
+ * Qt6Quick (required version >= 6.10.0)
+ * Qt6CoreTools (required version >= 6.11.2)
+ * Qt6WaylandScannerTools (required version >= 6.11.2)
+ * X11, X11 libraries, <https://www.x.org/>
+ * XCB, X protocol C-language Binding, <https://xcb.freedesktop.org/>
+ * OpenGL, The OpenGL libraries, <https://www.opengl.org/>
+ * EGL, A platform-agnostic mechanism for creating rendering surfaces for use with other graphics libraries, such as OpenGL|ES and OpenVG., <https://www.khronos.org/egl/>
+   Fallback when OpenGL not available because of missing GLVND
+
+-- The following REQUIRED packages have been found:
+
+ * ECM (required version >= 6.26.0)
+ * Qt6GuiPrivate (required version >= 6.10.0)
+ * KF6GlobalAccel (required version >= 6.26.0)
+ * KF6GuiAddons (required version >= 6.26.0)
+ * Gettext
+ * KF6I18n (required version >= 6.26.0)
+ * KF6IconThemes (required version >= 6.26.0)
+ * KF6CoreAddons (required version >= 6.31.0)
+ * KF6Config (required version >= 6.31.0)
+ * KF6KIO (required version >= 6.26.0)
+ * KF6WindowSystem (required version >= 6.26.0)
+ * KF6Notifications (required version >= 6.26.0)
+ * KF6Package (required version >= 6.26.0)
+ * KF6KirigamiPlatform (required version >= 6.26.0)
+ * KF6Svg (required version >= 6.26.0)
+ * KF6ColorScheme (required version >= 6.26.0)
+ * KF6 (required version >= 6.26.0)
+ * Qt6Core (required version >= 6.10.0)
+ * PlasmaActivities
+ * PlasmaWaylandProtocols (required version >= 1.10.0)
+ * Qt6WaylandClient (required version >= 6.10.0)
+ * Wayland (required version >= 1.9), C library implementation of the Wayland protocol: a protocol for a compositor to talk to its clients, <https://wayland.freedesktop.org/>
+ * WaylandProtocols (required version >= 1.46), Specifications of extended Wayland protocols, <https://wayland.freedesktop.org/>
+ * Qt5Compat.GraphicalEffects-QMLModule, QML module 'Qt5Compat.GraphicalEffects' is a dependency.
+ * org.kde.config-QMLModule, QML module 'org.kde.config' is a dependency.
+ * org.kde.kirigami-QMLModule, QML module 'org.kde.kirigami' is a dependency.
+ * org.kde.ksvg-QMLModule, QML module 'org.kde.ksvg' is a dependency.
+ * gzip, Data compression program for the gzip format, <https://www.gnu.org/software/gzip>
+ * Qt6
+
+-- Found clang-format version 22
+-- Configuring done (5.8s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/ophuscado/Projects/linux-lab/_tmp/claude-linux/kde-224615/libplasma/b

@@ -1,0 +1,100 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Sun, 1 Nov 2026 05:33:15 +0000
+Subject: [PATCH 16/16] vulkan: Metal-layout matrix-vector decodes A once for
+ all columns
+
+---
+ .../vulkan-shaders/mul_mat_vec_simd.comp      | 61 +++++++++++++------
+ 1 file changed, 43 insertions(+), 18 deletions(-)
+
+diff --git a/ggml/src/ggml-vulkan/vulkan-shaders/mul_mat_vec_simd.comp b/ggml/src/ggml-vulkan/vulkan-shaders/mul_mat_vec_simd.comp
+index 585e11d7c..47805b779 100644
+--- a/ggml/src/ggml-vulkan/vulkan-shaders/mul_mat_vec_simd.comp
++++ b/ggml/src/ggml-vulkan/vulkan-shaders/mul_mat_vec_simd.comp
+@@ -39,14 +39,47 @@ void compute_outputs(const uint first_row, const uint num_rows) {
+     const uint il = (tid % SLICES) * 8;     // q4_0: first of 8 low-nibble values; q8_0: first of 8 values
+     const uint step = BLOCK_SIZE / SLICES;  // blocks covered by the workgroup per iteration
+ 
++    // Each row's slice of A is loaded and decoded once per block, then used for every column of B: loading it per
++    // column made several columns cost about as much as that many single-column calls.
+     for (uint ib = ix; ib < nb; ib += step) {
++#if defined(DATA_A_Q4_0)
++        // Byte k of the slice holds value il+k (low nibble) and il+k+16 (high nibble); a 16-bit word holds
++        // bytes 2m and 2m+1, so its masks 0x000F, 0x0F00, 0x00F0, 0xF000 give values 2m, 2m+1, 2m+16, 2m+17
++        // times 1, 256, 16 and 4096.
++        vec4 qa[NUM_ROWS], qb[NUM_ROWS], qc[NUM_ROWS], qd[NUM_ROWS];
++        float da[NUM_ROWS];
++        [[unroll]] for (uint n = 0; n < NUM_ROWS; ++n) {
++            if (n < num_rows) {
++                const uint blk = a_offset + (first_row + n)*nb + ib;
++                const uvec4 q = uvec4(data_a_packed16[blk].qs[il/2 + 0], data_a_packed16[blk].qs[il/2 + 1],
++                                      data_a_packed16[blk].qs[il/2 + 2], data_a_packed16[blk].qs[il/2 + 3]);
++                qa[n] = vec4(q & 0x000Fu);
++                qb[n] = vec4(q & 0x0F00u);
++                qc[n] = vec4(q & 0x00F0u);
++                qd[n] = vec4(q & 0xF000u);
++                da[n] = float(data_a_packed16[blk].d);
++            }
++        }
++#else
++        vec4 a0[NUM_ROWS], a1[NUM_ROWS];
++        float da[NUM_ROWS];
++        [[unroll]] for (uint n = 0; n < NUM_ROWS; ++n) {
++            if (n < num_rows) {
++                const uint blk = a_offset + (first_row + n)*nb + ib;
++                const ivec4 w = ivec4(data_a_packed16[blk].qs[il/2 + 0], data_a_packed16[blk].qs[il/2 + 1],
++                                      data_a_packed16[blk].qs[il/2 + 2], data_a_packed16[blk].qs[il/2 + 3]);
++                const ivec4 lo = (w << 24) >> 24;
++                const ivec4 hi = w >> 8;
++                a0[n] = vec4(lo.x, hi.x, lo.y, hi.y);
++                a1[n] = vec4(lo.z, hi.z, lo.w, hi.w);
++                da[n] = float(data_a_packed16[blk].d);
++            }
++        }
++#endif
+         [[unroll]] for (uint j = 0; j < NUM_COLS; ++j) {
+             // Rows of B are aligned to 4 elements here, as mul_mat_vec.comp's vec4 loads assume too.
+             const uint yv = (j*p.batch_stride_b + b_offset + ib*QUANT_K + il) / 4;
+ #if defined(DATA_A_Q4_0)
+-            // Byte k of the slice holds value il+k (low nibble) and il+k+16 (high nibble); a 16-bit word holds
+-            // bytes 2m and 2m+1, so its masks 0x000F, 0x0F00, 0x00F0, 0xF000 give values 2m, 2m+1, 2m+16, 2m+17
+-            // times 1, 256, 16 and 4096.
+             const vec4 y0 = vec4(data_b_v4[yv]);
+             const vec4 y1 = vec4(data_b_v4[yv + 1]);
+             const vec4 y2 = vec4(data_b_v4[yv + 4]);
+@@ -58,27 +91,19 @@ void compute_outputs(const uint first_row, const uint num_rows) {
+             const vec4 yd = vec4(y2.y, y2.w, y3.y, y3.w) * (1.0f/4096.0f);
+ 
+             [[unroll]] for (uint n = 0; n < NUM_ROWS; ++n) {
+-                if (n >= num_rows) break;
+-                const uint blk = a_offset + (first_row + n)*nb + ib;
+-                const uvec4 q = uvec4(data_a_packed16[blk].qs[il/2 + 0], data_a_packed16[blk].qs[il/2 + 1],
+-                                      data_a_packed16[blk].qs[il/2 + 2], data_a_packed16[blk].qs[il/2 + 3]);
+-                const float s = dot(ya, vec4(q & 0x000Fu)) + dot(yb, vec4(q & 0x0F00u))
+-                              + dot(yc, vec4(q & 0x00F0u)) + dot(yd, vec4(q & 0xF000u));
+-                acc[j][n] += float(data_a_packed16[blk].d) * (s - 8.0f*sumy);
++                if (n < num_rows) {
++                    const float s = dot(ya, qa[n]) + dot(yb, qb[n]) + dot(yc, qc[n]) + dot(yd, qd[n]);
++                    acc[j][n] += da[n] * (s - 8.0f*sumy);
++                }
+             }
+ #else
+             const vec4 y0 = vec4(data_b_v4[yv]);
+             const vec4 y1 = vec4(data_b_v4[yv + 1]);
+ 
+             [[unroll]] for (uint n = 0; n < NUM_ROWS; ++n) {
+-                if (n >= num_rows) break;
+-                const uint blk = a_offset + (first_row + n)*nb + ib;
+-                const ivec4 w = ivec4(data_a_packed16[blk].qs[il/2 + 0], data_a_packed16[blk].qs[il/2 + 1],
+-                                      data_a_packed16[blk].qs[il/2 + 2], data_a_packed16[blk].qs[il/2 + 3]);
+-                const ivec4 lo = (w << 24) >> 24;
+-                const ivec4 hi = w >> 8;
+-                const float s = dot(vec4(lo.x, hi.x, lo.y, hi.y), y0) + dot(vec4(lo.z, hi.z, lo.w, hi.w), y1);
+-                acc[j][n] += float(data_a_packed16[blk].d) * s;
++                if (n < num_rows) {
++                    acc[j][n] += da[n] * (dot(a0[n], y0) + dot(a1[n], y1));
++                }
+             }
+ #endif
+         }
