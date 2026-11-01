@@ -121,6 +121,14 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 
 ### Where the generation gap is
 
+- 1 Nov, VERIFIED (run 7600): GATED_DELTA_NET's cost on Honeykrisp was its lane split, not latency. For 128-wide
+  states ggml-vulkan splits a column over 4 invocations (32 state rows each); a whole subgroup, as ggml-metal does,
+  takes a 512-token step from 2143 to 772 us at 32 heads and 2159 to 539 at 4 (8 lanes 1377, 16 lanes 1283), tests
+  43/43; one token 19.3 to 20.7 us. This supersedes the 1 Nov entry that called the token loop one latency chain.
+- 1 Nov, VERIFIED (runs 7603, 7915 and the batched-load run after): a port of ggml-metal's mul_mv_ext layout (8
+  invocations a row, 8 rows a workgroup of 64, every column's sum per invocation) passes MUL_MAT 2426/2426 but is
+  2-4x slower than today's matrix-vector at 2-8 columns (q8_0 n=8 1384-1736 us against 418): its loop waits on every
+  one of its 44 loads (agx-loops), and issuing a chunk's B loads together before use changes little. Not kept.
 - 1 Nov, VERIFIED (runs 6434, and the every-column run after it): the 4096x14336 matrix-vector grows about linearly with
   columns on every setting (q8_0 at 8 columns 404-1215 us against Metal's 93; q4_0 327-5670 against 83), best at rows
   per workgroup 2 for q8_0 and 1 for q4_0. The Metal-layout shader was used for one column only; decoding A once for
