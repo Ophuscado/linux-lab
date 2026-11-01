@@ -121,6 +121,9 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 
 ### Where the generation gap is
 
+- 1 Nov, VERIFIED (run 8404, with the hoist): the series' other G13-only choice, shared-offset folding (opened to G14
+  by a one-line patch, `AGX_LOCAL_FOLD=1`), passes MUL_MAT, MUL_MAT_ID, FLASH_ATTN_EXT and SOFT_MAX here but moves
+  Llama 2, Qwen and Gemma by under 1.2 %; sync-wait polling (`HK_SUBMIT_POLL_US` 50 or 500) by under 2.5 %. Neither kept.
 - 1 Nov, VERIFIED (runs 8213, 8383): Mesa's compute load hoist (`AGX_HOIST_LOADS=1`, from the coopmat series: on by
   default on G13, opt-in on G14) moves device loads up to 64 instructions above independent work. On this M2 Ultra
   every op test passes with it (MUL_MAT 2426, MUL_MAT_ID 1109, FLASH_ATTN_EXT 5368 and 13 more) and tg128 rises on every
