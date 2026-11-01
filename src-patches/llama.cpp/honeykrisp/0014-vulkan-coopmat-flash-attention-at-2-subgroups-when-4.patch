@@ -10,7 +10,7 @@ With f32 accumulation, heads of 512 (Gemma 4's global layers) need about 34 KB o
  1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
-index 328767a90..f5e0da513 100644
+index 9304c4d9c..32792021d 100644
 --- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
 +++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
 @@ -1272,7 +1272,7 @@ static vk_fa_tuning_params get_fa_tuning_params_scalar(const vk_device& device,

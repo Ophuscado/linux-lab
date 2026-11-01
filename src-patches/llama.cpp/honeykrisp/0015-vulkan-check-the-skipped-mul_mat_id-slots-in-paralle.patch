@@ -4,7 +4,6 @@ Date: Sun, 1 Nov 2026 02:47:24 +0000
 Subject: [PATCH 15/15] vulkan: check the skipped mul_mat_id slots in parallel
 
 count_experts runs as one workgroup before every MUL_MAT_ID, and its zero_skipped_rows had each of its 256 invocations walk all n_used x n_tokens ids, so a Qwen 3.x prompt of 512 tokens (512 experts, 10 used) did 5120 loads one after another in every invocation before the matmul could start. Each invocation now checks only its own slots and zeroes a skipped row alone; skipped slots (-1 ids) are rare.
-
 ---
  ggml/src/ggml-vulkan/vulkan-shaders/count_experts.comp | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
@@ -32,6 +31,3 @@ index a46a06193..9a76390a0 100644
              data_dst[d_off + i] = 0.0f;
          }
      }
--- 
-2.43.0
-

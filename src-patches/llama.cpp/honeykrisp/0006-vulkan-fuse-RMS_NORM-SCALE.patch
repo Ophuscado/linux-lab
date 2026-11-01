@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Thu, 29 Oct 2026 08:14:48 +0000
-Subject: [PATCH 6/15] vulkan: fuse RMS_NORM + SCALE
+Subject: [PATCH 06/15] vulkan: fuse RMS_NORM + SCALE
 
 A SCALE without bias that follows an RMS_NORM rides in the norm's unused
 param2, so the pair is one launch. Qwen3-Coder-Next issues 72 such pairs
@@ -21,7 +21,7 @@ and RMS_NORM_MUL_* cases pass.
  5 files changed, 75 insertions(+), 4 deletions(-)
 
 diff --git a/ggml/src/ggml-vulkan/ggml-vulkan-types.h b/ggml/src/ggml-vulkan/ggml-vulkan-types.h
-index 88d0f3a37..7b43adc11 100644
+index fa520f69e..079163735 100644
 --- a/ggml/src/ggml-vulkan/ggml-vulkan-types.h
 +++ b/ggml/src/ggml-vulkan/ggml-vulkan-types.h
 @@ -635,6 +635,7 @@ enum rms_norm_mode {
@@ -33,10 +33,10 @@ index 88d0f3a37..7b43adc11 100644
  };
  
 diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
-index 0c1990d6c..00a06285e 100644
+index 328186595..9d4c00c51 100644
 --- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
 +++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
-@@ -11075,7 +11075,10 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
+@@ -11135,7 +11135,10 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
      ggml_tensor * dst;
      const ggml_tensor * src1;
  
@@ -48,7 +48,7 @@ index 0c1990d6c..00a06285e 100644
          ggml_tensor * mul = cgraph->nodes[node_idx + 1];
          dst = mul;
          src1 = mul->src[0] == rms ? mul->src[1] : mul->src[0];
-@@ -11086,6 +11089,9 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
+@@ -11146,6 +11149,9 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
  
      const uint32_t num_partials = ctx->do_add_rms_partials ? ggml_vk_rms_num_partials(ctx, dst) : 0;
      vk_op_binary_push_constants bin = ggml_vk_rms_norm_push_constants(src0, src1, dst, op_params[0], num_partials);
@@ -58,7 +58,7 @@ index 0c1990d6c..00a06285e 100644
  
      if (ctx->fused_rms_norm_mode == RMS_NORM_MUL_ROPE ||
          ctx->fused_rms_norm_mode == RMS_NORM_MUL_ROPE_VIEW_SET_ROWS) {
-@@ -11168,7 +11174,8 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
+@@ -11229,7 +11235,8 @@ void ggml_vk_rms_norm(ggml_backend_vk_context * ctx, vk_context& subctx, const s
                  ggml_vk_subbuffer(ctx, buf[6], offset[6]),
              }, pc, elements);
      } else {
@@ -68,7 +68,7 @@ index 0c1990d6c..00a06285e 100644
          ggml_vk_op_f32<vk_op_binary_push_constants>(ctx, subctx, src0, src1, nullptr, nullptr, dst, GGML_OP_RMS_NORM, std::move(bin));
      }
  
-@@ -13754,6 +13761,18 @@ bool ggml_vk_can_fuse(const ggml_backend_vk_context * ctx, const struct ggml_cgr
+@@ -13815,6 +13822,18 @@ bool ggml_vk_can_fuse(const ggml_backend_vk_context * ctx, const struct ggml_cgr
          return false;
      }
  
@@ -87,7 +87,7 @@ index 0c1990d6c..00a06285e 100644
      if ((ops.size() == 2 || ops.size() == 3 || ops.size() == 4) &&
          ops.begin()[0] == GGML_OP_RMS_NORM && ops.begin()[1] == GGML_OP_MUL) {
          // additional constraints specific to this fusion
-@@ -14673,6 +14692,12 @@ static ggml_status ggml_backend_vk_graph_compute(ggml_backend_t backend, ggml_cg
+@@ -14734,6 +14753,12 @@ static ggml_status ggml_backend_vk_graph_compute(ggml_backend_t backend, ggml_cg
                  ctx->fused_rms_norm_mode = RMS_NORM_VIEW_SET_ROWS;
                  fusion_string = "RMS_NORM_VIEW_SET_ROWS";
                  std::fill_n(op_srcs_fused_elementwise, 3, false);
@@ -101,11 +101,11 @@ index 0c1990d6c..00a06285e 100644
                  ctx->num_additional_fused_ops = 1;
                  ctx->fused_rms_norm_mode = RMS_NORM_MUL;
 diff --git a/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm.comp b/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm.comp
-index 314c8e565..c69d6a595 100644
+index 6a2525849..ec63a2d1c 100644
 --- a/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm.comp
 +++ b/ggml/src/ggml-vulkan/vulkan-shaders/rms_norm.comp
-@@ -101,7 +101,8 @@ void rms_norm(uint num_iters) {
-             sum = sumsh[0];
+@@ -127,7 +127,8 @@ void rms_norm(uint num_iters) {
+             #endif
  
              const FLOAT_TYPE mean = sum / FLOAT_TYPE(ncols);
 -            const FLOAT_TYPE scale = inversesqrt(mean + FLOAT_TYPE(p.param1));
@@ -129,10 +129,10 @@ index cf7ab21f2..67780d9fc 100644
      if (do_multiply) {
          if (ncols > p.ne10) {
 diff --git a/tests/test-backend-ops.cpp b/tests/test-backend-ops.cpp
-index fe3a67c64..b7ce747fd 100644
+index e4ebd7c5f..d62e97952 100644
 --- a/tests/test-backend-ops.cpp
 +++ b/tests/test-backend-ops.cpp
-@@ -3989,6 +3989,43 @@ struct test_rms_norm_back : public test_case {
+@@ -4003,6 +4003,43 @@ struct test_rms_norm_back : public test_case {
  };
  
  // GGML_OP_RMS_NORM + GGML_OP_MUL + GGML_OP_ADD (+ GGML_OP_MUL)
@@ -176,8 +176,8 @@ index fe3a67c64..b7ce747fd 100644
  struct test_rms_norm_mul_add : public test_case {
      const ggml_type type;
      const std::array<int64_t, 4> ne;
-@@ -10897,6 +10934,12 @@ static std::vector<std::unique_ptr<test_case>> make_test_cases_eval() {
-         test_cases.emplace_back(new test_rms_norm_mul_rope({ 128, 4, 3, 1 }, 1e-6f, false, true, false, GGML_ROPE_TYPE_NORMAL, false, false, set_rows_type));
+@@ -10990,6 +11027,12 @@ static std::vector<std::unique_ptr<test_case>> make_test_cases_eval() {
+         }
      }
  
 +    for (std::array<int64_t, 4> ne : { std::array<int64_t, 4>{ 128, 16, 1, 1 }, { 64, 5, 4, 3 }, { 1025, 3, 2, 1 } }) {
@@ -189,6 +189,3 @@ index fe3a67c64..b7ce747fd 100644
      for (float eps : { 0.0f, 1e-6f, 1e-4f, 1e-1f, 1.0f }) {
          for (uint32_t n : { 64, 1025 }) {
              test_cases.emplace_back(new test_rms_norm_mul_add(GGML_TYPE_F32, { n, 5, 4, 3 }, eps, false));
--- 
-2.43.0
-

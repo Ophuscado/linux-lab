@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ophuscado <postbox@ophuscado.com>
 Date: Mon, 26 Oct 2026 23:40:38 +0000
-Subject: [PATCH 3/15] vulkan: matrix-vector pipelines up to 16 columns, cut
+Subject: [PATCH 03/15] vulkan: matrix-vector pipelines up to 16 columns, cut
  settable
 
 Dense MUL_MAT leaves the matrix-vector shader past mul_mat_vec_max_cols, a compile-time 8, and a 9-token batch then runs at a fraction of an 8-token one. Pipelines now exist for up to 16 columns (compiled on first use) and GGML_VK_MMV_MAX_COLS (default 8, at most 16) sets the cut used.
@@ -13,7 +13,7 @@ On an M2 Ultra at 16, t/s for a 9-token batch: Qwen3-Coder-Next Q8 37 -> 107, Ge
  2 files changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/ggml/src/ggml-vulkan/ggml-vulkan-types.h b/ggml/src/ggml-vulkan/ggml-vulkan-types.h
-index 5cf46c890..88d0f3a37 100644
+index a1505555a..fa520f69e 100644
 --- a/ggml/src/ggml-vulkan/ggml-vulkan-types.h
 +++ b/ggml/src/ggml-vulkan/ggml-vulkan-types.h
 @@ -49,6 +49,7 @@ typedef struct VkPhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV {
@@ -44,10 +44,10 @@ index 5cf46c890..88d0f3a37 100644
  static constexpr uint32_t p021_max_gqa_ratio = 8;
  
 diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
-index 768af5419..54b09ff96 100644
+index 109ac563e..37885a2ef 100644
 --- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
 +++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
-@@ -7459,7 +7459,7 @@ void ggml_vk_mul_mat(ggml_backend_vk_context * ctx, vk_context& subctx, const st
+@@ -7472,7 +7472,7 @@ void ggml_vk_mul_mat(ggml_backend_vk_context * ctx, vk_context& subctx, const st
      } else if (ctx->num_additional_fused_ops == 0 &&
                 (src0->type == GGML_TYPE_F32 || src0->type == GGML_TYPE_F16) &&
                 (src1->type == GGML_TYPE_F32 || src1->type == GGML_TYPE_F16 || src1->type == GGML_TYPE_BF16 || ggml_is_quantized(src1->type)) &&
@@ -56,7 +56,7 @@ index 768af5419..54b09ff96 100644
                 src0->ne[2] == 1 && src0->ne[3] == 1 &&
                 src1->ne[2] == 1 && src1->ne[3] == 1 &&
                 ggml_is_contiguous(src0) && ggml_is_contiguous(src1) && ggml_is_contiguous(dst) &&
-@@ -7467,7 +7467,7 @@ void ggml_vk_mul_mat(ggml_backend_vk_context * ctx, vk_context& subctx, const st
+@@ -7480,7 +7480,7 @@ void ggml_vk_mul_mat(ggml_backend_vk_context * ctx, vk_context& subctx, const st
          ggml_vk_mul_mat_vec_q_f16(ctx, subctx, cgraph, node_idx, true);
      // mul_mat_vec supports batching ne12*ne13 when ne11==1, or treating ne11 as the batch size (up to four)
      // when ne12 and ne13 are one.
@@ -65,7 +65,7 @@ index 768af5419..54b09ff96 100644
                 (src0->type == GGML_TYPE_F32 || src0->type == GGML_TYPE_F16 || src0->type == GGML_TYPE_BF16 || ggml_is_quantized(src0->type))) {
          ggml_vk_mul_mat_vec_q_f16(ctx, subctx, cgraph, node_idx);
      } else {
-@@ -16734,7 +16734,7 @@ std::string vk_perf_logger::get_node_fusion_name(const ggml_tensor * node, const
+@@ -16750,7 +16750,7 @@ std::string vk_perf_logger::get_node_fusion_name(const ggml_tensor * node, const
          const uint64_t k     = node->src[1]->ne[0];
          const uint64_t batch = node->ne[2] * node->ne[3];
          std::string    name  = ggml_op_name(node->op);

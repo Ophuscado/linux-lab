@@ -10,10 +10,10 @@ GGML_VK_MMV_ID_MAX (0002) keeps MUL_MAT_ID on the matrix-vector path up to a tok
  1 file changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
-index 3f29d5651..328767a90 100644
+index 7019dae8a..9304c4d9c 100644
 --- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
 +++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
-@@ -8149,10 +8149,25 @@ static bool ggml_vk_mmv_id_unoffset(const ggml_tensor * dst) {
+@@ -8162,10 +8162,25 @@ static bool ggml_vk_mmv_id_unoffset(const ggml_tensor * dst) {
      return true;
  }
  

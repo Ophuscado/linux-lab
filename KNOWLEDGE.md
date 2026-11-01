@@ -120,6 +120,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 
 ### Where the generation gap is
 
+- 1 Nov, VERIFIED (run 6361): the honeykrisp series rebased from 2280f0fd1 to master a91eab67d (4 Vulkan commits,
+  among them upstream's subgroup RMS norm, #29882) applies without conflict and passes MUL_MAT 2426, MUL_MAT_ID 1109,
+  FLASH_ATTN_EXT 5368, RMS_NORM, ROPE, SET_ROWS, GATED_DELTA_NET and SOFT_MAX. pp512 / pp2048 / tg128 against the
+  old base with 0015: Qwen 641 / 858 to 686 / 933 / 34.6 (the small-row norms were 6 % of its prompt), Gemma 881 /
+  1083 to 902 / 1088 / 37.7, GPT-OSS 120B even (542 / 742 / 49.3); Llama 2 873 / 949 / 67.8, GPT-OSS 20B 1049 /
+  1503 / 71.3, Flash-Next 391 / 513 / 18.7. The Metal runs stay on 2280f0fd1.
 - 1 Nov, VERIFIED (runs 6307-6359): GATED_DELTA_NET (10 % of a Qwen prompt) takes ~4.2 us a token at 32 heads
   and at 4 alike, so its token loop is one latency chain. Loading the next token's inputs during the current one is
   2.2x slower, `restrict` buffers change nothing, and Mesa waits across blocks (`src-patches/mesa/global-waits`,
