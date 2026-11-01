@@ -11,3 +11,10 @@ For the operator's own words. Machine: M2 Ultra (G14D), Asahi Linux, the series 
 - Not faster either: f32 accumulators (13-50 % slower), unrolling the k loop, shared-memory padding.
 - Where the time goes: llama.cpp's matmul without global loads runs 15.4 TFLOPS at 16x16x16; with them q4_0 4096x14336x512 takes 5220 us (Metal 3364). The global loads do not overlap the matrix work; shader-side double buffering and register prefetch did not help under this compiler (the scheduler and register cost are the open question).
 - Not only coopmat: llama.cpp's q4_K matrix-vector shader, 4096x14336 at 2 rows, takes 102 us against a 55 us read of the same 33 MB. Its loop: 339 instructions a block (64 ffma, 62 and, 48 u8_to_f, 34 shr), 16 loads, 8 waits, each wait right after its load. Replacing the arithmetic by one xor and add gives 77 us. Rewriting the shader to load first, hoist B or cut the arithmetic made it slower each time; the load scheduling looks like the compiler's to fix.
+
+## The load hoist on G14 (1 Nov)
+
+- `AGX_HOIST_LOADS=1` on an M2 Ultra (G14D, 76 cores, two dies), the series at 795ae42a71 with the agxperf changes: llama.cpp's test-backend-ops pass in 16 op groups (MUL_MAT 2426, MUL_MAT_ID 1109, FLASH_ATTN_EXT 5368, SOFT_MAX, RMS_NORM, ROPE, SET_ROWS, GET_ROWS, ADD, MUL, CPY, ARGSORT, TOPK_MOE, SSM_CONV, GATED_DELTA_NET).
+- Generation (tg128) rises on every model tried: Llama 2 7B Q4_0 68.4 to 70.8, GPT-OSS 20B 71.3 to 74.0, GPT-OSS 120B 49.5 to 52.0, Gemma 4 26B-A4B 38.9 to 40.6, Qwen3-Coder-Next 34.7 to 37.0, Qwen3.8 Flash-Next 18.7 to 19.2. Prompts within 1 %.
+- With `AGX_MESA_DEBUG=nosched` as well (what G13 gets by default), prompts lose 2-5 % here; the hoist alone is the better default for G14.
+- So the hoist could default on for G14 as for G13; the facts are for the series' author, in the operator's words.
