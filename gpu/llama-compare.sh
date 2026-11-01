@@ -7,6 +7,8 @@
 # sync logger; STEPS=mmv (no model), the matrix-vector over its settings; STEPS=pp, prompt processing per op. Models and names from
 # macos/models.txt (default: all present); the settings of gpu/llama-run.sh. Output: var/compare-<time>/, JSON as on
 # macOS. Takes the GPU lock.
+# provenance.json records pre-run artifacts and configuration using Python 3's standard library.
+# rows.tsv records the model row overrides with Bash shell quoting.
 #
 # Environment: STEPS (default "bench batches depth spec ops"), COMPARE_OUT (instead of var/), GPU_LOCK (the lock
 # file, default ~/.cache/linux-lab-gpu.lock), MESA_SIDE (the side Mesas, default build/mesa-side), LLAMA_BIN (the binaries needed by STEPS; default src/llama.cpp-simd/build/bin, the
@@ -52,8 +54,10 @@ rows() { [[ -n ${ROWS:-} ]] && { echo "$ROWS"; return; }; case $1 in qwen) echo 
 failed() { local rc=$?; on "${1##* }" || return 0; echo "$1: failed (rc $rc), see errors.txt" | tee -a "$OUT/failed.txt"; }
 # The lock is opened for reading when it cannot be written (a confined run sees ~/.cache read-only), as flock needs
 # only an open file; so every run shares the one lock.
+lock_started=$SECONDS
 lock=${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}
 { exec 9>>"$lock"; } 2>/dev/null || exec 9<"$lock"; flock 9
+STEPS="$STEPS" python3 -I "$LAB/gpu/benchmark-provenance.py" "$LAB" "$B" "$OUT/provenance.json" "$((SECONDS - lock_started))"
 failed=0
 s=
 failure() { printf 'ERR: %s\n' "$*" | tee -a "$OUT/failed.txt" >&2; failed=1; }
@@ -144,6 +148,7 @@ while IFS='|' read -r name file mtp; do
     f=$LLM/$file; [[ -f $f ]] || { echo "$name: no $f, skipped"; continue; }
     mf=; [[ -n $mtp && -f $LLM/$mtp ]] && mf=$LLM/$mtp
     r=$(rows "$name"); export GGML_VK_RM_STDQ=$r GGML_VK_RM_KQ=$r
+    printf '%q\t%q\n' "$name" "$r" >>"$OUT/rows.tsv"
     echo "== $name (rows $GGML_VK_RM_STDQ)"
     on bench && run_json "$OUT/llama-$name-bench.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512,2048 -n 128 -r 3 -o json || failed "$name bench"
     on batches && run_json "$OUT/llama-$name-batches.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 8192 -b 8192 -p 1,2,4,8,9,12,16,24,32,48,64,128,512 -n 0 -r 2 -o json || failed "$name batches"

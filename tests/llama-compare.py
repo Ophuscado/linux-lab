@@ -32,6 +32,7 @@ class SpecLifecycle(unittest.TestCase):
             script = root / "gpu/llama-compare.sh"
             script.write_text((REPO / "gpu/llama-compare.sh").read_text().replace("8099", str(port)))
             (root / "gpu/llama-run.sh").touch()
+            (root / "gpu/benchmark-provenance.py").write_text((REPO / "gpu/benchmark-provenance.py").read_text())
             (root / "macos/spec-req.py").touch()
             (root / "macos/models.txt").write_text("test|model.gguf|\n")
             (root / "models/model.gguf").touch()
@@ -52,7 +53,7 @@ while True:
     time.sleep(.02)
 """)
             executable("python3", f"""#!/bin/sh
-if [ "$2" = -c ]; then exec {shlex.quote(sys.executable)} "$@"; fi
+case "$2" in -c|*/benchmark-provenance.py) exec {shlex.quote(sys.executable)} "$@" ;; esac
 echo request >> "$REQUESTS"
 echo "gen fake"
 if [ "$MODE" = request-fail ]; then exit 9; fi
@@ -235,6 +236,8 @@ printf '[{"sentinel":1}]\\n'
                 filename = f"llama-llama2-{step}.json"
                 original = next((root / "out").glob(f"compare-*/{filename}"))
                 saved = original.read_bytes()
+                self.assertTrue((original.parent / "provenance.json").is_file())
+                self.assertEqual((original.parent / "rows.tsv").read_text(), "llama2\t1\n")
                 self.assertEqual(saved, b'[{"sentinel":1}]\n')
                 second = subprocess.run(
                     command, env=dict(env, RESULT="fail" if fail_second else "ok"),
