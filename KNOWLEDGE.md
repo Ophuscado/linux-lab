@@ -120,13 +120,13 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 
 ### Where the generation gap is
 
-- 1 Nov, VERIFIED (runs 6313-6359): GATED_DELTA_NET (10 % of a Qwen prompt) takes ~4.2 us a token at 32 heads
+- 1 Nov, VERIFIED (runs 6307-6359): GATED_DELTA_NET (10 % of a Qwen prompt) takes ~4.2 us a token at 32 heads
   and at 4 alike, so its token loop is one latency chain. Loading the next token's inputs during the current one is
   2.2x slower, `restrict` buffers change nothing, and Mesa waits across blocks (`src-patches/mesa/global-waits`,
   `AGX_GLOBAL_WAITS=1`: every op test passes) gain nothing there, on the matrix-vector or on Llama 2 and Qwen: the
   disassembly keeps a wait right after the prefetch loads, where their values are moved into the loop's
   registers. INFERRED: the lever is in register allocation of loop-carried values, not in the wait pass.
-- 1 Nov, VERIFIED (runs 6299, 6301): the expert matmul's small tile at BK 64 (`GGML_VK_WT_S=...,64,...`) fails
+- 1 Nov, VERIFIED (runs 6300, 6306): the expert matmul's small tile at BK 64 (`GGML_VK_WT_S=...,64,...`) fails
   MUL_MAT_ID tests (its +35 % on GPT-OSS 120B is wrong output); 64x32 tiles, 128 threads and 16x16x16 matrices
   there are all slower than 128x32 on Qwen (603-638 against 652 t/s pp512).
 - 1 Nov, VERIFIED (runs 6295, 6296): count_experts, the single workgroup before every MUL_MAT_ID, had each of
