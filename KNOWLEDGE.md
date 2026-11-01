@@ -121,6 +121,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 
 ### Where the generation gap is
 
+- 1 Nov, VERIFIED (runs 6434, and the every-column run after it): the 4096x14336 matrix-vector grows about linearly with
+  columns on every setting (q8_0 at 8 columns 404-1215 us against Metal's 93; q4_0 327-5670 against 83), best at rows
+  per workgroup 2 for q8_0 and 1 for q4_0. The Metal-layout shader was used for one column only; decoding A once for
+  all columns and using it for every count (`GGML_VK_MMV_SIMD=2`, a patch not kept) gains 7 % on q4_0 and loses on
+  q8_0. INFERRED: B is re-read by every workgroup, so the cost is B's traffic over a few rows a workgroup; Metal shares
+  B across a threadgroup's simdgroups. Bench runs 6535 of 1 Nov are void (a private GPU lock let other jobs run beside them).
 - 1 Nov, VERIFIED (run 6361): the honeykrisp series rebased from 2280f0fd1 to master a91eab67d (4 Vulkan commits,
   among them upstream's subgroup RMS norm, #29882) applies without conflict and passes MUL_MAT 2426, MUL_MAT_ID 1109,
   FLASH_ATTN_EXT 5368, RMS_NORM, ROPE, SET_ROWS, GATED_DELTA_NET and SOFT_MAX. pp512 / pp2048 / tg128 against the
