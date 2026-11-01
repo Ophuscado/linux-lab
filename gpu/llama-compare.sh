@@ -33,6 +33,10 @@ rows() { [[ -n ${ROWS:-} ]] && { echo "$ROWS"; return; }; case $1 in qwen) echo 
 
 STEPS=" ${STEPS:-bench batches depth spec ops} "
 on() { [[ $STEPS == *" $1 "* ]]; }
+# A step that fails is noted and the run goes on to the next step and model (set -e would end the whole run at the
+# first failing llama-bench, losing every model after it). Called as `on STEP && cmd || failed "NAME STEP"`: a step
+# that is off ends the && early, and that is not a failure.
+failed() { local rc=$?; on "${1##* }" || return 0; echo "$1: failed (rc $rc), see errors.txt" | tee -a "$OUT/failed.txt"; }
 exec 9>"${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}"; flock 9
 # STEPS=mmv: the one-token 4096x14336 matrix-vector (f16, q4_0, q8_0) over rows per workgroup, workgroup size and
 # the Metal-layout shader, against the read bandwidth (610-655 GB/s) and Metal (f16 131 us, q4_0 37, q8_0 57.5).
@@ -79,13 +83,14 @@ while IFS='|' read -r name file mtp; do
     mf=; [[ -n $mtp && -f $LLM/$mtp ]] && mf=$LLM/$mtp
     r=$(rows "$name"); export GGML_VK_RM_STDQ=$r GGML_VK_RM_KQ=$r
     echo "== $name (rows $GGML_VK_RM_STDQ)"
-    on bench && "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512,2048 -n 128 -r 3 -o json >"$OUT/llama-$name-bench.json" 2>>"$OUT/errors.txt"
+    on bench && "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512,2048 -n 128 -r 3 -o json >"$OUT/llama-$name-bench.json" 2>>"$OUT/errors.txt" ||
+        failed "$name bench"
     on batches && "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 8192 -b 8192 -p 1,2,4,8,9,12,16,24,32,48,64,128,512 -n 0 -r 2 -o json \
-        >"$OUT/llama-$name-batches.json" 2>>"$OUT/errors.txt"
+        >"$OUT/llama-$name-batches.json" 2>>"$OUT/errors.txt" || failed "$name batches"
     on depth && "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 32 -d 0,1024,4096,16384 -r 2 -o json \
-        >"$OUT/llama-$name-depth.json" 2>>"$OUT/errors.txt"
+        >"$OUT/llama-$name-depth.json" 2>>"$OUT/errors.txt" || failed "$name depth"
     on perf && GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 4 \
-        -d 4096 -r 1 >"$OUT/llama-$name-perf-d4096.txt" 2>&1
+        -d 4096 -r 1 >"$OUT/llama-$name-perf-d4096.txt" 2>&1 || failed "$name perf"
     # Where ggml-vulkan makes the GPU wait: one generated token with its sync logger (a "sync" line before each
     # barrier, then the node or fused nodes it records), and the count of each.
     if on sync; then
@@ -93,7 +98,7 @@ while IFS='|' read -r name file mtp; do
         echo "$name: $(grep -c '^sync$' "$OUT/llama-$name-sync.txt") syncs, $(grep -cE '^[0-9]+ ' "$OUT/llama-$name-sync.txt") nodes (warm-up and the token)" | tee -a "$OUT/sync.txt"
     fi
     on pp && GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512 -n 0 \
-        -r 1 >"$OUT/llama-$name-perf-pp512.txt" 2>&1
+        -r 1 >"$OUT/llama-$name-perf-pp512.txt" 2>&1 || failed "$name pp"
     on spec || continue
     for c in "none|" "ngram-mod-64|--spec-type ngram-mod" \
         "ngram-mod-128|--spec-type ngram-mod --spec-ngram-mod-n-max 128 --spec-ngram-mod-n-min 96" \
@@ -102,9 +107,14 @@ while IFS='|' read -r name file mtp; do
         "$B/llama-server" -m "$f" ${c#*|} -ngl all -fa on -np 1 -c 16384 -ub 8192 -b 8192 -ctk q8_0 -ctv q8_0 \
             --host 127.0.0.1 --port 8099 >"$OUT/server.log" 2>&1 &
         s=$!
-        for ((i = 0; i < 600; i++)); do curl -sf http://127.0.0.1:8099/health >/dev/null && break; sleep 1; done
-        echo "$name ${c%%|*}: $(python3 -I "$LAB/macos/spec-req.py" 8099 "$LAB/gpu/llama-run.sh" 2>&1 | tail -n 1)" | tee -a "$OUT/llama-spec.txt"
-        kill "$s"; wait "$s" 2>/dev/null || true
+        up=
+        for ((i = 0; i < 600; i++)); do curl -sf http://127.0.0.1:8099/health >/dev/null && { up=1; break; }; kill -0 "$s" 2>/dev/null || break; sleep 1; done
+        if [[ -n $up ]]; then
+            echo "$name ${c%%|*}: $(python3 -I "$LAB/macos/spec-req.py" 8099 "$LAB/gpu/llama-run.sh" 2>&1 | tail -n 1)" | tee -a "$OUT/llama-spec.txt"
+        else
+            echo "$name ${c%%|*}: server never answered /health, no result (server.log)" | tee -a "$OUT/llama-spec.txt" "$OUT/failed.txt"
+        fi
+        kill "$s" 2>/dev/null || true; wait "$s" 2>/dev/null || true
     done
 done <"$LAB/macos/models.txt"
 echo "saved: $OUT"
