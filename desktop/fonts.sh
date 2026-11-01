@@ -11,7 +11,7 @@
 #                             width, and fontconfig's sans-serif (Firefox's pages, GTK)
 #   fonts.sh use default      the fonts as they were before the first "use"
 #   fonts.sh nerd [NAME]      a Nerd Font (default Hack: Hack Nerd Font and Hack Nerd Font Mono)
-#                             from the latest Nerd Fonts release, for you alone, in
+#                             from a pinned Nerd Fonts release (NERD_TAG; Hack by its sha256 too), for you alone, in
 #                             ~/.local/share/fonts/nerd-NAME
 #   fonts.sh konsole FAMILY [SIZE]|default   the font of your default Konsole profile (size 12),
 #                             or the one it had before
@@ -29,6 +29,11 @@ STATE=${XDG_STATE_HOME:-$HOME/.local/state}/fonts-sh
 FC=${XDG_CONFIG_HOME:-$HOME/.config}/fontconfig/conf.d/60-linux-lab-fonts.conf
 SIZE=${FONT_SIZE:-10}
 KEYS="General:font General:menuFont General:toolBarFont General:smallestReadableFont General:fixed WM:activeFont"
+# A release, not releases/latest: the same bytes on every machine. Hack, the one this lab installs, is pinned by
+# hash too (two downloads and the release's own SHA-256.txt agreed, 1 Nov); another NAME is checked against that
+# SHA-256.txt of the pinned release. A newer release: change both lines together.
+NERD_TAG=v3.5.1
+NERD_SHA256_Hack=cdd389472e10e2261520140ff1b382b4f8a226af5fd0b2735b975d31151d9c3c
 
 family() { fc-list : family 2>/dev/null | tr ',' '\n' | grep -m1 -xF "$1" || true; }
 qfont() { printf '%s,%s,-1,5,400,0,0,0,0,0,0,0,0,0,0,1' "$1" "$2"; }
@@ -82,8 +87,17 @@ nerd() {
     dest=${XDG_DATA_HOME:-$HOME/.local/share}/fonts/nerd-$name
     tmp=$(mktemp -d)
     trap 'rm -rf "$tmp"' EXIT
-    curl -fsSL --retry 3 -o "$tmp/f.tar.xz" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/$name.tar.xz" ||
-        die "the download of $name.tar.xz from the Nerd Fonts release failed"
+    local base=https://github.com/ryanoasis/nerd-fonts/releases/download/$NERD_TAG want got
+    curl -fsSL --retry 3 -o "$tmp/f.tar.xz" "$base/$name.tar.xz" ||
+        die "the download of $name.tar.xz from Nerd Fonts $NERD_TAG failed"
+    want=NERD_SHA256_$name; want=${!want:-}  # NAME is [A-Za-z0-9]+ (checked above)
+    if [[ -z $want ]]; then
+        curl -fsSL --retry 3 -o "$tmp/SHA-256.txt" "$base/SHA-256.txt" || die "no SHA-256.txt in Nerd Fonts $NERD_TAG"
+        want=$(awk -v f="$name.tar.xz" '$2 == f { print $1 }' "$tmp/SHA-256.txt")
+        [[ -n $want ]] || die "$name.tar.xz is not in Nerd Fonts $NERD_TAG's SHA-256.txt"
+    fi
+    got=$(sha256sum "$tmp/f.tar.xz" | cut -d' ' -f1)
+    [[ $got == "$want" ]] || die "$name.tar.xz from Nerd Fonts $NERD_TAG: sha256 $got, expected $want"
     mkdir -p "$dest"
     tar -xJf "$tmp/f.tar.xz" -C "$dest" --wildcards '*.ttf' '*.otf' 2>/dev/null || tar -xJf "$tmp/f.tar.xz" -C "$dest" --wildcards '*.ttf'
     fc-cache -f "$dest" >/dev/null
