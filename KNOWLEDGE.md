@@ -19,7 +19,7 @@ Standing choices, with the reason when one was given.
 
 - 1 Nov, VERIFIED (asahilinux.org/llm-policy/, "Generative AI (LLM) Policy"): "A contributor using an LLM to interpret a trace made using the m1n1 hypervisor may be issued with a first and final warning"; "A contributor found to have concealed extensive LLM use will be banned immediately," particularly over unreleased Apple material. The policy broadly forbids generative AI for material contributions. Any Asahi/AGX report is written by hand and discloses LLM assistance, or is not sent; the six related FACTS files are LLM-assisted background, not report text, and open with an explicit disclosure.
 - 1 Nov: scratch and benchmark output (build logs, compare-*/ dumps, patch drafts, a nested git clone, binaries) goes under `_tmp/` inside the clone, which `.gitignore` already excludes; a bare run-tag folder at the clone root (`cx-024742/`, `kde-224615/`, …) is tracked instead. `submit()` commits every untracked file in the clone, so 36 such folders at the root were merged into master as 275 files / 134k lines alongside honeykrisp 0016 (fixed forward-only in `3e7dfd9`, no content change). Check `git status --short` is clean, or everything in it is meant for the tree, before calling `submit()`.
-- 1 Nov (the panel role for linux-lab): the GPU only under `flock ~/.cache/linux-lab-gpu.lock`, long jobs at low priority; agent:claude-helper coordinates the agents for the operator (sprint, scope, priority). Runs 6264-6535 of 1 Nov took a lock file in their own folder instead, so they did not wait for other agents' GPU work; `llama-compare.sh` now opens the shared lock read-only when it cannot write it.
+- 1 Nov (the panel role for linux-lab): the GPU only under `flock ~/.cache/linux-lab-gpu.lock`, long jobs at low priority; agent:claude-helper coordinates the agents for the operator (sprint, scope, priority). The 1 Nov GPU runs behind the entries marked "own GPU lock" below took a lock file in their own folder instead, so they did not wait for other agents' GPU work; `llama-compare.sh` now opens the shared lock read-only when it cannot write it.
 - 31 Oct: the operator publishes to GitHub himself (publish.sh or by hand); agents propose cells only when convenient.
 - 31 Oct, VERIFIED (llama.cpp CONTRIBUTING.md and AGENTS.md at 5047748f1): llama.cpp allows AI-written code with
   disclosure but forbids AI-written PR descriptions, commit messages and reviewer replies, and automated pushes or PR
@@ -121,7 +121,7 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 | Gemma 4 26B-A4B Q4_K | 2100 / 2338 / 95.2 | - | 709 / 907 / 39.9 |
 | Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 1817 / 67.8 | 422 / 574 / 24.8 | 449 / 681 / 34.2 |
 
-- 1 Nov, VERIFIED (run 8860): no script built this tree from a fresh clone before (llama-run.sh/llama-compare.sh only
+- 1 Nov, VERIFIED: no script built this tree from a fresh clone before (llama-run.sh/llama-compare.sh only
   read a prebuilt src/llama.cpp-simd/build; llama-bench.sh and macos/collect.sh each build their own, unpatched,
   llama.cpp for comparison); gpu/llama-build.sh now clones llama.cpp at the honeykrisp series' pinned commit (BASE),
   applies its 16 patches with git am, and builds Vulkan llama-bench/llama-server/test-backend-ops in about two
@@ -129,57 +129,57 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 
 ### Where the generation gap is
 
-- 1 Nov, VERIFIED (runs 8419, 8420, with the hoist): today's tiles stay best (pp512 Llama 2 876, Qwen 739, Gemma 904;
+- 1 Nov, VERIFIED (with the hoist): today's tiles stay best (pp512 Llama 2 876, Qwen 739, Gemma 904;
   11 other dense/expert pairs 487-853, 615-720, 691-891), and a wider hoist window (`AGX_HOIST_WINDOW` 128, 256, 1000
   by a tuning patch; tests pass at 1000) changes nothing beyond 1 %.
-- 1 Nov, VERIFIED (run 8404, with the hoist): the series' other G13-only choice, shared-offset folding (opened to G14
+- 1 Nov, VERIFIED (with the hoist): the series' other G13-only choice, shared-offset folding (opened to G14
   by a one-line patch, `AGX_LOCAL_FOLD=1`), passes MUL_MAT, MUL_MAT_ID, FLASH_ATTN_EXT and SOFT_MAX here but moves
   Llama 2, Qwen and Gemma by under 1.2 %; sync-wait polling (`HK_SUBMIT_POLL_US` 50 or 500) by under 2.5 %. Neither kept.
-- 1 Nov, VERIFIED (runs 8213, 8383): Mesa's compute load hoist (`AGX_HOIST_LOADS=1`, from the coopmat series: on by
+- 1 Nov, VERIFIED: Mesa's compute load hoist (`AGX_HOIST_LOADS=1`, from the coopmat series: on by
   default on G13, opt-in on G14) moves device loads up to 64 instructions above independent work. On this M2 Ultra
   every op test passes with it (MUL_MAT 2426, MUL_MAT_ID 1109, FLASH_ATTN_EXT 5368 and 13 more) and tg128 rises on every
   model: Llama 2 68.4 to 70.8, GPT-OSS 20B 71.3 to 74.0, GPT-OSS 120B 49.5 to 52.0, Gemma 38.9 to 40.6, Qwen 34.7 to
   37.0, Flash-Next 18.7 to 19.2; prompts even. Skipping the pressure scheduler too (`AGX_MESA_DEBUG=nosched`, G13's
   default) loses 2-5 % on prompts. llama-run.sh and llama-compare.sh set the hoist.
-- 1 Nov, VERIFIED (run 8167, series with 0016, timestamp fix): a 512-token prompt is now matmuls. Qwen 767 ms:
+- 1 Nov, VERIFIED (series with 0016, timestamp fix): a 512-token prompt is now matmuls. Qwen 767 ms:
   MUL_MAT_ID 55 %, dense q8_0 23 %, GATED_DELTA_NET 4 %; Gemma 618 ms: MUL_MAT_ID 47 %, dense 31 %, attention 9 % (the
   512 head); GPT-OSS 120B 1038 ms: MUL_MAT_ID mxfp4 79 %; Llama 2 646 ms: q4_0 matmuls 93 %. Every other op is under
   2.5 %.
-- 1 Nov, VERIFIED (run 7600): GATED_DELTA_NET's cost on Honeykrisp was its lane split, not latency. For 128-wide
+- 1 Nov, VERIFIED: GATED_DELTA_NET's cost on Honeykrisp was its lane split, not latency. For 128-wide
   states ggml-vulkan splits a column over 4 invocations (32 state rows each); a whole subgroup, as ggml-metal does,
   takes a 512-token step from 2143 to 772 us at 32 heads and 2159 to 539 at 4 (8 lanes 1377, 16 lanes 1283), tests
   43/43; one token 19.3 to 20.7 us. This supersedes the 1 Nov entry that called the token loop one latency chain.
-- 1 Nov, VERIFIED (runs 7603, 7915 and the batched-load run after): a port of ggml-metal's mul_mv_ext layout (8
+- 1 Nov, VERIFIED (two runs and the batched-load run after them): a port of ggml-metal's mul_mv_ext layout (8
   invocations a row, 8 rows a workgroup of 64, every column's sum per invocation) passes MUL_MAT 2426/2426 but is
   2-4x slower than today's matrix-vector at 2-8 columns (q8_0 n=8 1384-1736 us against 418): its loop waits on every
   one of its 44 loads (agx-loops), and issuing a chunk's B loads together before use changes little. Not kept.
-- 1 Nov, VERIFIED (runs 6434, and the every-column run after it): the 4096x14336 matrix-vector grows about linearly with
+- 1 Nov, VERIFIED (own GPU lock; one column, and the every-column run after it): the 4096x14336 matrix-vector grows about linearly with
   columns on every setting (q8_0 at 8 columns 404-1215 us against Metal's 93; q4_0 327-5670 against 83), best at rows
   per workgroup 2 for q8_0 and 1 for q4_0. The Metal-layout shader was used for one column only; decoding A once for
   all columns and using it for every count (`GGML_VK_MMV_SIMD=2`, a patch not kept) gains 7 % on q4_0 and loses on
   q8_0. INFERRED: B is re-read by every workgroup, so the cost is B's traffic over a few rows a workgroup; Metal shares
-  B across a threadgroup's simdgroups. Bench runs 6535 of 1 Nov are void (a private GPU lock let other jobs run beside them).
-- 1 Nov, VERIFIED (run 6361): the honeykrisp series rebased from 2280f0fd1 to master a91eab67d (4 Vulkan commits,
+  B across a threadgroup's simdgroups. The 1 Nov bench of the series through 0016 (the Metal-layout shader) is void: under its own GPU lock, other jobs ran beside it.
+- 1 Nov, VERIFIED (own GPU lock): the honeykrisp series rebased from 2280f0fd1 to master a91eab67d (4 Vulkan commits,
   among them upstream's subgroup RMS norm, #29882) applies without conflict and passes MUL_MAT 2426, MUL_MAT_ID 1109,
   FLASH_ATTN_EXT 5368, RMS_NORM, ROPE, SET_ROWS, GATED_DELTA_NET and SOFT_MAX. pp512 / pp2048 / tg128 against the
   old base with 0015: Qwen 641 / 858 to 686 / 933 / 34.6 (the small-row norms were 6 % of its prompt), Gemma 881 /
   1083 to 902 / 1088 / 37.7, GPT-OSS 120B even (542 / 742 / 49.3); Llama 2 873 / 949 / 67.8, GPT-OSS 20B 1049 /
   1503 / 71.3, Flash-Next 391 / 513 / 18.7. The Metal runs stay on 2280f0fd1.
-- 1 Nov, VERIFIED (runs 6307-6359): GATED_DELTA_NET (10 % of a Qwen prompt) takes ~4.2 us a token at 32 heads
+- 1 Nov, VERIFIED (own GPU lock): GATED_DELTA_NET (10 % of a Qwen prompt) takes ~4.2 us a token at 32 heads
   and at 4 alike, so its token loop is one latency chain. Loading the next token's inputs during the current one is
   2.2x slower, `restrict` buffers change nothing, and Mesa waits across blocks (`src-patches/mesa/global-waits`,
   `AGX_GLOBAL_WAITS=1`: every op test passes) gain nothing there, on the matrix-vector or on Llama 2 and Qwen: the
   disassembly keeps a wait right after the prefetch loads, where their values are moved into the loop's
   registers. INFERRED: the lever is in register allocation of loop-carried values, not in the wait pass.
-- 1 Nov, VERIFIED (runs 6300, 6306): the expert matmul's small tile at BK 64 (`GGML_VK_WT_S=...,64,...`) fails
+- 1 Nov, VERIFIED (own GPU lock): the expert matmul's small tile at BK 64 (`GGML_VK_WT_S=...,64,...`) fails
   MUL_MAT_ID tests (its +35 % on GPT-OSS 120B is wrong output); 64x32 tiles, 128 threads and 16x16x16 matrices
   there are all slower than 128x32 on Qwen (603-638 against 652 t/s pp512).
-- 1 Nov, VERIFIED (runs 6295, 6296): count_experts, the single workgroup before every MUL_MAT_ID, had each of
+- 1 Nov, VERIFIED (own GPU lock): count_experts, the single workgroup before every MUL_MAT_ID, had each of
   its 256 invocations read every id in `zero_skipped_rows` (5120 for a Qwen pp512) before the matmul could start.
   Strided over the invocations (honeykrisp 0015; PR candidate `src-patches/llama.cpp/count-experts-skip`):
   pp512 / pp2048 Qwen 583 / 743 to 641 / 858, Gemma 835 / 1005 to 881 / 1083, GPT-OSS 120B 521 / 710 to 541 /
   740; generation even; MUL_MAT_ID tests 1109/1109.
-- 1 Nov, VERIFIED (Mesa 795ae42a71 `hk_query_pool.c`; runs 6264, 6289): Honeykrisp's per-op timings were shifted
+- 1 Nov, VERIFIED (own GPU lock; Mesa 795ae42a71 `hk_query_pool.c`): Honeykrisp's per-op timings were shifted
   by one op. A compute timestamp is the end of the control stream it is attached to, and the stream stayed open,
   so the dispatches recorded after it ran before it: ggml-vulkan's logger booked each op's time to the op before
   (the routing ops, GLU and RMS_NORM_MUL "slow"; earlier entries' per-op tables). Ending the stream at the write
@@ -219,7 +219,7 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   rows, ~470 GB/s), q8_0 118-121 us (8 rows, ~516 GB/s); 32-thread groups are slower, and 8-16 rows collapse (q4_0
   1300 us at 16, INFERRED: register spills). 256- and 512-thread groups (0009, `GGML_VK_DMMV_LARGE`) gain 5 % on
   f16 and lose on q4_0: group size is not the limit.
-- 30 Oct, VERIFIED (`vk-chain.sh bw`, cells 89504, 89518): neither load width nor the access pattern limits it. A
+- 30 Oct, VERIFIED (`vk-chain.sh bw`): neither load width nor the access pattern limits it. A
   grid-stride read takes 632-660 GB/s with 16-, 8- or 4-byte loads; reading the f16 matrix's 117 MB with each group
   on its own slice, as the matrix-vector does, takes 640-666 GB/s at 512-2048 groups and 751 GB/s (156 us) at 256,
   against 248 us for the matrix-vector. INFERRED: the vector it re-reads in every group (at 2 rows a group, 117 MB
@@ -276,12 +276,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   to 128x32 at 256 threads (`GGML_VK_MMID_SIZES=s GGML_VK_WT_S=256,128,32,,32,16`, the experts alone; dense matmuls
   keep the medium one) is faster at 128-512 tokens: 128 experts of 8, q8_0, 512 tokens 3946 to 3228 us (-18 %), 128
   tokens -35 %; 32 experts of 4 at 512 tokens -12 %; mxfp4 -9 %. 128x32 at 128 threads and 64x32 are slower.
-- 30 Oct, VERIFIED (runs 5029, 5047, my build of the series with 0011): the 128x32 tile alone loses 2-4 % on long
+- 30 Oct, VERIFIED (my build of the series with 0011): the 128x32 tile alone loses 2-4 % on long
   prompts (80-128 tokens an expert), so 0011 (`GGML_VK_MMID_S_MAX=64`) keeps both and picks by tokens per expert.
   Medium alone against the pair, pp512 / pp2048 at -ub 2048 and pp1024 / pp4096 at -ub 8192: Qwen 466 / 684 / 594 /
   739 to 541 / 710 / 648 / 739; GPT-OSS 120B 410 / 653 / 537 / 721 to 502 / 680 / 596 / 730; Gemma 726 / 908 / 826 /
   825 to 764 / 893 / 843 / 832. Up to +22 % on short prompts, nothing lost on long ones.
-- 30 Oct, VERIFIED (runs 5052, 5055): the medium tile's shape is worth only a few percent. 4096x14336 at 512 tokens:
+- 30 Oct, VERIFIED: the medium tile's shape is worth only a few percent. 4096x14336 at 512 tokens:
   128x128 at 256 threads f16 -12 %, q8_0 -4 %; 128x128 at 512 threads q8_0 -6 %, f16 +8 %; BK 8 gives wrong results.
   On prompts (pp512 / pp2048 / pp4096 at -ub 8192), 512 threads 128x128 against today: Qwen 540 / 712 / 728 to 551 /
   714 / 744, Gemma 765 / 905 / 853 to 805 / 909 / 885, GPT-OSS 120B 503 / 681 / 730 to 505 / 687 / 758, Llama 2 763 /
@@ -290,38 +290,38 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 - 30 Oct, INFERRED: the f16 4096x14336x512 matmul is 60 GFLOP: 7.5 TFLOPS here (7955 us), 19.5 on Metal (3079 us),
   of the M2 Ultra's ~27 fp16 TFLOPS. Where the 2.6x goes is the cooperative-matrix code the third-party Mesa series
   generates for llama.cpp's coopmat1 shaders.
-- 31 Oct, VERIFIED (run 5820, `llama-compare.sh STEPS=bench`, the production build a1d9c37 with 0011-0014 at
+- 31 Oct, VERIFIED (`llama-compare.sh STEPS=bench`, the production build a1d9c37 with 0011-0014 at
   `llama-run.sh`'s settings, -ub 2048; results/linux/compare-20261031-063537): pp512 / pp2048 / tg128 Llama 2 874 /
   949 / 68.1, GPT-OSS 20B 1005 / 1418 / 70.6, GPT-OSS 120B 526 / 709 / 49.5, Gemma 4 836 / 1014 / 38.6, Qwen 583 / 727
   / 34.5, `flash` of macos/models.txt (qwen4exp A3B Q4_K) 354 / 447 / 18.7. Against Metal's pp512 / tg128 (28 Oct):
   prompts 0.38-0.58x (Qwen 0.38, Gemma 0.40, Llama 2 0.58), generation 0.41-0.57x (Gemma 0.41, Llama 2 0.57).
   (Commit a2f998e's body names the run wrongly; it is 5820.)
-- 31 Oct, VERIFIED (runs 5683-5704, my agxperf build in `_tmp/claude-mesa`, the same library as the installed one):
+- 31 Oct, VERIFIED (my agxperf build in `_tmp/claude-mesa`, the same library as the installed one):
   keeping NIR from sinking storage-buffer loads to their uses (nir_move_load_ssbo out of agx_compile.c's two sink
   sets) changes nothing: q4_K matrix-vector 108.7 to 106.4 us, q4_0 matmul 5334 to 5429, Llama 2 pp512/tg64 851/63.5
   to 842/63.3; tests pass. The waits' placement comes from the backend's own scheduling. Timings drift 5 % between
   runs today (Llama 2 tg64 63.3-67.9): other agents share the GPU.
-- 31 Oct, VERIFIED (runs 5669-5672, Mesa's `AGX_MESA_DEBUG=shaders`, 12 instructions undecoded): the stock q4_K
+- 31 Oct, VERIFIED (Mesa's `AGX_MESA_DEBUG=shaders`, 12 instructions undecoded): the stock q4_K
   matrix-vector loop at 2 rows is 339 instructions a block: 64 ffma, 62 and, 48 u8_to_f, 41 iadd, 39 mov, 34 shr,
   16 loads, 8 waits, each wait a few instructions after its load, so no load's latency is hidden inside a thread.
   Issuing every row's A loads first in the shader (tests pass) is slower too: 102 to 107 us at 2 rows, Gemma tg64
   38.7 to 37.0. Three shader rewrites failed; the lever is the compiler's scheduling (agxperf's post-RA scheduler
   does not move these loads up).
-- 31 Oct, VERIFIED (runs 5660, 5662; test-only edits restored after): the stock q4_K matrix-vector shader at 2 rows,
+- 31 Oct, VERIFIED (test-only edits restored after): the stock q4_K matrix-vector shader at 2 rows,
   4096x14336, takes 102 us; with its arithmetic replaced by one xor and add (every load kept) 77, with A's loads alone
   64, against a 55 us read of the same 33 MB: arithmetic ~25 us, B ~14, A's pattern ~9. Loading B and its sums once
   for all rows (one column; the min term 4 fma instead of 16) passes MUL_MAT and MUL_MAT_ID and is slower: 100 to
   121 us at 1 row, 101 to 117 at 2, Gemma tg64 38.7 to 36.4, GPT-OSS 120B 49.0 to 46.5. As with the matmul, fewer
   instructions do not mean faster under this compiler (INFERRED: its scheduling of loads against their uses).
-- 31 Oct, VERIFIED (runs 5567-5573): generation. Llama 2 Q4_0 tg64 67.9 t/s (Metal 120). Matrix-vector n=1 against
-  Metal (macOS run 20261028-022802), us: q4_K 4096x4096 40 / 17.4, 4096x14336 100 / 53, q6_K 4096x14336 114 / 63, f16
+- 31 Oct, VERIFIED: generation. Llama 2 Q4_0 tg64 67.9 t/s (Metal 120). Matrix-vector n=1 against
+  Metal (macOS results 20261028-022802), us: q4_K 4096x4096 40 / 17.4, 4096x14336 100 / 53, q6_K 4096x14336 114 / 63, f16
   249 / 143, q4_0 69 / 37 (0005). One dependent launch reading 9.4 MB takes 19.4 us here, 33 MB 54.7, 117 MB 191
   (vk-chain read, chain): the shaders run at about twice that floor. Back-to-back launches re-reading 9.4 MB reach
   2700 GB/s, so the system cache serves the GPU under Linux too. Kernel_mul_mv_q4_K_f32's layout ported to
   mul_mat_vec_simd.comp (tests pass) is no faster than the stock q4_K shader: 16-bit loads 25-30 % slower, 32-bit
   loads even at 2-4 rows. Small ops run 2.4-2.6x Metal (ADD of 4096 floats 8.2 against 3.8 us, ROPE 2.4x): a fixed
   per-dispatch cost.
-- 30 Oct, VERIFIED (runs 5386-5423; Metal from macOS run 20261028-005632; head sizes from the GGUF metadata):
+- 30 Oct, VERIFIED (Metal from macOS results 20261028-005632; head sizes from the GGUF metadata):
   FLASH_ATTN_EXT against Metal by head size, geometric mean over test-backend-ops' cases: 64 (GPT-OSS) prompts 1.95x,
   generation 2.96x; 128 (Llama 2) 2.05x / 2.65x; 256 (Qwen, Gemma's sliding layers) 2.32x / 2.18x (q8_0 caches
   0.90x: Vulkan ahead); 512 (Gemma's global layers) 8.54x / 3.32x; 576/512 (no model here) 10.1x. With f32
@@ -329,8 +329,8 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   scalar shader. Patch 0014 drops to 2 subgroups then: hsk 512 at 16k-32k keys 20-30 % faster, 4k even; FLASH_ATTN_EXT
   5368/5368 pass; Gemma pp4096 921 to 941 at depth 0, 228 to 237 at depth 16k, generation even (it keeps the scalar
   path at one token). The 512 head stays ~6x behind Metal.
-- 30 Oct, VERIFIED (runs 5339-5363, my build of the series with 0013; MUL_MAT_ID 1109/1109): against Metal's
-  MUL_MAT_ID (macOS run 20261028-022802) the worst cases were 32-64 tokens over 32 experts (q8_0 6.6x, iq4_xs 8.7x):
+- 30 Oct, VERIFIED (my build of the series with 0013; MUL_MAT_ID 1109/1109): against Metal's
+  MUL_MAT_ID (macOS results 20261028-022802) the worst cases were 32-64 tokens over 32 experts (q8_0 6.6x, iq4_xs 8.7x):
   `GGML_VK_MMV_ID_MAX=64` kept them on the matrix-vector path, which reloads an expert's weights per token. It wins at
   2 tokens an expert (q4_0 e128 u8 n32: 628 against 1128 us), is even at 4, loses at 8 (q4_0 e32 u4 n64: 1343 against
   793). Patch 0013, `GGML_VK_MMV_ID_PER_EXPERT=2`: llama-bench batches of 9 / 16 / 24 / 32 / 48 / 64 tokens, Gemma 136
@@ -338,41 +338,41 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   to 147 / 161 / 119 / 154 / 214 / 279; Qwen (512 experts) and GPT-OSS 120B (128 of 4) even. 3 an expert is worse
   on Gemma's 48. `llama-run.sh` and `llama-compare.sh` set 2. The other MUL_MAT_ID cases are 2-4x Metal, as the
   dense matmuls.
-- 30 Oct, VERIFIED (runs 5304-5306, test-only edit restored after; MUL_MAT 2275/2275): fetching the next k block of
+- 30 Oct, VERIFIED (test-only edit restored after; MUL_MAT 2275/2275): fetching the next k block of
   B (llama.cpp's aligned 8-wide loads) into registers before this block's matrix ops, stored to shared memory at the
   next block, is slower: 512 threads 128x128 f16 6340 to 8994 us, q4_0 5226 to 7034; 256 threads 128x64 f16 +7 %,
-  the rest even. With double buffering (run 5302) also failing, overlapping the loads from the shader side does not
+  the rest even. With double buffering also failing, overlapping the loads from the shader side does not
   pay under this compiler (INFERRED: the held registers cost more than the hidden latency).
-- 30 Oct, VERIFIED (run 5302, test-only edit restored after; MUL_MAT 2275/2275): two shared tiles in turn in
+- 30 Oct, VERIFIED (test-only edit restored after; MUL_MAT 2275/2275): two shared tiles in turn in
   mul_mm.comp's coopmat path (the next k block loaded before this one's matrix ops, one barrier a block, no row
   padding) overlap little. 256 threads 128x64: q4_0 6433 to 6002 us, q8_0 7292 to 6887, q4_K 7855 to 7673, f16 7833
   to 8067; 512 threads 128x128: f16 6340 to 8160, q4_0 5215 to 6105. Neither beats the single-buffered 512-thread
   tile `llama-run.sh` uses. Each thread still waits for its own global loads before its matrix ops; overlap would
   need the loads held in registers across the multiply (a loader split into fetch and store, per weight type).
-- 30 Oct, VERIFIED (run 5268, test-only edit restored after): at 16x16x16 the matmul loop without global loads takes
+- 30 Oct, VERIFIED (test-only edit restored after): at 16x16x16 the matmul loop without global loads takes
   3896 us (15.4 TFLOPS; the 11.7 above was 8x8x8), and its two barriers cost 0-2 %. That is about what `vk-chain.sh mma`
   gets from a single launch of 128 workgroups (16.8), and 4096x14336x512 on the 128x128 tile is 128 workgroups: the
   loop is near the hardware for its grid. The full kernel (q4_0 5220 us) is that loop plus ~1300 us of global loads
   that do not overlap it (INFERRED: llama.cpp's mul_mm loads a tile, waits at a barrier, then computes; Metal's 1024
   small threadgroups overlap loads of some with compute of others).
-- 30 Oct, VERIFIED (runs 5260-5266, `vk-chain.sh mma`, agxperf): the matrix hardware itself is fast under Honeykrisp.
+- 30 Oct, VERIFIED (`vk-chain.sh mma`, agxperf): the matrix hardware itself is fast under Honeykrisp.
   From registers 23.0 TFLOPS at 8x8x8 and 26.5 at 16x16x16 (of ~27); loading 2 A and 2 B tiles from shared memory
   per 4 ops, llama.cpp's ratio, 15.7 and 21.3 (B row-major 17.4 and 23.8); a barrier every 2 steps or llama.cpp's
   padded rows change nothing. One launch alone needs many workgroups: 76 groups of 256 threads 10.0 TFLOPS, 128 16.8,
   304 16.5, 1216 19.9. So llama.cpp's matmul loop at 11.7 TFLOPS (no global loads) runs at about half of what the
   same op mix gets here; split-k through `GGML_VK_SHADER_CORES` (304-1216: 128 tiles split 2-8 ways) gains 0-4 %.
-- 30 Oct, VERIFIED (runs 5248, 5250, shaderdb): occupancy is not the bound either. The matmul shader at 8x8x8 has 87
+- 30 Oct, VERIFIED (shaderdb): occupancy is not the bound either. The matmul shader at 8x8x8 has 87
   registers, at 16x16x16 103, both 1024 threads; 64x32 per warp at 16x16x16 (256 threads) has 143 registers and 704
   threads and is the fastest 4096x14336x512 (f16 5702, q4_0 5077 us), yet slower on every prompt than the 512-thread
   tile `llama-run.sh` keeps (Llama 2 832 / 932 / 917 against 875 / 949 / 937, Gemma 834 / 960 / 899 against 858 /
   1008 / 955): the one-shape operator test misleads for prompts.
-- 30 Oct, VERIFIED (run 5245, test-only edit restored after): Mesa keeps the coopmat k-step loop rolled (`while r31 <
+- 30 Oct, VERIFIED (test-only edit restored after): Mesa keeps the coopmat k-step loop rolled (`while r31 <
   32`); unrolled by hand in mul_mm.comp, 16x16x16 runs 7.8 instructions a matrix op for the whole k loop with its
   loader (about 11 before) and is slower: f16 6400 to 7905 us, q4_0 5250 to 5768; at 8x8x8 the unrolled form spills
-  into 400 csel and doubles the time. Tests pass. With fewer moves (runs 5212-5229) and fewer instructions both
+  into 400 csel and doubles the time. Tests pass. With fewer moves and fewer instructions both
   failing, the loop's bound is not issue (INFERRED): latency or occupancy, next to read in shaderdb's registers and
   threads per variant.
-- 30 Oct, VERIFIED (runs 5212-5229; test-only switches in my builds, restored after), what does not move the
+- 30 Oct, VERIFIED (test-only switches in my builds, restored after), what does not move the
   512-token matmul at 16x16x16 (f16 / q4_0 / q8_0 / q4_K ~6400 / 5250 / 5450 / 7100 us): (1) fewer moves: the loop's
   accumulators are scalar 16-bit phis that land on misaligned half-registers (r26h:r27l), so each matrix op gathers
   its accumulator with two moves and the loop ends in a ~30-move parallel copy; a Mesa pass packing 16-bit vec2 phis
@@ -381,11 +381,11 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   moves; (2) f32 accumulators (Metal's form): 13-50 % slower; (3) shared-memory row padding 0-12: even, except q4_K at
   padding 0, 7100 to 5850 us (-18 %, three rounds), which moves prompts little (Gemma 858 / 1005 / 952 to 876 / 994 /
   917, GPT-OSS 120B 526 / 709 / 857 to 568 / 750 / 861) because the padding applies to every type.
-- 30 Oct, VERIFIED (run 5203, Mesa's `AGX_MESA_DEBUG=shaders`, f16 matmul; 212-266 instructions undecoded by Mesa's
+- 30 Oct, VERIFIED (Mesa's `AGX_MESA_DEBUG=shaders`, f16 matmul; 212-266 instructions undecoded by Mesa's
   disassembler, so counts are lower bounds): at 16x16x16 the matrix loop runs 224 instructions for 32 matrix ops, 7.0
   per op (8x8x8: 144 for 16, 9.0): 90 mov, 55 iadd, 24 local loads. Local loads per op now 0.75, Metal's figure; moves
   2.8 per op against Metal's ~0.1 are what is left in the loop.
-- 30 Oct, VERIFIED (runs 5174-5199, my build with 0012): where a 512-token matmul's time goes, by removing parts
+- 30 Oct, VERIFIED (my build with 0012): where a 512-token matmul's time goes, by removing parts
   of mul_mm.comp (timings only): without any global load every type takes ~5120 us (11.7 TFLOPS), so the shared-memory
   matrix loop alone caps it; without the matrix ops q4_0 takes 1620 us, f16 4110. Honeykrisp's first coopmat shape is
   8x8x8 (INFERRED: the default times equal `GGML_VK_COOPMAT_SIZE=8`'s in a test build), which llama.cpp takes; 0001's
@@ -395,24 +395,24 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   costs short MoE prompts 4-14 %): Llama 2 734 / 807 / 807 to 875 / 949 / 937, Qwen 565 / 722 / 753 to 587 / 749 /
   806, Gemma 817 / 923 / 867 to 858 / 1008 / 955, GPT-OSS 120B 523 / 703 / 798 to 527 / 711 / 858. `llama-run.sh`
   takes it. Metal's own tile shape (64x32 at 128 threads) is 15-40 % slower here.
-- 30 Oct, VERIFIED (runs 5141, 5142, my build of the series with 0012; 0011's numbers in runs 5052/5055): the coopmat
+- 30 Oct, VERIFIED (my build of the series with 0012; 0011's numbers as in the medium-tile entry above): the coopmat
   loop reloaded every B tile for each A tile; patch 0012 keeps a k step's B tiles in registers. f16 4096x14336x512
   8020 to 7060 us (7.5 to 8.5 TFLOPS), q4_0 and q8_0 unchanged (their time is in the loader's dequantization),
   MUL_MAT and MUL_MAT_ID tests pass. Prompts (pp512 / pp2048 / pp4096, 512,128,128): Qwen 551 / 714 / 744 to 565 / 722
   / 753, Gemma 805 / 909 / 885 to 817 / 923 / 867, GPT-OSS 120B 505 / 687 / 758 to 523 / 703 / 798, Llama 2 (q4_0)
   even. `GGML_VK_DISABLE_INTEGER_DOT_PRODUCT=1` changes no type: every quantized matmul here already runs the
   coopmat loop (9-10 TFLOPS), so their gap to Metal is the loader. Honeykrisp has `VK_EXT_pipeline_robustness`.
-- 30 Oct, VERIFIED counts, INFERRED kernel names (dougallj/applegpu 28dd804 on the shader cache of macOS run
-  20261028-025320, Mesa's final code from run 5094; innermost loop = the range of its backward branch): Metal's
+- 30 Oct, VERIFIED counts, INFERRED kernel names (dougallj/applegpu 28dd804 on the shader cache of macOS results
+  20261028-025320, Mesa's final code from `AGX_MESA_DEBUG=shaders` (the entry below); innermost loop = the range of its backward branch): Metal's
   `kernel_mul_mm` family, the loops with 32 `simd_matrix_fmadd32`, 24 threadgroup loads, ~17 threadgroup stores and
   2 barriers (llama.cpp's 4x2 8x8 fragments per simdgroup over a 32-wide k step), runs 142-280 instructions per
   iteration, 4.4-8.8 per matrix op, with the next tile's device loads and dequantization inside and 4 movs in most
   variants. Mesa's coopmat inner loop runs 167 instructions for 16 `simd_matrix_fmadd16`, 10.4 per matrix op without
   its device loads: 72 mov, 36 local loads, 28 iadd. Per matrix op: local loads 0.75 against 2.25, moves ~0.1 against
   4.5. Apple loads each fragment once into the registers the matrix op reads and reuses it; Mesa's lowering loads
-  more and copies everything into place (the moves turned out not to bound the loop: runs 5212-5229, above). Metal's
+  more and copies everything into place (the moves turned out not to bound the loop: the fewer-moves entry above). Metal's
   flash attention: 128 matrix ops in 601-678 instructions.
-- 30 Oct, VERIFIED (`AGX_MESA_DEBUG=shaderdb` and `shaders`, run 5093-5094): the matmul shader has 93-97 registers,
+- 30 Oct, VERIFIED (`AGX_MESA_DEBUG=shaderdb` and `shaders`): the matmul shader has 93-97 registers,
   1024 threads, no spills; its inner loop issues 16 `simd_matrix_fmadd16` among ~190 instructions (36 local loads,
   ~90 mov/collect/split to assemble the operands, 28 iadd; 167 in the final code, below), and its loader 128 `icmpsel` (bounds clamps) for 32
   device loads. Larger per-warp tiles that reuse operands more: 64x32 per warp (`256,128,128,,64,32`) f16 -23 % in
@@ -455,7 +455,7 @@ Metal: macOS 15.8.1, llama.cpp 2280f0f, 27-28 Oct, VERIFIED (`results/macos/maco
 GPU, batch 2048.
 
 Model files: Llama 2 3.6 GiB, GPT-OSS 20B 12.3, GPT-OSS 120B 58.7, Gemma 4 15.8, Qwen3-Coder-Next 80.4. Linux:
-`var/compare-20261029-133010` (run 4697; Llama 2 at 1 row from `compare-20261029-132759`).
+`var/compare-20261029-133010` (Llama 2 at 1 row from `compare-20261029-132759`).
 
 Tokens per second against batch size, Metal / Honeykrisp (llama-bench, one prompt of N tokens: the speed a speculative
 step pays to verify N tokens):
