@@ -2,6 +2,7 @@
 """Hardware-free confinement and shared-lock regression for llama-bench.sh."""
 import fcntl
 import os
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -13,8 +14,8 @@ SCRIPT = Path(__file__).resolve().parents[1] / "gpu" / "llama-bench.sh"
 
 class ConfinedBench(unittest.TestCase):
     def test_shared_lock_and_output_override(self):
-        for readonly in (False, True):
-            with self.subTest(readonly=readonly), tempfile.TemporaryDirectory() as tmp:
+        for readonly, fail_call in ((False, 0), (True, 0), (True, 1), (True, 2), (True, 3), (True, 4), (True, 5)):
+            with self.subTest(readonly=readonly, fail_call=fail_call), tempfile.TemporaryDirectory() as tmp:
                 root = Path(tmp)
                 source = root / "source"
                 (source / ".git").mkdir(parents=True)
@@ -32,7 +33,9 @@ class ConfinedBench(unittest.TestCase):
                     directory = source / variant / "bin"
                     directory.mkdir(parents=True)
                     executable(directory / "llama-bench",
-                               'echo call >> "$BENCH_CALLS"\necho "| fixture |"\necho "Total time 1 us"\n')
+                               'echo call >> "$BENCH_CALLS"\nn=$(wc -l < "$BENCH_CALLS")\n'
+                               'if [ "$n" -eq "$BENCH_FAIL_CALL" ]; then echo raw-failure-sentinel; exit 7; fi\n'
+                               'echo "| fixture |"\necho "Total time 1 us"\n')
                 model = root / "model.gguf"
                 model.touch()
                 lock = root / "gpu.lock"
@@ -40,7 +43,7 @@ class ConfinedBench(unittest.TestCase):
                 output = root / "result.txt"
                 env = dict(os.environ, PATH=str(commands) + os.pathsep + os.environ["PATH"],
                            LLAMA_SRC=str(source), LLAMA_REF="", THREADS="1",
-                           GPU_LOCK=str(lock), BENCH_OUT=str(output), BENCH_CALLS=str(calls),
+                           GPU_LOCK=str(lock), BENCH_OUT=str(output), BENCH_CALLS=str(calls), BENCH_FAIL_CALL=str(fail_call),
                            TMPDIR=str(root))
                 with lock.open("r") as holder:
                     fcntl.flock(holder, fcntl.LOCK_EX)
@@ -60,9 +63,16 @@ class ConfinedBench(unittest.TestCase):
                         self.assertFalse(output.exists())
                         fcntl.flock(holder, fcntl.LOCK_UN)
                         stdout, stderr = process.communicate(timeout=10)
-                        self.assertEqual(process.returncode, 0, stdout + stderr)
+                        self.assertEqual(process.returncode, 1 if fail_call else 0, stdout + stderr)
                         self.assertEqual(calls.read_text().splitlines(), ["call"] * 5)
                         self.assertIn("===== cpu", output.read_text())
+                        if fail_call:
+                            logs = re.findall(r"raw log: (.+)", output.read_text())
+                            self.assertEqual(len(logs), 1, stdout + stderr)
+                            self.assertIn("rc 7", output.read_text())
+                            self.assertIn("raw-failure-sentinel", Path(logs[0]).read_text())
+                        else:
+                            self.assertNotIn("raw log:", output.read_text())
                         self.assertEqual(lock.read_text(), "keep existing lock contents\n")
                     finally:
                         if process.poll() is None:

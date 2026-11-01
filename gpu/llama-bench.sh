@@ -101,29 +101,37 @@ fi
 
 # Run llama-bench; print what it says about the GPU it picked, then its result table.
 bench() { # $1 build directory, rest llama-bench options
-    local dir=$1 log
+    local dir=$1 log rc=0
     shift
     log=$(mktemp)
-    "$dir/bin/llama-bench" -m "$MODEL" -t "$THREADS" "$@" >"$log" 2>&1 || echo "llama-bench failed"
+    "$dir/bin/llama-bench" -m "$MODEL" -t "$THREADS" "$@" >"$log" 2>&1 || rc=$?
+    if (( rc != 0 )); then
+        failed=1
+        echo "llama-bench failed (rc $rc); raw log: $log"
+    fi
     grep -E '^ggml_(vulkan|metal)[a-z_]*: .*(=|GPU|device|memory|fp16|matrix|simd|unified)' "$log" | sort -u | head -n 20 || true
     grep -E '^\| |^build:|error|failed' "$log" | tail -n 14 || true
-    rm -f "$log"
+    if (( rc == 0 )); then rm -f "$log"; fi
 }
 
 # One short run with llama.cpp's Vulkan timer on: time per kind of operation, summed
 # over the run and printed when it ends; largest total first.
 profile() { # $1 title, rest llama-bench options
-    local log
+    local log rc=0
     sec "vulkan timings, $1"
     shift
     log=$(mktemp)
     GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1000000000 \
         build-gpu/bin/llama-bench -m "$MODEL" -ngl 99 -t "$THREADS" -r 1 --no-warmup "$@" >"$log" 2>&1 ||
-        echo "llama-bench failed"
+        rc=$?
+    if (( rc != 0 )); then
+        failed=1
+        echo "llama-bench failed (rc $rc); raw log: $log"
+    fi
     awk 'match($0, / = [0-9.e+]+ us/) { print substr($0, RSTART + 3, RLENGTH - 6) "\t" $0 }' "$log" |
         sort -gr | cut -f2- | head -n 40 || true
     grep '^Total time' "$log" || echo "no timings in the output"
-    rm -f "$log"
+    if (( rc == 0 )); then rm -f "$log"; fi
 }
 
 # Keep device queries and both benchmark variants together, without another GPU job.
@@ -134,6 +142,7 @@ if [[ $OS == Linux ]]; then
 fi
 
 {
+    failed=0
     sec "system"
     uname -sr
     echo "llama.cpp $(git log -1 --format='%H %cd' --date=short)"
@@ -162,6 +171,8 @@ fi
         profile "prompt of 512 tokens" -p 512 -n 0
         profile "generating 64 tokens" -p 0 -n 64
     fi
+    # This group runs in the tee pipeline: return its aggregated status here.
+    (( failed == 0 ))
 } 2>&1 | tee "$OUT"
 
 echo
