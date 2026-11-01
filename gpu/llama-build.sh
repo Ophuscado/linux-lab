@@ -28,6 +28,11 @@ install_packages() {
     [[ ${#missing[@]} -eq 0 ]] || sudo dnf install -y "${missing[@]}"
 }
 
+case ${1:-} in -h|--help)
+    sed -n '2,/^set -eu/p' "$0" | sed '$d; s/^# \?//'
+    exit 0 ;;
+esac
+
 if [[ ${1:-} == deps ]]; then
     [[ $(uname -s) == Linux ]] || die "deps installs Fedora packages; in macOS install cmake yourself"
     install_packages

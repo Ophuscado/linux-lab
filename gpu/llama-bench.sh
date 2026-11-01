@@ -42,6 +42,11 @@ install_packages() {
     fi
 }
 
+case $MODEL in -h|--help)
+    sed -n '2,/^set -eu/p' "$0" | sed '$d; s/^# \?//'
+    exit 0 ;;
+esac
+
 if [[ $MODEL == deps ]]; then
     [[ $OS == Linux ]] || die "deps installs Fedora packages; in macOS install cmake yourself"
     install_packages

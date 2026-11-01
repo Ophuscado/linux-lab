@@ -14,6 +14,10 @@
 # file, default ~/.cache/linux-lab-gpu.lock), MESA_SIDE (the side Mesas, default build/mesa-side), LLAMA_BIN (the binaries needed by STEPS; default src/llama.cpp-simd/build/bin, the
 # honeykrisp series), LLM (models, default ~/Projects/_llm).
 set -euo pipefail
+case ${1:-} in -h|--help)
+    sed -n '2,/^set -eu/p' "$0" | sed '$d; s/^# \?//'
+    exit 0 ;;
+esac
 LAB=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
 B=${LLAMA_BIN:-$LAB/src/llama.cpp-simd/build/bin}
 LLM=${LLM:-$HOME/Projects/_llm}

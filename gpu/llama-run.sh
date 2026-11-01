@@ -28,12 +28,22 @@ set -euo pipefail
 LAB=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
 # The first that exists: the lab's tree (src/, build/, git-ignored) or where they were before 27 Oct (~/src).
 first() { local p; for p in "$@"; do [[ -e $p ]] && { echo "$p"; return; }; done; echo "$1"; }
+case ${1:-} in -h|--help)
+    sed -n '2,/^set -eu/p' "$0" | sed '$d; s/^# \?//'
+    exit 0 ;;
+esac
 # The patch series build (src-patches/llama.cpp/honeykrisp, every setting below and every measured number) first;
 # src/llama.cpp/build-run is the older tree with the tile patch alone.
 SERVER=$(first "$LAB/src/llama.cpp-simd/build/bin/llama-server" "$LAB/src/llama.cpp/build-run/bin/llama-server" "$HOME/src/llama.cpp-tune-prod/build-run/bin/llama-server")
-LLM=$HOME/Projects/_llm
+LLM=${LLM:-$HOME/Projects/_llm}
 SIDE=${MESA_SIDE:-$(first "$LAB/build/mesa-side" "$HOME/src/mesa-side")}
 MCP=$(first "$LAB/config/mcp.json" "$HOME/src/mcp.json")
+mcp_args=()
+if [[ -f $MCP ]]; then
+    mcp_args=(--mcp-servers-config "$MCP" --tools all)
+else
+    echo "no mcp config ($MCP not found); running without tool calls" >&2
+fi
 CACHE=$(first "${XDG_CACHE_HOME:-$HOME/.cache}/llama-run" "$HOME/src/cache")  # slot saves: a cache, not backed up
 mkdir -p "$CACHE"
 
@@ -68,6 +78,6 @@ export GGML_VK_WT_M=512,128,128,,32,32,,16,16,16 GGML_VK_MMV_ID_MAX=64 GGML_VK_M
 exec "$SERVER" -m "$M" "${draft[@]}" \
     -ngl all -t 16 -fa on -np 1 -ub 8192 -b 8192 \
     -ctk q8_0 -ctv q8_0 --kv-unified --swa-full \
-    --mcp-servers-config "$MCP" --tools all \
+    "${mcp_args[@]}" \
     -cram 102400 --cache-prompt --cache-idle-slots --slot-save-path "$CACHE" \
     --sleep-idle-seconds 180 --host 127.0.0.1 --port 8088 "$@"

@@ -151,6 +151,9 @@ stage_run() {
 }
 
 case ${1:-} in
+-h | --help)
+    echo "usage: $0 {deps | build NAME | check NAME | run NAME COMMAND... | remove}, NAME base, coopmat, agxperf, next or nextperf"
+    exit 0 ;;
 deps) stage_deps ;;
 build) stage_build "${2:-}" ;;
 check) stage_check "${2:-}" ;;
