@@ -9,7 +9,7 @@
 # macOS. Takes the GPU lock.
 #
 # Environment: STEPS (default "bench batches depth spec ops"), COMPARE_OUT (instead of var/), GPU_LOCK (the lock
-# file, for a sandbox where ~/.cache is read-only), MESA_SIDE (the side Mesas, default build/mesa-side), LLAMA_BIN (a build/bin with llama-bench and llama-server; default src/llama.cpp-simd/build/bin, the
+# file, default ~/.cache/linux-lab-gpu.lock), MESA_SIDE (the side Mesas, default build/mesa-side), LLAMA_BIN (a build/bin with llama-bench and llama-server; default src/llama.cpp-simd/build/bin, the
 # honeykrisp series), LLM (models, default ~/Projects/_llm).
 set -euo pipefail
 LAB=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
@@ -37,7 +37,10 @@ on() { [[ $STEPS == *" $1 "* ]]; }
 # first failing llama-bench, losing every model after it). Called as `on STEP && cmd || failed "NAME STEP"`: a step
 # that is off ends the && early, and that is not a failure.
 failed() { local rc=$?; on "${1##* }" || return 0; echo "$1: failed (rc $rc), see errors.txt" | tee -a "$OUT/failed.txt"; }
-exec 9>"${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}"; flock 9
+# The lock is opened for reading when it cannot be written (a confined run sees ~/.cache read-only), as flock needs
+# only an open file; so every run shares the one lock.
+lock=${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}
+{ exec 9>>"$lock"; } 2>/dev/null || exec 9<"$lock"; flock 9
 # STEPS=mmv: the one-token 4096x14336 matrix-vector (f16, q4_0, q8_0) over rows per workgroup, workgroup size and
 # the Metal-layout shader, against the read bandwidth (610-655 GB/s) and Metal (f16 131 us, q4_0 37, q8_0 57.5).
 if on mmv; then
