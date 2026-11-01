@@ -1,5 +1,7 @@
 # Facts for the next issue 10982 comment (since the 30 Oct follow-up)
 
+LLM disclosure (1 Nov 2026): This background was prepared with LLM assistance; it is not submission text. Asahi forbids generative AI for material contributions. If these facts inform an Asahi/AGX report, write it by hand and disclose the LLM assistance; otherwise, do not send it. Policy: https://asahilinux.org/llm-policy/
+
 For the operator's own words. One paragraph per line when pasted. Machine: M2 Ultra, 76 GPU cores, Asahi Linux, Honeykrisp with the omacom coopmat series (agxperf).
 
 - 16x16x16 matrices: Honeykrisp lists 8x8x8 first and llama.cpp takes it. The warptile's TM/TN/TK fields set to 16 (GGML_VK_WT_M=512,128,128,,32,32,,16,16,16, no code change) give Llama 2 Q4_0 pp512/pp2048/pp4096 734/807/807 to 875/949/937 t/s, Gemma 4 817/923/867 to 858/1008/955. All MUL_MAT (2275) and MUL_MAT_ID (1109) tests pass.

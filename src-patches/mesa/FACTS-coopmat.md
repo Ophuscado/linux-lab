@@ -1,5 +1,7 @@
 # Facts for the coopmat series' author (omacom/mesa pull requests 3-6, commit 795ae42a71)
 
+LLM disclosure (1 Nov 2026): This background was prepared with LLM assistance; it is not submission text. Asahi forbids generative AI for material contributions. If these facts inform an Asahi/AGX report, write it by hand and disclose the LLM assistance; otherwise, do not send it. Policy: https://asahilinux.org/llm-policy/
+
 For the operator's own words (Asahi takes no AI-assisted material contributions; a report built from these facts is his to write). Machine: M2 Ultra (G14D), Asahi Linux, the series plus the agxperf commits (src-patches/mesa/agxperf).
 
 - The hardware op is fast through the series: vk-chain mma.comp (no global memory) 26.5 TFLOPS at 16x16x16 from registers, 23.0 at 8x8x8; 21.3 / 15.7 loading 2 A and 2 B tiles from shared memory per 4 ops; B row-major 23.8 / 17.4.

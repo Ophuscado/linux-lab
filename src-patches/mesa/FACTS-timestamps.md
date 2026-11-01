@@ -1,5 +1,7 @@
 # Facts for a Mesa report: Honeykrisp compute timestamps measure the work after them
 
+LLM disclosure (1 Nov 2026): This background was prepared with LLM assistance; it is not submission text. Asahi forbids generative AI for material contributions. If these facts inform an Asahi/AGX report, write it by hand and disclose the LLM assistance; otherwise, do not send it. Policy: https://asahilinux.org/llm-policy/
+
 For the operator to report in his own words (Asahi takes no AI-assisted material contributions; a report with these facts is his to write). Our local fix is `agxperf/0005`.
 
 - Where: `src/asahi/vulkan/hk_query_pool.c`, `hk_CmdWriteTimestamp2`, unchanged from the coopmat series' base (795ae42a71) through Mesa of 25 Oct (e7371b0).

@@ -1,5 +1,7 @@
 # Facts for a pull request: count_experts checks the skipped mul_mat_id slots in parallel
 
+LLM disclosure (1 Nov 2026): This background was prepared with LLM assistance; it is not submission text. Asahi forbids generative AI for material contributions. If these facts inform an Asahi/AGX report, write it by hand and disclose the LLM assistance; otherwise, do not send it. Policy: https://asahilinux.org/llm-policy/
+
 For the operator to write the commit message and PR text in his own words (llama.cpp forbids AI-written ones; the code was drafted with an AI assistant, which the PR template asks to disclose).
 
 - What: in `count_experts.comp`, `zero_skipped_rows` loops over every slot (n_used x n_tokens ids) in every one of the workgroup's 256 invocations. It now strides the slots over the invocations; each invocation zeroes the dst row of a skipped slot (-1 id) alone. 3 lines changed.

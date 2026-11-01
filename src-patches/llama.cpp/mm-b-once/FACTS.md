@@ -1,5 +1,7 @@
 # Facts for a pull request: coopmat1 matmul loads each B tile once per k step
 
+LLM disclosure (1 Nov 2026): This background was prepared with LLM assistance; it is not submission text. Asahi forbids generative AI for material contributions. If these facts inform an Asahi/AGX report, write it by hand and disclose the LLM assistance; otherwise, do not send it. Policy: https://asahilinux.org/llm-policy/
+
 For the operator to write the commit message and PR text in his own words (llama.cpp forbids AI-written ones; the code was drafted with an AI assistant, which the PR template asks to disclose).
 
 - What: in mul_mm.comp's coopmat1 path, the B tiles of a k step are loaded into an array of `cms_per_col` coopmats before the A loop, instead of once per (A tile, B tile) pair. Loads from shared memory per k step drop from `cms_per_row * cms_per_col` B tiles to `cms_per_col`. The multiply-adds and their order are unchanged.
