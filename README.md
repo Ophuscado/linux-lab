@@ -66,6 +66,11 @@ A fresh clone reaches this with `gpu/llama-build.sh` (clones llama.cpp at `src-p
 - The KDE task switcher bug traced to libplasma, the WhiteSur look, macOS's colour profile for the TV, Bluetooth
   pairings from macOS.
 
+**Not yet** (searchable in [`_gtd/BACKLOG.md`](_gtd/BACKLOG.md) by the quoted phrase)
+- HDR on the HDMI output: KScreen reports it as HDR-incapable on Linux, while macOS drives the same display in HDR ("HDR on the HDMI output").
+- Hardware video decode: no VA-API driver exists for the Apple GPU's media engine (checked here: no Apple/Asahi `*_drv_video.so`, only AMD/NVIDIA/d3d12/virtio ones ship); software decode only ("video decode").
+- Bluetooth after suspend: the keyboard's `hci0` can time out on resume; a mitigation isn't picked yet ("Bluetooth-after-suspend fault").
+
 ## Layout
 
 | Path | What |
