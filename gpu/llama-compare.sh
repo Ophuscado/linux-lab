@@ -53,6 +53,19 @@ failed() { local rc=$?; on "${1##* }" || return 0; echo "$1: failed (rc $rc), se
 # only an open file; so every run shares the one lock.
 lock=${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}
 { exec 9>>"$lock"; } 2>/dev/null || exec 9<"$lock"; flock 9
+failed=0
+s=
+failure() { printf 'ERR: %s\n' "$*" | tee -a "$OUT/failed.txt" >&2; failed=1; }
+stop_server() {
+    if [[ -n $s ]]; then
+        kill "$s" 2>/dev/null || true
+        wait "$s" 2>/dev/null || true
+        s=
+    fi
+}
+trap stop_server EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 # STEPS=mmv: the one-token 4096x14336 matrix-vector (f16, q4_0, q8_0) over rows per workgroup, workgroup size and
 # the Metal-layout shader, against the read bandwidth (610-655 GB/s) and Metal (f16 131 us, q4_0 37, q8_0 57.5).
 if on mmv; then
@@ -121,18 +134,38 @@ while IFS='|' read -r name file mtp; do
     for c in "none|" "ngram-mod-64|--spec-type ngram-mod" \
         "ngram-mod-128|--spec-type ngram-mod --spec-ngram-mod-n-max 128 --spec-ngram-mod-n-min 96" \
         ${mf:+"mtp|--spec-type draft-mtp -md $mf -ngld 99"}; do
+        if ! python3 -I -c 'import socket; s=socket.socket(); s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1); s.bind(("127.0.0.1", 8099))' >"$OUT/port-check.txt" 2>&1; then
+            failure "$name: port 8099 unavailable (see $OUT/port-check.txt)"
+            break
+        fi
+        server_log="$OUT/server-$name-${c%%|*}.log"
         # shellcheck disable=SC2086
         "$B/llama-server" -m "$f" ${c#*|} -ngl all -fa on -np 1 -c 16384 -ub 8192 -b 8192 -ctk q8_0 -ctv q8_0 \
-            --host 127.0.0.1 --port 8099 >"$OUT/server.log" 2>&1 &
+            --host 127.0.0.1 --port 8099 >"$server_log" 2>&1 &
         s=$!
-        up=
-        for ((i = 0; i < 600; i++)); do curl -sf http://127.0.0.1:8099/health >/dev/null && { up=1; break; }; kill -0 "$s" 2>/dev/null || break; sleep 1; done
-        if [[ -n $up ]]; then
-            echo "$name ${c%%|*}: $(python3 -I "$LAB/macos/spec-req.py" 8099 "$LAB/gpu/llama-run.sh" 2>&1 | tail -n 1)" | tee -a "$OUT/llama-spec.txt"
-        else
-            echo "$name ${c%%|*}: server never answered /health, no result (server.log)" | tee -a "$OUT/llama-spec.txt" "$OUT/failed.txt"
+        ready=0
+        for ((i = 0; i < 600; i++)); do
+            kill -0 "$s" 2>/dev/null || break
+            if curl -sf --max-time 2 http://127.0.0.1:8099/health >/dev/null && kill -0 "$s" 2>/dev/null; then
+                ready=1
+                break
+            fi
+            sleep 1
+        done
+        if (( ! ready )); then
+            failure "$name ${c%%|*}: server did not become ready (see $server_log)"
+            stop_server
+            break
         fi
-        kill "$s" 2>/dev/null || true; wait "$s" 2>/dev/null || true
+        spec_log="$OUT/llama-$name-spec-${c%%|*}.txt"
+        if ! python3 -I "$LAB/macos/spec-req.py" 8099 "$LAB/gpu/llama-run.sh" >"$spec_log" 2>&1; then
+            failure "$name ${c%%|*}: request failed (see $spec_log)"
+            stop_server
+            break
+        fi
+        echo "$name ${c%%|*}: $(tail -n 1 "$spec_log")" | tee -a "$OUT/llama-spec.txt"
+        stop_server
     done
 done <"$LAB/macos/models.txt"
 echo "saved: $OUT"
+(( failed == 0 )) || die "one or more steps failed (see $OUT/failed.txt)"
