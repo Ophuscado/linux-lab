@@ -16,7 +16,7 @@
 # Environment: LLAMA_SRC (source directory), LLAMA_REF (branch, tag or commit to build,
 # default: what is checked out, master on a first run), THREADS (CPU threads for the CPU
 # run, default: performance cores), BENCH_LABEL (added to the output file name; set by
-# mesa-side.sh run).
+# mesa-side.sh run), GPU_LOCK (Linux shared GPU lock, default ~/.cache/linux-lab-gpu.lock).
 
 set -euo pipefail
 
@@ -124,6 +124,12 @@ profile() { # $1 title, rest llama-bench options
     grep '^Total time' "$log" || echo "no timings in the output"
     rm -f "$log"
 }
+
+# Keep device queries and both benchmark variants together, without another GPU job.
+if [[ $OS == Linux ]]; then
+    exec 9>"${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}"
+    flock 9
+fi
 
 {
     sec "system"
