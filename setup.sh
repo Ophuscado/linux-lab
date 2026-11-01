@@ -172,8 +172,7 @@ stage_tools() {
     sudo dnf install -y hdparm smartmontools pciutils usbutils nmap-ncat vulkan-tools
     "$LAB/gpu/llama-bench.sh" deps
     "$LAB/gpu/mesa-side.sh" deps
-    say "ready. What is waiting to be measured ($LAB/_gtd/DOING.md):"
-    sed 's/ · check:.*//; s/^/  - /' "$LAB/_gtd/DOING.md"
+    say "ready. gpu/llama-bench.sh and gpu/mesa-side.sh can measure now."
 }
 
 stage_list() {
