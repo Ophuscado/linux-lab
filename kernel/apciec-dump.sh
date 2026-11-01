@@ -6,6 +6,7 @@
 # Kept to the controller, router and PHY nodes on purpose, so the file does not carry the
 # machine's serial number or network addresses. Lines naming a serial number are dropped.
 
+set -uo pipefail  # no -e: a missing node or tool leaves its section empty and the rest still runs
 OUT=$HOME/apciec.txt
 
 sec() { printf '\n===== %s\n' "$*"; }

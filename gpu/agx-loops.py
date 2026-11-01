@@ -57,7 +57,7 @@ def report(tag, block, n):
         lds = sum(i[1] in LOADS for i in seg)
         if mat or lds >= 4:
             found.append((0 if mat else 1, len(seg), lo, hi, mat, seg))
-    for kind, size, lo, hi, mat, seg in sorted(found)[:n]:
+    for _kind, size, lo, hi, mat, seg in sorted(found)[:n]:
         mix = ", ".join(f"{k} {v}" for k, v in collections.Counter(i[1] for i in seg).most_common(16))
         per = f", {size / mat:.1f} per matrix op" if mat else ""
         print(f"{tag} loop {lo:#x}-{hi:#x}: {size} instructions, {mat} matrix ops{per}; {mix}")

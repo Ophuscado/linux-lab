@@ -7,6 +7,7 @@
 // the binary; MODE and ITERS are the specialization constants of reduce.spv (0 barriers, 1 subgroup).
 // VKCHAIN_MEMTYPE / VKCHAIN_MEMTYPES pick or list the memory type. VKCHAIN_ALT=1 alternates two pipelines of the same shader launch by launch, VKCHAIN_REBIND=1 binds
 // the descriptor set and pushes the constants again before every launch: what ggml does per op.
+#define _POSIX_C_SOURCE 200809L  /* clock_gettime, strdup under -std=c11 */
 #include <vulkan/vulkan.h>
 #include <stdio.h>
 #include <stdlib.h>

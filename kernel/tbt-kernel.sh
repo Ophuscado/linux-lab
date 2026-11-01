@@ -594,7 +594,7 @@ stage_m1n1() {
 stage_forget() {
     guard_machine
     local v=${1:-} mode
-    [[ $v == *"$SUFFIX" ]] || die "usage: $0 forget <release ending in $SUFFIX>, e.g. 7.2.2$SUFFIX"
+    [[ $v =~ ^[0-9][0-9a-z.+_-]*$SUFFIX$ && $v != *..* ]] || die "usage: $0 forget <release ending in $SUFFIX>, e.g. 7.2.2$SUFFIX"
     [[ $(uname -r) != "$v" ]] || die "$v is running; boot another kernel first"
     [[ $v != "$(kver)" ]] || die "$v is the current build; rollback removes that one"
     mode=$(dt_mode)
@@ -612,7 +612,8 @@ stage_rollback() {
     guard_machine
     local v=${1:-}
     [[ -n $v ]] || v=$(kver)
-    [[ $v == *"$SUFFIX" ]] || die "refusing to remove '$v': not a $SUFFIX kernel"
+    # a plain version (7.1.13-tbtwip): no '/' or '..' can reach the rm -rf below
+    [[ $v =~ ^[0-9][0-9a-z.+_-]*$SUFFIX$ && $v != *..* ]] || die "refusing to remove '$v': not a $SUFFIX kernel version"
     [[ $(uname -r) != "$v" ]] || die "boot the stock kernel first ($0 stock, reboot), then run rollback"
 
     say "removing kernel $v"

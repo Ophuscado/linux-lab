@@ -1,9 +1,9 @@
 #!/bin/bash
 # vk-chain.sh build | run [COUNT] [ELEMENTS]: build vk-chain (needs glslc or glslangValidator and
-#   metal-chain.m: the same measurements on Metal, for macOS on the same Mac (see its header).
 # vulkan-loader-devel), then time one launch alone and in a dependent chain on each Mesa that
 # mesa-side.sh built and under each Honeykrisp barrier variant. A token of an LLM is ~1500
 # dependent launches: chain us x 1500 is the floor of its generation time.
+# metal-chain.m: the same measurements on Metal, for macOS on the same Mac (see its header).
 set -euo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd); SIDE=${MESA_SIDE:-$HERE/../../build/mesa-side}
 [[ -n ${MESA_SIDE:-} || -d $SIDE || ! -d $HOME/src/mesa-side ]] || SIDE=$HOME/src/mesa-side

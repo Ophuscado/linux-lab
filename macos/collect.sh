@@ -2,7 +2,7 @@
 # collect.sh: everything worth measuring in one macOS boot of this Mac, so Linux can be compared with it
 # and macOS need not be booted again for it. Run from Terminal in macOS, from this folder:
 #
-#   ./collect.sh                 all of it (hours: it builds llama.cpp and downloads the models)
+#   ./collect.sh                 all of it (hours: it builds llama.cpp; the models are read, not downloaded)
 #   ./collect.sh hw              only the hardware description (minutes, no downloads)
 #   ./collect.sh STEP...         some steps: hw, ane, tbt, gpu, llama, ablate, ops, vulkan, power, re,
 #                                input (interactive), smc, anebench, display, vkchain

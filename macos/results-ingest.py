@@ -163,7 +163,7 @@ def main(argv):
                 major = m.group(1).decode()
         d = os.path.join(out, f"macos-{major}", run)
         for rel, copies in sorted(files.items()):
-            for i, (sha, data, src) in enumerate(copies):
+            for i, (_sha, data, src) in enumerate(copies):
                 p = os.path.join(d, rel if i == 0 else f"{rel}.alt-{i}")
                 os.makedirs(os.path.dirname(p), exist_ok=True)
                 b = clean(rel, data, home, host)
@@ -173,7 +173,7 @@ def main(argv):
                     log.append(f"{run}/{rel}: a different copy from {os.path.basename(src.rstrip('/'))} kept as .alt-{i}")
         log.append(f"{run}: macOS {major}, {len(files)} files")
     for (hint, e), copies in sorted(extras.items(), key=lambda x: (x[0][0] or "", x[0][1])):
-        for i, (sha, data, src) in enumerate(copies):
+        for i, (_sha, data, _src) in enumerate(copies):
             p = os.path.join(out, f"macos-{hint or 'unknown'}", "extra", e if i == 0 else f"{e}.alt-{i}")
             os.makedirs(os.path.dirname(p), exist_ok=True)
             b = clean(e, data, home, host)

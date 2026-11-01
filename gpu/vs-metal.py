@@ -37,7 +37,7 @@ def main(argv):
     for op, rs in sorted(by.items()):
         print(f"{op}: {len(rs)} cases, {math.exp(sum(map(math.log, rs)) / len(rs)):.2f}x Metal's time")
     rows.sort(reverse=True)
-    print(f"furthest behind:")
+    print("furthest behind:")
     for ratio, (op, params), t, m in rows[:top]:
         print(f"  {ratio:6.2f}x {op}({params}): {t:.1f} / {m:.1f} us")
     print("furthest ahead:")
