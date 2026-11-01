@@ -83,6 +83,10 @@ build() { # $1 directory, rest cmake options
     [[ -x $dir/bin/llama-bench ]] || die "no llama-bench in $dir"
 }
 
+# cmake auto-detects ccache on PATH; its default cache dir is outside this clone and can be
+# read-only in a confined run, so turn it off rather than depend on where it writes.
+export CCACHE_DISABLE=1
+
 echo "building the CPU variant"
 build build-cpu -DGGML_VULKAN=OFF -DGGML_METAL=OFF
 echo "building the GPU variant"
@@ -146,6 +150,7 @@ fi
     sec "system"
     uname -sr
     echo "llama.cpp $(git log -1 --format='%H %cd' --date=short)"
+    echo "(upstream master, not the honeykrisp series gpu/llama-build.sh builds and the README table measures)"
     echo "model: $(basename "$MODEL") ($(du -h "$MODEL" | cut -f1))"
     echo "cpu threads: $THREADS of $JOBS"
 
