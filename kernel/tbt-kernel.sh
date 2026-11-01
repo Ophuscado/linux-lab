@@ -79,13 +79,26 @@ fi
 ESP_MNT=/run/tbt-esp
 KOJI=https://kojipkgs.fedoraproject.org/packages/m1n1
 M1N1_NEW=$KOJI/1.9.9/1.fc46/noarch/m1n1-1.9.9-1.fc46.noarch.rpm
+M1N1_NEW_SHA256=0e6a3f413c5031ea1d2add56706cd138880ef27462223164dab269be57e1c901
 M1N1_OLD=$KOJI/1.6.1/1.fc44/noarch/m1n1-1.6.1-1.fc44.noarch.rpm
+M1N1_OLD_SHA256=b7a0a29346db3b9a78f6aba329f54982665c284fb8cce13d02bb2fe8eb1057ff
 DTB=arch/arm64/boot/dts/apple/t6022-j475d.dtb
 # Overridable only so the stages can be exercised off the target machine.
 DT=${TBT_DT:-/proc/device-tree}
 
 say() { printf '\n== %s\n' "$*"; }
 die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
+
+# Koji serves these RPMs unsigned (checked 1 Nov: rpmkeys --checksig shows digest-only, no PGP signature), so a
+# pinned sha256, checked before dnf ever sees the file, is the one integrity check there is.
+install_pinned() {
+    local url=$1 sha=$2 f
+    f=$(mktemp --suffix=.rpm)
+    trap 'rm -f "$f"' RETURN
+    curl -fsSL "$url" -o "$f" || die "could not download $url"
+    [[ $(sha256sum "$f" | cut -d' ' -f1) == "$sha" ]] || die "$url: sha256 does not match the pinned $sha"
+    sudo dnf install -y "$f"
+}
 
 # LOCALVERSION= keeps the release string independent of git state, so every make
 # invocation (build, modules_install) agrees on the same version.
@@ -581,7 +594,7 @@ stage_m1n1() {
     echo "saved boot.bin.previous: $(bootbin_sha boot.bin.previous)"
     esp_umount
     say "installing Fedora's m1n1 1.9.9 build"
-    sudo dnf install -y "$M1N1_NEW"
+    install_pinned "$M1N1_NEW" "$M1N1_NEW_SHA256"
     # The package trigger ignores failures of update-m1n1, so run it visibly as well.
     sudo update-m1n1
     echo "m1n1: $(rpm -q m1n1)"
@@ -624,7 +637,7 @@ stage_rollback() {
 
     if [[ $(rpm -q --qf '%{VERSION}' m1n1) != 1.6.1 ]]; then
         say "restoring m1n1 1.6.1"
-        sudo dnf -y downgrade m1n1 || sudo dnf install -y "$M1N1_OLD"
+        sudo dnf -y downgrade m1n1 || install_pinned "$M1N1_OLD" "$M1N1_OLD_SHA256"
     fi
     sudo update-m1n1
 
