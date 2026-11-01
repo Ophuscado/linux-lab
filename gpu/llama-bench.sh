@@ -16,7 +16,8 @@
 # Environment: LLAMA_SRC (source directory), LLAMA_REF (branch, tag or commit to build,
 # default: what is checked out, master on a first run), THREADS (CPU threads for the CPU
 # run, default: performance cores), BENCH_LABEL (added to the output file name; set by
-# mesa-side.sh run), GPU_LOCK (Linux shared GPU lock, default ~/.cache/linux-lab-gpu.lock).
+# mesa-side.sh run), BENCH_OUT (output file, default the ~/llama-bench-*.txt path),
+# GPU_LOCK (Linux shared GPU lock, default ~/.cache/linux-lab-gpu.lock).
 
 set -euo pipefail
 
@@ -25,7 +26,7 @@ HERE=$(cd "$(dirname "$(readlink -f "$0")")" && pwd)
 SRC=${LLAMA_SRC:-$HERE/../src/llama.cpp-bench}
 [[ -n ${LLAMA_SRC:-} || -d $SRC || ! -d $HOME/src/llama.cpp ]] || SRC=$HOME/src/llama.cpp
 OS=$(uname -s)
-OUT=$HOME/llama-bench-$OS-$(uname -r)${BENCH_LABEL:+-$BENCH_LABEL}.txt
+OUT=${BENCH_OUT:-$HOME/llama-bench-$OS-$(uname -r)${BENCH_LABEL:+-$BENCH_LABEL}.txt}
 
 die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
 sec() { printf '\n===== %s\n' "$*"; }
@@ -127,7 +128,8 @@ profile() { # $1 title, rest llama-bench options
 
 # Keep device queries and both benchmark variants together, without another GPU job.
 if [[ $OS == Linux ]]; then
-    exec 9>"${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}"
+    lock=${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}
+    { exec 9>>"$lock"; } 2>/dev/null || exec 9<"$lock"
     flock 9
 fi
 
