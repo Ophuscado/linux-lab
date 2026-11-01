@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 # Sourced by the loop tests. They run as root in a scratch Linux box (not on the Mac): each
-# makes loop-device disks under $T (default /var/tmp/migtest), runs migrate-row.sh or
+# makes loop-device disks under $T (default /var/tmp/migtest), runs storage/migrate-row.sh or
 # snapraid-setup.sh against them and prints what to compare with the expected lines in its
 # header. Needs losetup, parted, mkfs.ext4, xfsprogs, rsync, tmux, attr, python3 and mergerfs
 # on PATH (the script's "mergerfs" command builds 2.42.0); unreadable-names.sh also mfusepy (pip).

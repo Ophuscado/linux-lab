@@ -1,9 +1,9 @@
 #!/bin/bash
-# migrate-row.sh global pool on loop devices: rows C (08 09 10 15) and D (16 17 18 23), one worker each.
+# storage/migrate-row.sh global pool on loop devices: rows C (08 09 10 15) and D (16 17 18 23), one worker each.
 # Expected: six sources verified (folder times are not compared), each data set once in the pool with its hard links, parity disks formatted last, finish unmounts everything, a rerun is a no-op
 set -u
 . "$(dirname "$0")/lib.sh"
-S=$REPO/migrate-row.sh
+S=$REPO/storage/migrate-row.sh
 cd "$T" || exit 1
 for m in $(findmnt -rn -o TARGET | grep "$T"); do umount "$m" 2>/dev/null; done
 losetup -D 2>/dev/null; rm -rf home r3 d*.img; mkdir -p home bin r3

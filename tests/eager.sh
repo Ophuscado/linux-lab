@@ -1,5 +1,5 @@
 #!/bin/bash
-# migrate-row.sh eager mode, the HFS+-compressed guard and the sample check on loop devices: row C
+# storage/migrate-row.sh eager mode, the HFS+-compressed guard and the sample check on loop devices: row C
 # (08 09 10 11 15), one worker, the eager loop beside it. ext4 stands in for HFS+ and the attribute
 # user.decmpfs for osx.com.apple.decmpfs.
 # Expected: 15 erased and the first branch; 10 and 11 verified but held (each compressed file listed with its
@@ -10,7 +10,7 @@
 # younger than the margin and while a stop stands, then adds it
 set -u
 . "$(dirname "$0")/lib.sh"
-S=$REPO/migrate-row.sh
+S=$REPO/storage/migrate-row.sh
 cd "$T" || exit 1
 tmux kill-server 2>/dev/null
 for m in $(findmnt -rn -o TARGET | grep "$T"); do umount "$m" 2>/dev/null; done

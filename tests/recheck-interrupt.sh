@@ -4,7 +4,7 @@
 # Planted: short copy, path on two branches, same-size corrupted copy; quick must miss the last, full must find it.
 set -u
 . "$(dirname "$0")/lib.sh"
-S=$REPO/migrate-row.sh
+S=$REPO/storage/migrate-row.sh
 cd "$T" || exit 1
 for m in $(findmnt -rn -o TARGET | grep "$T" | sort -r); do umount "$m" 2>/dev/null; done
 losetup -D 2>/dev/null; rm -rf home d*.img; mkdir -p home bin

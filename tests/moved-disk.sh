@@ -7,7 +7,7 @@
 # its box has no SATA port) host20, rescan 25 (behind the SAS card, found by its serial) host20
 set -u
 . "$(dirname "$0")/lib.sh"
-S=$REPO/migrate-row.sh
+S=$REPO/storage/migrate-row.sh
 F=$T/moved; rm -rf "$F"; mkdir -p "$F/dev" "$F/byid" "$F/home"
 SYS=$F/sys; C=$SYS/devices/pci000a:00/000a:00:00.0/000a:01:00.0/000a:02:00.0/000a:03:00.0
 mkdir -p "$SYS/class/ata_port" "$SYS/class/scsi_host" "$SYS/block"

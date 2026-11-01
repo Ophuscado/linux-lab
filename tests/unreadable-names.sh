@@ -10,7 +10,7 @@
 # formats 17 into the pool; it exits 0. 'restore 17' after the format writes nothing again and keeps the record.
 set -u
 . "$(dirname "$0")/lib.sh"
-S=$REPO/migrate-row.sh
+S=$REPO/storage/migrate-row.sh
 python3 -c 'import mfusepy' 2>/dev/null || { echo "SKIP: needs mfusepy (pip install mfusepy) and libfuse3"; exit 0; }
 cd "$T" || exit 1
 for m in $(findmnt -rn -o TARGET | grep "$T" | sort -r); do umount "$m" 2>/dev/null; done

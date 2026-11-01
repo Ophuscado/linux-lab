@@ -4,7 +4,7 @@
 # Expected: start reads 2 disks (18 missing); check: both disks with GB read > 0, only the link error logged after the start (ata7, not ata6); a disk the system lost shows GONE; stop: stopped
 set -u
 . "$(dirname "$0")/lib.sh"
-S=$REPO/migrate-row.sh
+S=$REPO/storage/migrate-row.sh
 cd "$T" || exit 1
 tmux kill-server 2>/dev/null; losetup -D 2>/dev/null; rm -rf home rt*.img fsys; mkdir -p home
 D16=$(truncate -s 4G rt16.img && losetup -f --show rt16.img); D17=$(truncate -s 4G rt17.img && losetup -f --show rt17.img)

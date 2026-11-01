@@ -7,7 +7,7 @@
 # (two aside lines), status no longer lists it, 23 back in the pool.
 set -u
 . "$(dirname "$0")/lib.sh"
-S=$REPO/migrate-row.sh
+S=$REPO/storage/migrate-row.sh
 cd "$T" || exit 1
 for m in $(findmnt -rn -o TARGET | grep "$T" | sort -r); do umount "$m" 2>/dev/null; done
 losetup -D 2>/dev/null; rm -rf home d*.img hashes.txt; mkdir -p home bin
