@@ -22,7 +22,7 @@ its own. The findings and their evidence are in [`KNOWLEDGE.md`](KNOWLEDGE.md).
   passing row that turned the chip on by default there.
 
 **llama.cpp on the GPU** ([`gpu/`](gpu/), [`src-patches/llama.cpp/honeykrisp`](src-patches/llama.cpp/honeykrisp))
-- Vulkan (Honeykrisp) measured against Metal on the same machine, and moved forward by fifteen patches and their
+- Vulkan (Honeykrisp) measured against Metal on the same machine, and moved forward by sixteen patches and their
   settings: prompts +12-23 % from the tile shape, Llama 2 +18 % more from 16x16x16 matrices (the driver offers 8x8x8
   first), short MoE prompts up to +22 % from the expert tile, 9-token batches 3x faster (so speculative decoding pays:
   a code edit 30 to 55-59 t/s), a Metal-style matrix-vector shader, an abort fixed, and generation over long contexts
@@ -43,7 +43,7 @@ its own. The findings and their evidence are in [`KNOWLEDGE.md`](KNOWLEDGE.md).
 | Gemma 4 26B-A4B Q4_K | 2100 / 95.2 | - | 836 / 38.6 | 902 / 37.7 | 0.43 / 0.40 |
 | Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 583 / 34.5 | 686 / 34.6 | 0.45 / 0.51 |
 
-Both Honeykrisp columns run Mesa's `agxperf` side driver (`gpu/mesa-side.sh`: the coopmat series plus three unmerged Asahi compiler changes), not upstream Mesa's own Honeykrisp; `results/*/driver.txt` names it per run. Metal and MoltenVK: macOS 15.8.1, 28 Oct ([`results/macos`](results/macos)). Honeykrisp, 1 Nov: the 15 patches on llama.cpp's master of that day, at `llama-compare.sh STEPS=bench`'s own settings (-ub 2048, f16 KV cache — not the server's -ub 8192 / q8_0 KV from `llama-run.sh`; see the BACKLOG line on whether to rebench at those) ([`results/linux/compare-20261101-043729`](results/linux/compare-20261101-043729), `llama-compare.sh STEPS=bench`); 31 Oct: the first 14 on the master of 25 Oct ([`results/linux/compare-20261031-063537`](results/linux/compare-20261031-063537)). Share of Metal: the 1 Nov column over Metal's.
+A fresh clone reaches this with `gpu/llama-build.sh` (clones llama.cpp at `src-patches/llama.cpp/honeykrisp`'s pinned commit, applies the series with `git am`, builds `src/llama.cpp-simd/build/bin`, checked here against a real Vulkan run); `llama-run.sh` and `llama-compare.sh` read it from there. Both Honeykrisp columns run Mesa's `agxperf` side driver (`gpu/mesa-side.sh`: the coopmat series plus three unmerged Asahi compiler changes), not upstream Mesa's own Honeykrisp; `results/*/driver.txt` names it per run. Metal and MoltenVK: macOS 15.8.1, 28 Oct ([`results/macos`](results/macos)). Honeykrisp, 1 Nov: the 15 patches on llama.cpp's master of that day, at `llama-compare.sh STEPS=bench`'s own settings (-ub 2048, f16 KV cache — not the server's -ub 8192 / q8_0 KV from `llama-run.sh`; see the BACKLOG line on whether to rebench at those) ([`results/linux/compare-20261101-043729`](results/linux/compare-20261101-043729), `llama-compare.sh STEPS=bench`); 31 Oct: the first 14 on the master of 25 Oct ([`results/linux/compare-20261031-063537`](results/linux/compare-20261031-063537)). Share of Metal: the 1 Nov column over Metal's.
 
 **GPU usage per program** (`src-patches/linux/asahi-fdinfo`)
 - fdinfo lines for the Rust `asahi` driver, through a `show_fdinfo` hook the Rust DRM layer lacked; memory works, busy

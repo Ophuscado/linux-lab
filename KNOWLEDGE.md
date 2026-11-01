@@ -121,6 +121,12 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
 | Gemma 4 26B-A4B Q4_K | 2100 / 2338 / 95.2 | - | 709 / 907 / 39.9 |
 | Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 1817 / 67.8 | 422 / 574 / 24.8 | 449 / 681 / 34.2 |
 
+- 1 Nov, VERIFIED (run 8860): no script built this tree from a fresh clone before (llama-run.sh/llama-compare.sh only
+  read a prebuilt src/llama.cpp-simd/build; llama-bench.sh and macos/collect.sh each build their own, unpatched,
+  llama.cpp for comparison); gpu/llama-build.sh now clones llama.cpp at the honeykrisp series' pinned commit (BASE),
+  applies its 16 patches with git am, and builds Vulkan llama-bench/llama-server/test-backend-ops in about two
+  minutes; checked end to end here, including a real Vulkan llama-bench run on the result.
+
 ### Where the generation gap is
 
 - 1 Nov, VERIFIED (runs 8419, 8420, with the hoist): today's tiles stay best (pp512 Llama 2 876, Qwen 739, Gemma 904;
