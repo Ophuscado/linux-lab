@@ -1,0 +1,32 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Sun, 1 Nov 2026 10:30:42 +0000
+Subject: [PATCH 16/16] vulkan: gated delta net with a subgroup per state
+ column on Honeykrisp
+
+With S_V 128 and clustered subgroups the shader splits a state column over 4 invocations, so each walks 32 state rows, loads and exps a token. On Honeykrisp (M2 Ultra) a whole subgroup per column, as ggml-metal does, takes a 512-token step from 2.14 to 0.77 ms at 32 heads (0.54 at 4); GGML_VK_GDN_LANES sets the lanes for any device.
+---
+ ggml/src/ggml-vulkan/ggml-vulkan.cpp | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index 32792021d..4fcc7fba4 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -3820,6 +3820,16 @@ void ggml_vk_load_shaders(vk_device& device, vk_pipeline requested) {
+                 lanes_per_column = std::min(S_V, gdn_subgroup_size);
+             }
+ 
++            // Honeykrisp (Asahi Linux): a whole subgroup per state column, as ggml-metal does; at 4 lanes each invocation
++            // walks 32 state rows a token and a 512-token Qwen 3.x prompt step takes 2.1 ms against 0.77 ms at 32.
++            if (device->driver_id == vk::DriverId::eMesaHoneykrisp) {
++                lanes_per_column = std::min(S_V, gdn_subgroup_size);
++            }
++            // Tuning: GGML_VK_GDN_LANES sets the invocations a state column is split over (a power of two up to the
++            // subgroup size); fewer lanes mean more state rows, loads and exps per invocation and token.
++            if (const char * env = getenv("GGML_VK_GDN_LANES")) {
++                lanes_per_column = std::min(std::max(1u, (uint32_t)atoi(env)), std::min(S_V, gdn_subgroup_size));
++            }
+             // gated_delta_net.comp relies on S_V % COLS_PER_WG == 0 and
+             // S_V % LANES_PER_COLUMN == 0 to avoid bounds checks.
+             while (lanes_per_column > 1u) {
