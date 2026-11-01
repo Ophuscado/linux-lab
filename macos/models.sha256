@@ -1,0 +1,8 @@
+78b8f9777dd620ad29cd2cffb6653b17fa8a5b1fddc1b8821180d60eedd24d48  Llama-2-7B/llama-2-7b.Q4_0.gguf
+ef728c8e0c337fd1067b947af006e38a9ef2419e56feced4fd29b4bf0636e30c  Gemma-4-26B-A4B-Instruct/UD-Q4_K_XL/model.gguf
+6326fb9f5e487aa8dcdd313a091e3c67724cb2a666ec3b7d2895b5b26d93ed1b  Gemma-4-26B-A4B-Instruct/mtp-Q8_0.gguf
+c131f73c26595b1e8c47e1360f441e749e7afcb35af7d22dab6f690ba686eb54  Qwen3-Coder-Next/UD-Q8_K_XL/model.gguf
+b97fa9f3efa642ef3abd599a170f0b26612e5179a4ef5c65fb8852fb974ec239  GPT-OSS-20B/UD-Q8_K_XL/model.gguf
+9f421455c18d45844fccd37168b58593b4db2843e67dfd5a4d9ad3146801a5a1  GPT-OSS-120B/UD-Q4_K_XL/model.gguf
+8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2  Qwen3.8-Flash-Next/UD-Q4_K_XL/model.gguf
+8087dbb39fc73f79ac069b1debe4069a44b73ada900c8bd761569d43a5a90231  Qwen3.8-Flash-Next/mtp-Q4_K_M.gguf

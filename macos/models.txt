@@ -1,7 +1,7 @@
 # The models of the Linux runs, by priority for the Metal comparison: NAME|FILE|MTP_FILE, paths under the
 # models folder (MODELS, default /Volumes/BACKUP/linux-lab-macos/models: the exFAT disk both systems read,
 # filled from Linux by macos/stage.sh with the same files as ~/Projects/_llm, in this order). collect.sh
-# skips the ones that are not there.
+# skips the ones that are not there. Sizes, sources and exact quants: models.md; sha256sum -c models.sha256.
 #   llama2  llama.cpp's own Metal reference model: the number every Apple-silicon table has
 #   gemma   the MoE with MTP drafts: the 9-token cliff and its fix were measured on it
 #   qwen    the daily model: pp2048 672 -> 780 and the ngram-mod code edit
