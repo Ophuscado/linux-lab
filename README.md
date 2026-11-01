@@ -22,25 +22,28 @@ its own. The findings and their evidence are in [`KNOWLEDGE.md`](KNOWLEDGE.md).
   passing row that turned the chip on by default there.
 
 **llama.cpp on the GPU** ([`gpu/`](gpu/), [`src-patches/llama.cpp/honeykrisp`](src-patches/llama.cpp/honeykrisp))
-- Vulkan (Honeykrisp) measured against Metal on the same machine, and moved forward by twelve patches and their
+- Vulkan (Honeykrisp) measured against Metal on the same machine, and moved forward by fifteen patches and their
   settings: prompts +12-23 % from the tile shape, Llama 2 +18 % more from 16x16x16 matrices (the driver offers 8x8x8
   first), short MoE prompts up to +22 % from the expert tile, 9-token batches 3x faster (so speculative decoding pays:
   a code edit 30 to 55-59 t/s), a Metal-style matrix-vector shader, an abort fixed, and generation over long contexts
   up to 4.6x faster (Llama 2 at 16k tokens 6.6 to 30.5 t/s: the driver reports no core count, so attention was split
-  for 16 cores).
+  for 16 cores), and MoE prompts +4-15 % from a serial loop before every expert matmul.
+- Per-op timings under Honeykrisp were booked one op early (a driver timestamp bug, fixed in
+  [`src-patches/mesa/agxperf`](src-patches/mesa/agxperf)); measured right, the experts' matmuls are 49-80 % of a MoE
+  prompt.
 - Where the remaining gap is: for prompts, the matmul's global loads (weights and activations), which do not overlap its matrix work
   (the matrix loop alone runs near the hardware's rate for its grid, 15.4 of 26.5 TFLOPS, see `gpu/vk-chain` mma);
   for generation, the cost of each dependent GPU launch, not fusion and not memory.
 
-| Tokens/s, pp512 / tg128 | Metal | Vulkan via MoltenVK | Honeykrisp, 30 Oct | Honeykrisp, 31 Oct | Share of Metal |
+| Tokens/s, pp512 / tg128 | Metal | Vulkan via MoltenVK | Honeykrisp, 31 Oct | Honeykrisp, 1 Nov | Share of Metal |
 |---|---|---|---|---|---|
-| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 762 / 68.7 | 874 / 68.1 | 0.58 / 0.57 |
-| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 819 / 71.6 | 1005 / 70.6 | 0.52 / 0.57 |
-| GPT-OSS 120B Q4_K | 1001 / 94.2 | - | 390 / 50.1 | 526 / 49.5 | 0.53 / 0.53 |
-| Gemma 4 26B-A4B Q4_K | 2100 / 95.2 | - | 709 / 39.9 | 836 / 38.6 | 0.40 / 0.41 |
-| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 449 / 34.2 | 583 / 34.5 | 0.38 / 0.51 |
+| Llama 2 7B Q4_0 | 1517 / 120.4 | 788 / 59.9 | 874 / 68.1 | 873 / 67.8 | 0.58 / 0.56 |
+| GPT-OSS 20B Q8_0 | 1944 / 124.5 | 992 / 82.7 | 1005 / 70.6 | 1049 / 71.3 | 0.54 / 0.57 |
+| GPT-OSS 120B Q4_K | 1001 / 94.2 | - | 526 / 49.5 | 542 / 49.3 | 0.54 / 0.52 |
+| Gemma 4 26B-A4B Q4_K | 2100 / 95.2 | - | 836 / 38.6 | 902 / 37.7 | 0.43 / 0.40 |
+| Qwen3-Coder-Next 80B-A3B Q8_0 | 1535 / 67.8 | 422 / 24.8 | 583 / 34.5 | 686 / 34.6 | 0.45 / 0.51 |
 
-Metal and MoltenVK: macOS 15.8.1, 28 Oct ([`results/macos`](results/macos)). Honeykrisp, 31 Oct: the 14 patches at `llama-run.sh`'s settings ([`results/linux/compare-20261031-063537`](results/linux/compare-20261031-063537), `llama-compare.sh STEPS=bench`); 30 Oct: the series' first seven patches. Share of Metal: the 31 Oct column over Metal's.
+Metal and MoltenVK: macOS 15.8.1, 28 Oct ([`results/macos`](results/macos)). Honeykrisp, 1 Nov: the 15 patches on llama.cpp's master of that day at `llama-run.sh`'s settings ([`results/linux/compare-20261101-043729`](results/linux/compare-20261101-043729), `llama-compare.sh STEPS=bench`); 31 Oct: the first 14 on the master of 25 Oct ([`results/linux/compare-20261031-063537`](results/linux/compare-20261031-063537)). Share of Metal: the 1 Nov column over Metal's.
 
 **GPU usage per program** (`src-patches/linux/asahi-fdinfo`)
 - fdinfo lines for the Rust `asahi` driver, through a `show_fdinfo` hook the Rust DRM layer lacked; memory works, busy
