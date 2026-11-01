@@ -213,6 +213,15 @@ class JsonPublication(unittest.TestCase):
                 for name, text in {
                     "date": "#!/bin/sh\\necho 20000101-000000\\n",
                     "llama-bench": """#!/bin/sh
+case "$RESULT" in
+    empty) exit 0 ;;
+    malformed) printf '[{"partial":'; exit 0 ;;
+    empty_array) printf '[]'; exit 0 ;;
+    object) printf '{}'; exit 0 ;;
+    scalar) printf 'null'; exit 0 ;;
+    nan) printf '[{"value":NaN}]'; exit 0 ;;
+    non_objects) printf '[1]'; exit 0 ;;
+esac
 if [ "$RESULT" = fail ]; then
     printf '[{"partial":'
     echo deliberate-failure >&2
@@ -240,7 +249,7 @@ printf '[{"sentinel":1}]\\n'
                 self.assertEqual((original.parent / "rows.tsv").read_text(), "llama2\t1\n")
                 self.assertEqual(saved, b'[{"sentinel":1}]\n')
                 second = subprocess.run(
-                    command, env=dict(env, RESULT="fail" if fail_second else "ok"),
+                    command, env=dict(env, RESULT=fail_second if isinstance(fail_second, str) else ("fail" if fail_second else "ok")),
                     capture_output=True, text=True, timeout=15,
                 )
                 directories = list((root / "out").glob("compare-*"))
@@ -250,7 +259,11 @@ printf '[{"sentinel":1}]\\n'
                 if fail_second:
                     self.assertEqual(second.returncode, 1, second.stdout + second.stderr)
                     self.assertFalse((latest / filename).exists())
-                    self.assertEqual((latest / (filename + ".tmp")).read_text(), '[{"partial":')
+                    expected = {
+                        "empty": "", "malformed": '[{"partial":', "empty_array": "[]",
+                        "object": "{}", "scalar": "null", "nan": '[{"value":NaN}]', "non_objects": "[1]",
+                    }.get(fail_second, '[{"partial":')
+                    self.assertEqual((latest / (filename + ".tmp")).read_text(), expected)
                     self.assertTrue((latest / "failed.txt").exists())
                 else:
                     self.assertEqual(second.returncode, 0, second.stdout + second.stderr)
@@ -262,6 +275,11 @@ printf '[{"sentinel":1}]\\n'
 
     def test_failed_producers_preserve_prior_json(self):
         self.run_case(True)
+
+    def test_zero_exit_invalid_json_preserves_diagnostics(self):
+        for result in ("empty", "malformed", "empty_array", "object", "scalar", "nan", "non_objects"):
+            with self.subTest(result=result):
+                self.run_case(result)
 
 
 class ProfileFailures(unittest.TestCase):

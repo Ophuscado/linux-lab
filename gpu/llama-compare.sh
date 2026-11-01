@@ -65,6 +65,19 @@ run_json() {
     local target=$1 status
     shift
     if "$@" >"$target.tmp" 2>>"$OUT/errors.txt"; then
+        # Exit status alone cannot distinguish an empty/truncated result from JSON.
+        if ! python3 -I -c '
+import json, sys
+def invalid_constant(value):
+    raise ValueError("non-JSON numeric constant")
+with open(sys.argv[1], encoding="utf-8") as source:
+    data = json.load(source, parse_constant=invalid_constant)
+if not isinstance(data, list) or not data or not all(isinstance(row, dict) for row in data):
+    raise ValueError("expected a nonempty array of benchmark result objects")
+' "$target.tmp" 2>>"$OUT/errors.txt"; then
+            failure "invalid benchmark JSON (see $target.tmp and $OUT/errors.txt)"
+            return 1
+        fi
         mv -- "$target.tmp" "$target" || { failure "cannot publish $target"; return 1; }
     else
         status=$?
