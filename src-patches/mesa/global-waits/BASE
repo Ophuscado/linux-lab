@@ -1,0 +1,6 @@
+# An experiment, not in any built driver: AGX waits across blocks behind AGX_GLOBAL_WAITS=1 (KNOWLEDGE, 1 Nov: tests pass, no gain).
+UPSTREAM=https://github.com/omacom/mesa
+BASE=795ae42a71c8889dd3b629d03a3aeb657501f20f  # coopmat series; applies after agxperf 0001-0005
+FORK=
+BRANCH=global-waits
+CLONE=
