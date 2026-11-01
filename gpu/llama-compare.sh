@@ -126,12 +126,15 @@ if on mmid; then
     done | tee "$OUT/mmid.txt"
 fi
 if on pp; then
-    "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT -p 'n=512,' >"$OUT/ops-MUL_MAT-n512.txt" 2>&1 || true
-    "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID >"$OUT/ops-MUL_MAT_ID.txt" 2>&1 || true
+    "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT -p 'n=512,' >"$OUT/ops-MUL_MAT-n512.txt" 2>&1 ||
+        failure "pp: MUL_MAT failed (see $OUT/ops-MUL_MAT-n512.txt)"
+    "$B/test-backend-ops" perf -b Vulkan0 -o MUL_MAT_ID >"$OUT/ops-MUL_MAT_ID.txt" 2>&1 ||
+        failure "pp: MUL_MAT_ID failed (see $OUT/ops-MUL_MAT_ID.txt)"
 fi
 if on ops; then
     for o in FLASH_ATTN_EXT SET_ROWS; do
-        "$B/test-backend-ops" perf -b Vulkan0 -o $o >"$OUT/ops-$o.txt" 2>&1 || echo "ops: test-backend-ops $o failed" >>"$OUT/errors.txt"
+        "$B/test-backend-ops" perf -b Vulkan0 -o $o >"$OUT/ops-$o.txt" 2>&1 ||
+            failure "ops: $o failed (see $OUT/ops-$o.txt)"
     done
 fi
 want=" $* "
@@ -145,16 +148,25 @@ while IFS='|' read -r name file mtp; do
     on bench && run_json "$OUT/llama-$name-bench.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512,2048 -n 128 -r 3 -o json || failed "$name bench"
     on batches && run_json "$OUT/llama-$name-batches.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 8192 -b 8192 -p 1,2,4,8,9,12,16,24,32,48,64,128,512 -n 0 -r 2 -o json || failed "$name batches"
     on depth && run_json "$OUT/llama-$name-depth.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 32 -d 0,1024,4096,16384 -r 2 -o json || failed "$name depth"
-    on perf && GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 4 \
-        -d 4096 -r 1 >"$OUT/llama-$name-perf-d4096.txt" 2>&1 || failed "$name perf"
+    if on perf; then
+        GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 4 \
+            -d 4096 -r 1 >"$OUT/llama-$name-perf-d4096.txt" 2>&1 ||
+            failure "$name: generation profile failed (see $OUT/llama-$name-perf-d4096.txt)"
+    fi
     # Where ggml-vulkan makes the GPU wait: one generated token with its sync logger (a "sync" line before each
     # barrier, then the node or fused nodes it records), and the count of each.
     if on sync; then
-        GGML_VK_SYNC_LOGGER=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 1 -r 1 >"$OUT/llama-$name-sync.txt" 2>&1 || true
-        echo "$name: $(grep -c '^sync$' "$OUT/llama-$name-sync.txt") syncs, $(grep -cE '^[0-9]+ ' "$OUT/llama-$name-sync.txt") nodes (warm-up and the token)" | tee -a "$OUT/sync.txt"
+        if GGML_VK_SYNC_LOGGER=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 1 -r 1 >"$OUT/llama-$name-sync.txt" 2>&1; then
+            echo "$name: $(grep -c '^sync$' "$OUT/llama-$name-sync.txt") syncs, $(grep -cE '^[0-9]+ ' "$OUT/llama-$name-sync.txt") nodes (warm-up and the token)" | tee -a "$OUT/sync.txt"
+        else
+            failure "$name: sync profile failed (see $OUT/llama-$name-sync.txt)"
+        fi
     fi
-    on pp && GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512 -n 0 \
-        -r 1 >"$OUT/llama-$name-perf-pp512.txt" 2>&1 || failed "$name pp"
+    if on pp; then
+        GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512 -n 0 \
+            -r 1 >"$OUT/llama-$name-perf-pp512.txt" 2>&1 ||
+            failure "$name: prompt profile failed (see $OUT/llama-$name-perf-pp512.txt)"
+    fi
     on spec || continue
     for c in "none|" "ngram-mod-64|--spec-type ngram-mod" \
         "ngram-mod-128|--spec-type ngram-mod --spec-ngram-mod-n-max 128 --spec-ngram-mod-n-min 96" \

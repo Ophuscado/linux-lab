@@ -261,5 +261,60 @@ printf '[{"sentinel":1}]\\n'
         self.run_case(True)
 
 
+class ProfileFailures(unittest.TestCase):
+    def run_case(self, failing):
+        cases = [("ops", 1, 0), ("pp", 1, 0), ("pp", 0, 1), ("sync", 0, 1), ("perf", 0, 1)]
+        for step, fail_backend, fail_bench in cases:
+            with self.subTest(step=step, backend=fail_backend, bench=fail_bench), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                (root / "bin").mkdir()
+                model = root / "models/Llama-2-7B/llama-2-7b.Q4_0.gguf"
+                model.parent.mkdir(parents=True)
+                model.touch()
+                for name, text in {
+                    "test-backend-ops": """#!/bin/sh
+echo backend-output
+if [ "$FAIL_BACKEND" = 1 ]; then echo backend-failed >&2; exit 6; fi
+""",
+                    "llama-bench": """#!/bin/sh
+if [ "$FAIL_BENCH" = 1 ]; then echo bench-failed >&2; exit 6; fi
+printf 'sync\\n123 node\\n'
+""",
+                }.items():
+                    path = root / "bin" / name
+                    path.write_text(text)
+                    path.chmod(0o755)
+                env = dict(
+                    os.environ, STEPS=step, LLAMA_BIN=str(root / "bin"),
+                    GPU_LOCK=str(root / "gpu.lock"), COMPARE_OUT=str(root / "out"),
+                    MESA_SIDE=str(root / "mesa"), LLM=str(root / "models"),
+                    FAIL_BACKEND=str(fail_backend if failing else 0),
+                    FAIL_BENCH=str(fail_bench if failing else 0),
+                )
+                result = subprocess.run(
+                    ["bash", str(REPO / "gpu/llama-compare.sh"), "llama2"],
+                    env=env, capture_output=True, text=True, timeout=15,
+                )
+                out = next((root / "out").glob("compare-*"))
+                if failing:
+                    self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                    self.assertTrue((out / "failed.txt").exists())
+                    if step == "sync":
+                        self.assertFalse((out / "sync.txt").exists())
+                    if step == "pp" and fail_backend:
+                        self.assertTrue((out / "llama-llama2-perf-pp512.txt").exists())
+                else:
+                    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                    self.assertFalse((out / "failed.txt").exists())
+                    if step == "sync":
+                        self.assertIn("1 syncs", (out / "sync.txt").read_text())
+
+    def test_failures_are_recorded(self):
+        self.run_case(True)
+
+    def test_successful_profiles_still_pass(self):
+        self.run_case(False)
+
+
 if __name__ == "__main__":
     unittest.main()
