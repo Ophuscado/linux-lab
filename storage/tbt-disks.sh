@@ -44,8 +44,9 @@ do_authorize() {
     on)
         printf '%s\n' \
             '# Written by tbt-disks.sh authorize on; removed by authorize off.' \
-            '# The kernel authorizes the device itself; boltd then only sees it as authorized.' \
-            'ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"' |
+            '# The kernel authorizes the device itself; boltd then only sees it as authorized. Only on a domain that' \
+            '# reports DMA protection by the IOMMU (Documentation/admin-guide/thunderbolt.rst, its own example).' \
+            'ACTION=="add", SUBSYSTEM=="thunderbolt", ATTRS{iommu_dma_protection}=="1", ATTR{authorized}=="0", ATTR{authorized}="1"' |
             sudo tee "$AUTH_RULE" >/dev/null
         sudo udevadm control --reload
         echo "authorize rule is on: USB4 devices are authorized as they appear. Replug boxes that are in USB mode."
