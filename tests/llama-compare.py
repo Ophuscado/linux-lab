@@ -200,5 +200,66 @@ fi
         self.run_case("partial")
 
 
+class JsonPublication(unittest.TestCase):
+    def run_case(self, fail_second):
+        for step in ("bench", "batches", "depth"):
+            with self.subTest(step=step), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                (root / "bin").mkdir()
+                model = root / "models/Llama-2-7B/llama-2-7b.Q4_0.gguf"
+                model.parent.mkdir(parents=True)
+                model.touch()
+                for name, text in {
+                    "date": "#!/bin/sh\\necho 20000101-000000\\n",
+                    "llama-bench": """#!/bin/sh
+if [ "$RESULT" = fail ]; then
+    printf '[{"partial":'
+    echo deliberate-failure >&2
+    exit 7
+fi
+printf '[{"sentinel":1}]\\n'
+""",
+                }.items():
+                    path = root / "bin" / name
+                    path.write_text(text.replace("\\n", "\n") if name == "date" else text)
+                    path.chmod(0o755)
+                env = dict(
+                    os.environ, STEPS=step, LLAMA_BIN=str(root / "bin"),
+                    GPU_LOCK=str(root / "gpu.lock"), COMPARE_OUT=str(root / "out"),
+                    MESA_SIDE=str(root / "mesa"), LLM=str(root / "models"),
+                    PATH=str(root / "bin") + ":" + os.environ["PATH"], RESULT="ok",
+                )
+                command = ["bash", str(REPO / "gpu/llama-compare.sh"), "llama2"]
+                first = subprocess.run(command, env=env, capture_output=True, text=True, timeout=15)
+                self.assertEqual(first.returncode, 0, first.stdout + first.stderr)
+                filename = f"llama-llama2-{step}.json"
+                original = next((root / "out").glob(f"compare-*/{filename}"))
+                saved = original.read_bytes()
+                self.assertEqual(saved, b'[{"sentinel":1}]\n')
+                second = subprocess.run(
+                    command, env=dict(env, RESULT="fail" if fail_second else "ok"),
+                    capture_output=True, text=True, timeout=15,
+                )
+                directories = list((root / "out").glob("compare-*"))
+                self.assertEqual(len(directories), 2)
+                self.assertEqual(original.read_bytes(), saved)
+                latest = next(path for path in directories if path != original.parent)
+                if fail_second:
+                    self.assertEqual(second.returncode, 1, second.stdout + second.stderr)
+                    self.assertFalse((latest / filename).exists())
+                    self.assertEqual((latest / (filename + ".tmp")).read_text(), '[{"partial":')
+                    self.assertTrue((latest / "failed.txt").exists())
+                else:
+                    self.assertEqual(second.returncode, 0, second.stdout + second.stderr)
+                    self.assertEqual((latest / filename).read_bytes(), saved)
+                    self.assertFalse((latest / (filename + ".tmp")).exists())
+
+    def test_same_clock_successful_runs(self):
+        self.run_case(False)
+
+    def test_failed_producers_preserve_prior_json(self):
+        self.run_case(True)
+
+
 if __name__ == "__main__":
     unittest.main()

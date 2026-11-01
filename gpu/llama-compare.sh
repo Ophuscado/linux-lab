@@ -32,7 +32,8 @@ require_binary() {
 require_binary test-backend-ops mmv mmid ops pp
 require_binary llama-bench bench batches depth perf sync pp
 require_binary llama-server spec
-mkdir -p "$OUT"
+mkdir -p "$(dirname "$OUT")"
+OUT=$(mktemp -d "$OUT-XXXXXX")
 
 for d in agxperf coopmat; do
     icd=$(compgen -G "${MESA_SIDE:-$LAB/build/mesa-side}/$d/share/vulkan/icd.d/asahi_icd.*.json" | head -n 1 || true)
@@ -56,6 +57,17 @@ lock=${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}
 failed=0
 s=
 failure() { printf 'ERR: %s\n' "$*" | tee -a "$OUT/failed.txt" >&2; failed=1; }
+run_json() {
+    local target=$1 status
+    shift
+    if "$@" >"$target.tmp" 2>>"$OUT/errors.txt"; then
+        mv -- "$target.tmp" "$target" || { failure "cannot publish $target"; return 1; }
+    else
+        status=$?
+        failure "benchmark failed (see $target.tmp and $OUT/errors.txt)"
+        return "$status"
+    fi
+}
 stop_server() {
     if [[ -n $s ]]; then
         kill "$s" 2>/dev/null || true
@@ -130,12 +142,9 @@ while IFS='|' read -r name file mtp; do
     mf=; [[ -n $mtp && -f $LLM/$mtp ]] && mf=$LLM/$mtp
     r=$(rows "$name"); export GGML_VK_RM_STDQ=$r GGML_VK_RM_KQ=$r
     echo "== $name (rows $GGML_VK_RM_STDQ)"
-    on bench && "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512,2048 -n 128 -r 3 -o json >"$OUT/llama-$name-bench.json" 2>>"$OUT/errors.txt" ||
-        failed "$name bench"
-    on batches && "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 8192 -b 8192 -p 1,2,4,8,9,12,16,24,32,48,64,128,512 -n 0 -r 2 -o json \
-        >"$OUT/llama-$name-batches.json" 2>>"$OUT/errors.txt" || failed "$name batches"
-    on depth && "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 32 -d 0,1024,4096,16384 -r 2 -o json \
-        >"$OUT/llama-$name-depth.json" 2>>"$OUT/errors.txt" || failed "$name depth"
+    on bench && run_json "$OUT/llama-$name-bench.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512,2048 -n 128 -r 3 -o json || failed "$name bench"
+    on batches && run_json "$OUT/llama-$name-batches.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 8192 -b 8192 -p 1,2,4,8,9,12,16,24,32,48,64,128,512 -n 0 -r 2 -o json || failed "$name batches"
+    on depth && run_json "$OUT/llama-$name-depth.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 32 -d 0,1024,4096,16384 -r 2 -o json || failed "$name depth"
     on perf && GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 4 \
         -d 4096 -r 1 >"$OUT/llama-$name-perf-d4096.txt" 2>&1 || failed "$name perf"
     # Where ggml-vulkan makes the GPU wait: one generated token with its sync logger (a "sync" line before each
