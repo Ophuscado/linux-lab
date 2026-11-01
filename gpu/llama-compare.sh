@@ -19,7 +19,17 @@ B=${LLAMA_BIN:-$LAB/src/llama.cpp-simd/build/bin}
 LLM=${LLM:-$HOME/Projects/_llm}
 OUT=${COMPARE_OUT:-$LAB/var}/compare-$(date +%Y%m%d-%H%M%S)
 die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
-STEPS=" ${STEPS:-bench batches depth spec ops} "
+requested_steps=${STEPS:-bench batches depth spec ops}
+selected_steps=()
+IFS=$' \t' read -r -a selected_steps <<< "${requested_steps//$'\n'/ }" || true
+[[ ${#selected_steps[@]} -gt 0 ]] || die "no benchmark steps selected"
+for step in "${selected_steps[@]}"; do
+    case $step in
+        mmv|mmid|pp|ops|bench|batches|depth|perf|sync|spec) ;;
+        *) die "unknown benchmark step: $step" ;;
+    esac
+done
+STEPS=" ${selected_steps[*]} "
 on() { [[ $STEPS == *" $1 "* ]]; }
 require_binary() {
     local binary=$1 step
