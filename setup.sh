@@ -7,6 +7,8 @@
 #   bash setup.sh all
 # Afterwards it lives in ~/linux-lab with the other scripts.
 #
+#   plan       print what "all" would do and the two changes its kernel stage asks about,
+#              without doing anything
 #   all        repo, bluetooth, snapshot, kernel, tools, in that order (about 45 minutes,
 #              nearly all of it the kernel build). Ends asking for a reboot
 #   repo       clone https://github.com/Ophuscado/linux-lab into ~/linux-lab (the kernel
@@ -282,6 +284,21 @@ stage_drop() {
     echo "deleted snapshot $name"
 }
 
+stage_plan() {
+    echo "setup.sh all: repo, bluetooth, snapshot, kernel, tools, in that order (about 45 minutes, nearly"
+    echo "all of it the kernel build). Ends asking for a reboot."
+    echo
+    echo "The kernel stage asks before two changes (LAB_YES=1 skips the question):"
+    echo "  - Thunderbolt/USB4 devices get authorized as they appear, not per-device (tbt-disks.sh authorize on)"
+    echo "  - the lab's own kernel becomes the one the next boot starts (tbt-kernel.sh try; the stock kernel"
+    echo "    stays in the boot menu, '$0 restore NAME' puts everything back)"
+    echo
+    echo "Needs: sudo, a terminal (or LAB_YES=1), a btrfs root split into root and home subvolumes."
+    echo "Built against kernel $EXPECT_KERNEL; warns and continues on another."
+    echo
+    echo "Nothing above ran anything; '$0 all' does."
+}
+
 stage_all() {
     stage_repo
     say "bluetooth"
@@ -296,6 +313,7 @@ stage_all() {
 }
 
 case ${1:-} in
+plan) stage_plan ;;
 all) stage_all ;;
 repo) stage_repo ;;
 bluetooth) stage_bluetooth ;;
@@ -307,7 +325,7 @@ restore) stage_restore "${2:-}" "${3:-}" ;;
 cleanup) stage_cleanup ;;
 drop) stage_drop "${2:-}" ;;
 *)
-    echo "usage: $0 {all | repo | bluetooth | snapshot [NAME] | kernel | tools | list | restore NAME [--home] | cleanup | drop NAME}" >&2
+    echo "usage: $0 {plan | all | repo | bluetooth | snapshot [NAME] | kernel | tools | list | restore NAME [--home] | cleanup | drop NAME}" >&2
     exit 2
     ;;
 esac

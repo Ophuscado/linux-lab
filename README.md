@@ -86,6 +86,14 @@ A fresh clone reaches this with `gpu/llama-build.sh` (clones llama.cpp at `src-p
 
 ## Start
 
+About 45 minutes, almost all of it the kernel build; it ends asking to reboot. The `kernel` stage makes
+two changes that ask first, or run with `LAB_YES=1` for no question: Thunderbolt/USB4 devices get
+authorized as they appear instead of per-device, and the lab's own kernel becomes the one the next boot
+starts (the stock kernel stays in the boot menu; `setup.sh restore NAME` undoes it). Needs sudo, a
+terminal, a btrfs root split into `root` and `home` subvolumes; built against the kernel in
+`setup.sh`'s `EXPECT_KERNEL` and warns, not blocks, on another. `setup.sh plan` prints this without
+doing anything, if you'd rather see it first.
+
     curl -fsSLO https://raw.githubusercontent.com/Ophuscado/linux-lab/master/setup.sh
     bash setup.sh all
 
