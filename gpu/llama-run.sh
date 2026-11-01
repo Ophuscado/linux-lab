@@ -38,14 +38,23 @@ SERVER=$(first "$LAB/src/llama.cpp-simd/build/bin/llama-server" "$LAB/src/llama.
 LLM=${LLM:-$HOME/Projects/_llm}
 SIDE=${MESA_SIDE:-$(first "$LAB/build/mesa-side" "$HOME/src/mesa-side")}
 MCP=$(first "$LAB/config/mcp.json" "$HOME/src/mcp.json")
+CACHE=$(first "${XDG_CACHE_HOME:-$HOME/.cache}/llama-run" "$HOME/src/cache")  # slot saves: a cache, not backed up
+mkdir -p "$CACHE"
 mcp_args=()
 if [[ -f $MCP ]]; then
-    mcp_args=(--mcp-servers-config "$MCP" --tools all)
+    # --tools all gives any local, unauthenticated caller exec_shell_command/write_file/edit_file on 127.0.0.1:8088
+    # (llama-server's own --help); an API key is the one check here: curl without it now gets 401. llama-server
+    # already limits --cors-origins to localhost by itself once --tools is set (checked in --help, not changed here).
+    KEYFILE=$CACHE/api-key
+    if [[ ! -s $KEYFILE ]]; then
+        umask 077
+        { head -c24 /dev/urandom | od -An -tx1 | tr -d ' \n'; echo; } >"$KEYFILE"
+        echo "new API key written to $KEYFILE (not printed); put it in the client's Authorization: Bearer header" >&2
+    fi
+    mcp_args=(--mcp-servers-config "$MCP" --tools all --api-key-file "$KEYFILE")
 else
     echo "no mcp config ($MCP not found); running without tool calls" >&2
 fi
-CACHE=$(first "${XDG_CACHE_HOME:-$HOME/.cache}/llama-run" "$HOME/src/cache")  # slot saves: a cache, not backed up
-mkdir -p "$CACHE"
 
 model=${1:-qwen}; [[ $# -gt 0 ]] && shift
 draft=() rows=2
