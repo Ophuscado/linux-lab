@@ -4,7 +4,8 @@
 #
 #   ux-fix.sh on [SPEED]          Magic Mouse and middle-click paste: apply, now and after reboots
 #   ux-fix.sh off                 undo that
-#   ux-fix.sh keyboard on|off     the ISO UK Magic Keyboard as on macOS, ~ and ñ included
+#   ux-fix.sh keyboard on|off     the ISO UK Magic Keyboard as on macOS, ~ and ñ included; another keyboard:
+#                                 XKB_LAYOUT (gb), XKB_VARIANT (mac), XKB_MODEL (applealu_iso), e.g. us/mac/applealu_ansi
 #   ux-fix.sh launchers off|on    the global shortcuts that open programs: all off, or back
 #   ux-fix.sh animations F|off    animations F times as long (0.5: twice as fast, 0: none)
 #   ux-fix.sh borderless on|off   no title bar on maximized windows
@@ -25,7 +26,8 @@
 #   ux-fix.sh input on|off        pointer and keys as on macOS 15 (results/macos/macos-15): the
 #                                 Magic Mouse flat at 0.875 (macOS: acceleration off, scaling
 #                                 0.875; 43339 points for 49012 counts in its mouse-move log),
-#                                 the trackpad flat, natural scrolling off, key repeat after
+#                                 the trackpad flat, natural scrolling off as the operator's Mac has it
+#                                 (NATURAL_SCROLL=true for macOS's own default), key repeat after
 #                                 250 ms at 30 a second (hidutil: 250 ms, 33.3 ms); live
 #   ux-fix.sh show                what is in force
 #
@@ -126,8 +128,9 @@ show() {
 
 # The settings input sets: kcminputrc group, key, value. KWin's own names for the devices.
 MM='Libinput 76 803 Magic Mouse' TP='Libinput 76 613 Apple Inc. Magic Trackpad'
-INPUT=("$MM|PointerAccelerationProfile|1" "$MM|PointerAcceleration|-0.125" "$MM|NaturalScroll|false"
-    "$TP|PointerAccelerationProfile|1" "$TP|NaturalScroll|false" "Keyboard|RepeatDelay|250" "Keyboard|RepeatRate|30")
+NAT=${NATURAL_SCROLL:-false}; [[ $NAT == true || $NAT == false ]] || die "NATURAL_SCROLL is true or false, not '$NAT'"
+INPUT=("$MM|PointerAccelerationProfile|1" "$MM|PointerAcceleration|-0.125" "$MM|NaturalScroll|$NAT"
+    "$TP|PointerAccelerationProfile|1" "$TP|NaturalScroll|$NAT" "Keyboard|RepeatDelay|250" "Keyboard|RepeatRate|30")
 kin() { local g; read -ra g <<<"$1"; local a=(); for x in "${g[@]:0:3}"; do a+=(--group "$x"); done
     [[ ${#g[@]} -gt 3 ]] && a+=(--group "${1#* * * }"); kreadconfig6 --file kcminputrc "${a[@]}" --key "$2"; }
 kout() { local g; read -ra g <<<"$1"; local a=(); for x in "${g[@]:0:3}"; do a+=(--group "$x"); done
@@ -258,9 +261,9 @@ keyboard() {
             for k in Use LayoutList VariantList Model Options ResetOldOptions; do printf '%s=%s\n' "$k" "$(kxkb $k)"; done >"$STATE/kxkbrc.before"
         fi
         kwriteconfig6 --file kxkbrc --group Layout --key Use --type bool true
-        kwriteconfig6 --file kxkbrc --group Layout --key LayoutList gb
-        kwriteconfig6 --file kxkbrc --group Layout --key VariantList mac
-        kwriteconfig6 --file kxkbrc --group Layout --key Model applealu_iso
+        kwriteconfig6 --file kxkbrc --group Layout --key LayoutList "${XKB_LAYOUT:-gb}"
+        kwriteconfig6 --file kxkbrc --group Layout --key VariantList "${XKB_VARIANT:-mac}"
+        kwriteconfig6 --file kxkbrc --group Layout --key Model "${XKB_MODEL:-applealu_iso}"
         kwriteconfig6 --file kxkbrc --group Layout --key ResetOldOptions --type bool true
         kwriteconfig6 --file kxkbrc --group Layout --key Options compose:rwin
         ;;
