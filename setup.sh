@@ -19,7 +19,7 @@
 #   kernel     kernel/tbt-kernel.sh deps, build, install, try: the lab's kernel
 #              becomes the one Linux boots (GPU, USB4, PCIe over Thunderbolt); then
 #              tbt-disks.sh readonly on and authorize on, as tbt-kernel.sh install did until
-#              18 Oct. Reboot afterwards
+#              18 Oct; asks before those and try (LAB_YES=1: no question). Reboot afterwards
 #   tools      packages the measuring scripts need, so they run without installing
 #   list       the snapshots
 #   restore NAME [--home]   put the system back to snapshot NAME: /, /boot and the boot
@@ -55,6 +55,13 @@ EXPECT_KERNEL=7.1.13
 
 say() { printf '\n== %s\n' "$*"; }
 die() { printf '\nERR: %s\n' "$*" >&2; exit 1; }
+# A change to how the machine boots or what it trusts waits for a yes: typed, or LAB_YES=1 for a run without a terminal.
+confirm() {
+    [[ ${LAB_YES:-} == 1 ]] && return 0
+    [[ -t 0 ]] || die "$1 Needs a yes: run it in a terminal, or with LAB_YES=1"
+    local a; read -rp "$1 Go on? [y/N] " a
+    [[ $a == [yY]* ]] || die "stopped; nothing after this point was changed"
+}
 
 # Mount the top of the btrfs filesystem, where the subvolumes root and home are entries.
 open_top() {
@@ -149,6 +156,9 @@ stage_kernel() {
     "$KLAB/tbt-kernel.sh" deps
     "$KLAB/tbt-kernel.sh" build
     "$KLAB/tbt-kernel.sh" install
+    confirm "Next: Thunderbolt/USB4 devices are authorized as they appear, wherever the IOMMU protects their domain
+(tbt-disks.sh authorize on; boltd no longer asks), and the lab's kernel becomes the one the next boot starts
+(tbt-kernel.sh try; the stock kernel stays in the menu, '$0 restore' puts everything back)."
     "$LAB/storage/tbt-disks.sh" readonly on
     "$LAB/storage/tbt-disks.sh" authorize on
     "$KLAB/tbt-kernel.sh" try

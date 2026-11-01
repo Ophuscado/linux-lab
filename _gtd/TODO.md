@@ -19,7 +19,7 @@ ux audit 1 Nov: name the driver behind the "Honeykrisp" columns (side Mesa: agxp
 ux audit 1 Nov: a recipe that builds the patched llama.cpp the table measures (llama-run.sh:33 needs src/llama.cpp-simd/build; no script runs cmake; no published fork branch) · check: a fresh clone reaches the bench from README steps alone
 ux audit 1 Nov: README's bench settings match the runs (README:46 says llama-run.sh's settings, -ub 8192 q8_0 KV; the JSON shows -ub 2048 f16 KV) · check: the conditions line equals the parsed JSON of compare-20261101-043729
 ux audit 1 Nov: models with source URL, size and sha256 (macos/models.txt:9-14 gives local paths; README says Q8_0/Q4_K for UD-Q8_K_XL/UD-Q4_K_XL) · check: sha256sum of each matches the file; README names the exact quant
-ux audit 1 Nov: setup.sh all asks before it makes the trial kernel default and authorizes every Thunderbolt device (setup.sh:153-154), with a dry run; README Start states time, risks, prerequisites · check: run without a yes changes nothing
+ux audit 1 Nov: README Start states time (~45 min), risks (trial kernel default, Thunderbolt authorization, LAB_YES) and prerequisites; a dry run for setup.sh all · check: a newcomer reads them before the one-liner
 ux audit 1 Nov: --help on every script; llama-run.sh takes LLM from the env and drops the missing config/mcp.json (:34,:36,:68) · check: each script --help exits 0
 ux audit 1 Nov: llama-bench.sh pins the commit and series it builds (clones master --depth 1 at :64) or says its numbers are not the table's · check: two runs a week apart build the same commit
 ux audit 1 Nov: README Desktop explains Ctrl vs Cmd, the hid-apple need and ux-fix.sh's XKB_*/NATURAL_SCROLL options · check: a US ANSI reader finds the flags from the README
