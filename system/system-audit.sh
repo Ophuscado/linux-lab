@@ -44,6 +44,26 @@ mask() {
         -e 's/\b([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}(\/[0-9]+)?/<ip6>/g' \
         -e '/[Ss]erial [Nn]umber|ID_SERIAL|serial_number|SerialNumber/d'
 }
+# kernel_age: the Asahi tag the running kernel's version comes from, Asahi's newest tag, and the days between their
+# commits. The lab's kernel is pinned (settings.sh kernel-pin, kernel/tbt-kernel.sh COMMIT), so dnf never says it is
+# old; past KERNEL_BEHIND_DAYS (30) this warns. Needs the network; offline it says so and goes on.
+ASAHI_GIT=https://github.com/AsahiLinux/linux ASAHI_API=https://api.github.com/repos/AsahiLinux/linux
+kernel_age() {
+    local tags ver cur new d_cur d_new days max=${KERNEL_BEHIND_DAYS:-30}
+    tagdate() { timeout 20 curl -fsS "$ASAHI_API/commits/$1" 2>/dev/null |
+        python3 -c 'import json,sys; print(json.load(sys.stdin)["commit"]["committer"]["date"][:10])' 2>/dev/null; }
+    tags=$(timeout 20 git ls-remote --tags --refs "$ASAHI_GIT" 'asahi-[0-9]*' 2>/dev/null | sed 's#.*refs/tags/##' |
+        grep -E '^asahi-[0-9]+\.[0-9]+\.[0-9]+-[0-9]+$' | sort -V)
+    [[ -n $tags ]] || { echo "kernel age: unknown (no tags from $ASAHI_GIT)"; return; }
+    ver=$(uname -r | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+')
+    cur=$(grep -F "asahi-$ver-" <<<"$tags" | tail -n 1) new=$(tail -n 1 <<<"$tags")
+    [[ -n $cur ]] || { echo "kernel age: $(uname -r) has no Asahi tag asahi-$ver-*; newest is $new"; return; }
+    d_cur=$(tagdate "$cur") d_new=$(tagdate "$new")
+    [[ -n $d_cur && -n $d_new ]] || { echo "kernel age: $(uname -r) on $cur, newest $new (dates unknown: $ASAHI_API)"; return; }
+    days=$((($(date -d "$d_new" +%s) - $(date -d "$d_cur" +%s)) / 86400))
+    echo "kernel age: $(uname -r) is on $cur ($d_cur); Asahi's newest tag is $new ($d_new): $days days behind"
+    ((days <= max)) || echo "WARN: the kernel is more than $max days behind Asahi; it is pinned, so it moves only by hand (kernel/tbt-kernel.sh)"
+}
 
 {
     echo "system-audit $(date '+%F %T %Z') on $(hostname)"
@@ -61,6 +81,7 @@ mask() {
     echo "page size: $(getconf PAGESIZE)  kernel taint: $(cat /proc/sys/kernel/tainted)"
     echo "kernels installed:"; rpm -q kernel kernel-16k kernel-core 2>/dev/null | grep -v 'not installed'
     run grubby --default-kernel
+    kernel_age
 
     sec "packages that matter on Asahi"
     rpm -qa --qf '%{NAME} %{VERSION}-%{RELEASE}\n' 2>/dev/null | sort | grep -E \
