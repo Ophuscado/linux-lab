@@ -9,8 +9,13 @@
 # macOS. Takes the GPU lock.
 # provenance.json records pre-run artifacts and configuration using Python 3's standard library.
 # rows.tsv records the model row overrides with Bash shell quoting.
+# cmake.txt: the build's configuration (its CMakeCache.txt: build type, compilers, flags, GGML_*/LLAMA_* options).
+# thermal.txt: fans, power and temperatures from the SMC, the NVMe's temperature and each CPU cluster's clock, at the
+# start, before each model and at the end (no GPU clock: the Asahi driver exposes none).
+# models.tsv: each model run, its bytes and the sha256 macos/models.sha256 gives it (not hashed again here;
+# sha256sum -c macos/models.sha256 checks the files). gpu/bench-spread.py compares the bench step across runs.
 #
-# Environment: STEPS (default "bench batches depth spec ops"), COMPARE_OUT (instead of var/), GPU_LOCK (the lock
+# Environment: STEPS (default "bench batches depth spec ops"), THREADS (default 16), COMPARE_OUT (instead of var/), GPU_LOCK (the lock
 # file, default ~/.cache/linux-lab-gpu.lock), MESA_SIDE (the side Mesas, default build/mesa-side), LLAMA_BIN (the binaries needed by STEPS; default src/llama.cpp-simd/build/bin, the
 # honeykrisp series), LLM (models, default ~/Projects/_llm).
 set -euo pipefail
@@ -59,6 +64,9 @@ export AGX_CLUSTER_OFF=1 AGX_HOIST_LOADS=${AGX_HOIST_LOADS:-1} HK_PERFTEST=desig
 # The server's settings (llama-run.sh), so these numbers are its; each can be overridden from the environment.
 export GGML_VK_WT_M=${GGML_VK_WT_M:-512,128,128,,32,32,,16,16,16} GGML_VK_MMV_ID_MAX=64 GGML_VK_MMV_ID_PER_EXPERT=2 GGML_VK_MMV_MAX_COLS=16 GGML_VK_SHADER_CORES=${GGML_VK_SHADER_CORES:-152}
 export GGML_VK_MMID_SIZES=${GGML_VK_MMID_SIZES:-sm} GGML_VK_WT_S=${GGML_VK_WT_S:-256,128,32,,32,16} GGML_VK_MMID_S_MAX=${GGML_VK_MMID_S_MAX:-64}
+# CPU threads: the 16 performance cores, as Metal's llama-bench uses by default on macOS (n_threads 16 in
+# results/macos) and as llama-run.sh runs (-t 16); llama-bench's own default here is all 24, efficiency cores too.
+export THREADS=${THREADS:-16}
 # Rows per workgroup as llama-run.sh sets them; ROWS=N for every model instead.
 rows() { [[ -n ${ROWS:-} ]] && { echo "$ROWS"; return; }; case $1 in qwen) echo 4 ;; gemma) echo 2 ;; *) echo 1 ;; esac; }
 
@@ -72,6 +80,28 @@ lock_started=$SECONDS
 lock=${GPU_LOCK:-$HOME/.cache/linux-lab-gpu.lock}
 { exec 9>>"$lock"; } 2>/dev/null || exec 9<"$lock"; flock 9
 STEPS="$STEPS" python3 -I "$LAB/gpu/benchmark-provenance.py" "$LAB" "$B" "$OUT/provenance.json" "$((SECONDS - lock_started))"
+if [[ -r $B/../CMakeCache.txt ]]; then
+    grep -E '^(CMAKE_BUILD_TYPE|CMAKE_C_COMPILER|CMAKE_CXX_COMPILER|CMAKE_C_FLAGS|CMAKE_CXX_FLAGS|GGML_[A-Z0-9_]+|LLAMA_[A-Z0-9_]+):' \
+        "$B/../CMakeCache.txt" >"$OUT/cmake.txt" || true
+else
+    echo "no CMakeCache.txt beside $B" >"$OUT/cmake.txt"
+fi
+# thermal LABEL: one line of the sensors as sysfs gives them (temperatures m°C, power uW, fans RPM, mV, mA, kHz).
+thermal() {
+    local h f line
+    line="$1 $(date -u +%FT%TZ)"
+    for h in /sys/class/hwmon/hwmon*; do
+        case $(cat "$h/name" 2>/dev/null) in macsmc_hwmon | nvme) ;; *) continue ;; esac
+        for f in "$h"/*_label; do
+            [[ -r ${f%_label}_input ]] && line+=" $(tr ' ' _ <"$f")=$(cat "${f%_label}_input" 2>/dev/null)"
+        done
+    done
+    for f in /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq; do
+        [[ -r $f ]] && line+=" $(basename "$(dirname "$f")")=$(cat "$f")"
+    done
+    echo "$line" >>"$OUT/thermal.txt"
+}
+thermal start
 failed=0
 s=
 failure() { printf 'ERR: %s\n' "$*" | tee -a "$OUT/failed.txt" >&2; failed=1; }
@@ -176,26 +206,29 @@ while IFS='|' read -r name file mtp; do
     mf=; [[ -n $mtp && -f $LLM/$mtp ]] && mf=$LLM/$mtp
     r=$(rows "$name"); export GGML_VK_RM_STDQ=$r GGML_VK_RM_KQ=$r
     printf '%q\t%q\n' "$name" "$r" >>"$OUT/rows.tsv"
+    sha=$(awk -v p="$file" '$2 == p { print $1 }' "$LAB/macos/models.sha256" 2>/dev/null) || sha=
+    printf '%s\t%s\t%s\t%s\n' "$name" "$file" "$(stat -c %s "$f")" "${sha:-not in macos/models.sha256}" >>"$OUT/models.tsv"
+    thermal "$name"
     echo "== $name (rows $GGML_VK_RM_STDQ)"
-    on bench && run_json "$OUT/llama-$name-bench.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512,2048 -n 128 -r 3 -o json || failed "$name bench"
-    on batches && run_json "$OUT/llama-$name-batches.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 8192 -b 8192 -p 1,2,4,8,9,12,16,24,32,48,64,128,512 -n 0 -r 2 -o json || failed "$name batches"
-    on depth && run_json "$OUT/llama-$name-depth.json" "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 32 -d 0,1024,4096,16384 -r 2 -o json || failed "$name depth"
+    on bench && run_json "$OUT/llama-$name-bench.json" "$B/llama-bench" -m "$f" -t "$THREADS" -ngl 99 -fa 1 -ub 2048 -p 512,2048 -n 128 -r 3 -o json || failed "$name bench"
+    on batches && run_json "$OUT/llama-$name-batches.json" "$B/llama-bench" -m "$f" -t "$THREADS" -ngl 99 -fa 1 -ub 8192 -b 8192 -p 1,2,4,8,9,12,16,24,32,48,64,128,512 -n 0 -r 2 -o json || failed "$name batches"
+    on depth && run_json "$OUT/llama-$name-depth.json" "$B/llama-bench" -m "$f" -t "$THREADS" -ngl 99 -fa 1 -ub 2048 -p 0 -n 32 -d 0,1024,4096,16384 -r 2 -o json || failed "$name depth"
     if on perf; then
-        GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 4 \
+        GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -t "$THREADS" -ngl 99 -fa 1 -ub 2048 -p 0 -n 4 \
             -d 4096 -r 1 >"$OUT/llama-$name-perf-d4096.txt" 2>&1 ||
             failure "$name: generation profile failed (see $OUT/llama-$name-perf-d4096.txt)"
     fi
     # Where ggml-vulkan makes the GPU wait: one generated token with its sync logger (a "sync" line before each
     # barrier, then the node or fused nodes it records), and the count of each.
     if on sync; then
-        if GGML_VK_SYNC_LOGGER=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 0 -n 1 -r 1 >"$OUT/llama-$name-sync.txt" 2>&1; then
+        if GGML_VK_SYNC_LOGGER=1 "$B/llama-bench" -m "$f" -t "$THREADS" -ngl 99 -fa 1 -ub 2048 -p 0 -n 1 -r 1 >"$OUT/llama-$name-sync.txt" 2>&1; then
             echo "$name: $(grep -c '^sync$' "$OUT/llama-$name-sync.txt") syncs, $(grep -cE '^[0-9]+ ' "$OUT/llama-$name-sync.txt") nodes (warm-up and the token)" | tee -a "$OUT/sync.txt"
         else
             failure "$name: sync profile failed (see $OUT/llama-$name-sync.txt)"
         fi
     fi
     if on pp; then
-        GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -ub 2048 -p 512 -n 0 \
+        GGML_VK_PERF_LOGGER=1 GGML_VK_PERF_LOGGER_FREQUENCY=1 "$B/llama-bench" -m "$f" -t "$THREADS" -ngl 99 -fa 1 -ub 2048 -p 512 -n 0 \
             -r 1 >"$OUT/llama-$name-perf-pp512.txt" 2>&1 ||
             failure "$name: prompt profile failed (see $OUT/llama-$name-perf-pp512.txt)"
     fi
@@ -209,7 +242,7 @@ while IFS='|' read -r name file mtp; do
         fi
         server_log="$OUT/server-$name-${c%%|*}.log"
         # shellcheck disable=SC2086
-        "$B/llama-server" -m "$f" ${c#*|} -ngl all -fa on -np 1 -c 16384 -ub 8192 -b 8192 -ctk q8_0 -ctv q8_0 \
+        "$B/llama-server" -m "$f" -t "$THREADS" ${c#*|} -ngl all -fa on -np 1 -c 16384 -ub 8192 -b 8192 -ctk q8_0 -ctv q8_0 \
             --host 127.0.0.1 --port 8099 >"$server_log" 2>&1 &
         s=$!
         ready=0
@@ -236,5 +269,6 @@ while IFS='|' read -r name file mtp; do
         stop_server
     done
 done <"$LAB/macos/models.txt"
+thermal end
 echo "saved: $OUT"
 (( failed == 0 )) || die "one or more steps failed (see $OUT/failed.txt)"

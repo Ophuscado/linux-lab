@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Exercise llama-compare's server lifecycle without a GPU or model service."""
 import fcntl
+import json
 import os
 from pathlib import Path
 import shlex
@@ -335,6 +336,50 @@ printf 'sync\\n123 node\\n'
 
     def test_successful_profiles_still_pass(self):
         self.run_case(False)
+
+
+class RunRecords(unittest.TestCase):
+    """Every llama-bench call gets the same threads; a run records the build, the sensors and the models."""
+
+    def run_compare(self, extra_env):
+        folder = tempfile.TemporaryDirectory()
+        self.addCleanup(folder.cleanup)
+        root = Path(folder.name)
+        (root / "build/bin").mkdir(parents=True)
+        (root / "build/CMakeCache.txt").write_text(
+            "CMAKE_BUILD_TYPE:STRING=Release\nGGML_VULKAN:BOOL=ON\nCMAKE_INSTALL_PREFIX:PATH=/x\n")
+        model = root / "models/Llama-2-7B/llama-2-7b.Q4_0.gguf"
+        model.parent.mkdir(parents=True)
+        model.write_bytes(b"1234")
+        bench = root / "build/bin/llama-bench"
+        bench.write_text('#!/bin/sh\necho "$*" >> "$ARGS"\nprintf \'[{"sentinel":1}]\\n\'\n')
+        bench.chmod(0o755)
+        env = dict(os.environ, STEPS="bench depth", LLAMA_BIN=str(root / "build/bin"), GPU_LOCK=str(root / "gpu.lock"),
+                   COMPARE_OUT=str(root / "out"), MESA_SIDE=str(root / "mesa"), LLM=str(root / "models"),
+                   ARGS=str(root / "args"), **extra_env)
+        result = subprocess.run(["bash", str(REPO / "gpu/llama-compare.sh"), "llama2"], env=env,
+                                capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        return root, next((root / "out").glob("compare-*"))
+
+    def test_threads_and_records(self):
+        root, out = self.run_compare({})
+        calls = (root / "args").read_text().splitlines()
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(all(" -t 16 " in f" {c} " for c in calls), calls)
+        self.assertEqual((out / "cmake.txt").read_text(), "CMAKE_BUILD_TYPE:STRING=Release\nGGML_VULKAN:BOOL=ON\n")
+        labels = [line.split()[0] for line in (out / "thermal.txt").read_text().splitlines()]
+        self.assertEqual(labels, ["start", "llama2", "end"])
+        name, file, size, sha = (out / "models.tsv").read_text().rstrip("\n").split("\t")
+        self.assertEqual((name, file, size), ("llama2", "Llama-2-7B/llama-2-7b.Q4_0.gguf", "4"))
+        manifest = (REPO / "macos/models.sha256").read_text()
+        self.assertIn(f"{sha}  {file}", manifest)
+        provenance = json.loads((out / "provenance.json").read_text())
+        self.assertEqual(provenance["tuning"]["THREADS"], "16")
+
+    def test_threads_override(self):
+        root, _ = self.run_compare({"THREADS": "24"})
+        self.assertTrue(all(" -t 24 " in f" {c} " for c in (root / "args").read_text().splitlines()))
 
 
 if __name__ == "__main__":
