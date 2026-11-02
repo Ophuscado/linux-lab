@@ -1,0 +1,207 @@
+{
+  "schema": 1,
+  "steps": [
+    "bench"
+  ],
+  "lock_wait_seconds": 0,
+  "lock_wait_resolution_seconds": 1,
+  "observed_checkouts": {
+    "lab": {
+      "head": "45bbd1bf4c126893cdf6cba1705aa4489b10fb77",
+      "dirty": true
+    },
+    "nearest_binary_checkout": {
+      "head": "f37991724f7dbdf489b683ccef1d164590742b07",
+      "dirty": true
+    }
+  },
+  "script": {
+    "name": "llama-compare.sh",
+    "sha256": "3952da45e68c8a438e3f85038c1ffaf9fb34e58b686656bd07d69c5d17c2ac60",
+    "bytes": 15817,
+    "status": "ok"
+  },
+  "series_base": "a91eab67d8389d979d29fdf6633b2edd0718eb4b",
+  "series_patches": [
+    {
+      "name": "0001-vulkan-make-matmul-tile-sizes-and-warptiles-settable.patch",
+      "sha256": "0c997f24f4ddf010e8f7e1cb5420055f727792f10fc365b80dd99986348debc5",
+      "bytes": 7406,
+      "status": "ok"
+    },
+    {
+      "name": "0002-vulkan-make-the-MUL_MAT_ID-matrix-vector-token-limit.patch",
+      "sha256": "ad2b6c35466485ff14cde921bc0ffbad68efed8cfdb7b7fc12c9b96deee4a1b3",
+      "bytes": 3276,
+      "status": "ok"
+    },
+    {
+      "name": "0003-vulkan-matrix-vector-pipelines-up-to-16-columns-cut-.patch",
+      "sha256": "cc8ecabd41c6e9b128eb8ce2006e55ab19b9e2049b3896826b188e770ae4dc3c",
+      "bytes": 4475,
+      "status": "ok"
+    },
+    {
+      "name": "0004-vulkan-matrix-vector-rows-and-workgroup-size-settabl.patch",
+      "sha256": "ac4cdc6ac25444ef4816008bc9d120e4dfe2b46fb7ebad8069cdf5484d0931a1",
+      "bytes": 3881,
+      "status": "ok"
+    },
+    {
+      "name": "0005-vulkan-q4_0-and-q8_0-matrix-vector-in-ggml-metal-s-l.patch",
+      "sha256": "c53f71da3cb12f525fbe3c8761e79f96d162e0ff447fd2c5ce1fc3a642875c20",
+      "bytes": 27352,
+      "status": "ok"
+    },
+    {
+      "name": "0006-vulkan-fuse-RMS_NORM-SCALE.patch",
+      "sha256": "8ad2a9de4155cea28a0f2a1f413862b471db955a2dc359886d1eb5197266c44b",
+      "bytes": 9583,
+      "status": "ok"
+    },
+    {
+      "name": "0007-vulkan-shader-core-count-settable-for-drivers-that-r.patch",
+      "sha256": "59c95dae7e4fa04843ae34d84a4c0e08d779d4f5ef0960866c74b2e6d14416c7",
+      "bytes": 1649,
+      "status": "ok"
+    },
+    {
+      "name": "0008-tests-SET_ROWS-perf-cases-one-token-into-caches-of-2.patch",
+      "sha256": "cb5df6d8ba2c0047c087358e40d6c3ced7c391f07833a5dcbedc628cb305f1e9",
+      "bytes": 1693,
+      "status": "ok"
+    },
+    {
+      "name": "0009-vulkan-large-matrix-vector-workgroup-size-settable-G.patch",
+      "sha256": "953a15fd50b5b65fc223f3eaf5a5d2a2e71d9f03a18601aeb785d048e131a502",
+      "bytes": 2400,
+      "status": "ok"
+    },
+    {
+      "name": "0010-vulkan-rows-per-f16-matrix-vector-workgroup-settable.patch",
+      "sha256": "603abc9f406f645094d2ba2a11345b7531ecae50567ff3835ceffbe46d5b6778",
+      "bytes": 7039,
+      "status": "ok"
+    },
+    {
+      "name": "0011-vulkan-expert-matmul-tile-by-tokens-per-expert-GGML_.patch",
+      "sha256": "a8e977de53e482cb1ebe5be87cb958839c77bd62c35277094c3575f0e244b743",
+      "bytes": 2493,
+      "status": "ok"
+    },
+    {
+      "name": "0012-vulkan-coopmat-matmul-loads-each-B-tile-once-per-k-s.patch",
+      "sha256": "63cb22491a79cb421464a3fab0278ae9796f53e0f77f7d41cdfc2bfdd637f4ae",
+      "bytes": 2716,
+      "status": "ok"
+    },
+    {
+      "name": "0013-vulkan-expert-matrix-vector-path-by-tokens-per-exper.patch",
+      "sha256": "99690eb60e90c63ab6d2cd251622c035002af190562978f6d94eeba1aa663850",
+      "bytes": 2708,
+      "status": "ok"
+    },
+    {
+      "name": "0014-vulkan-coopmat-flash-attention-at-2-subgroups-when-4.patch",
+      "sha256": "5213334d256dc8633e143cafa1873e42d340fe17acc57ebbf7563542bb1a229a",
+      "bytes": 2874,
+      "status": "ok"
+    },
+    {
+      "name": "0015-vulkan-check-the-skipped-mul_mat_id-slots-in-paralle.patch",
+      "sha256": "c68076bce9bbddb867bf83e90ceca7d6557a71d7d18ef4d377ed5a8201371ca5",
+      "bytes": 1814,
+      "status": "ok"
+    },
+    {
+      "name": "0016-vulkan-gated-delta-net-with-a-subgroup-per-state-col.patch",
+      "sha256": "86f4f18ca5753fe46dec05d255b6fb60586a412bdf308acefc691c8f80263cf1",
+      "bytes": 2067,
+      "status": "ok"
+    }
+  ],
+  "executables": [
+    {
+      "name": "llama-bench",
+      "sha256": "dd379a31c635a22a41ea4a5da9dca9bf589132e6e3c46145cf13604af9ac249e",
+      "bytes": 71472,
+      "status": "ok"
+    },
+    {
+      "name": "llama-server",
+      "sha256": "f89a0da4409ddcacda55e053720e53ce2bd767e1cc644b7a6a8ec4b0b65b0441",
+      "bytes": 71472,
+      "status": "ok"
+    },
+    {
+      "name": "test-backend-ops",
+      "sha256": "5c17ab1ac8284895e6dace7fe91cd25ee27ace096b88073e607f89895b2a79f8",
+      "bytes": 1270112,
+      "status": "ok"
+    }
+  ],
+  "backend_libraries": [
+    {
+      "name": "libllama.so",
+      "sha256": "c059d3fcf91ffeecb3db3e6c4ba3f3ae356b0452fd71b9bd8ce6aa0842447daf",
+      "bytes": 4801160,
+      "status": "ok"
+    },
+    {
+      "name": "libggml-vulkan.so",
+      "sha256": "bd4b8b46cc8f7347312222630be67289cefd738d178d5a1ae62872e5ff3f53fc",
+      "bytes": 41314880,
+      "status": "ok"
+    },
+    {
+      "name": "libggml-cpu.so",
+      "sha256": "70ab5e1f07d6232e324542eb5772a0c03ff8ab783943cc4faca21ab133361509",
+      "bytes": 1069952,
+      "status": "ok"
+    }
+  ],
+  "tuning": {
+    "AGX_CLUSTER_OFF": "1",
+    "AGX_BIT47": null,
+    "AGX_NO_ILP_SCHED": null,
+    "AGX_GLOBAL_WAITS": null,
+    "AGX_HOIST_LOADS": "1",
+    "HK_PERFTEST": "designedusccdmbarrier",
+    "HK_CDM_DEFER_FLUSH": null,
+    "ROWS": null,
+    "THREADS": "16",
+    "GGML_VK_WT_M": "512,128,128,,32,32,,16,16,16",
+    "GGML_VK_WT_S": "256,128,32,,32,16",
+    "GGML_VK_MMID_SIZES": "sm",
+    "GGML_VK_MMID_S_MAX": "64",
+    "GGML_VK_MMV_ID_MAX": "64",
+    "GGML_VK_MMV_ID_PER_EXPERT": "2",
+    "GGML_VK_MMV_MAX_COLS": "16",
+    "GGML_VK_DMMV_WG": "large",
+    "GGML_VK_MMV_SIMD": "1",
+    "GGML_VK_SHADER_CORES": "152",
+    "GGML_VK_RM_STDQ": null,
+    "GGML_VK_RM_KQ": null,
+    "GGML_VK_RM_F16": null,
+    "GGML_VK_DMMV_LARGE": null
+  },
+  "driver_selection": {
+    "mode": "explicit_manifest_candidates",
+    "manifests": [
+      {
+        "manifest": {
+          "name": "asahi_icd.aarch64.json",
+          "sha256": "85191f9b58c8f645360a339e9f562ff3b502185a8e6d1c568169974d8c2203fc",
+          "bytes": 250,
+          "status": "ok"
+        },
+        "library": {
+          "name": "libvulkan_asahi.so",
+          "sha256": "8e4ed3a7e7ef6cf428e31f846e6c6e8c7e0e23af0c2d5db3f7aa5d617e2638ca",
+          "bytes": 15647712,
+          "status": "ok"
+        }
+      }
+    ]
+  }
+}

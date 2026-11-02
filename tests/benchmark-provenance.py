@@ -112,5 +112,36 @@ class Provenance(unittest.TestCase):
         self.assertEqual(provenance.artifact(path)["status"], "not_a_bounded_regular_file")
 
 
+
+class SideMesaSource(unittest.TestCase):
+    def test_source_beside_the_prefix(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            icd = root / "mesa-side/agxperf/share/vulkan/icd.d"
+            icd.mkdir(parents=True)
+            (icd / "asahi_icd.aarch64.json").write_text(json.dumps({"ICD": {"library_path": "/nonexistent.so"}}))
+            source = root / "mesa-side/src-agxperf"
+            source.mkdir()
+            subprocess.run(["git", "init", "-q", str(source)], check=True)
+            subprocess.run(["git", "-C", str(source), "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q",
+                            "--allow-empty", "-m", "x"], check=True)
+            (source / ".lab-state").write_text("795ae42a71 066f1cb4\n")
+            head = subprocess.run(["git", "-C", str(source), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+            entry = provenance.driver_manifest(icd / "asahi_icd.aarch64.json")
+            self.assertEqual(entry["observed_source"]["head"], head)
+            self.assertEqual(entry["observed_source"]["path"], "src-agxperf")
+            self.assertEqual(entry["observed_source"]["lab_state"], "795ae42a71 066f1cb4")
+            self.assertFalse(entry["observed_source"]["dirty"])  # .lab-state is untracked, as mesa-side leaves it
+            (source / "tracked").write_text("a")
+            subprocess.run(["git", "-C", str(source), "add", "tracked"], check=True)
+            self.assertTrue(provenance.driver_manifest(icd / "asahi_icd.aarch64.json")["observed_source"]["dirty"])
+
+    def test_no_source_no_entry(self):
+        with tempfile.TemporaryDirectory() as folder:
+            icd = Path(folder) / "p/share/vulkan/icd.d"
+            icd.mkdir(parents=True)
+            (icd / "x.json").write_text(json.dumps({"ICD": {"library_path": "/nonexistent.so"}}))
+            self.assertNotIn("observed_source", provenance.driver_manifest(icd / "x.json"))
+
 if __name__ == "__main__":
     unittest.main()

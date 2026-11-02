@@ -33,7 +33,7 @@ def artifact(path):
         return dict(info, status="unavailable")
 
 
-def checkout(path):
+def checkout(path, untracked="normal"):
     # An observed checkout revision is not a claim about which source built a binary.
     try:
         head = subprocess.run(
@@ -42,7 +42,7 @@ def checkout(path):
         if head.returncode:
             return {"head": None, "dirty": None}
         dirty = subprocess.run(
-            ["git", "-C", str(path), "status", "--porcelain", "--untracked-files=normal"],
+            ["git", "-C", str(path), "status", "--porcelain", "--untracked-files=" + untracked],
             capture_output=True, text=True, timeout=2,
         )
         return {"head": head.stdout.strip(), "dirty": bool(dirty.stdout) if not dirty.returncode else None}
@@ -55,6 +55,17 @@ def driver_manifest(path):
         if not stat.S_ISREG(path.stat().st_mode) or path.stat().st_size > 1024 * 1024:
             raise ValueError("not a bounded manifest")
         entry = {"manifest": artifact(path)}
+        # gpu/mesa-side.sh installs PREFIX/share/vulkan/icd.d/*.json and keeps the tree it built beside PREFIX as
+        # src-NAME, with .lab-state naming the pinned commit and the series applied: observed, as checkout() says.
+        prefix = path.parent.parent.parent.parent
+        source = prefix.parent / ("src-" + prefix.name)
+        if (source / ".git").exists():
+            try:
+                state = (source / ".lab-state").read_text().strip() or None
+            except OSError:
+                state = None
+            # Tracked files only: mesa-side writes .lab-state and build.log into the tree itself.
+            entry["observed_source"] = dict(checkout(source, untracked="no"), path=source.name, lab_state=state)
         library = json.loads(path.read_text())["ICD"]["library_path"]
         if not isinstance(library, str) or not library:
             raise ValueError("invalid library path")
