@@ -16,6 +16,11 @@ upstream yet: Asahi does not take AI-assisted patches, and mainline wants each s
 Neural Engine: `dt/t6022-ane-dart-power.dts` puts the M2 Ultra's ANE DARTs in `ANE_SYS` (merged into omarchy-ane);
 `ane.sh` builds and loads omarchy-ane's driver by hand and runs omarchy-mlx's collector for the judged row (`deep`).
 
+Power management processor: `dt/t6022-pmp.dts` is Asahi's PMP wiring (`APPLE_USE_PMP`) for die 0 as an overlay
+(`TBT_OVERLAYS="t6022-ane t6022-pmp" ./tbt-kernel.sh dtb`, which also pads the tree so m1n1 has room for the PMP's
+settings); `pmp.sh` builds lab copies of Asahi's driver and `pmp/pmp_votes.c` for die 1's votes, which Linux does
+not send, and starts the PMP by hand.
+
 ## Use
 
     ./tbt-kernel.sh deps && ./tbt-kernel.sh build && ./tbt-kernel.sh install    # then reboot

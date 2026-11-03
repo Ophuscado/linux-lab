@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# pmp.sh: the M2 Ultra's power management processor (PMP: memory and fabric DVFS by device votes, the die's fast
+# temperature loop, the SMC and GPU channels), started by hand with lab copies of Asahi's driver. Nothing loads at
+# boot: the device tree from 'tbt-kernel.sh dtb' with TBT_OVERLAYS="t6022-ane t6022-pmp" (kernel/dt/t6022-pmp.dts)
+# gives m1n1 the pmp alias, so m1n1 copies the ADT's PMP settings into the node, and cuts the node's compatible so
+# the stock pmp.ko never binds it.
+#
+#   kernel/pmp.sh build       pmp_votes.ko (kernel/pmp/pmp_votes.c) and pmp_lab.ko, pmp_lab_ro.ko (kernel/pmp/make_lab.py
+#                             on the running kernel's drivers/soc/apple/pmp.rs) against the running kernel, into var/pmp
+#   kernel/pmp.sh status      the running tree's pmp node (m1n1's settings there or not), the modules, and the report's
+#                             8 request and acknowledge words (pmp_votes loaded read only and unloaded, or its dump)
+#   kernel/pmp.sh bootargs    pmp_lab_ro: powers the PMP's island through the driver core, logs its boot arguments,
+#                             writes nothing, starts nothing, refuses the device; unloaded after
+#   kernel/pmp.sh votes       pmp_votes die1=1: die 1's display (HDMI) and fabric votes in the report's word 1, which
+#                             Linux's pmp-report does not drive; held until 'unvotes' or reboot
+#   kernel/pmp.sh start --now pmp_lab: patches BDID and DVID, starts the PMP's firmware and serves its messages. Needs
+#                             'votes' first. There is no stop: the PMP runs until reboot
+#   kernel/pmp.sh dump        the words again, through the loaded pmp_votes
+#   kernel/pmp.sh unvotes     rmmod pmp_votes (word 1 back to what it was)
+#
+# Back to before: the stock tree (tbt-kernel.sh dtb without t6022-pmp, or previous-dt) and a reboot. The kernel log
+# lines of every stage go to var/pmp/<stage>-<date>.log.
+set -euo pipefail
+die() { echo "ERR: $*" >&2; exit 1; }
+LAB=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
+OUT=$LAB/var/pmp
+B=$OUT/build
+mkdir -p "$OUT"
+stamp=$(date +%Y%m%d-%H%M%S)
+NODE=$(ls -d /proc/device-tree/soc@200000000/pmp@28e700000 2>/dev/null || true)
+
+loaded() { grep -q "^$1 " /proc/modules; }
+klog() {  # klog STAGE: this boot's kernel lines from the PMP, the report and the lab modules since the stage began
+    journalctl -k -b --no-pager --since "@$t0" | grep -E 'pmp|apple_pmp|rtkit' | tee "$OUT/$1-$stamp.log" || true
+}
+ready() {  # the tree m1n1 filled in: the alias, the cut compatible, okay, its settings
+    [[ -n $NODE ]] || die "no pmp node in the running tree"
+    [[ $(tr -d '\0' <"$NODE/status") == okay ]] || die "the pmp node is not okay: boot the t6022-pmp tree (tbt-kernel.sh dtb)"
+    [[ $(tr -d '\0' <"$NODE/compatible") == apple,t6020-pmp-v2 ]] || die "the pmp node keeps the stock compatible: not the t6022-pmp tree"
+    [[ -e $NODE/apple,board-id ]] || die "no apple,board-id on the pmp node: m1n1 did not fill it"
+}
+need() { [[ -f $B/$1.ko ]] || die "no $1.ko: $0 build"; [[ $(modinfo -F vermagic "$B/$1.ko" | cut -d' ' -f1) == "$(uname -r)" ]] || die "$1.ko is for another kernel: $0 build"; }
+t0=$(date +%s)
+
+case ${1:-} in
+build)
+    K=/lib/modules/$(uname -r)/build
+    [[ -f $K/drivers/soc/apple/pmp.rs ]] || die "no drivers/soc/apple/pmp.rs under $K"
+    rm -rf "$B"; mkdir -p "$B"
+    cp "$LAB/kernel/pmp/pmp_votes.c" "$B/"
+    python3 -I "$LAB/kernel/pmp/make_lab.py" "$K/drivers/soc/apple/pmp.rs" "$B"
+    echo 'obj-m += pmp_votes.o' >>"$B/Kbuild"
+    make -s -C "$K" M="$B" modules >"$OUT/build-$stamp.log" 2>&1 || { tail -n 20 "$OUT/build-$stamp.log"; die "the modules did not build"; }
+    for m in pmp_votes pmp_lab pmp_lab_ro; do echo "$m: $(modinfo -F vermagic "$B/$m.ko")"; done
+    ;;
+status)
+    if [[ -n $NODE ]]; then
+        echo "pmp node: status $(tr -d '\0' <"$NODE/status"), compatible $(tr '\0' ' ' <"$NODE/compatible")"
+        echo "  m1n1's settings: $(compgen -G "$NODE/apple,tunable-*" | wc -l) apple,tunable-*; board-id $([[ -e $NODE/apple,board-id ]] && echo set || echo absent); dram-capacity $([[ -e $NODE/apple,dram-capacity ]] && echo set || echo absent)"
+    fi
+    echo "alias pmp: $(tr -d '\0' </proc/device-tree/aliases/pmp 2>/dev/null || echo none)"
+    echo "modules: $(for m in pmp pmp_lab pmp_lab_ro pmp_votes; do loaded $m && printf '%s ' $m; done)"
+    if loaded pmp_votes; then echo 1 | sudo tee /sys/module/pmp_votes/parameters/dump >/dev/null
+    else need pmp_votes; sudo insmod "$B/pmp_votes.ko" && sudo rmmod pmp_votes; fi
+    klog status
+    ;;
+bootargs)
+    ready; need pmp_lab_ro
+    ! loaded pmp_lab || die "pmp_lab is loaded: the PMP already runs"
+    sudo insmod "$B/pmp_lab_ro.ko"; sleep 1; sudo rmmod pmp_lab_ro
+    klog bootargs
+    ;;
+votes)
+    need pmp_votes
+    ! loaded pmp_votes || die "pmp_votes is loaded already ($0 unvotes first)"
+    sudo insmod "$B/pmp_votes.ko" die1=1
+    klog votes
+    ;;
+start)
+    [[ ${2:-} == --now ]] || die "usage: $0 start --now   (the PMP runs until reboot; sync and stop the pool's writers first)"
+    ready; need pmp_lab
+    [[ $(cat /sys/module/pmp_votes/parameters/die1 2>/dev/null) == Y ]] || die "die 1's votes are not set: $0 votes"
+    ! loaded pmp_lab || die "pmp_lab is loaded already"
+    sync
+    sudo insmod "$B/pmp_lab.ko"; sleep 3
+    echo 1 | sudo tee /sys/module/pmp_votes/parameters/dump >/dev/null
+    klog start
+    echo "running when the status word's bit 0 is set and each request bit has its acknowledgement (log above)"
+    ;;
+dump)
+    loaded pmp_votes || die "pmp_votes is not loaded: $0 status"
+    echo 1 | sudo tee /sys/module/pmp_votes/parameters/dump >/dev/null
+    klog dump
+    ;;
+unvotes)
+    loaded pmp_votes || die "pmp_votes is not loaded"
+    sudo rmmod pmp_votes
+    klog unvotes
+    ;;
+*)
+    sed -n '2,24p' "$0" | sed 's/^# \{0,1\}//'
+    exit 2
+    ;;
+esac

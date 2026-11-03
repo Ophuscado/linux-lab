@@ -265,7 +265,8 @@ apply_series() {
 # the M2 Ultra's die-0 Neural Engine (a node only: its driver is loaded by hand, kernel/ane.sh) and, after it, this
 # repository's kernel/dt/t6022-ane-dart-power.dts: with the overlay alone the kernel panicked at boot (29 Oct,
 # SError in apple_dart_probe: a DART read with its power island off). An overlay is taken from kernel/dt/ first,
-# then from src/linux-ane/packaging/dt/.
+# then from src/linux-ane/packaging/dt/. t6022-pmp (kernel/dt/t6022-pmp.dts, the PMP for die 0: kernel/pmp.sh) also
+# pads the board tree by TBT_DT_PAD bytes (default 64 KB), for m1n1: see the end of apply_overlays.
 OVERLAYS=${TBT_OVERLAYS-t6022-ane}
 [[ " $OVERLAYS " != *" t6022-ane "* || " $OVERLAYS " == *" t6022-ane-dart-power "* ]] || OVERLAYS="$OVERLAYS t6022-ane-dart-power"
 # Properties whose phandle points at no node (dtc checks them on a compiled tree too: "Could not get phandle node").
@@ -305,6 +306,18 @@ apply_overlays() {
             [[ $pd == "$ps" ]] || die "iommu@$n power-domains is ${pd:-missing}, power-controller@260 is $ps"
         done
         echo "the three ANE DARTs are in ANE_SYS (phandle $ps)"
+    fi
+    if [[ " $OVERLAYS " == *" t6022-pmp "* ]]; then
+        # m1n1 gives itself the tree's totalsize plus 96 KB for what it adds (kboot.c, dt_bufsize) and stops
+        # before Linux when that runs out. It adds ~93 KB to this board's tree already (Bluetooth and Wi-Fi
+        # calibration, ATC and USB4 tunables: live tree against the DTB, 3 Nov), and the pmp alias makes it copy
+        # ~27 KB more from the ADT. Padding raises totalsize, and so that room, and leaves the tree as it is.
+        scripts/dtc/dtc -q -I dtb -O dtb -p "${TBT_DT_PAD:-65536}" -o "$DTB.new" "$DTB" || die "padding $DTB failed"
+        mv "$DTB.new" "$DTB"
+        (($(dangling "$DTB") <= before)) || die "padding left unresolved phandle references in $DTB"
+        scripts/dtc/dtc -q -I dtb -O dts "$DTB" | grep -A2 'pmp@28e700000 {' | grep -q 'compatible = "apple,t6020-pmp-v2";' ||
+            die "the pmp node in $DTB keeps the stock compatible: the t6022-pmp overlay did not apply"
+        echo "padded $DTB by ${TBT_DT_PAD:-65536} bytes to $(stat -c %s "$DTB"), for m1n1's PMP settings"
     fi
 }
 

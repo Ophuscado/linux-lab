@@ -1,0 +1,52 @@
+// SPDX-License-Identifier: GPL-2.0+ OR MIT
+/*
+ * The power management processor (PMP) on the M2 Ultra Mac Studio: Asahi's APPLE_USE_PMP for t6022-j475d as an
+ * overlay, for die 0, with what that define gets wrong on this machine left out.
+ *
+ * Asahi's PMP support (drivers/soc/apple/pmp.rs, on for M1 Pro/Max/Ultra since 7.0) is off unless the device tree
+ * is built with APPLE_USE_PMP. The define adds the "pmp" alias, which makes m1n1 (1.6.0 and later) copy the ADT's
+ * iop-pmp-nub properties into the pmp node as apple,tunable-* and set it okay, and it moves the devices that vote
+ * through the PMP report onto its entries. This overlay does the same for die 0; checked 3 Nov 2026 against
+ * src/linux (asahi-7.1.13-3 plus the lab series) built with the define: the trees differ only in die 1.
+ *
+ * Die 1 is not here because Asahi's t6022 wiring for it is wrong (AsahiLinux/linux asahi 414e55d alike):
+ *  - its AVD points at pmp_report_avd_sys_die1, which no file defines, so the tree does not compile;
+ *  - its two DCPs move to report@1f and report@20, which are die 0's DISPEXT2 and DISPEXT3 (ADT soc-device IDs
+ *    32 and 33), and those nodes stay disabled, so the HDMI port's DCP would never get its power domain.
+ * The ADT (macOS re-ioreg-IODeviceTree, 28 Oct) gives die 1's devices die 0's soc-device IDs plus 64 (AVD1 82,
+ * DISPEXT4 79 for the HDMI port), so die 1 votes in the report's second request word, which pmp-report does not
+ * drive. Until it does, kernel/pmp.sh sets die 1's votes with a lab module (pmp_votes).
+ *
+ * The pmp node's compatible is cut to "apple,t6020-pmp-v2": the stock pmp.ko matches "apple,t6000-pmp-v2" and
+ * would otherwise be loaded by udev and start the PMP on the first boot with this tree. The lab copy of the driver
+ * (kernel/pmp.sh, pmp_lab) binds t6020 only and is loaded by hand.
+ *
+ * m1n1 adds at most 96 KB to the tree, and with this alias needs about 27 KB more than the ~93 KB it adds today:
+ * tbt-kernel.sh pads the board tree when this overlay is applied.
+ */
+/dts-v1/;
+/plugin/;
+
+&{/aliases} {
+	pmp = "/soc@200000000/pmp@28e700000";
+};
+
+&{/soc@200000000/pmp@28e700000} {
+	compatible = "apple,t6020-pmp-v2";
+};
+
+&{/soc@200000000/avd@286000000} {
+	power-domains = <&pmp_report_avd_sys>;
+};
+
+&{/soc@200000000/dcp@289c00000} {
+	power-domains = <&pmp_report_dispext0>;
+};
+
+&{/soc@200000000/dcp@315c00000} {
+	power-domains = <&pmp_report_dispext1>;
+};
+
+&{/soc@200000000/iommu@3860e8000} {
+	power-domains = <&pmp_report_isp_sys>;
+};
