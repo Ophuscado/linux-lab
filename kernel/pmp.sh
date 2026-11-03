@@ -17,6 +17,13 @@
 #                             'votes' first. There is no stop: the PMP runs until reboot
 #   kernel/pmp.sh dump        the words again, through the loaded pmp_votes
 #   kernel/pmp.sh unvotes     rmmod pmp_votes (word 1 back to what it was)
+#   kernel/pmp.sh measure LABEL [SECONDS]
+#                             idle power and GPU read bandwidth, the same way with and without the PMP: waits up to
+#                             10 min for the 1-minute load under 1, samples the SMC's Total System Power and 3.8 V rail
+#                             each second for SECONDS (300), then vk-chain bw with the agxperf ICD under the GPU lock;
+#                             MEASURE_BENCH=1 adds llama-compare's bench on llama2, qwen and gpt20 (MEASURE_BW=0 and
+#                             MEASURE_WAIT=0 skip the bandwidth and the wait, for a dry run). Into
+#                             var/pmp/measure-LABEL-<date>/, summary.txt first. No root
 #
 # Back to before: the stock tree (tbt-kernel.sh dtb without t6022-pmp, or previous-dt) and a reboot. The kernel log
 # lines of every stage go to var/pmp/<stage>-<date>.log.
@@ -97,8 +104,42 @@ unvotes)
     sudo rmmod pmp_votes
     klog unvotes
     ;;
+measure)
+    label=${2:?usage: $0 measure LABEL [SECONDS]}; secs=${3:-300}
+    h=$(dirname "$(grep -l '^macsmc_hwmon$' /sys/class/hwmon/hwmon*/name | head -n 1)")
+    pin() { local l; l=$(grep -l "^$1\$" "$h"/power*_label | head -n 1); echo "${l%_label}_input"; }
+    total=$(pin 'Total System Power'); rail=$(pin '3.8 V Rail Power')
+    [[ -r $total ]] || die "no Total System Power reading under $h"
+    R=$OUT/measure-$label-$stamp; mkdir -p "$R"
+    quiet=no
+    for _ in $(seq "${MEASURE_WAIT:-60}"); do awk '{ exit !($1 < 1.0) }' /proc/loadavg && { quiet=yes; break; }; sleep 10; done
+    pmp=off; loaded pmp_lab && pmp=on
+    { echo "label $label; pmp $pmp; pmp_votes $(loaded pmp_votes && echo loaded || echo absent); quiet $quiet"
+      echo "kernel $(uname -r); boot $(cat /proc/sys/kernel/random/boot_id); start $(date -u +%FT%TZ); load $(cut -d' ' -f1-3 /proc/loadavg)"; } >"$R/info.txt"
+    echo "sampling power for $secs s (pmp $pmp, quiet $quiet)"
+    printf 'unix\ttotal_uW\trail38_uW\tload1\n' >"$R/power.tsv"
+    for _ in $(seq "$secs"); do
+        printf '%s\t%s\t%s\t%s\n' "$(date +%s)" "$(cat "$total")" "$(cat "$rail" 2>/dev/null)" "$(cut -d' ' -f1 /proc/loadavg)" >>"$R/power.tsv"
+        sleep 1
+    done
+    icd=$(compgen -G "$LAB/build/mesa-side/agxperf/share/vulkan/icd.d/asahi_icd.*.json" | head -n 1 || true)
+    lock=$HOME/.cache/linux-lab-gpu.lock
+    if [[ ${MEASURE_BW:-1} == 0 ]]; then echo "bandwidth skipped (MEASURE_BW=0)" >"$R/bw.txt"
+    elif [[ -n $icd ]]; then
+        { exec 9>>"$lock"; } 2>/dev/null || exec 9<"$lock"
+        flock 9; nice -n 10 "$LAB/gpu/vk-chain/vk-chain.sh" bw "$icd" >"$R/bw.txt" 2>&1 || echo "vk-chain bw failed" >>"$R/bw.txt"; flock -u 9
+    else echo "no agxperf ICD under $LAB/build/mesa-side: bandwidth skipped" >"$R/bw.txt"; fi
+    [[ ${MEASURE_BENCH:-0} != 1 ]] || STEPS=bench COMPARE_OUT=$R nice -n 10 "$LAB/gpu/llama-compare.sh" llama2 qwen gpt20 >"$R/bench.txt" 2>&1 || true
+    echo "end $(date -u +%FT%TZ); load $(cut -d' ' -f1-3 /proc/loadavg)" >>"$R/info.txt"
+    { cat "$R/info.txt"
+      awk -F'\t' 'NR > 1 { t[++n] = $2 / 1e6; s += $2 / 1e6; r += $3 / 1e6; l += $4 } END {
+          asort(t); printf "power over %d s: mean %.2f W, median %.2f W, p10 %.2f W, p90 %.2f W; 3.8 V rail mean %.2f W; load mean %.2f\n",
+              n, s / n, t[int(n / 2) + 1], t[int(n * 0.1) + 1], t[int(n * 0.9)], r / n, l / n }' "$R/power.tsv"
+      grep -i -E 'GB/s' "$R/bw.txt" | tail -n 6 || true; } >"$R/summary.txt"
+    cat "$R/summary.txt"
+    ;;
 *)
-    sed -n '2,24p' "$0" | sed 's/^# \{0,1\}//'
+    awk 'NR > 1 && /^#/ { sub(/^# ?/, ""); print; next } NR > 1 { exit }' "$0"
     exit 2
     ;;
 esac
