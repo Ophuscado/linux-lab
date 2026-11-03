@@ -5,7 +5,7 @@
 #   ./collect.sh                 all of it (hours: it builds llama.cpp; the models are read, not downloaded)
 #   ./collect.sh hw              only the hardware description (minutes, no downloads)
 #   ./collect.sh STEP...         some steps: hw, ane, tbt, gpu, llama, ablate, ops, vulkan, power, re,
-#                                input (interactive), smc, anebench, display, vkchain
+#                                input (interactive), smc, anebench, display, vkchain, idle, dvfs
 #   LLAMA_ONLY="qwen" ./collect.sh llama
 #                                only those models of models.txt (names as there), e.g. one added later
 #   LOCAL=~/models ./collect.sh  copy each model to the internal disk first (one read of the USB disk each)
@@ -44,6 +44,13 @@
 #   re     every IORegistry plane, kexts, firmware names and hashes, metal-info, Apple's GPU code for the
 #          llama.cpp kernels (private/), pmset, every powermetrics sampler, full sysctl and system_profiler
 #   power  powermetrics (needs sudo): idle, then during a prompt and during generation
+#   idle   idle power the way Linux's kernel/pmp.sh measure takes it: waits (up to 10 min) for a 1-minute load under
+#          1, then the SMC's PSTR (Linux: Total System Power), PMVR (Linux: 3.8 V Rail Power) and PDTR each second for
+#          300 s (IDLE_SECONDS), then 30 s of powermetrics if sudo is open. Quit the other apps first
+#   dvfs   what macOS's power management does (ioreport-sample.c, IOReport): the PMP's memory and fabric performance
+#          states, the GPU's performance states, energy and memory-controller counters, for 30 s idle, then while
+#          llama-bench runs a prompt and while it generates (llama2, else qwen): the reference for Linux's power
+#          controller and for the GPU clock Metal gets
 #
 # Needs the Command Line Tools (xcode-select --install) for clang and git; cmake comes from pip.
 set -uo pipefail
@@ -491,6 +498,58 @@ step_power() {
     sudo powermetrics --samplers cpu_power,gpu_power,ane_power -i 1000 -n 20 >"$OUT/power-generation.txt" 2>&1 &
     "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -p 0 -n 512 -r 2 >/dev/null 2>&1; wait
     echo "$f" >"$OUT/power-model.txt"
+}
+
+# Idle power comparable with Linux's (kernel/pmp.sh measure): the same SMC keys each second after the same quiet wait.
+step_idle() {
+    log "idle"
+    clang -O2 "$HERE/smc-dump.c" -o "$WORK/smc-dump" -framework IOKit -framework CoreFoundation 2>"$OUT/smc-build.txt" ||
+        { log "idle: smc-dump did not build (see smc-build.txt)"; return; }
+    local i quiet=no secs=${IDLE_SECONDS:-300}
+    load1() { sysctl -n vm.loadavg | awk '{ print $2 }'; }
+    for ((i = 0; i < 60; i++)); do
+        awk -v l="$(load1)" 'BEGIN { exit !(l < 1.0) }' && { quiet=yes; break; }
+        sleep 10
+    done
+    { echo "macOS $(sw_vers -productVersion); quiet $quiet; start $(date -u +%FT%TZ); load $(sysctl -n vm.loadavg)"; } >"$OUT/idle-info.txt"
+    printf 'unix\tPSTR\tPMVR\tPDTR\tload1\n' >"$OUT/idle-power.tsv"
+    for ((i = 0; i < secs; i++)); do
+        printf '%s\t%s\t%s\n' "$(date +%s)" "$("$WORK/smc-dump" PSTR PMVR PDTR)" "$(load1)" >>"$OUT/idle-power.tsv"
+        sleep 1
+    done
+    tail -n +2 "$OUT/idle-power.tsv" | cut -f2 | sort -n | awk '{ v[NR] = $1; s += $1 } END {
+        printf "PSTR (Linux: Total System Power) over %d s: mean %.2f W, median %.2f W, p10 %.2f W, p90 %.2f W\n",
+            NR, s / NR, v[int(NR / 2) + 1], v[int(NR * 0.1) + 1], v[int(NR * 0.9)] }' >>"$OUT/idle-info.txt"
+    tail -n +2 "$OUT/idle-power.tsv" | awk -F'\t' '{ r += $3; l += $5; n++ } END {
+        printf "PMVR (Linux: 3.8 V Rail Power) mean %.2f W; load mean %.2f\n", r / n, l / n }' >>"$OUT/idle-info.txt"
+    echo "end $(date -u +%FT%TZ)" >>"$OUT/idle-info.txt"
+    if sudo -n true 2>/dev/null; then
+        sudo powermetrics --samplers cpu_power,gpu_power,ane_power -i 1000 -n 30 >"$OUT/idle-powermetrics.txt" 2>&1
+    fi
+    tee -a "$OUT/collect.log" <"$OUT/idle-info.txt"
+}
+
+# The reference for Linux's power controller: macOS's own memory, fabric and GPU performance states, idle and under
+# llama-bench, through IOReport (ioreport-sample.c). The bench repeats until each 20 s sample ends, so the window is
+# all load; llama2 (small, loads fast) unless it is missing.
+step_dvfs() {
+    log "dvfs"
+    clang -O2 "$HERE/ioreport-sample.c" -o "$WORK/ioreport-sample" -framework CoreFoundation -lIOReport 2>"$OUT/dvfs-build.txt" ||
+        { log "dvfs: ioreport-sample did not build (see dvfs-build.txt)"; return; }
+    local g=(PMP "GPU Stats" "AMC Stats" "Energy Model" "CPU Stats" "SoC Stats") sp f
+    "$WORK/ioreport-sample" --list "${g[@]}" >"$OUT/dvfs-channels.tsv" 2>&1 || { log "dvfs: no channels (see dvfs-channels.tsv)"; return; }
+    "$WORK/ioreport-sample" 30 "${g[@]}" >"$OUT/dvfs-idle.tsv" 2>&1
+    venv; [[ -x ${B:-}/llama-bench ]] || build_llama
+    f=$(model_path llama2 "$(models | sed -n 's/^llama2|\([^|]*\)|.*/\1/p')")
+    [[ -f $f ]] || f=$(model_path qwen "$(models | sed -n 's/^qwen|\([^|]*\)|.*/\1/p')")
+    [[ -f $f && -x ${B:-}/llama-bench ]] || { log "dvfs: no model or llama-bench for the load samples"; return; }
+    echo "$f" >"$OUT/dvfs-model.txt"
+    "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -p 512 -n 0 -r 1 >/dev/null 2>&1
+    "$WORK/ioreport-sample" 20 "${g[@]}" >"$OUT/dvfs-prompt.tsv" 2>&1 & sp=$!
+    while kill -0 "$sp" 2>/dev/null; do "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -p 2048 -n 0 -r 2 >/dev/null 2>&1; done
+    "$WORK/ioreport-sample" 20 "${g[@]}" >"$OUT/dvfs-generation.tsv" 2>&1 & sp=$!
+    while kill -0 "$sp" 2>/dev/null; do "$B/llama-bench" -m "$f" -ngl 99 -fa 1 -p 0 -n 128 -r 1 >/dev/null 2>&1; done
+    log "dvfs: $(grep -c . "$OUT/dvfs-channels.tsv") channels"
 }
 
 steps=("$@"); ((${#steps[@]})) || steps=(hw ane tbt gpu llama ablate ops re power)

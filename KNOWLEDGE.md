@@ -8,6 +8,7 @@ Findings that took work to reach, with dates (2026) and how sure they are: VERIF
 - [USB4 and Thunderbolt storage](#usb4-and-thunderbolt-storage)
 - [The Neural Engine](#the-neural-engine)
 - [GPU: llama.cpp on Vulkan against Metal](#gpu-llamacpp-on-vulkan-against-metal)
+- [Power management (PMP)](#power-management-pmp)
 - [macOS reference data](#macos-reference-data)
 - [Storage server](#storage-server)
 - [Desktop](#desktop)
@@ -17,6 +18,10 @@ Findings that took work to reach, with dates (2026) and how sure they are: VERIF
 
 Standing choices, with the reason when one was given.
 
+- 3 Nov: closing the performance, power and efficiency gaps against macOS is the high-priority goal until done
+  (operator: "high priority goals UNTIL COMPLETION"). Memory and fabric speed, which nothing adjusts on Linux,
+  come first: the operator infers they are behind most of the underperformance (INFERRED; macOS's own IOReport
+  states and bandwidth, `collect.sh idle dvfs gpu`, are the measurement).
 - 1 Nov, VERIFIED (asahilinux.org/llm-policy/, "Generative AI (LLM) Policy"): "A contributor using an LLM to interpret a trace made using the m1n1 hypervisor may be issued with a first and final warning"; "A contributor found to have concealed extensive LLM use will be banned immediately," particularly over unreleased Apple material. The policy broadly forbids generative AI for material contributions. Any Asahi/AGX report is written by hand and discloses LLM assistance, or is not sent; the six related FACTS files are LLM-assisted background, not report text, and open with an explicit disclosure.
 - 1 Nov: scratch and benchmark output (build logs, compare-*/ dumps, patch drafts, a nested git clone, binaries) goes under `_tmp/` inside the clone, which `.gitignore` already excludes; a bare run-tag folder at the clone root (`cx-024742/`, `kde-224615/`, …) is tracked instead. `submit()` commits every untracked file in the clone, so 36 such folders at the root were merged into master as 275 files / 134k lines alongside honeykrisp 0016 (fixed forward-only in `3e7dfd9`, no content change). Check `git status --short` is clean, or everything in it is meant for the tree, before calling `submit()`.
 - 1 Nov (the panel role for linux-lab): the GPU only under `flock ~/.cache/linux-lab-gpu.lock`, long jobs at low priority; agent:claude-helper coordinates the agents for the operator (sprint, scope, priority). The 1 Nov GPU runs behind the entries marked "own GPU lock" below took a lock file in their own folder instead, so they did not wait for other agents' GPU work; `llama-compare.sh` now opens the shared lock read-only when it cannot write it.
@@ -504,6 +509,28 @@ dependent Metal launch costs 2.27 µs (metal-chain), 0.30 when independent. Powe
 
 The same build's Vulkan backend through MoltenVK 1.4.2: Llama 2 788 / 836 / 59.9, GPT-OSS 20B 992 / 1221 / 82.7,
 Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
+
+## Power management (PMP)
+
+- 3 Nov, OBSERVED: the `t6022-pmp` device tree (`kernel/dt/t6022-pmp.dts`: the pmp alias, so m1n1 fills the node and
+  it goes okay with no driver bound) hard-hung the machine twice, each time in `kernel/pmp.sh measure` (vk-chain bw,
+  then llama-compare's bench): once a minute into Qwen, once at the start of GPT-OSS 20B. No kernel message before the
+  reset; the PMP was never started (no votes, no `pmp_lab`). The same bench without the bandwidth run passed once on
+  that tree, and the old tree ran bandwidth plus bench that morning. Suspects, untested: the node keeps the PMP's
+  power island on ("sync_state() pending due to 28e700000.pmp", where the old tree let it go off with its DART), and
+  the node joins its DART's IOMMU group. Keep the tree off until one is ruled out.
+- 3 Nov, VERIFIED (300 s, load 0.19, qBittorrent stopped): Linux idles at 20.4 W PSTR (`Total System Power`), 10.6 W
+  PMVR (`3.8 V Rail Power` in Linux's hwmon); macOS's 8.5 W PMVR and 32.4 W PSTR (28 Oct) were taken mid-collection,
+  not idle. GPU read bandwidth that boot: 656-670 GB/s at 1 GB.
+- 3 Nov, VERIFIED (ADT dump of 28 Oct, the report region read under Linux): the PMP report's SOC-DEV-PS-REQ is 8 words
+  (read 16 bytes a word from 0x2000, write 8 from 0x11000); a device's bit is its soc-device ID - 1, and die 1's
+  devices have die 0's IDs + 64 (AVD1 82, DISPEXT4 79 = the HDMI port), so die 1 votes in word 1. Linux's
+  `pmp-report` drives word 0 only, with `1 << id` (a 32-bit shift, wrong from ID 31 up; Asahi 414e55d alike).
+  Asahi's APPLE_USE_PMP does not compile for t6022 (pmp_report_avd_sys_die1 undefined) and puts die 1's DCPs on
+  report@1f/@20, which are die 0's DISPEXT2/3 and stay disabled. m1n1 adds ~95 KB to this board's tree (the kernel
+  got 384,726 bytes) within a 96 KB margin, and the PMP's settings are ~27 KB more: `tbt-kernel.sh` pads the tree by
+  64 KB with `t6022-pmp`. Of the PMP's 41 boot arguments, BDID, DVID and DCAP are 0 until the OS sets them (the ADT
+  has 0x0a, 6 and 8; 8 x 24 GB = this Mac's 192 GB). Without a driver the PMP's status word is 0: not running.
 
 ## macOS reference data
 

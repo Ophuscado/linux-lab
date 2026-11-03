@@ -4,6 +4,8 @@
 // Text keys (type ch8*) are printed as "<text>" only: some hold identifiers of the machine.
 // Build: clang -O2 smc-dump.c -o smc-dump -framework IOKit -framework CoreFoundation
 // Run:   ./smc-dump > smc.tsv      (key, type, size, value, hex)
+//        ./smc-dump PSTR PMVR      those keys' values on one tab-separated line (floats as numbers, else ?), for
+//                                  sampling: collect.sh's idle step
 #include <IOKit/IOKitLib.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -49,10 +51,23 @@ static int read_key(uint32_t key, smc_keyinfo *info, uint8_t *bytes) {
     return 0;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
     io_service_t svc = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSMC"));
     if (!svc || IOServiceOpen(svc, mach_task_self(), 0, &conn) != KERN_SUCCESS) { fprintf(stderr, "AppleSMC not opened\n"); return 1; }
     smc_keyinfo info; uint8_t b[32];
+    if (argc > 1) {
+        for (int a = 1; a < argc; a++) {
+            char t[5];
+            const char *sep = a > 1 ? "\t" : "";
+            if (strlen(argv[a]) != 4 || read_key(key_of(argv[a]), &info, b)) { printf("%s?", sep); continue; }
+            fourcc(info.type, t);
+            if (!strcmp(t, "flt ") && info.size == 4) { float f; memcpy(&f, b, 4); printf("%s%g", sep, f); }
+            else printf("%s?", sep);
+        }
+        putchar('\n');
+        IOServiceClose(conn);
+        return 0;
+    }
     if (read_key(key_of("#KEY"), &info, b)) { fprintf(stderr, "#KEY not readable\n"); return 1; }
     uint32_t count = (uint32_t)b[0] << 24 | (uint32_t)b[1] << 16 | (uint32_t)b[2] << 8 | b[3];
     printf("# %u keys\nkey\ttype\tsize\tvalue\thex\n", count);
