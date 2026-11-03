@@ -18,6 +18,10 @@ Findings that took work to reach, with dates (2026) and how sure they are: VERIF
 
 Standing choices, with the reason when one was given.
 
+- 3 Nov: linux-lab is private and personal (operator): nothing in it needs holding back.
+- 3 Nov: m1n1's AGENTS.md and CLAUDE.md (c5609da) forbid AI or LLM use on m1n1 "due to legal reasons". Told so,
+  the operator chose to go ahead for this Mac's PMP in the lab (`macos/hv-pmp.sh`, m1n1's hypervisor and
+  trace_pmp.py) and to contact the maintainers himself; nothing from that work goes to them otherwise.
 - 3 Nov: closing the performance, power and efficiency gaps against macOS is the high-priority goal until done
   (operator: "high priority goals UNTIL COMPLETION"). Memory and fabric speed, which nothing adjusts on Linux,
   come first: the operator infers they are behind most of the underperformance (INFERRED; macOS's own IOReport
