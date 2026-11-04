@@ -1,6 +1,6 @@
 // metal-info: what Metal says about this GPU, for comparison with Vulkan's limits under Honeykrisp:
 // families, limits, memory, the GPU counter sets and their counters, and the timestamp clock.
-// Build (macOS): clang -O2 -fobjc-arc -framework Metal -framework Foundation metal-info.m -o metal-info
+// Build (macOS): clang -O2 -fobjc-arc -framework Metal -framework Foundation -framework CoreGraphics metal-info.m -o metal-info
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 

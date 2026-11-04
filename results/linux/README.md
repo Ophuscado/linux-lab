@@ -13,5 +13,7 @@ workgroup, one row a workgroup for K-quants) is in KNOWLEDGE.md with later, repr
 Kept for provenance, not cited elsewhere.
 
 `pmp-20261104/`: [`kernel/pmp.sh measure`](../../kernel/pmp.sh) with the power management processor off (`pmp-off`, the
-old tree, 4 Nov 01:12, with a `llama-compare.sh` bench) and on (`pmp-on`, 07:05): `summary.txt` first, then
-`power.tsv` (SMC total power each second) and `bw.txt` (vk-chain bw). KNOWLEDGE.md, Power management, cites them.
+old tree, 4 Nov 01:12, with a `llama-compare.sh` bench) and on (`pmp-on`, 07:05; `pmp-on-bench`, 07:20, the same
+bench on the same build, its 30 s of power taken with an iPad charging from the Mac): `summary.txt` first, then
+`power.tsv` (SMC total power each second), `bw.txt` (vk-chain bw) and `compare-*` (the bench). KNOWLEDGE.md, Power
+management, and the README's table cite them.

@@ -4,7 +4,7 @@
 // zero or false (for kernel_mul_mm*: no bounds checks on input or output, the variant a prompt's full tiles run). Its code is what Apple's compiler makes of the kernels whose Vulkan
 // twins Mesa's compiler builds on Linux; disassemble it there (e.g. dougallj/applegpu) to compare.
 // The archive is Apple's compiler output for this machine: for study here, not for publishing.
-// Build (macOS): clang -O2 -fobjc-arc -framework Metal -framework Foundation metal-archive.m -o metal-archive
+// Build (macOS): clang -O2 -fobjc-arc -framework Metal -framework Foundation -framework CoreGraphics metal-archive.m -o metal-archive
 // Run:          ./metal-archive ggml-metal-embed.metal out.metallib > list.txt
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>

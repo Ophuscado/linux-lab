@@ -114,7 +114,7 @@ step_tbt() {
 step_gpu() {
     log "gpu: metal-chain"
     local b=$WORK/metal-chain
-    clang -O2 -fobjc-arc -framework Metal -framework Foundation "$LAB/gpu/vk-chain/metal-chain.m" -o "$b" 2>"$OUT/gpu-metal-chain-build.txt" ||
+    clang -O2 -fobjc-arc -framework Metal -framework Foundation -framework CoreGraphics "$LAB/gpu/vk-chain/metal-chain.m" -o "$b" 2>"$OUT/gpu-metal-chain-build.txt" ||
         { log "metal-chain does not build (see gpu-metal-chain-build.txt)"; return; }
     "$b" >"$OUT/gpu-metal-chain.txt" 2>&1 || log "metal-chain failed (see gpu-metal-chain.txt)"
 }
@@ -134,7 +134,7 @@ step_re() {
     { for d in /usr/standalone/firmware /System/Library/Extensions/*.kext/Contents/Resources /System/Volumes/Preboot/*/restore/Firmware; do
           find "$d" -type f \( -iname '*.im4p' -o -iname '*.bin' -o -iname '*.fw' -o -iname '*firmware*' \) 2>/dev/null
       done | sort -u | while read -r f; do printf '%s  %s  %s\n' "$(shasum -a 256 "$f" | cut -c1-64)" "$(stat -f %z "$f")" "$f"; done; } >"$OUT/re-firmware.txt" 2>/dev/null
-    clang -O2 -fobjc-arc -framework Metal -framework Foundation "$HERE/metal-info.m" -o "$WORK/metal-info" 2>"$OUT/re-metal-info-build.txt" &&
+    clang -O2 -fobjc-arc -framework Metal -framework Foundation -framework CoreGraphics "$HERE/metal-info.m" -o "$WORK/metal-info" 2>"$OUT/re-metal-info-build.txt" &&
         "$WORK/metal-info" >"$OUT/re-metal-info.txt" 2>&1
     { pmset -g; pmset -g custom; pmset -g cap; pmset -g therm; pmset -g assertions; } 2>&1 | scrub >"$OUT/re-pmset.txt"
     sysctl -a 2>/dev/null | scrub | gzip >"$OUT/re-sysctl.txt.gz"
@@ -151,7 +151,7 @@ step_re() {
         # them zero (the 28 Oct runs skipped them, kernel_mul_mm* among them); Metal's shader cache below also keeps
         # the forms the llama runs specialized, but without names.
         mkdir -p "$OUT/private"
-        if clang -O2 -fobjc-arc -framework Metal -framework Foundation "$HERE/metal-archive.m" -o "$WORK/metal-archive" 2>"$OUT/re-metal-archive-build.txt"; then
+        if clang -O2 -fobjc-arc -framework Metal -framework Foundation -framework CoreGraphics "$HERE/metal-archive.m" -o "$WORK/metal-archive" 2>"$OUT/re-metal-archive-build.txt"; then
             local m k n=0
             while IFS= read -r m; do
                 k=$(basename "$m" .metal); k=${k#ggml-metal-embed}; k=${k#-}; k=${k:-all}
@@ -396,7 +396,7 @@ step_smc() {
     "$WORK/smc-dump" >"$OUT/smc-idle.tsv" 2>&1
     local pids=() i
     for ((i = 0; i < $(sysctl -n hw.ncpu); i++)); do yes >/dev/null & pids+=($!); done
-    if clang -O2 -fobjc-arc -framework Metal -framework Foundation "$LAB/gpu/vk-chain/metal-chain.m" -o "$WORK/metal-chain" 2>/dev/null; then
+    if clang -O2 -fobjc-arc -framework Metal -framework Foundation -framework CoreGraphics "$LAB/gpu/vk-chain/metal-chain.m" -o "$WORK/metal-chain" 2>/dev/null; then
         "$WORK/metal-chain" >/dev/null 2>&1 & pids+=($!)
     fi
     sleep 25

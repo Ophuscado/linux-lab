@@ -25,7 +25,8 @@ Standing choices, with the reason when one was given.
 - 3 Nov: closing the performance, power and efficiency gaps against macOS is the high-priority goal until done
   (operator: "high priority goals UNTIL COMPLETION"). Memory and fabric speed, which nothing adjusts on Linux,
   come first: the operator infers they are behind most of the underperformance (INFERRED; macOS's own IOReport
-  states and bandwidth, `collect.sh idle dvfs gpu`, are the measurement).
+  states and bandwidth, `collect.sh idle dvfs gpu`, are the measurement). 4 Nov, VERIFIED: right for idle power and
+  bandwidth, and for part of generation; the PMP closes those (Power management). Prompt speed is the GPU stack.
 - 1 Nov, VERIFIED (asahilinux.org/llm-policy/, "Generative AI (LLM) Policy"): "A contributor using an LLM to interpret a trace made using the m1n1 hypervisor may be issued with a first and final warning"; "A contributor found to have concealed extensive LLM use will be banned immediately," particularly over unreleased Apple material. The policy broadly forbids generative AI for material contributions. Any Asahi/AGX report is written by hand and discloses LLM assistance, or is not sent; the six related FACTS files are LLM-assisted background, not report text, and open with an explicit disclosure.
 - 1 Nov: scratch and benchmark output (build logs, compare-*/ dumps, patch drafts, a nested git clone, binaries) goes under `_tmp/` inside the clone, which `.gitignore` already excludes; a bare run-tag folder at the clone root (`cx-024742/`, `kde-224615/`, …) is tracked instead. `submit()` commits every untracked file in the clone, so 36 such folders at the root were merged into master as 275 files / 134k lines alongside honeykrisp 0016 (fixed forward-only in `3e7dfd9`, no content change). Check `git status --short` is clean, or everything in it is meant for the tree, before calling `submit()`.
 - 1 Nov (the panel role for linux-lab): the GPU only under `flock ~/.cache/linux-lab-gpu.lock`, long jobs at low priority; agent:claude-helper coordinates the agents for the operator (sprint, scope, priority). The 1 Nov GPU runs behind the entries marked "own GPU lock" below took a lock file in their own folder instead, so they did not wait for other agents' GPU work; `llama-compare.sh` now opens the shared lock read-only when it cannot write it.
@@ -239,6 +240,9 @@ and flags as `macos/collect.sh`). Flash attention on, all layers on the GPU, the
   per byte (INFERRED: instruction issue and latency per load, not bandwidth): the next step is a kernel built like
   the read (one load and one multiply-add per element, many loads in flight), not settings. Bound for q4_0: 33 MB
   read at ~650 GB/s is ~51 us against 69 us now (-26 %).
+- 4 Nov, VERIFIED: the entry below is right that launch cost limits one vec4 per invocation, but its ceiling was not
+  the memory's. Without the power management processor the memory and fabric run in one fixed state; with it the
+  same reads reach 775 GB/s at 1 GB and 468 GB/s at one vec4 (`results/linux/pmp-20261104`; Power management).
 - VERIFIED, 29 Oct: not memory. A grid-stride read reaches 610-655 GB/s from 64 MB to 1 GB (`vk-chain.sh bw`), the
   same on both memory types and both Mesas; one vec4 per invocation (65,536 workgroups for 256 MB) only ~290 GB/s:
   launching many small workgroups is the limit. The f16 matrix-vector streams 475 GB/s, below what memory gives
@@ -516,6 +520,32 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
 
 ## Power management (PMP)
 
+State on 4 Nov, for anyone picking this up (the entries below are the evidence, newest first):
+- What it is: the M2 Ultra's power management processor sets memory (DCS) and fabric (FAB, AFR) performance states
+  from device requests in its report region. Stock Asahi does not start it on this chip (its `APPLE_USE_PMP` tree
+  does not compile for t6022, and the stock tree has no pmp alias), so on Linux the memory and fabric stay in one
+  fixed state.
+- What runs it here, by hand after each boot: the `t6022-pmp` tree (`TBT_OVERLAYS="t6022-ane t6022-pmp"
+  kernel/tbt-kernel.sh dtb`, reboot), then `kernel/pmp.sh build`, `votes`, `start --now`. It runs until reboot. Not
+  yet at boot: that is a board line (the kernel series carries the fixes, the tree becomes the default).
+- What it gives (one run each, same method, macOS in brackets): idle 21.32 -> 16.08 W (16.2-16.7); GPU read 1 GB 668
+  -> 775 GB/s (755-763), 16 MB 998 -> 1818 (1909), one float4 a thread 296 -> 468 (762); llama.cpp generation +14-20%,
+  prompts +1-5%.
+- What we fixed against Asahi's code, each usable on its own: (1) the request word: start with macOS's
+  0x0001e6006000c700 (Linux's tree has no report entry for the P-CPU clusters or the GPU, and pmp-report shifts a
+  32-bit 1, so no bit past 31); (2) pmp.rs numbers AdvertiseAcks from 1 and spends an index on a missing property,
+  macOS from 0 and spends none, and pmp.rs's SetVal then reads past its list; (3) any second mapping of the report
+  must be non-posted (`ioremap_np`), or the first write hangs the machine; (4) `APPLE_USE_PMP` on t6022: an undefined
+  die-1 label, die 1's DCPs on die 0's DISPEXT2/3 entries; (5) m1n1's 96 KB tree margin is short with the PMP's
+  settings (`tbt-kernel.sh` pads 64 KB).
+- Open, in order of weight: does the start hold without macOS's word (untested); what bits 41, 42 and 45-48 mean (no
+  device table names them); die 1's word 1 (macOS wrote none; HDMI stayed fine without it, OBSERVED once); the
+  tunables' values (names and sizes match macOS, values not compared); nine more report registers macOS writes and
+  Linux does not; energy under load (one SMC snapshot each at the start of the Qwen run: 144.7 W off, 175.6 W on,
+  +21%, against +5% prompt and +20% generation speed, so energy per token is not shown to improve and may be worse
+  for prompts; not measured over a run); whether the tree still hangs under load with the PMP stopped (moot once it
+  starts at boot).
+
 - 4 Nov, VERIFIED (`results/linux/pmp-20261104`, `kernel/pmp.sh measure`, the same method both runs; quiet, 300 s of
   SMC Total System Power, then vk-chain bw): the PMP runs under Linux (t6022-pmp tree; `pmp.sh votes` with macOS's word
   0, then `start --now`: status bit 0 set, word 0 acknowledged bit for bit at 0x0001e6006000c700, firmware "PMP
@@ -572,10 +602,11 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
 - 3 Nov, OBSERVED: the `t6022-pmp` device tree (`kernel/dt/t6022-pmp.dts`: the pmp alias, so m1n1 fills the node and
   it goes okay with no driver bound) hard-hung the machine twice, each time in `kernel/pmp.sh measure` (vk-chain bw,
   then llama-compare's bench): once a minute into Qwen, once at the start of GPT-OSS 20B. No kernel message before the
-  reset; the PMP was never started (no votes, no `pmp_lab`). The same bench without the bandwidth run passed once on
-  that tree, and the old tree ran bandwidth plus bench that morning. Suspects, untested: the node keeps the PMP's
-  power island on ("sync_state() pending due to 28e700000.pmp", where the old tree let it go off with its DART), and
-  the node joins its DART's IOMMU group. Keep the tree off until one is ruled out.
+  reset; the PMP was never started (no votes, no `pmp_lab`). (4 Nov: with the PMP running, the tree held the same
+  bandwidth run and bench once; with it stopped, still unexplained.) The same bench without the bandwidth run passed
+  once on that tree, and the old tree ran bandwidth plus bench that morning. Suspects, untested: the node keeps the
+  PMP's power island on ("sync_state() pending due to 28e700000.pmp", where the old tree let it go off with its DART),
+  and the node joins its DART's IOMMU group. Use the tree only with the PMP started right after boot.
 - 3 Nov, VERIFIED (300 s, load 0.19, qBittorrent stopped): Linux idles at 20.4 W PSTR (`Total System Power`), 10.6 W
   PMVR (`3.8 V Rail Power` in Linux's hwmon); macOS's 8.5 W PMVR and 32.4 W PSTR (28 Oct) were taken mid-collection,
   not idle. GPU read bandwidth that boot: 656-670 GB/s at 1 GB.
@@ -601,6 +632,10 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
   (57%). tg128 123.5 t/s = ~472 GB/s of weights, far under our own 668 GB/s bw -> generation is NOT memory-bound; it
   and the one-float4 gap are many-small-workgroup launch cost + GPU clock (1236 not 1398), fixable in the Linux GPU
   stack. Prompt is compute-bound (30 GB/s DRAM at 113 W). So: idle power + cache-side bw -> PMP; pp/tg speed -> GPU stack.
+  Corrected 4 Nov by the PMP run (Power management): Linux's memory and fabric sat in one fixed state, not near the
+  top (the 1 GB read rose 668 -> 775 GB/s once the PMP ran them), and generation gained 14-20% from the PMP alone, so
+  it was partly held back by that state after all (INFERRED: latency or clock, not the amount of bandwidth). What is
+  left is the GPU stack: llama2 tg128 at 66% of Metal, pp512 at 59%.
 
 
 - 27-28 Oct: `macos/collect.sh` runs on macOS 13.7.8, 14.8.9 and 15.8.1, 45 runs in `results/macos/`: device tree and
@@ -680,7 +715,3 @@ and on four data disks.
   status` names any path it no longer prunes.
 - 13 Oct: the Asahi installer's resize prompt asks for the new macOS size; GB and TB are decimal. It adds a boot stub,
   a 500 MiB EFI and a 1 GiB `/boot`. Partitions are removed with `diskutil`, never the recovery one.
-
-[hackedsystem] exit 0
-
-[hackedsystem] exit 0

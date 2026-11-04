@@ -5,6 +5,9 @@
 # gives m1n1 the pmp alias, so m1n1 copies the ADT's PMP settings into the node, and cuts the node's compatible so
 # the stock pmp.ko never binds it.
 #
+# What runs it (4 Nov, on that tree, right after boot): build, votes, start --now; then dump shows the status word's
+# bit 0 set and word 0 acknowledged. measure gives the numbers (KNOWLEDGE, Power management).
+#
 #   kernel/pmp.sh build       pmp_votes.ko (kernel/pmp/pmp_votes.c) and pmp_lab.ko, pmp_lab_ro.ko (kernel/pmp/make_lab.py
 #                             on the running kernel's drivers/soc/apple/pmp.rs) against the running kernel, into var/pmp
 #   kernel/pmp.sh status      the running tree's pmp node (m1n1's settings there or not), the modules, and the report's

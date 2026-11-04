@@ -3,7 +3,7 @@
 // before, as Vulkan with a barrier), "barrier" in a concurrent encoder with a buffer memory barrier between
 // launches (how llama.cpp's Metal backend orders them), "free" in a concurrent encoder without barriers.
 // Prints microseconds per launch, best of REPEAT, for the same tests as vk-chain.sh run, groups, dot, clock.
-// Build and run (macOS): clang -O2 -fobjc-arc -framework Metal -framework Foundation metal-chain.m -o metal-chain
+// Build and run (macOS): clang -O2 -fobjc-arc -framework Metal -framework Foundation -framework CoreGraphics metal-chain.m -o metal-chain
 //                        ./metal-chain
 // Written on Linux and not compiled there: the first macOS run is its test.
 #import <Foundation/Foundation.h>
@@ -99,22 +99,27 @@ static double run(id<MTLCommandQueue> q, id<MTLComputePipelineState> pso, id<MTL
 
 int main(int argc, const char **argv) {
     @autoreleasepool {
+        // A command-line tool can get no default device (macOS 13.7.8, 4 Nov, until CoreGraphics was linked);
+        // the device list still has it.
         id<MTLDevice> dev = MTLCreateSystemDefaultDevice();
+        if (!dev) {
+            NSArray<id<MTLDevice>> *all = MTLCopyAllDevices();
+            dev = all.count ? all[0] : nil;
+        }
         if (!dev) { fprintf(stderr, "no Metal device\n"); return 1; }
         NSError *err = nil;
         id<MTLLibrary> lib = [dev newLibraryWithSource:kSource options:nil error:&err];
         if (!lib) { fprintf(stderr, "shader compile: %s\n", err.description.UTF8String); return 1; }
         // The clock test alone in strict math: fast math may reassociate its chain of multiply-adds. The
         // launch tests keep the default (fast) math, as llama.cpp's Metal kernels and the earlier runs.
+        // fastMathEnabled, not mathMode: the macOS 13 SDK does not declare MTLMathModeSafe, so a mathMode branch
+        // does not compile there even behind @available. Deprecated from 15, still honoured (built and run on 13 and
+        // 15, 4 Nov).
         MTLCompileOptions *opt = [MTLCompileOptions new];
-        if (@available(macOS 15.0, *)) {
-            opt.mathMode = MTLMathModeSafe;
-        } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            opt.fastMathEnabled = NO;
+        opt.fastMathEnabled = NO;
 #pragma clang diagnostic pop
-        }
         id<MTLLibrary> strict = [dev newLibraryWithSource:kSource options:opt error:&err];
         if (!strict) { fprintf(stderr, "shader compile (strict): %s\n", err.description.UTF8String); return 1; }
         id<MTLComputePipelineState> p_add = [dev newComputePipelineStateWithFunction:[lib newFunctionWithName:@"add"] error:&err];

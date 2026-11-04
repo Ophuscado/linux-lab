@@ -1,6 +1,7 @@
 """make_lab.py SRC OUTDIR: the lab's two copies of drivers/soc/apple/pmp.rs for the M2 Ultra.
 
-pmp_lab.rs     binds only "apple,t6020-pmp-v2"; logs every PMP boot argument; patches BDID and DVID only (Asahi's
+pmp_lab.rs     binds only "apple,t6020-pmp-v2"; logs every PMP boot argument as it finds it (before the patch, so
+               BDID and DVID log 0); patches BDID and DVID only (Asahi's
                own M2-family path, m1n1 proxyclient/experiments/pmp_init.py since 1193477: DCAP and the IOVA
                table on T600X only; the driver already answers an empty table when apple,pio-ranges is absent);
                numbers its AdvertiseAcks as macOS does (below)
