@@ -35,6 +35,7 @@
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
+#include <linux/ioport.h>
 
 #define REQ_RD(n)	(0x2000 + 16 * (n))
 #define REQ_WR(n)	(0x11000 + 8 * (n))
@@ -132,7 +133,16 @@ static int __init pmp_votes_init(void)
 		return ret;
 	if (resource_size(&res) < REQ_WR(WORDS))
 		return -EINVAL;
-	base = ioremap(res.start, resource_size(&res));	/* pmp-report holds the region; this maps it again */
+	/*
+	 * pmp-report holds the region; this maps it again. Non-posted, as the soc bus's nonposted-mmio says: a posted
+	 * write (plain ioremap) there is the likely reason every write by this module hung the machine (3 and 4 Nov,
+	 * five times, whatever the bits) while its reads passed.
+	 */
+	base = res.flags & IORESOURCE_MEM_NONPOSTED ? ioremap_np(res.start, resource_size(&res)) : NULL;
+	if (!base && !(res.flags & IORESOURCE_MEM_NONPOSTED)) {
+		pr_err("pmp_votes: the report is not marked non-posted: refusing to write it posted\n");
+		return -EINVAL;
+	}
 	if (!base)
 		return -ENOMEM;
 	show("at load");
