@@ -528,9 +528,28 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
   live control loop, rewritten 41 times during boot as subsystems power up and down (not a one-shot), exactly what
   `pmp-report`'s genpd does per power domain. Bit = soc-device id1 - 1, confirmed: GFX = bit 10 (macOS sets and holds it
   -- the bit linux-aurora PR 334 proposed), PCPM0/1 = 8/9, DISPEXT0/1_FE = 14/15, AFNC4/5_IOA = 29/30. Steady state this
-  boot 0x61e6006000c700 (GFX, both display FEs, the two P-CPU clusters, the two fabric IOAs, the four DP voltage reqs).
+  boot 0x61e6006000c700 (GFX, both display FEs, the two P-CPU clusters, the two fabric IOAs, and bits 41-54 that no
+  soc-device or pmgr entry names: the tracer's "DPn-SOC-VMAX" for them is its own misdecode, those share bits 14/15).
   All writes were word 0 (bits <64); no word-1 writes occurred (no die-1 display attached this boot), so pmp_votes'
   word-1 path stays unconfirmed. macOS set no DCAP-dependent behaviour visible here; DCAP left 0 matches its M2 init.
+- 4 Nov, VERIFIED (static diff of that trace against the ADT, the tree m1n1 fills and our driver; nothing run): what
+  Linux does differently when it starts the PMP, most likely cause first.
+  - Votes. When macOS sets CPU_CONTROL RUN, word 0 holds 0x0001e6006000c700; Linux's holds 0x6000c000 (the two display
+    FEs, AFNC4/5_IOA; pmp_votes' dump, 3 Nov). Missing: PCPM0/1 (bits 8, 9: the P-CPU clusters), GFX (10), and bits 41,
+    42, 45-48, which macOS sets one each right after its device votes. Linux's tree has no report entry for PCPM or GFX,
+    and pmp-report cannot set a bit past 31. A PMP that starts with the CPU clusters and the GPU unrequested may cut
+    them, which fits both start-chain crashes landing right after the sudo password (3 Nov). `pmp_votes macos=1` sets
+    macOS's word 0 before the start.
+  - AdvertiseAck numbering. macOS numbers from 0 and answers a name it lacks with INDEX 0 SIZE 0 without spending an
+    index; pmp.rs numbers from 1, spends one per miss, and its SetVal looks up entry INDEX of a list that starts at 0
+    (the last entry is out of range). The firmware sent no SetVal that boot. `make_lab.py` now numbers as macOS does.
+  - Settings: no gap. Of the 794 Advertises, 714 register IOReport channels (size given, nothing looked up) and 80
+    look up a tunable by name; 79 of those are in iop-pmp-nub at the size macOS answered, m1n1 copies all 79 (none is
+    in its excluded list), and the 80th, `fast-die-ctrl-ce-map`, is in no ADT node and unanswered by macOS too.
+    Values were not compared (the trace does not dump the value buffer).
+  - Other report writes. macOS writes nine more report registers that Linux never touches: before RUN 0x28e3d8538 =
+    0xd00, 0x28e3d824c = 0x40000, 0x28e3d1480 = 0x2111100000000 and 0x28e3d1488-14a0 = 0; after it 0x28e3d1280
+    (0x100000000, then 0), 0x28e3d12c0 = 2, 0x28e3d12c8 = 0, 0x28e3d1618 = 6. Their ptd-range names are not mapped.
 
 - 3 Nov, OBSERVED: the `t6022-pmp` device tree (`kernel/dt/t6022-pmp.dts`: the pmp alias, so m1n1 fills the node and
   it goes okay with no driver bound) hard-hung the machine twice, each time in `kernel/pmp.sh measure` (vk-chain bw,
@@ -643,3 +662,5 @@ and on four data disks.
   status` names any path it no longer prunes.
 - 13 Oct: the Asahi installer's resize prompt asks for the new macOS size; GB and TB are decimal. It adds a boot stub,
   a 500 MiB EFI and a 1 GiB `/boot`. Partitions are removed with `diskutil`, never the recovery one.
+
+[hackedsystem] exit 0

@@ -2,7 +2,8 @@
 
 pmp_lab.rs     binds only "apple,t6020-pmp-v2"; logs every PMP boot argument; patches BDID and DVID only (Asahi's
                own M2-family path, m1n1 proxyclient/experiments/pmp_init.py since 1193477: DCAP and the IOVA
-               table on T600X only; the driver already answers an empty table when apple,pio-ranges is absent)
+               table on T600X only; the driver already answers an empty table when apple,pio-ranges is absent);
+               numbers its AdvertiseAcks as macOS does (below)
 pmp_lab_ro.rs  the same, but read only: logs the boot arguments, writes nothing, never starts the PMP, and refuses
                the device (ENODEV) so the driver can be unloaded and the real one loaded after it
 Every replacement must apply exactly once."""
@@ -42,6 +43,15 @@ s = s[:i] + ('        // No DCAP on t602x: Asahi\'s M2-family init sets BDID and
              '            dev_info!(dev, "read only: nothing written, PMP not started\\n");\n'
              '            return Err(ENODEV);\n'
              '        }\n') + s[j:]
+# AdvertiseAck as macOS sends it (4 Nov trace, 794 of them): indices from 0, and a name the tree does not hold is
+# answered INDEX 0 SIZE 0 without taking an index. Upstream numbers from 1 and spends an index on a miss, and its
+# SetVal handler reads entry INDEX of a list that starts at 0, so the last entry is out of range.
+s = sub(s, '        state.ioreg_entries.push(size, GFP_KERNEL)?;\n        let index = state.ioreg_entries.len() as u64;\n',
+        '        if size == 0 {\n'
+        '            return Ok((OPC_REGISTER_IOREG | OPC_ACK_MASK) << OPC_SHIFT);\n'
+        '        }\n'
+        '        let index = state.ioreg_entries.len() as u64;\n'
+        '        state.ioreg_entries.push(size, GFP_KERNEL)?;\n')
 s = sub(s, '[(of::DeviceId::new(c"apple,t6000-pmp-v2"), ())]', '[(of::DeviceId::new(c"apple,t6020-pmp-v2"), ())]')
 s = sub(s, '    name: "apple_pmp",\n    description: "Apple Power Management Processor",',
         '    name: "@NAME@",\n    description: "Apple Power Management Processor (lab copy for t6022)",')

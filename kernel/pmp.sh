@@ -11,12 +11,15 @@
 #                             8 request and acknowledge words (pmp_votes loaded read only and unloaded, or its dump)
 #   kernel/pmp.sh bootargs    pmp_lab_ro: powers the PMP's island through the driver core, logs its boot arguments,
 #                             writes nothing, starts nothing, refuses the device; unloaded after
-#   kernel/pmp.sh votes       pmp_votes die1=1: die 1's display (HDMI) and fabric votes in the report's word 1, which
-#                             Linux's pmp-report does not drive; held until 'unvotes' or reboot
+#   kernel/pmp.sh votes       pmp_votes macos=1: word 0 as macOS has it when it starts the PMP (the P-CPU clusters, the
+#                             GPU, the high bits; 4 Nov trace), which Linux's pmp-report cannot set; VOTES_DIE1=1 adds
+#                             die1=1, die 1's display and fabric votes in word 1 (macOS wrote none that boot); held
+#                             until 'unvotes' or reboot
 #   kernel/pmp.sh start --now pmp_lab: patches BDID and DVID, starts the PMP's firmware and serves its messages. Needs
 #                             'votes' first. There is no stop: the PMP runs until reboot
 #   kernel/pmp.sh dump        the words again, through the loaded pmp_votes
-#   kernel/pmp.sh unvotes     rmmod pmp_votes (word 1 back to what it was)
+#   kernel/pmp.sh unvotes     rmmod pmp_votes (words 0 and 1 back to what they were; word 0's added bits stay once the
+#                             PMP runs)
 #   kernel/pmp.sh measure LABEL [SECONDS]
 #                             idle power and GPU read bandwidth, the same way with and without the PMP: waits up to
 #                             10 min for the 1-minute load under 1, samples the SMC's Total System Power and 3.8 V rail
@@ -80,13 +83,13 @@ bootargs)
 votes)
     need pmp_votes
     ! loaded pmp_votes || die "pmp_votes is loaded already ($0 unvotes first)"
-    sudo insmod "$B/pmp_votes.ko" die1=1
+    sudo insmod "$B/pmp_votes.ko" macos=1 $([[ ${VOTES_DIE1:-0} == 1 ]] && echo die1=1)
     klog votes
     ;;
 start)
     [[ ${2:-} == --now ]] || die "usage: $0 start --now   (the PMP runs until reboot; sync and stop the pool's writers first)"
     ready; need pmp_lab
-    [[ $(cat /sys/module/pmp_votes/parameters/die1 2>/dev/null) == Y ]] || die "die 1's votes are not set: $0 votes"
+    [[ $(cat /sys/module/pmp_votes/parameters/macos 2>/dev/null) == Y ]] || die "macOS's word 0 is not set: $0 votes"
     ! loaded pmp_lab || die "pmp_lab is loaded already"
     sync
     sudo insmod "$B/pmp_lab.ko"; sleep 3
