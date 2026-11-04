@@ -1,0 +1,5 @@
+driver: agxperf
+== llama2 (rows 1)
+== qwen (rows 4)
+== gpt20 (rows 1)
+saved: ~/Projects/linux-lab/var/pmp/measure-pmp-on-bench-20261104-072005/compare-20261104-072035-iAUB5Q

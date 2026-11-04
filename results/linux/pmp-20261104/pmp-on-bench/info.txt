@@ -1,0 +1,3 @@
+label pmp-on-bench; pmp on; pmp_votes loaded; quiet yes
+kernel 7.1.13-tbtwip; boot 3a70fd28-158c-4429-b071-f12a42c69417; start 2026-11-04T07:20:05Z; load 0.74 0.56 0.48
+end 2026-11-04T07:22:20Z; load 0.69 0.60 0.50

@@ -523,6 +523,12 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
   idle 21.32 -> 16.08 W (16.2-16.7); GPU read 1 GB 668 -> 775 GB/s (755-763); 16 MB 998 -> 1818 (1909); one float4 a
   thread 296 -> 468 (762). Without the PMP the memory and fabric sit in one middle state; with it they rise under GPU
   load and drop at idle. Left: the one-float4 pattern (61% of Metal), a GPU-stack question.
+- 4 Nov, VERIFIED (`results/linux/pmp-20261104/pmp-on-bench` against `pmp-off`, llama-compare's bench, same models,
+  build and agxperf driver): with the PMP running, generation gains 14-20% and prompt processing 1-5%. tg128: llama2
+  71.2 -> 81.4 t/s (Metal 123.5), qwen 36.9 -> 44.4, gpt20 74.0 -> 84.5. pp512: llama2 876 -> 896 (Metal 1516), qwen
+  741 -> 779, gpt20 1053 -> 1109; pp2048 within 1-4%. So llama2 generation is at 66% of Metal (57% before) and prompt
+  processing still at 59%: the rest of the gap is in the GPU stack. The t6022-pmp tree also held the bandwidth run and
+  this bench with the PMP running, the load that hung it twice with the PMP stopped (3 Nov).
 - 4 Nov, VERIFIED (five hangs, then one write that held): every `votes` hang (twice 3 Nov, three times 4 Nov, whatever
   the bits) was pmp_votes writing the report through plain `ioremap` on a `nonposted-mmio` bus: posted writes hang the
   machine, reads pass. With `ioremap_np` the same write held at once (06:48). Map any second view of an Apple SoC
