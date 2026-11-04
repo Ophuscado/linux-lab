@@ -2,8 +2,10 @@
 
 The file is nested DER: IMG4 > IM4P (or a bare IM4P) > type, description, payload, optional compression info. The
 payload is LZFSE ("bvx2"), which macOS's own libcompression decodes, so this needs no packages and runs on any macOS.
-pyimg4 failed on 13.7.8's kernelcache, and img4tool needs autotools from Homebrew or MacPorts; this did it (4 Nov:
-96,763,904 bytes, magic cffaedfe, `file`: Mach-O 64-bit arm64e). A payload that is not bvx2 is written as it is.
+pyimg4 failed on 13.7.8's kernelcache, and img4tool needs autotools from Homebrew or MacPorts. This is the code the
+operator ran from the stick as kernelcachedecoder.py on 4 Nov (96,763,904 bytes, magic cffaedfe, `file`: Mach-O 64-bit
+arm64e), plus two checks that stop on a short decode or a payload that is not a 64-bit Mach-O; both give the same
+bytes on test files. A payload that is not bvx2 is written as it is.
 """
 import ctypes
 import sys
