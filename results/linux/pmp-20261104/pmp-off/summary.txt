@@ -1,0 +1,10 @@
+label oldtree; pmp off; pmp_votes absent; quiet yes
+kernel 7.1.13-tbtwip; boot 790995a7-c1f7-45cd-a0fb-fc19914bc09b; start 2026-11-04T01:12:00Z; load 0.64 0.81 0.77
+end 2026-11-04T01:18:52Z; load 0.50 0.41 0.56
+power over 300 s: mean 21.32 W, median 20.90 W, p10 20.81 W, p90 21.97 W; 3.8 V rail mean 10.91 W; load mean 0.15
+117 MB, 1024 groups each on its own slice:    672.7 GB/s (174.6 us)
+117 MB,  512 groups each on its own slice:    672.6 GB/s (174.6 us)
+117 MB, 1216 groups each on its own slice:    677.2 GB/s (173.4 us)
+117 MB,  256 groups each on its own slice:    748.7 GB/s (156.9 us)
+256 MB on memory type 0:    296.5 GB/s (905.4 us)
+256 MB on memory type 1:    295.3 GB/s (909.0 us)

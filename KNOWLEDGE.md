@@ -516,6 +516,19 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
 
 ## Power management (PMP)
 
+- 4 Nov, VERIFIED (`results/linux/pmp-20261104`, `kernel/pmp.sh measure`, the same method both runs; quiet, 300 s of
+  SMC Total System Power, then vk-chain bw): the PMP runs under Linux (t6022-pmp tree; `pmp.sh votes` with macOS's word
+  0, then `start --now`: status bit 0 set, word 0 acknowledged bit for bit at 0x0001e6006000c700, firmware "PMP
+  started", kernel log clean) and closes most of the gap to macOS. PMP off (old tree, 01:12) -> on (07:05), macOS:
+  idle 21.32 -> 16.08 W (16.2-16.7); GPU read 1 GB 668 -> 775 GB/s (755-763); 16 MB 998 -> 1818 (1909); one float4 a
+  thread 296 -> 468 (762). Without the PMP the memory and fabric sit in one middle state; with it they rise under GPU
+  load and drop at idle. Left: the one-float4 pattern (61% of Metal), a GPU-stack question.
+- 4 Nov, VERIFIED (five hangs, then one write that held): every `votes` hang (twice 3 Nov, three times 4 Nov, whatever
+  the bits) was pmp_votes writing the report through plain `ioremap` on a `nonposted-mmio` bus: posted writes hang the
+  machine, reads pass. With `ioremap_np` the same write held at once (06:48). Map any second view of an Apple SoC
+  register non-posted (`of_iomap`, or `ioremap_np` when the resource has IORESOURCE_MEM_NONPOSTED). Before that,
+  Linux had never written the request word: pmp-report's five domains read `off-0` in genpd while word 0 held their
+  bits (0x6000c000), iBoot's value. The PMS, PMS-SRAM, bridge, c1ppt and PMP domains were on, on both dies.
 - 4 Nov, VERIFIED (m1n1 hypervisor trace of macOS 13.7.8 booting, `macos/hv-pmp.sh`; raw log kept off-repo, on the
   operator's stick and in-session): macOS's PMP bring-up uses the exact message protocol our `drivers/soc/apple/pmp.rs`
   implements. Sequence: SetBuf, `GetIOVATable -> IOVA=0x0` (twice; so t602x needs no address table, as our empty-table
@@ -523,7 +536,7 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
   StartEP 0x20. The controller then ran stably for ~28k more log lines; the late crash (a forwarded mailbox write to
   0x28ec08800 faulting, then the USB link dropping) was long after bring-up and is the Mac-side going down under an
   unsupported 13.7.8 guest, not a bring-up problem. So Linux CAN bring the PMP up: the firmware speaks the protocol we
-  have. The 4 hard hangs (3 Nov) are in Linux's tunables or its device-request writes, not the protocol.
+  have. (The 3 Nov start hangs were the lab module's posted writes; see above.)
 - 4 Nov, VERIFIED (same trace, PMPRegTracer decode of DEV_STATUS_TGT_WR at report+0x11000): the device-request word is a
   live control loop, rewritten 41 times during boot as subsystems power up and down (not a one-shot), exactly what
   `pmp-report`'s genpd does per power domain. Bit = soc-device id1 - 1, confirmed: GFX = bit 10 (macOS sets and holds it
@@ -537,12 +550,8 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
   - Votes. When macOS sets CPU_CONTROL RUN, word 0 holds 0x0001e6006000c700; Linux's holds 0x6000c000 (the two display
     FEs, AFNC4/5_IOA; pmp_votes' dump, 3 Nov). Missing: PCPM0/1 (bits 8, 9: the P-CPU clusters), GFX (10), and bits 41,
     42, 45-48, which macOS sets one each right after its device votes. Linux's tree has no report entry for PCPM or GFX,
-    and pmp-report cannot set a bit past 31. A PMP that starts with the CPU clusters and the GPU unrequested may cut
-    them, which fits both start-chain crashes landing right after the sudo password (3 Nov). `pmp_votes macos=1` sets
-    macOS's word 0 before the start.
-    4 Nov, OBSERVED (t6022-pmp tree, right after boot): writing all of that word with the PMP stopped hung the
-    machine. The screen's last line was `status`'s (word 7 at unload); the journal and var/pmp lost the last ~60 s,
-    so nothing logged `votes`. Next: `VOTES_MASK` one group at a time (0x700, then the high bits).
+    and pmp-report cannot set a bit past 31. `pmp_votes macos=1` sets macOS's word 0 before the start; the start with
+    it held (above). Whether the start also holds without these bits is untested.
   - AdvertiseAck numbering. macOS numbers from 0 and answers a name it lacks with INDEX 0 SIZE 0 without spending an
     index; pmp.rs numbers from 1, spends one per miss, and its SetVal looks up entry INDEX of a list that starts at 0
     (the last entry is out of range). The firmware sent no SetVal that boot. `make_lab.py` now numbers as macOS does.
@@ -665,5 +674,7 @@ and on four data disks.
   status` names any path it no longer prunes.
 - 13 Oct: the Asahi installer's resize prompt asks for the new macOS size; GB and TB are decimal. It adds a boot stub,
   a 500 MiB EFI and a 1 GiB `/boot`. Partitions are removed with `diskutil`, never the recovery one.
+
+[hackedsystem] exit 0
 
 [hackedsystem] exit 0

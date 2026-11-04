@@ -1,0 +1,10 @@
+label pmp-on; pmp on; pmp_votes loaded; quiet yes
+kernel 7.1.13-tbtwip; boot 3a70fd28-158c-4429-b071-f12a42c69417; start 2026-11-04T07:05:45Z; load 0.16 0.39 0.47
+end 2026-11-04T07:10:51Z; load 0.00 0.13 0.33
+power over 300 s: mean 16.08 W, median 15.95 W, p10 15.81 W, p90 16.35 W; 3.8 V rail mean 8.60 W; load mean 0.03
+117 MB, 1024 groups each on its own slice:    992.1 GB/s (118.4 us)
+117 MB,  512 groups each on its own slice:   1098.3 GB/s (106.9 us)
+117 MB, 1216 groups each on its own slice:    981.9 GB/s (119.6 us)
+117 MB,  256 groups each on its own slice:   1430.5 GB/s (82.1 us)
+256 MB on memory type 0:    483.3 GB/s (555.4 us)
+256 MB on memory type 1:    496.2 GB/s (540.9 us)

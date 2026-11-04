@@ -11,3 +11,7 @@ The three `compare-20261102-*` folders are three sessions of `STEPS=bench` in a 
 `llama-compare.sh` existed; superseded by the runs above. The finding it records (the large matrix-vector
 workgroup, one row a workgroup for K-quants) is in KNOWLEDGE.md with later, reproducible evidence.
 Kept for provenance, not cited elsewhere.
+
+`pmp-20261104/`: [`kernel/pmp.sh measure`](../../kernel/pmp.sh) with the power management processor off (`pmp-off`, the
+old tree, 4 Nov 01:12, with a `llama-compare.sh` bench) and on (`pmp-on`, 07:05): `summary.txt` first, then
+`power.tsv` (SMC total power each second) and `bw.txt` (vk-chain bw). KNOWLEDGE.md, Power management, cites them.
