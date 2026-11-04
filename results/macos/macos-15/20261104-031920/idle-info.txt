@@ -1,0 +1,4 @@
+macOS 15.8.1; quiet no; start 2026-11-04T03:29:22Z; load { 1.67 2.01 1.67 }
+PSTR (Linux: Total System Power) over 300 s: mean 16.20 W, median 16.05 W, p10 15.68 W, p90 16.70 W
+PMVR (Linux: 3.8 V Rail Power) mean 8.09 W; load mean 1.53
+end 2026-11-04T03:34:31Z

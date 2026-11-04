@@ -1,0 +1,5 @@
+# llama-bench, Llama-2-7B Q4_0, Metal, llama.cpp a91eab67d, macOS 15.8.1, -fa 1 -r 3 (operator ran by hand; dvfs discards the table)
+| test   |            t/s |
+| pp512  | 1515.59 ± 0.19 |
+| pp2048 | 1458.54 ± 0.52 |
+| tg128  |  123.46 ± 0.16 |

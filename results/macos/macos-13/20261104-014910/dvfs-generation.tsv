@@ -1,0 +1,2541 @@
+# 20 s
+PMP	IOP State	status	24Mticks	state	unused=0,Off=0,Sleep=0,Quiesce=0,Wait Vr=0,Vers OK=0,Ready=0,Pwr Dwn=0,Running=480739927
+PMP	IO Reporting statistics	update count		simple	1
+PMP	IO Reporting statistics	last update		simple	20033779
+PMP	Power	Duty cycle		simple	0
+PMP	Power	Sleep count	events	simple	0
+PMP	Power	Wake count	events	simple	0
+PMP	Power	Power state	us	state	OFF=0,ON=20031090
+PMP	Power	Free heap	B	simple	0
+PMP	Power	Total heap	B	simple	0
+PMP	Power	Peak heap alloc	B	simple	0
+PMP	Used stack	Used stack(0)	B	simple	0
+PMP	Used stack	Used stack(1)	B	simple	0
+PMP	Used stack	Used stack(2)	B	simple	0
+PMP	Used stack	Used stack(3)	B	simple	0
+PMP	Used stack	Used stack(4)	B	simple	0
+PMP	Used stack	Used stack(5)	B	simple	0
+PMP	Used stack	Used stack(6)	B	simple	0
+PMP	Used stack	Used stack(7)	B	simple	0
+PMP	Used stack	Used stack(8)	B	simple	0
+PMP	Used stack	Used stack(9)	B	simple	0
+PMP	Used stack	Used stack(10)	B	simple	0
+PMP	Used stack	Used stack(11)	B	simple	0
+PMP	Used stack	Used stack(12)	B	simple	0
+PMP	Used stack	Used stack(13)	B	simple	0
+PMP	Used stack	Used stack(14)	B	simple	0
+PMP	Used stack	Used stack(15)	B	simple	0
+PMP	Used stack	Used stack(16)	B	simple	0
+PMP	Used stack	Used stack(17)	B	simple	0
+PMP	Used stack	Used stack(18)	B	simple	0
+PMP	Used stack	Used stack(19)	B	simple	0
+PMP	Used stack	Used stack(20)	B	simple	0
+PMP	Used stack	Used stack(21)	B	simple	0
+PMP	Used stack	Used stack(22)	B	simple	0
+PMP	Used stack	Used stack(23)	B	simple	0
+PMP	Used stack	Used stack(24)	B	simple	0
+PMP	Used stack	Used stack(25)	B	simple	0
+PMP	Used stack	Used stack(26)	B	simple	0
+PMP	Used stack	Used stack(27)	B	simple	0
+PMP	Used stack	Used stack(28)	B	simple	0
+PMP	Used stack	Used stack(29)	B	simple	0
+PMP	Used stack	Used stack(30)	B	simple	0
+PMP	Used stack	Used stack(31)	B	simple	0
+PMP	Total stack	Total stack(0)	B	simple	0
+PMP	Total stack	Total stack(1)	B	simple	0
+PMP	Total stack	Total stack(2)	B	simple	0
+PMP	Total stack	Total stack(3)	B	simple	0
+PMP	Total stack	Total stack(4)	B	simple	0
+PMP	Total stack	Total stack(5)	B	simple	0
+PMP	Total stack	Total stack(6)	B	simple	0
+PMP	Total stack	Total stack(7)	B	simple	0
+PMP	Total stack	Total stack(8)	B	simple	0
+PMP	Total stack	Total stack(9)	B	simple	0
+PMP	Total stack	Total stack(10)	B	simple	0
+PMP	Total stack	Total stack(11)	B	simple	0
+PMP	Total stack	Total stack(12)	B	simple	0
+PMP	Total stack	Total stack(13)	B	simple	0
+PMP	Total stack	Total stack(14)	B	simple	0
+PMP	Total stack	Total stack(15)	B	simple	0
+PMP	Total stack	Total stack(16)	B	simple	0
+PMP	Total stack	Total stack(17)	B	simple	0
+PMP	Total stack	Total stack(18)	B	simple	0
+PMP	Total stack	Total stack(19)	B	simple	0
+PMP	Total stack	Total stack(20)	B	simple	0
+PMP	Total stack	Total stack(21)	B	simple	0
+PMP	Total stack	Total stack(22)	B	simple	0
+PMP	Total stack	Total stack(23)	B	simple	0
+PMP	Total stack	Total stack(24)	B	simple	0
+PMP	Total stack	Total stack(25)	B	simple	0
+PMP	Total stack	Total stack(26)	B	simple	0
+PMP	Total stack	Total stack(27)	B	simple	0
+PMP	Total stack	Total stack(28)	B	simple	0
+PMP	Total stack	Total stack(29)	B	simple	0
+PMP	Total stack	Total stack(30)	B	simple	0
+PMP	Total stack	Total stack(31)	B	simple	0
+PMP	Power	CPU count	events	simple	0
+PMP	DCS BW	AMCC RD	events	state	  64GB/s=87604, 128GB/s=34, 192GB/s=68, 256GB/s=12, 320GB/s=50, 384GB/s=131, 448GB/s=123, 512GB/s=7, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	DCS BW	AMCC WR	events	state	  64GB/s=87889, 128GB/s=88, 192GB/s=52, 256GB/s=0, 320GB/s=0, 384GB/s=0, 448GB/s=0, 512GB/s=0, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	DCS BW	AMCC RD+WR	events	state	  64GB/s=87562, 128GB/s=48, 192GB/s=28, 256GB/s=40, 320GB/s=34, 384GB/s=117, 448GB/s=137, 512GB/s=63, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	AFC BW	AMCC RD	events	state	  64GB/s=88029, 128GB/s=0, 192GB/s=0, 256GB/s=0, 320GB/s=0, 384GB/s=0, 448GB/s=0, 512GB/s=0, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	AFC BW	AMCC WR	events	state	  64GB/s=88029, 128GB/s=1, 192GB/s=0, 256GB/s=0, 320GB/s=0, 384GB/s=0, 448GB/s=0, 512GB/s=0, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	AFC BW	AMCC RD+WR	events	state	  64GB/s=87633, 128GB/s=397, 192GB/s=0, 256GB/s=0, 320GB/s=0, 384GB/s=0, 448GB/s=0, 512GB/s=0, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	AFI BW	AMCC RD	events	state	  64GB/s=88030, 128GB/s=0, 192GB/s=0, 256GB/s=0, 320GB/s=0, 384GB/s=0, 448GB/s=0, 512GB/s=0, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	AFI BW	AMCC WR	events	state	  64GB/s=88030, 128GB/s=0, 192GB/s=0, 256GB/s=0, 320GB/s=0, 384GB/s=0, 448GB/s=0, 512GB/s=0, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	AFI BW	AMCC RD+WR	events	state	  64GB/s=88031, 128GB/s=0, 192GB/s=0, 256GB/s=0, 320GB/s=0, 384GB/s=0, 448GB/s=0, 512GB/s=0, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	AFR BW	AMCC RD	events	state	  64GB/s=87608, 128GB/s=46, 192GB/s=59, 256GB/s=9, 320GB/s=52, 384GB/s=145, 448GB/s=107, 512GB/s=5, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	AFR BW	AMCC WR	events	state	  64GB/s=88031, 128GB/s=0, 192GB/s=0, 256GB/s=0, 320GB/s=0, 384GB/s=0, 448GB/s=0, 512GB/s=0, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	AFR BW	AMCC RD+WR	events	state	  64GB/s=87607, 128GB/s=44, 192GB/s=60, 256GB/s=10, 320GB/s=48, 384GB/s=144, 448GB/s=111, 512GB/s=6, 576GB/s=0, 640GB/s=0, 704GB/s=0, 768GB/s=0, 832GB/s=0, 896GB/s=0, 960GB/s=0,1024GB/s=0,1088GB/s=0,1152GB/s=0,1216GB/s=0,1280GB/s=0,1344GB/s=0,1408GB/s=0,1472GB/s=0,1536GB/s=0,1600GB/s=0,1664GB/s=0,1728GB/s=0,1792GB/s=0,1856GB/s=0,1920GB/s=0,1984GB/s=0,2048GB/s=0
+PMP	DRAM BW (AMCC)	F1 RD	B	simple	5527158784
+PMP	DRAM BW (AMCC)	F1 WR	B	simple	161239040
+PMP	DRAM BW (AMCC)	F2 RD	B	simple	4923392
+PMP	DRAM BW (AMCC)	F2 WR	B	simple	16384
+PMP	DRAM BW (AMCC)	F3 RD	B	simple	340291584
+PMP	DRAM BW (AMCC)	F3 WR	B	simple	305045504
+PMP	DRAM BW (AMCC)	F5 RD	B	simple	74340165632
+PMP	DRAM BW (AMCC)	F5 WR	B	simple	117446133760
+PMP	AFNC BW	IOA0 RD+WR	events	state	   2GB/s=65012,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA0 RD+WR	events	state	   2GB/s=65012,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFR BW	IOA0 RD+WR	events	state	   2GB/s=65013,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA1 RD+WR	events	state	   2GB/s=14,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA1 RD+WR	events	state	   2GB/s=14,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	PIO-DWN-WR BW	IOA1 WR	events	state	   2GB/s=14,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA2 RD+WR	events	state	   2GB/s=88031,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA2 RD+WR	events	state	   2GB/s=88032,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA3 RD+WR	events	state	   2GB/s=57564,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA3 RD+WR	events	state	   2GB/s=57564,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFR BW	IOA3 RD+WR	events	state	   2GB/s=57564,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA6 RD+WR	events	state	   2GB/s=88032,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA6 RD+WR	events	state	   2GB/s=88032,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	PIO-DWN-WR BW	IOA6 WR	events	state	   2GB/s=88032,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	FAB	EACC0	events	state	VMIN=480768070,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	EACC0	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	FAB	PACC0	events	state	VMIN=220976410,VNOM1=458753,VNOM2=502442,VMAX=258830460
+PMP	DCS	PACC0	events	state	F1=220960055,F2=283991,F3=557056,F5=258966969
+PMP	FAB	PACC1	events	state	VMIN=233078767,VNOM1=212992,VNOM2=245760,VMAX=247230558
+PMP	DCS	PACC1	events	state	F1=233066631,F2=180224,F3=229376,F5=247296071
+PMP	AFR	AGX	events	state	VMIN=458637536,V1=0,VMID=22134789,V2=0,VMAX=0,VMAX2=0
+PMP	FAB	AGX	events	state	VMIN=458637544,VNOM1=0,VNOM2=17203204,VMAX=4931585
+PMP	DCS	AGX	events	state	F1=458637550,F2=0,F3=0,F5=22134789
+PMP	AGX	Mem Latency	events	state	  64Cyc=0, 128Cyc=0, 192Cyc=2, 256Cyc=11, 320Cyc=9, 384Cyc=29, 448Cyc=134, 512Cyc=179, 576Cyc=44, 640Cyc=45, 704Cyc=12, 768Cyc=5, 832Cyc=11, 896Cyc=13, 960Cyc=52,1024Cyc=35,1088Cyc=5,1152Cyc=1,1216Cyc=1,1280Cyc=4,1344Cyc=0,1408Cyc=5,1472Cyc=0,1536Cyc=3,1600Cyc=1,1664Cyc=0,1728Cyc=1,1792Cyc=1,1856Cyc=1,1920Cyc=0,1984Cyc=0,2048Cyc=1,2112Cyc=1,2176Cyc=1,2240Cyc=0,2304Cyc=0,2368Cyc=0,2432Cyc=1,2496Cyc=0,2560Cyc=0,2624Cyc=0,2688Cyc=0,2752Cyc=0,2816Cyc=0,2880Cyc=0,2944Cyc=0,3008Cyc=2,3072Cyc=0,3136Cyc=0,3200Cyc=0,3264Cyc=0,3328Cyc=2,3392Cyc=1,3456Cyc=0,3520Cyc=1,3584Cyc=0,3648Cyc=0,3712Cyc=0,3776Cyc=1,3840Cyc=1,3904Cyc=0,3968Cyc=0,4032Cyc=0,4096Cyc=73
+PMP	AGX	#Mem Trans	events	state	  16=3822,  32=26,  48=19,  64=22,  80=17,  96=11, 112=5, 128=7, 144=3, 160=9, 176=2, 192=13, 208=23, 224=19, 240=13, 256=28, 272=17, 288=50, 304=57, 320=61, 336=37, 352=23, 368=33, 384=18, 400=20, 416=14, 432=10, 448=1, 464=0, 480=0, 496=0, 512=0, 528=0, 544=0, 560=0, 576=0, 592=0, 608=0, 624=0, 640=0, 656=0, 672=0, 688=0, 704=0, 720=0, 736=0, 752=0, 768=0, 784=0, 800=0, 816=0, 832=0, 848=0, 864=0, 880=0, 896=0, 912=0, 928=0, 944=0, 960=0, 976=0, 992=0,1008=0,1024=0
+PMP	AF BW	ANE0 RD+WR	events	state	   2GB/s=0,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	SOC0	ANE0	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	ANE0	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	ANE0	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	DCS	ANE0	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	SOC0	ISP0	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	ISP0	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	ISP0	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	ISP0 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	ISP0 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	ISP0 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	DISP0	DISP0	events	state	VMIN=0,VNOM=0,VMAXNOEX=0,VMAX=0
+PMP	FAB	DISP0	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	DISP0	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	DISP0 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISP0 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISP0 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	DISP0	DISPEXT0	events	state	VMIN=0,VNOM=0,VMAXNOEX=0,VMAX=0
+PMP	FAB	DISPEXT0	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	DISPEXT0	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	DISPEXT0 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT0 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT0 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	DISP0	DISPEXT1	events	state	VMIN=0,VNOM=0,VMAXNOEX=0,VMAX=0
+PMP	FAB	DISPEXT1	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	DISPEXT1	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	DISPEXT1 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT1 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT1 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	AVEMSR0	AVE0	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	AVE0	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	AVE0	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	DCS	AVE0	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	SOC0	AVD0	events	state	VMIN=480777655,VNOM=0,VMAX=0
+PMP	FAB	AVD0	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	AVD0	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	DCS	AVD0	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	AVEMSR0	MSR0	events	state	VMIN=480777679,VNOM=0,VMAX=0
+PMP	FAB	MSR0	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	MSR0	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	DCS	MSR0	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	SOC0	JPEG0	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	JPEG0	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	JPEG0	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	DCS	JPEG0	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	SOC0	SCODEC0	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	SCODEC0	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	SCODEC0	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	SCODEC0 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	SCODEC0 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	SCODEC0 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	SOC0	SCODEC1	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	SCODEC1	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	SCODEC1	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	SCODEC1 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	SCODEC1 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	SCODEC1 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	SOC0	LTR	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	DCS	LTR	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	AFNC BW	IOA4 RD+WR	events	state	   2GB/s=0,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA4 RD+WR	events	state	   2GB/s=0,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA5 RD+WR	events	state	   2GB/s=0,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA5 RD+WR	events	state	   2GB/s=0,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	DISP1	DISPEXT2	events	state	VMIN=480778300,VNOM=0,VMAXNOEX=0,VMAX=0
+PMP	FAB	DISPEXT2	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	DISPEXT2	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	DISPEXT2 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT2 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT2 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	DISP1	DISPEXT3	events	state	VMIN=0,VNOM=0,VMAXNOEX=0,VMAX=0
+PMP	FAB	DISPEXT3	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	DISPEXT3	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	DISPEXT3 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT3 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT3 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	AF BW	AVE1 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	AVEMSR0	AVE1	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	AVE1	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	AVE1	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	AF BW	MSR1 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	AVEMSR0	MSR1	events	state	VMIN=480783326,VNOM=0,VMAX=0
+PMP	FAB	MSR1	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	MSR1	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	AFNC BW	IOA7 RD+WR	events	state	   2GB/s=88034,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA7 RD+WR	events	state	   2GB/s=88034,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFR BW	IOA7 RD+WR	events	state	   2GB/s=88034,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA8 RD+WR	events	state	   2GB/s=85591,   4GB/s=1632,   6GB/s=811,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA8 RD+WR	events	state	   2GB/s=85591,   4GB/s=1632,   6GB/s=811,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	PIO-DWN-WR BW	IOA8 WR	events	state	   2GB/s=88034,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA9 RD+WR	events	state	   2GB/s=709,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA9 RD+WR	events	state	   2GB/s=709,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA10 RD+WR	events	state	   2GB/s=3970,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA10 RD+WR	events	state	   2GB/s=3970,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFR BW	IOA10 RD+WR	events	state	   2GB/s=3970,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA11 RD+WR	events	state	   2GB/s=0,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA11 RD+WR	events	state	   2GB/s=0,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA12 RD+WR	events	state	   2GB/s=0,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA12 RD+WR	events	state	   2GB/s=0,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFNC BW	IOA13 RD+WR	events	state	   2GB/s=31584,   4GB/s=31,   6GB/s=25,   8GB/s=26,  10GB/s=7,  12GB/s=2,  14GB/s=12,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	AFI BW	IOA13 RD+WR	events	state	   2GB/s=31581,   4GB/s=36,   6GB/s=23,   8GB/s=24,  10GB/s=6,  12GB/s=4,  14GB/s=1,  16GB/s=12,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	PIO-DWN-WR BW	IOA13 WR	events	state	   2GB/s=31687,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	FAB	EACC1	events	state	VMIN=480788807,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	EACC1	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	FAB	PACC2	events	state	VMIN=225776420,VNOM1=212992,VNOM2=229376,VMAX=254570030
+PMP	DCS	PACC2	events	state	F1=225760063,F2=180224,F3=229376,F5=254619160
+PMP	FAB	PACC3	events	state	VMIN=221560320,VNOM1=223915,VNOM2=262145,VMAX=258742453
+PMP	DCS	PACC3	events	state	F1=221543962,F2=191147,F3=251222,F5=258802507
+PMP	AF BW	ANE1 RD+WR	events	state	   2GB/s=0,   4GB/s=0,   6GB/s=0,   8GB/s=0,  10GB/s=0,  12GB/s=0,  14GB/s=0,  16GB/s=0,  18GB/s=0,  20GB/s=0,  22GB/s=0,  24GB/s=0,  26GB/s=0,  28GB/s=0,  30GB/s=0,  32GB/s=0,  34GB/s=0,  36GB/s=0,  38GB/s=0,  40GB/s=0,  42GB/s=0,  44GB/s=0,  46GB/s=0,  48GB/s=0,  50GB/s=0,  52GB/s=0,  54GB/s=0,  56GB/s=0,  58GB/s=0,  60GB/s=0,  62GB/s=0,  64GB/s=0
+PMP	SOC1	ANE1	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	ANE1	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	ANE1	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	DCS	ANE1	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	SOC1	ISP1	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	ISP1	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	ISP1	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	DISP2	DISPEXT4	events	state	VMIN=0,VNOM=480788941,VMAXNOEX=0,VMAX=0
+PMP	FAB	DISPEXT4	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	DISPEXT4	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	DISPEXT4 RD	events	state	   1GB/s=480788955,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT4 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT4 RD+WR	events	state	   1GB/s=480793298,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	DISP2	DISPEXT5	events	state	VMIN=0,VNOM=0,VMAXNOEX=0,VMAX=480793361
+PMP	FAB	DISPEXT5	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	DISPEXT5	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	DISPEXT5 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=480793438,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT5 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT5 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=480790078,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	DISP3	DISPEXT6	events	state	VMIN=480790104,VNOM=0,VMAXNOEX=0,VMAX=0
+PMP	FAB	DISPEXT6	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	DISPEXT6	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	DISPEXT6 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT6 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT6 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	DISP3	DISPEXT7	events	state	VMIN=0,VNOM=0,VMAXNOEX=0,VMAX=0
+PMP	FAB	DISPEXT7	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	DISPEXT7	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	DISPEXT7 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT7 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	DISPEXT7 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	AVEMSR1	AVE2	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	AVE2	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	AVE2	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	DCS	AVE2	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	AF BW	AVE3 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	AVEMSR1	AVE3	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	AVE3	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	AVE3	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	SOC1	AVD1	events	state	VMIN=480794404,VNOM=0,VMAX=0
+PMP	FAB	AVD1	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	AVD1	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	DCS	AVD1	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	AVEMSR1	MSR2	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	MSR2	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	MSR2	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	DCS	MSR2	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	AF BW	MSR3 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	AVEMSR1	MSR3	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	MSR3	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	MSR3	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	SOC1	JPEG1	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	JPEG1	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	JPEG1	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	DCS	JPEG1	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	SOC1	SCODEC2	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	SCODEC2	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	SCODEC2	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	SCODEC2 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	SCODEC2 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	SCODEC2 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	SOC1	SCODEC3	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	SCODEC3	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	DCS	SCODEC3	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	BWR	SCODEC3 RD	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	SCODEC3 WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	BWR	SCODEC3 RD+WR	events	state	   1GB/s=0,   2GB/s=0,   3GB/s=0,   4GB/s=0,   5GB/s=0,   6GB/s=0,   7GB/s=0,   8GB/s=0,   9GB/s=0,  10GB/s=0,  11GB/s=0,  12GB/s=0,  13GB/s=0,  14GB/s=0,  15GB/s=0,  16GB/s=0,  17GB/s=0,  18GB/s=0,  19GB/s=0,  20GB/s=0,  21GB/s=0,  22GB/s=0,  23GB/s=0,  24GB/s=0,  25GB/s=0,  26GB/s=0,  27GB/s=0,  28GB/s=0,  29GB/s=0,  30GB/s=0,  31GB/s=0,  32GB/s=0
+PMP	DCS	#DISP	events	state	F1=480799049,F2=0,F3=0,F5=0
+PMP	Fast-Die CE	EACC0	events	state	0%=0,5%=0,10%=0,15%=0,20%=0,25%=0,30%=0,35%=0,40%=0,45%=0,50%=0,55%=0,60%=0,65%=0,70%=0,75%=0,80%=0,85%=0,90%=0,95%=0,100%=0
+PMP	Fast-Die CE	PACC0	events	state	0%=0,5%=0,10%=0,15%=0,20%=0,25%=0,30%=0,35%=0,40%=0,45%=0,50%=0,55%=0,60%=0,65%=0,70%=0,75%=0,80%=0,85%=0,90%=0,95%=0,100%=0
+PMP	Fast-Die CE	PACC1	events	state	0%=0,5%=0,10%=0,15%=0,20%=0,25%=0,30%=0,35%=0,40%=0,45%=0,50%=0,55%=0,60%=0,65%=0,70%=0,75%=0,80%=0,85%=0,90%=0,95%=0,100%=0
+PMP	Fast-Die CE	ANE0	events	state	0%=0,5%=0,10%=0,15%=0,20%=0,25%=0,30%=0,35%=0,40%=0,45%=0,50%=0,55%=0,60%=0,65%=0,70%=0,75%=0,80%=0,85%=0,90%=0,95%=0,100%=0
+PMP	Fast-Die CE	EACC1	events	state	0%=0,5%=0,10%=0,15%=0,20%=0,25%=0,30%=0,35%=0,40%=0,45%=0,50%=0,55%=0,60%=0,65%=0,70%=0,75%=0,80%=0,85%=0,90%=0,95%=0,100%=0
+PMP	Fast-Die CE	PACC2	events	state	0%=0,5%=0,10%=0,15%=0,20%=0,25%=0,30%=0,35%=0,40%=0,45%=0,50%=0,55%=0,60%=0,65%=0,70%=0,75%=0,80%=0,85%=0,90%=0,95%=0,100%=0
+PMP	Fast-Die CE	PACC3	events	state	0%=0,5%=0,10%=0,15%=0,20%=0,25%=0,30%=0,35%=0,40%=0,45%=0,50%=0,55%=0,60%=0,65%=0,70%=0,75%=0,80%=0,85%=0,90%=0,95%=0,100%=0
+PMP	Fast-Die CE	ANE1	events	state	0%=0,5%=0,10%=0,15%=0,20%=0,25%=0,30%=0,35%=0,40%=0,45%=0,50%=0,55%=0,60%=0,65%=0,70%=0,75%=0,80%=0,85%=0,90%=0,95%=0,100%=0
+PMP	Fast-Die Delay	DELAY	events	state	0us=0,250us=0,500us=0,750us=0,1000us=0,1250us=0,1500us=0,1750us=0,2000us=0,2250us=0,2500us=0,2750us=0,3000us=0,3250us=0,3500us=0,3750us=0,4000us=0,4250us=0,4500us=0,4750us=0,5000us=0,5250us=0,5500us=0,5750us=0,6000us=0,6250us=0,6500us=0,6750us=0,7000us=0,7250us=0,7500us=0,7750us=0,8000us=0,8250us=0,8500us=0,8750us=0,9000us=0,9250us=0,9500us=0,9750us=0,10000us=0
+PMP	DCS	DCS-BW	events	state	F1=476459438,F2=972117,F3=1496405,F5=1867776
+PMP	AFR	AFR-BW	events	state	VMIN=480800003,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	FAB	AFI-TOP-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA0-AFNC-BW	events	state	VMIN=480800020,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	IOA0-AFR-BW	events	state	VMIN=480800028,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	FAB	IOA1-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA2-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA3-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	IOA3-AFR-BW	events	state	VMIN=480800055,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	FAB	IOA6-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA1-PIO-DWN-WR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA6-PIO-DWN-WR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AGX-SLOW-AF-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AGX-FAST-AF-BW	events	state	VMIN=478697472,VNOM1=486066,VNOM2=486058,VMAX=1130493
+PMP	AFR	AGX-SLOW-AFR-BW	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	AFR	AGX-FAST-AFR-BW	events	state	VMIN=478697488,V1=486066,VMID=486058,V2=486052,VMAX=644441,VMAX2=0
+PMP	DCS	AGX-SLOW-DCS-BW	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	DCS	AGX-FAST-DCS-BW	events	state	F1=474251982,F2=4833285,F3=486055,F5=1228800
+PMP	DCS	DCS-BWR	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	FAB	IOA0-AFI-RD-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA1-AFI-RD-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA1-AFI-WR-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA2-AFI-RD-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA2-AFI-WR-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AFI-LD1-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AFI-LD6-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AGX-SLOW-AF-LAT	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AGX-FAST-AF-LAT	events	state	VMIN=476993636,VNOM1=1944242,VNOM2=895657,VMAX=966656
+PMP	AFR	AGX-SLOW-AFR-LA	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	AFR	AGX-FAST-AFR-LA	events	state	VMIN=477015498,V1=1960626,VMID=912041,V2=316757,VMAX=300374,VMAX2=294912
+PMP	DCS	AGX-SLOW-DCS-LA	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	DCS	AGX-FAST-DCS-LA	events	state	F1=0,F2=0,F3=0,F5=0
+PMP	SOC0	ANE0-SLOW-BW	events	state	VMIN=480800233,VNOM=0,VMAX=0
+PMP	SOC0	ANE0-FAST-BW	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	ANE0-SLOW-AF-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	ANE0-FAST-AF-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	ANE0-SLOW-AFR-B	events	state	VMIN=480800261,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	AFR	ANE0-FAST-AFR-B	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	FAB	IOA4-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA5-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AVE1-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	MSR1-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA4-AFI-RD-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA5-AFI-RD-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AFI-D2D-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AFI-BOTTOM-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA7-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	IOA7-AFR-BW	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	FAB	IOA8-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA9-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA10-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	IOA10-AFR-BW	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	FAB	IOA11-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA12-AFNC-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA13-AFNC-BW	events	state	VMIN=480804643,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA8-PIO-DWN-WR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA13-PIO-DWN-W	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AVE3-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	MSR3-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA7-AFI-RD-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA8-AFI-RD-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA8-AFI-WR-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA11-AFI-RD-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	IOA12-AFI-RD-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AFI-LD15-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	AFI-LD39-BWR	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	SOC1	ANE1-SLOW-BW	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	SOC1	ANE1-FAST-BW	events	state	VMIN=0,VNOM=0,VMAX=0
+PMP	FAB	ANE1-SLOW-AF-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	FAB	ANE1-FAST-AF-BW	events	state	VMIN=0,VNOM1=0,VNOM2=0,VMAX=0
+PMP	AFR	ANE1-SLOW-AFR-B	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	AFR	ANE1-FAST-AFR-B	events	state	VMIN=0,V1=0,VMID=0,V2=0,VMAX=0,VMAX2=0
+PMP	PWC Window 0	DELAY	events	state	   8us=140,  16us=87602,  24us=268,  32us=28,  40us=0,  48us=0,  56us=0,  64us=0,  72us=0,  80us=0,  88us=0,  96us=0, 104us=0, 112us=0, 120us=0, 128us=0, 136us=0, 144us=0, 152us=0, 160us=0, 168us=0, 176us=0, 184us=0, 192us=0, 200us=0, 208us=0, 216us=0, 224us=0
+PMP	PWC Window 0	BUSY	events	state	   8us=0,  16us=0,  24us=0,  32us=0,  40us=0,  48us=0,  56us=0,  64us=0,  72us=0,  80us=0,  88us=0,  96us=0, 104us=0, 112us=271, 120us=988, 128us=5916, 136us=22220, 144us=25743, 152us=13105, 160us=7697, 168us=5618, 176us=3512, 184us=1604, 192us=684, 200us=286, 208us=190, 216us=123, 224us=58, 232us=16, 240us=7, 248us=0, 256us=0, 264us=0, 272us=0, 280us=0, 288us=0, 296us=0, 304us=0, 312us=0, 320us=0, 328us=0, 336us=0, 344us=0, 352us=0, 360us=0, 368us=0, 376us=0, 384us=0, 392us=0, 400us=0, 408us=0, 416us=0, 424us=0, 432us=0, 440us=0, 448us=0
+PMP	PWC Window 0	IDLE	events	state	   8us=117,  16us=177,  24us=281,  32us=811,  40us=1864,  48us=3816,  56us=6425,  64us=7150,  72us=10946,  80us=29099,  88us=19626,  96us=6234, 104us=1098, 112us=285, 120us=0, 128us=0, 136us=0, 144us=0, 152us=0, 160us=0, 168us=0, 176us=0, 184us=0, 192us=0, 200us=0, 208us=0, 216us=0, 224us=0
+PMP	PWC Window 0	SPILL	events	state	   8us=0,  16us=0,  24us=0,  32us=0,  40us=0,  48us=0,  56us=0,  64us=0,  72us=0,  80us=0,  88us=0,  96us=0, 104us=0, 112us=0, 120us=0, 128us=0, 136us=0, 144us=0, 152us=0, 160us=0, 168us=0, 176us=0, 184us=0, 192us=0, 200us=0, 208us=0, 216us=0, 224us=0
+PMP	PWRS0	TICKS	events	simple	3005007163
+PMP	PWRS0	STRESS-0	events	simple	0
+PMP	PWRS0	STRESS-1	events	simple	0
+PMP	PWRS0	STRESS-2	events	simple	0
+PMP	PWRS0	STRESS-3	events	simple	3005007163
+PMP	PWRS0	THROT-ALL-SUM	events	simple	0
+PMP	PWRS0	Q-TICKS-0	events	simple	3005007163
+PMP	PWRS0	Q-TICKS-1	events	simple	3005007163
+PMP	PWRS0	STRESS	events	state	RED=0,ORANGE=0,GREEN=0,GREENER=3005007163
+PMP	PWRS1	TICKS	events	simple	3005039700
+PMP	PWRS1	STRESS-0	events	simple	0
+PMP	PWRS1	STRESS-1	events	simple	0
+PMP	PWRS1	STRESS-2	events	simple	0
+PMP	PWRS1	STRESS-3	events	simple	3005039700
+PMP	PWRS1	THROT-ALL-SUM	events	simple	0
+PMP	PWRS1	Q-TICKS-0	events	simple	3005039700
+PMP	PWRS1	Q-TICKS-1	events	simple	3005039700
+PMP	PWRS1	STRESS	events	state	RED=0,ORANGE=0,GREEN=0,GREENER=3005039700
+PMP	DSID Stats	Grp1 Hits	B	simple	7635269632
+PMP	DSID Stats	Grp1 Misses	B	simple	45665394688
+PMP	DSID Stats	Grp2 Hits	B	simple	0
+PMP	DSID Stats	Grp2 Misses	B	simple	0
+PMP	DSID Stats	Grp3 Hits	B	simple	0
+PMP	DSID Stats	Grp3 Misses	B	simple	0
+PMP	DSID Stats	Grp4 Hits	B	simple	0
+PMP	DSID Stats	Grp4 Misses	B	simple	0
+PMP	DSID Stats	Grp5 Hits	B	simple	0
+PMP	DSID Stats	Grp5 Misses	B	simple	0
+PMP	DSID Stats	Grp6 Hits	B	simple	0
+PMP	DSID Stats	Grp6 Misses	B	simple	0
+PMP	DSID Stats	Grp7 Hits	B	simple	0
+PMP	DSID Stats	Grp7 Misses	B	simple	0
+PMP	DSID Stats	Grp8 Hits	B	simple	0
+PMP	DSID Stats	Grp8 Misses	B	simple	0
+PMP	DSID Stats	Grp9 Hits	B	simple	7629969408
+PMP	DSID Stats	Grp9 Misses	B	simple	45950916608
+PMP	DSID Stats	Grp10 Hits	B	simple	0
+PMP	DSID Stats	Grp10 Misses	B	simple	0
+PMP	DSID Stats	Grp11 Hits	B	simple	0
+PMP	DSID Stats	Grp11 Misses	B	simple	0
+PMP	DSID Stats	Grp14 Hits	B	simple	0
+PMP	DSID Stats	Grp14 Misses	B	simple	0
+PMP	DSID Stats	Grp15 Hits	B	simple	0
+PMP	DSID Stats	Grp15 Misses	B	simple	0
+PMP	DSID Stats	Grp16 Hits	B	simple	0
+PMP	DSID Stats	Grp16 Misses	B	simple	0
+PMP	DSID Stats	Grp17 Hits	B	simple	7583860736
+PMP	DSID Stats	Grp17 Misses	B	simple	45285775360
+PMP	DSID Stats	Grp18 Hits	B	simple	0
+PMP	DSID Stats	Grp18 Misses	B	simple	0
+PMP	DSID Stats	Grp19 Hits	B	simple	0
+PMP	DSID Stats	Grp19 Misses	B	simple	0
+PMP	DSID Stats	Grp21 Hits	B	simple	0
+PMP	DSID Stats	Grp21 Misses	B	simple	0
+PMP	DSID Stats	Grp24 Hits	B	simple	0
+PMP	DSID Stats	Grp24 Misses	B	simple	0
+GPU Stats	Power Zone Filters	GPU Power Zone Filter 0	events	simple	0
+GPU Stats	Power Zone Filters	GPU Power Zone Filter 1	events	simple	0
+GPU Stats	Power Zone Filters	GPU Power Zone Filter 2	events	simple	0
+GPU Stats	Power Zone Filters	GPU Power Zone Filter 3	events	simple	0
+GPU Stats	Power Zone Filters	GPU Power Zone Filter 4	events	simple	0
+GPU Stats	Power Zone Filters	GPU Power Filter	events	simple	-70279
+GPU Stats	Temperature	Average Sum		simple	3713536
+GPU Stats	Temperature	Average Sum Count		simple	1292
+GPU Stats	Temperature	Min		simple	-4
+GPU Stats	Temperature	Max		simple	-4
+GPU Stats	Temperature	Tg8a Sum		simple	3628122
+GPU Stats	Temperature	Tg8a Sum Count		simple	1289
+GPU Stats	Temperature	Tg8a Min		simple	-4
+GPU Stats	Temperature	Tg8a Max		simple	-4
+GPU Stats	Temperature	Tg10a Sum		simple	3622270
+GPU Stats	Temperature	Tg10a Sum Count		simple	1289
+GPU Stats	Temperature	Tg10a Min		simple	-4
+GPU Stats	Temperature	Tg10a Max		simple	-4
+GPU Stats	Temperature	Tg11a Sum		simple	3644416
+GPU Stats	Temperature	Tg11a Sum Count		simple	1288
+GPU Stats	Temperature	Tg11a Min		simple	-3
+GPU Stats	Temperature	Tg11a Max		simple	-3
+GPU Stats	Temperature	Tg12a Sum		simple	3626480
+GPU Stats	Temperature	Tg12a Sum Count		simple	1289
+GPU Stats	Temperature	Tg12a Min		simple	-3
+GPU Stats	Temperature	Tg12a Max		simple	-3
+GPU Stats	Temperature	Tg24a Sum		simple	0
+GPU Stats	Temperature	Tg24a Sum Count		simple	0
+GPU Stats	Temperature	Tg24a Min		simple	0
+GPU Stats	Temperature	Tg24a Max		simple	0
+GPU Stats	Temperature	Tg26a Sum		simple	3658960
+GPU Stats	Temperature	Tg26a Sum Count		simple	1291
+GPU Stats	Temperature	Tg26a Min		simple	-4
+GPU Stats	Temperature	Tg26a Max		simple	-4
+GPU Stats	Temperature	Tg27a Sum		simple	3613377
+GPU Stats	Temperature	Tg27a Sum Count		simple	1291
+GPU Stats	Temperature	Tg27a Min		simple	-4
+GPU Stats	Temperature	Tg27a Max		simple	-3
+GPU Stats	Temperature	Tg28a Sum		simple	3593683
+GPU Stats	Temperature	Tg28a Sum Count		simple	1291
+GPU Stats	Temperature	Tg28a Min		simple	-4
+GPU Stats	Temperature	Tg28a Max		simple	-4
+GPU Stats	Temperature	Tg40a Sum		simple	3600640
+GPU Stats	Temperature	Tg40a Sum Count		simple	1290
+GPU Stats	Temperature	Tg40a Min		simple	-3
+GPU Stats	Temperature	Tg40a Max		simple	-3
+GPU Stats	Temperature	Tg42a Sum		simple	3636121
+GPU Stats	Temperature	Tg42a Sum Count		simple	1290
+GPU Stats	Temperature	Tg42a Min		simple	-4
+GPU Stats	Temperature	Tg42a Max		simple	-4
+GPU Stats	Temperature	Tg44a Sum		simple	3633849
+GPU Stats	Temperature	Tg44a Sum Count		simple	1291
+GPU Stats	Temperature	Tg44a Min		simple	-3
+GPU Stats	Temperature	Tg44a Max		simple	-4
+GPU Stats	Temperature	Tg58a Sum		simple	3668124
+GPU Stats	Temperature	Tg58a Sum Count		simple	1291
+GPU Stats	Temperature	Tg58a Min		simple	-4
+GPU Stats	Temperature	Tg58a Max		simple	-3
+GPU Stats	Temperature	Tg60a Sum		simple	3607706
+GPU Stats	Temperature	Tg60a Sum Count		simple	1291
+GPU Stats	Temperature	Tg60a Min		simple	-4
+GPU Stats	Temperature	Tg60a Max		simple	-3
+GPU Stats	Temperature	Tg74a Sum		simple	3631550
+GPU Stats	Temperature	Tg74a Sum Count		simple	1291
+GPU Stats	Temperature	Tg74a Min		simple	-5
+GPU Stats	Temperature	Tg74a Max		simple	-4
+GPU Stats	Temperature	Tg76a Sum		simple	3663607
+GPU Stats	Temperature	Tg76a Sum Count		simple	1291
+GPU Stats	Temperature	Tg76a Min		simple	-4
+GPU Stats	Temperature	Tg76a Max		simple	-3
+GPU Stats	Temperature	Tg88a Sum		simple	3658331
+GPU Stats	Temperature	Tg88a Sum Count		simple	1291
+GPU Stats	Temperature	Tg88a Min		simple	-4
+GPU Stats	Temperature	Tg88a Max		simple	-4
+GPU Stats	Temperature	Tg90a Sum		simple	3651405
+GPU Stats	Temperature	Tg90a Sum Count		simple	1291
+GPU Stats	Temperature	Tg90a Min		simple	-4
+GPU Stats	Temperature	Tg90a Max		simple	-4
+GPU Stats	Temperature	Tg92a Sum		simple	3691429
+GPU Stats	Temperature	Tg92a Sum Count		simple	1291
+GPU Stats	Temperature	Tg92a Min		simple	-3
+GPU Stats	Temperature	Tg92a Max		simple	-3
+GPU Stats	Temperature	Tg106a Sum		simple	3655639
+GPU Stats	Temperature	Tg106a Sum Count		simple	1291
+GPU Stats	Temperature	Tg106a Min		simple	-4
+GPU Stats	Temperature	Tg106a Max		simple	-4
+GPU Stats	Temperature	Tg107a Sum		simple	3681695
+GPU Stats	Temperature	Tg107a Sum Count		simple	1291
+GPU Stats	Temperature	Tg107a Min		simple	-4
+GPU Stats	Temperature	Tg107a Max		simple	-4
+GPU Stats	Temperature	Tg108a Sum		simple	3682839
+GPU Stats	Temperature	Tg108a Sum Count		simple	1291
+GPU Stats	Temperature	Tg108a Min		simple	-4
+GPU Stats	Temperature	Tg108a Max		simple	-4
+GPU Stats	Temperature	Tg120a Sum		simple	3674122
+GPU Stats	Temperature	Tg120a Sum Count		simple	1291
+GPU Stats	Temperature	Tg120a Min		simple	-5
+GPU Stats	Temperature	Tg120a Max		simple	-5
+GPU Stats	Temperature	Tg122a Sum		simple	3670238
+GPU Stats	Temperature	Tg122a Sum Count		simple	1291
+GPU Stats	Temperature	Tg122a Min		simple	-4
+GPU Stats	Temperature	Tg122a Max		simple	-5
+GPU Stats	Temperature	Tg123a Sum		simple	3645140
+GPU Stats	Temperature	Tg123a Sum Count		simple	1291
+GPU Stats	Temperature	Tg123a Min		simple	-5
+GPU Stats	Temperature	Tg123a Max		simple	-4
+GPU Stats	Temperature	Tg124a Sum		simple	3668485
+GPU Stats	Temperature	Tg124a Sum Count		simple	1291
+GPU Stats	Temperature	Tg124a Min		simple	-4
+GPU Stats	Temperature	Tg124a Max		simple	-5
+GPU Stats	GPU Performance States	GPUPH	24Mticks	state	OFF=452297280,P1=3974204,P2=0,P3=0,P4=0,P5=17776414,P6=1288913,P7=1923724,P8=3703636,P9=0,P10=0,P11=0,P12=0,P13=0,P14=0,P15=0
+GPU Stats	GPU Boost Controller Performance States	BSTGPUPH	24Mticks	state	OFF=0,P1=0,P2=0,P3=0,P4=0,P5=21030199,P6=1904286,P7=1653462,P8=4078944,P9=0,P10=0,P11=0,P12=0,P13=0,P14=0,P15=0
+GPU Stats	GPU Software Performance States	GPU_SW	24Mticks	state	SW_OFF=0,SW_P1=0,SW_P2=0,SW_P3=0,SW_P4=0,SW_P5=0,SW_P6=0,SW_P7=0,SW_P8=0,SW_P9=0,SW_P10=0,SW_P11=0,SW_P12=0,SW_P13=0,SW_P14=0,SW_P15=0
+GPU Stats	Fender State	FENDER	24Mticks	state	OFF=173381801,ON=307582370
+GPU Stats	DVD Request States	GPUDVDH	24Mticks	state	0-9%=0,10-19%=0,20-29%=0,30-39%=0,40-49%=0,50-59%=0,60-69%=0,70-79%=0,80-89%=0,90-99%=0,100%=480965334
+GPU Stats	CLTM-induced GPU Performance States	GPU_CLTM	24Mticks	state	OFF=0,P1=0,P2=0,P3=0,P4=0,P5=0,P6=0,P7=0,P8=0,P9=0,P10=0,P11=0,P12=0,P13=0,P14=0,P15=0,NO_CLTM=480964171
+GPU Stats	Active Time Histogram	GPU Active Time	24Mticks	histogram
+GPU Stats	Idle Time Histogram	GPU Idle Time	24Mticks	histogram
+GPU Stats	Fender Active Time Histogram	Fender Active Time	24Mticks	histogram
+GPU Stats	Fender Idle Time Histogram	Fender Idle Time	24Mticks	histogram
+GPU Stats	UV Warn State	UVWarn Instances	events	simple	0
+GPU Stats	UV Warn State	UVWarn Active	events	simple	0
+GPU Stats	Issue Counts	Total Restarts	events	simple	0
+GPU Stats	Issue Counts	Unknown Restarts	events	simple	0
+GPU Stats	Issue Counts	mediaserverd Restarts	events	simple	0
+GPU Stats	Issue Counts	36223	events	simple	0
+GPU Stats	Issue Counts	41819	events	simple	0
+GPU Stats	Issue Counts	42822	events	simple	0
+GPU Stats	Issue Counts	DM Kill Count	events	simple	0
+GPU Stats	Issue Counts	GTP Kill Count	events	simple	0
+GPU Stats	Issue Counts	FRG Kill Count	events	simple	0
+GPU Stats	Issue Counts	CDM Kill Count	events	simple	0
+GPU Stats	Issue Counts	Memless Render Failed	events	simple	0
+GPU Stats	vChannel Selection	GTP Single	events	simple	0
+GPU Stats	vChannel Selection	GTP Dependent	events	simple	23
+GPU Stats	vChannel Selection	GTP Idle	events	simple	259
+GPU Stats	vChannel Selection	GTP Alloc New	events	simple	0
+GPU Stats	vChannel Selection	GTP Round robin	events	simple	2
+GPU Stats	vChannel Selection	FRG Single	events	simple	0
+GPU Stats	vChannel Selection	FRG Dependent	events	simple	23
+GPU Stats	vChannel Selection	FRG Idle	events	simple	259
+GPU Stats	vChannel Selection	FRG Alloc New	events	simple	0
+GPU Stats	vChannel Selection	FRG Round robin	events	simple	2
+GPU Stats	vChannel Selection	CDM Single	events	simple	0
+GPU Stats	vChannel Selection	CDM Dependent	events	simple	0
+GPU Stats	vChannel Selection	CDM Idle	events	simple	0
+GPU Stats	vChannel Selection	CDM Alloc New	events	simple	88
+GPU Stats	vChannel Selection	CDM Round robin	events	simple	0
+GPU Stats	GTP vChannel Usage	Channel 0	events	simple	282
+GPU Stats	GTP vChannel Usage	Channel 1	events	simple	2
+GPU Stats	GTP vChannel Usage	Channel 2	events	simple	0
+GPU Stats	GTP vChannel Usage	Channel 3	events	simple	0
+GPU Stats	GTP vChannel Usage	Invalid	events	simple	0
+GPU Stats	FRG vChannel Usage	Channel 0	events	simple	282
+GPU Stats	FRG vChannel Usage	Channel 1	events	simple	2
+GPU Stats	FRG vChannel Usage	Channel 2	events	simple	0
+GPU Stats	FRG vChannel Usage	Channel 3	events	simple	0
+GPU Stats	FRG vChannel Usage	Invalid	events	simple	0
+GPU Stats	CDM vChannel Usage	Channel 0	events	simple	176
+GPU Stats	CDM vChannel Usage	Channel 1	events	simple	0
+GPU Stats	CDM vChannel Usage	Channel 2	events	simple	0
+GPU Stats	CDM vChannel Usage	Channel 3	events	simple	0
+GPU Stats	CDM vChannel Usage	Invalid	events	simple	0
+GPU Stats	GPU Discrete Power Zone Residency	PZRSDNCY	24Mticks	state	NO_ZONE=480964171,SLOWCLTM=0,ZONE0=0,ZONE1=0,ZONE2=0,ZONE3=0,ZONE4=0
+GPU Stats	GPU Power Controller States	PWRCTRL	24Mticks	state	IDLE_OFF=452297280,PERF=28362094,POWER=0,PWR_ZONE=0,FAST_DIE=0,UT=0,PRFLIMIT=0,PPMLIMIT=0,CLTMLIMI=0,PPMTARGE=0,DEADLINE=0,DEADAWAR=0,PRFBOOST=304797,PMULOOP=0,STANDBY=0,SE=0
+GPU Stats	PMU Loop Lost Performance Reason Code States	PMU_RC	24Mticks	state	NONE=480964171,GPU0_TH=0,GPU1_TH=0,GPU2_TH=0,GPU3_TH=0,GPU4_TH=0,GPU5_TH=0,GPU6_TH=0,GPU7_TH=0,AFR0_TH=0,AFR1_TH=0,GPU0_EMT=0,GPU1_EMT=0,GPU2_EMT=0,GPU3_EMT=0,GPU4_EMT=0,GPU5_EMT=0,GPU6_EMT=0,GPU7_EMT=0,AFR0_EMT=0,AFR1_EMT=0,INVALID=0
+GPU Stats	PPM Target as % of Max GPU Power	GPU_PPM	24Mticks	state	0-9%=0,10-19%=0,20-29%=0,30-39%=0,40-49%=0,50-59%=0,60-69%=0,70-79%=0,80-89%=0,90-99%=0,100%=480966386
+GPU Stats	UT Engagement centi-% Histogram	GPU UT Engagement centi-%		histogram
+GPU Stats	Spill Buffer Usage Histogram	Spill Buffer Usage	KiB	histogram
+GPU Stats	Spill Buffer Metadata Usage Histogram	Spill Buffer Metadata Usage	KiB	histogram
+GPU Stats	Spill Buffer Metadata Unused Blocks Per Task Histogram	Spill Buffer Unused Blocks per Task		histogram
+AMC Stats	Perf Counters	DIE0 PCPU0 RD	B	simple	8721370112
+AMC Stats	Perf Counters	DIE0 PCPU0 DCS RD	B	simple	5985542144
+AMC Stats	Perf Counters	DIE0 PCPU0 WR	B	simple	29170868224
+AMC Stats	Perf Counters	DIE0 PCPU0 DCS WR	B	simple	21450526720
+AMC Stats	Perf Counters	DIE0 PCPU1 RD	B	simple	1376466944
+AMC Stats	Perf Counters	DIE0 PCPU1 DCS RD	B	simple	627994624
+AMC Stats	Perf Counters	DIE0 PCPU1 WR	B	simple	1110680576
+AMC Stats	Perf Counters	DIE0 PCPU1 DCS WR	B	simple	211513344
+AMC Stats	Perf Counters	DIE0 ECPU0 RD	B	simple	11967463424
+AMC Stats	Perf Counters	DIE0 ECPU0 DCS RD	B	simple	8627683328
+AMC Stats	Perf Counters	DIE0 ECPU0 WR	B	simple	10137033728
+AMC Stats	Perf Counters	DIE0 ECPU0 DCS WR	B	simple	2777276416
+AMC Stats	Perf Counters	DIE0 GFXA RD	B	simple	8384502784
+AMC Stats	Perf Counters	DIE0 GFXA WR	B	simple	151369728
+AMC Stats	Perf Counters	DIE0 GFXB RD	B	simple	8369949696
+AMC Stats	Perf Counters	DIE0 GFXB WR	B	simple	150475776
+AMC Stats	Perf Counters	DIE0 GFX DCS RD	B	simple	16055283712
+AMC Stats	Perf Counters	DIE0 GFX DCS WR	B	simple	2397151232
+AMC Stats	Perf Counters	DIE0 AFC RD	B	simple	22065304576
+AMC Stats	Perf Counters	DIE0 AFC WR	B	simple	40418584576
+AMC Stats	Perf Counters	DIE0 AFI RD	B	simple	187390400
+AMC Stats	Perf Counters	DIE0 AFI WR	B	simple	1199808
+AMC Stats	Perf Counters	DIE0 AFRA RD	B	simple	8491190272
+AMC Stats	Perf Counters	DIE0 AFRA WR	B	simple	205240320
+AMC Stats	Perf Counters	DIE0 AFRB RD	B	simple	8464122880
+AMC Stats	Perf Counters	DIE0 AFRB WR	B	simple	230704128
+AMC Stats	Perf Counters	DIE0 ANE RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ANE DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ANE WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ANE DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVD RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVD DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVD WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVD DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP0 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP0 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP0 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP0 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 SB RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 SB DCS RD	B	simple	131072
+AMC Stats	Perf Counters	DIE0 SB WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 SB DCS WR	B	simple	73728
+AMC Stats	Perf Counters	DIE0 ATC0 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC0 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC0 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC0 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC1 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC1 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC1 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC1 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC2 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC2 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC2 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC2 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC3 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC3 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC3 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ATC3 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP1 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP1 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP1 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP1 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 STRM CODEC RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 STRM CODEC DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 STRM CODEC WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 STRM CODEC DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 PCIE RD	B	simple	323584
+AMC Stats	Perf Counters	DIE0 PCIE DCS RD	B	simple	212992
+AMC Stats	Perf Counters	DIE0 PCIE WR	B	simple	261952
+AMC Stats	Perf Counters	DIE0 PCIE DCS WR	B	simple	294912
+AMC Stats	Perf Counters	DIE0 ANS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ANS DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ANS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ANS DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 DISP0 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 DISP0 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 DISP0 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 DISP0 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 JPEG RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 JPEG DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 JPEG WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 JPEG DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ISP RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ISP DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 ISP WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 ISP DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 SIO_SEP RD	B	simple	28672
+AMC Stats	Perf Counters	DIE0 SIO_SEP DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 SIO_SEP WR	B	simple	43008
+AMC Stats	Perf Counters	DIE0 SIO_SEP DCS WR	B	simple	16384
+AMC Stats	Perf Counters	DIE0 MSR0 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 MSR0 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 MSR0 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 MSR0 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVE0 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVE0 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVE0 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVE0 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 PRORES1 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 PRORES1 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 PRORES1 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 PRORES1 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 GFXC RD	B	simple	408217600
+AMC Stats	Perf Counters	DIE0 GFXC DCS RD	B	simple	34603008
+AMC Stats	Perf Counters	DIE0 GFXC WR	B	simple	119902208
+AMC Stats	Perf Counters	DIE0 GFXC DCS WR	B	simple	28393472
+AMC Stats	Perf Counters	DIE0 AVE1 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVE1 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVE1 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 AVE1 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP3 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP3 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP3 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP3 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 MSR1 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 MSR1 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 MSR1 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 MSR1 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP2 RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP2 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP2 WR	B	simple	0
+AMC Stats	Perf Counters	DIE0 EXT DISP2 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 PCPU0 RD	B	simple	6273634304
+AMC Stats	Perf Counters	DIE1 PCPU0 DCS RD	B	simple	4295659520
+AMC Stats	Perf Counters	DIE1 PCPU0 WR	B	simple	22382833664
+AMC Stats	Perf Counters	DIE1 PCPU0 DCS WR	B	simple	16243888128
+AMC Stats	Perf Counters	DIE1 PCPU1 RD	B	simple	22914834432
+AMC Stats	Perf Counters	DIE1 PCPU1 DCS RD	B	simple	16903544832
+AMC Stats	Perf Counters	DIE1 PCPU1 WR	B	simple	95416292352
+AMC Stats	Perf Counters	DIE1 PCPU1 DCS WR	B	simple	71696764928
+AMC Stats	Perf Counters	DIE1 ECPU0 RD	B	simple	758263808
+AMC Stats	Perf Counters	DIE1 ECPU0 DCS RD	B	simple	447455232
+AMC Stats	Perf Counters	DIE1 ECPU0 WR	B	simple	513028096
+AMC Stats	Perf Counters	DIE1 ECPU0 DCS WR	B	simple	149979136
+AMC Stats	Perf Counters	DIE1 GFXA RD	B	simple	8202893312
+AMC Stats	Perf Counters	DIE1 GFXA WR	B	simple	117554176
+AMC Stats	Perf Counters	DIE1 GFXB RD	B	simple	8224328704
+AMC Stats	Perf Counters	DIE1 GFXB WR	B	simple	116228096
+AMC Stats	Perf Counters	DIE1 GFX DCS RD	B	simple	15838081024
+AMC Stats	Perf Counters	DIE1 GFX DCS WR	B	simple	2233171968
+AMC Stats	Perf Counters	DIE1 AFC RD	B	simple	29946726400
+AMC Stats	Perf Counters	DIE1 AFC WR	B	simple	118311861248
+AMC Stats	Perf Counters	DIE1 AFI RD	B	simple	13090878688
+AMC Stats	Perf Counters	DIE1 AFI WR	B	simple	176963424
+AMC Stats	Perf Counters	DIE1 AFRA RD	B	simple	8202979328
+AMC Stats	Perf Counters	DIE1 AFRA WR	B	simple	117640192
+AMC Stats	Perf Counters	DIE1 AFRB RD	B	simple	8228105216
+AMC Stats	Perf Counters	DIE1 AFRB WR	B	simple	113984512
+AMC Stats	Perf Counters	DIE1 ANE RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 ANE DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 ANE WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ANE DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVD RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVD DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVD WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVD DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP0 RD	B	simple	176128
+AMC Stats	Perf Counters	DIE1 EXT DISP0 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP0 WR	B	simple	71680
+AMC Stats	Perf Counters	DIE1 EXT DISP0 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 SB RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 SB DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 SB WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 SB DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC0 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC0 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC0 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC0 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC1 RD	B	simple	2232320
+AMC Stats	Perf Counters	DIE1 ATC1 DCS RD	B	simple	12288
+AMC Stats	Perf Counters	DIE1 ATC1 WR	B	simple	4096
+AMC Stats	Perf Counters	DIE1 ATC1 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC2 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC2 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC2 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC2 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC3 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC3 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC3 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ATC3 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP1 RD	B	simple	12686432768
+AMC Stats	Perf Counters	DIE1 EXT DISP1 DCS RD	B	simple	10355226624
+AMC Stats	Perf Counters	DIE1 EXT DISP1 WR	B	simple	109507584
+AMC Stats	Perf Counters	DIE1 EXT DISP1 DCS WR	B	simple	110813184
+AMC Stats	Perf Counters	DIE1 STRM CODEC RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 STRM CODEC DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 STRM CODEC WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 STRM CODEC DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 PCIE RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 PCIE DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 PCIE WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 PCIE DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ANS RD	B	simple	167012576
+AMC Stats	Perf Counters	DIE1 ANS DCS RD	B	simple	155578368
+AMC Stats	Perf Counters	DIE1 ANS WR	B	simple	69739296
+AMC Stats	Perf Counters	DIE1 ANS DCS WR	B	simple	86011904
+AMC Stats	Perf Counters	DIE1 DISP0 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 DISP0 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 DISP0 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 DISP0 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 JPEG RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 JPEG DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 JPEG WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 JPEG DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ISP RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 ISP DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 ISP WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 ISP DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 SIO_SEP RD	B	simple	13085696
+AMC Stats	Perf Counters	DIE1 SIO_SEP DCS RD	B	simple	10199040
+AMC Stats	Perf Counters	DIE1 SIO_SEP WR	B	simple	922624
+AMC Stats	Perf Counters	DIE1 SIO_SEP DCS WR	B	simple	393216
+AMC Stats	Perf Counters	DIE1 MSR0 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 MSR0 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 MSR0 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 MSR0 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVE0 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVE0 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVE0 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVE0 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 PRORES1 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 PRORES1 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 PRORES1 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 PRORES1 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 GFXC RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 GFXC DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 GFXC WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 GFXC DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVE1 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVE1 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVE1 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 AVE1 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP3 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP3 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP3 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP3 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 MSR1 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 MSR1 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 MSR1 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 MSR1 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP2 RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP2 DCS RD	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP2 WR	B	simple	0
+AMC Stats	Perf Counters	DIE1 EXT DISP2 DCS WR	B	simple	0
+AMC Stats	Perf Counters	DCS	B	simple	198228207616
+AMC Stats	Perf Counters	DCS RD	B	simple	80924153856
+AMC Stats	Perf Counters	DCS WR	B	simple	117304053760
+AMC Stats	Perf Counters	DCS CAS		simple	28640605
+AMC Stats	Perf Counters	DCS RAS		simple	9396314
+AMC Stats	Perf Counters	DCS SR ENTRIES		simple	129233
+AMC Stats	Perf Counters	DCS PD ENTRIES		simple	1918683
+AMC Stats	Perf Counters	DCS SR CYCLES		simple	553560666
+AMC Stats	Perf Counters	DCS PD CYCLES		simple	1643034338
+AMC Stats	Perf Counters	SR duration(usec)		simple	2407207
+AMC Stats	Perf Counters	PD duration(usec)		simple	6063578
+Energy Model	-	DIE_0_EACC_CPU0	mJ	simple	646
+Energy Model	-	DIE_0_EACC_CPU1	mJ	simple	626
+Energy Model	-	DIE_0_EACC_CPU2	mJ	simple	527
+Energy Model	-	DIE_0_EACC_CPU3	mJ	simple	448
+Energy Model	-	DIE_0_PACC0_CPU0	mJ	simple	8169
+Energy Model	-	DIE_0_PACC0_CPU1	mJ	simple	6388
+Energy Model	-	DIE_0_PACC0_CPU2	mJ	simple	4406
+Energy Model	-	DIE_0_PACC0_CPU3	mJ	simple	2326
+Energy Model	-	DIE_0_PACC1_CPU0	mJ	simple	1197
+Energy Model	-	DIE_0_PACC1_CPU1	mJ	simple	576
+Energy Model	-	DIE_0_PACC1_CPU2	mJ	simple	513
+Energy Model	-	DIE_0_PACC1_CPU3	mJ	simple	515
+Energy Model	-	DIE_0_EACC_CPM	mJ	simple	261
+Energy Model	-	DIE_0_PACC0_CPM	mJ	simple	4081
+Energy Model	-	DIE_0_PACC1_CPM	mJ	simple	1788
+Energy Model	-	DIE_0_EACC_CPU0_SRAM	mJ	simple	87
+Energy Model	-	DIE_0_EACC_CPU1_SRAM	mJ	simple	84
+Energy Model	-	DIE_0_EACC_CPU2_SRAM	mJ	simple	70
+Energy Model	-	DIE_0_EACC_CPU3_SRAM	mJ	simple	60
+Energy Model	-	DIE_0_PACC0_CPU0_SRAM	mJ	simple	884
+Energy Model	-	DIE_0_PACC0_CPU1_SRAM	mJ	simple	665
+Energy Model	-	DIE_0_PACC0_CPU2_SRAM	mJ	simple	461
+Energy Model	-	DIE_0_PACC0_CPU3_SRAM	mJ	simple	248
+Energy Model	-	DIE_0_PACC1_CPU0_SRAM	mJ	simple	124
+Energy Model	-	DIE_0_PACC1_CPU1_SRAM	mJ	simple	63
+Energy Model	-	DIE_0_PACC1_CPU2_SRAM	mJ	simple	57
+Energy Model	-	DIE_0_PACC1_CPU3_SRAM	mJ	simple	58
+Energy Model	-	DIE_0_EACC_CPM_SRAM	mJ	simple	205
+Energy Model	-	DIE_0_PACC0_CPM_SRAM	mJ	simple	663
+Energy Model	-	DIE_0_PACC1_CPM_SRAM	mJ	simple	108
+Energy Model	-	DIE_0_EACC_CPU	mJ	simple	3015
+Energy Model	-	DIE_0_PACC0_CPU	mJ	simple	28290
+Energy Model	-	DIE_0_PACC1_CPU	mJ	simple	4997
+Energy Model	-	DIE_0_CPU Energy	mJ	simple	36302
+Energy Model	-	DIE_1_EACC_CPU0	mJ	simple	51
+Energy Model	-	DIE_1_EACC_CPU1	mJ	simple	23
+Energy Model	-	DIE_1_EACC_CPU2	mJ	simple	10
+Energy Model	-	DIE_1_EACC_CPU3	mJ	simple	2
+Energy Model	-	DIE_1_PACC0_CPU0	mJ	simple	5171
+Energy Model	-	DIE_1_PACC0_CPU1	mJ	simple	4771
+Energy Model	-	DIE_1_PACC0_CPU2	mJ	simple	3242
+Energy Model	-	DIE_1_PACC0_CPU3	mJ	simple	1905
+Energy Model	-	DIE_1_PACC1_CPU0	mJ	simple	18418
+Energy Model	-	DIE_1_PACC1_CPU1	mJ	simple	17007
+Energy Model	-	DIE_1_PACC1_CPU2	mJ	simple	12537
+Energy Model	-	DIE_1_PACC1_CPU3	mJ	simple	7925
+Energy Model	-	DIE_1_EACC_CPM	mJ	simple	32
+Energy Model	-	DIE_1_PACC0_CPM	mJ	simple	3602
+Energy Model	-	DIE_1_PACC1_CPM	mJ	simple	8163
+Energy Model	-	DIE_1_EACC_CPU0_SRAM	mJ	simple	7
+Energy Model	-	DIE_1_EACC_CPU1_SRAM	mJ	simple	3
+Energy Model	-	DIE_1_EACC_CPU2_SRAM	mJ	simple	1
+Energy Model	-	DIE_1_EACC_CPU3_SRAM	mJ	simple	1
+Energy Model	-	DIE_1_PACC0_CPU0_SRAM	mJ	simple	535
+Energy Model	-	DIE_1_PACC0_CPU1_SRAM	mJ	simple	486
+Energy Model	-	DIE_1_PACC0_CPU2_SRAM	mJ	simple	346
+Energy Model	-	DIE_1_PACC0_CPU3_SRAM	mJ	simple	202
+Energy Model	-	DIE_1_PACC1_CPU0_SRAM	mJ	simple	1923
+Energy Model	-	DIE_1_PACC1_CPU1_SRAM	mJ	simple	1745
+Energy Model	-	DIE_1_PACC1_CPU2_SRAM	mJ	simple	1311
+Energy Model	-	DIE_1_PACC1_CPU3_SRAM	mJ	simple	815
+Energy Model	-	DIE_1_EACC_CPM_SRAM	mJ	simple	21
+Energy Model	-	DIE_1_PACC0_CPM_SRAM	mJ	simple	477
+Energy Model	-	DIE_1_PACC1_CPM_SRAM	mJ	simple	1669
+Energy Model	-	DIE_1_EACC_CPU	mJ	simple	151
+Energy Model	-	DIE_1_PACC0_CPU	mJ	simple	20737
+Energy Model	-	DIE_1_PACC1_CPU	mJ	simple	71515
+Energy Model	-	DIE_1_CPU Energy	mJ	simple	92402
+Energy Model	-	ECPUDTL00	mJ	simple	61
+Energy Model	-	ECPUDTL01	mJ	simple	29
+Energy Model	-	ECPUDTL02	mJ	simple	24
+Energy Model	-	ECPUDTL03	mJ	simple	25
+Energy Model	-	ECPUDTL04	mJ	simple	22
+Energy Model	-	ECPUDTL05	mJ	simple	486
+Energy Model	-	ECPUDTL10	mJ	simple	50
+Energy Model	-	ECPUDTL11	mJ	simple	27
+Energy Model	-	ECPUDTL12	mJ	simple	29
+Energy Model	-	ECPUDTL13	mJ	simple	20
+Energy Model	-	ECPUDTL14	mJ	simple	18
+Energy Model	-	ECPUDTL15	mJ	simple	482
+Energy Model	-	ECPUDTL20	mJ	simple	30
+Energy Model	-	ECPUDTL21	mJ	simple	15
+Energy Model	-	ECPUDTL22	mJ	simple	20
+Energy Model	-	ECPUDTL23	mJ	simple	19
+Energy Model	-	ECPUDTL24	mJ	simple	13
+Energy Model	-	ECPUDTL25	mJ	simple	428
+Energy Model	-	ECPUDTL30	mJ	simple	24
+Energy Model	-	ECPUDTL31	mJ	simple	17
+Energy Model	-	ECPUDTL32	mJ	simple	24
+Energy Model	-	ECPUDTL33	mJ	simple	14
+Energy Model	-	ECPUDTL34	mJ	simple	15
+Energy Model	-	ECPUDTL35	mJ	simple	354
+Energy Model	-	PCPUDTL00	mJ	simple	2
+Energy Model	-	PCPUDTL01	mJ	simple	0
+Energy Model	-	PCPUDTL02	mJ	simple	62
+Energy Model	-	PCPUDTL03	mJ	simple	11
+Energy Model	-	PCPUDTL04	mJ	simple	0
+Energy Model	-	PCPUDTL05	mJ	simple	0
+Energy Model	-	PCPUDTL06	mJ	simple	1
+Energy Model	-	PCPUDTL07	mJ	simple	0
+Energy Model	-	PCPUDTL08	mJ	simple	0
+Energy Model	-	PCPUDTL09	mJ	simple	0
+Energy Model	-	PCPUDTL0a	mJ	simple	0
+Energy Model	-	PCPUDTL0b	mJ	simple	0
+Energy Model	-	PCPUDTL0c	mJ	simple	0
+Energy Model	-	PCPUDTL0d	mJ	simple	0
+Energy Model	-	PCPUDTL0e	mJ	simple	0
+Energy Model	-	PCPUDTL0f	mJ	simple	21
+Energy Model	-	PCPUDTL010	mJ	simple	2
+Energy Model	-	PCPUDTL011	mJ	simple	6
+Energy Model	-	PCPUDTL012	mJ	simple	8065
+Energy Model	-	PCPUDTL10	mJ	simple	0
+Energy Model	-	PCPUDTL11	mJ	simple	0
+Energy Model	-	PCPUDTL12	mJ	simple	2
+Energy Model	-	PCPUDTL13	mJ	simple	1
+Energy Model	-	PCPUDTL14	mJ	simple	0
+Energy Model	-	PCPUDTL15	mJ	simple	0
+Energy Model	-	PCPUDTL16	mJ	simple	0
+Energy Model	-	PCPUDTL17	mJ	simple	0
+Energy Model	-	PCPUDTL18	mJ	simple	0
+Energy Model	-	PCPUDTL19	mJ	simple	0
+Energy Model	-	PCPUDTL1a	mJ	simple	0
+Energy Model	-	PCPUDTL1b	mJ	simple	0
+Energy Model	-	PCPUDTL1c	mJ	simple	0
+Energy Model	-	PCPUDTL1d	mJ	simple	0
+Energy Model	-	PCPUDTL1e	mJ	simple	0
+Energy Model	-	PCPUDTL1f	mJ	simple	1
+Energy Model	-	PCPUDTL110	mJ	simple	0
+Energy Model	-	PCPUDTL111	mJ	simple	0
+Energy Model	-	PCPUDTL112	mJ	simple	6384
+Energy Model	-	PCPUDTL20	mJ	simple	0
+Energy Model	-	PCPUDTL21	mJ	simple	0
+Energy Model	-	PCPUDTL22	mJ	simple	0
+Energy Model	-	PCPUDTL23	mJ	simple	1
+Energy Model	-	PCPUDTL24	mJ	simple	0
+Energy Model	-	PCPUDTL25	mJ	simple	0
+Energy Model	-	PCPUDTL26	mJ	simple	0
+Energy Model	-	PCPUDTL27	mJ	simple	0
+Energy Model	-	PCPUDTL28	mJ	simple	0
+Energy Model	-	PCPUDTL29	mJ	simple	0
+Energy Model	-	PCPUDTL2a	mJ	simple	0
+Energy Model	-	PCPUDTL2b	mJ	simple	0
+Energy Model	-	PCPUDTL2c	mJ	simple	0
+Energy Model	-	PCPUDTL2d	mJ	simple	0
+Energy Model	-	PCPUDTL2e	mJ	simple	0
+Energy Model	-	PCPUDTL2f	mJ	simple	4
+Energy Model	-	PCPUDTL210	mJ	simple	0
+Energy Model	-	PCPUDTL211	mJ	simple	0
+Energy Model	-	PCPUDTL212	mJ	simple	4402
+Energy Model	-	PCPUDTL30	mJ	simple	0
+Energy Model	-	PCPUDTL31	mJ	simple	0
+Energy Model	-	PCPUDTL32	mJ	simple	0
+Energy Model	-	PCPUDTL33	mJ	simple	0
+Energy Model	-	PCPUDTL34	mJ	simple	0
+Energy Model	-	PCPUDTL35	mJ	simple	0
+Energy Model	-	PCPUDTL36	mJ	simple	0
+Energy Model	-	PCPUDTL37	mJ	simple	0
+Energy Model	-	PCPUDTL38	mJ	simple	0
+Energy Model	-	PCPUDTL39	mJ	simple	0
+Energy Model	-	PCPUDTL3a	mJ	simple	0
+Energy Model	-	PCPUDTL3b	mJ	simple	0
+Energy Model	-	PCPUDTL3c	mJ	simple	0
+Energy Model	-	PCPUDTL3d	mJ	simple	0
+Energy Model	-	PCPUDTL3e	mJ	simple	0
+Energy Model	-	PCPUDTL3f	mJ	simple	0
+Energy Model	-	PCPUDTL310	mJ	simple	0
+Energy Model	-	PCPUDTL311	mJ	simple	0
+Energy Model	-	PCPUDTL312	mJ	simple	2326
+Energy Model	-	PCPU1DTL00	mJ	simple	1
+Energy Model	-	PCPU1DTL01	mJ	simple	0
+Energy Model	-	PCPU1DTL02	mJ	simple	0
+Energy Model	-	PCPU1DTL03	mJ	simple	0
+Energy Model	-	PCPU1DTL04	mJ	simple	0
+Energy Model	-	PCPU1DTL05	mJ	simple	0
+Energy Model	-	PCPU1DTL06	mJ	simple	0
+Energy Model	-	PCPU1DTL07	mJ	simple	0
+Energy Model	-	PCPU1DTL08	mJ	simple	0
+Energy Model	-	PCPU1DTL09	mJ	simple	0
+Energy Model	-	PCPU1DTL0a	mJ	simple	0
+Energy Model	-	PCPU1DTL0b	mJ	simple	0
+Energy Model	-	PCPU1DTL0c	mJ	simple	0
+Energy Model	-	PCPU1DTL0d	mJ	simple	0
+Energy Model	-	PCPU1DTL0e	mJ	simple	0
+Energy Model	-	PCPU1DTL0f	mJ	simple	0
+Energy Model	-	PCPU1DTL010	mJ	simple	0
+Energy Model	-	PCPU1DTL011	mJ	simple	0
+Energy Model	-	PCPU1DTL012	mJ	simple	1196
+Energy Model	-	PCPU1DTL10	mJ	simple	1
+Energy Model	-	PCPU1DTL11	mJ	simple	0
+Energy Model	-	PCPU1DTL12	mJ	simple	0
+Energy Model	-	PCPU1DTL13	mJ	simple	0
+Energy Model	-	PCPU1DTL14	mJ	simple	0
+Energy Model	-	PCPU1DTL15	mJ	simple	0
+Energy Model	-	PCPU1DTL16	mJ	simple	0
+Energy Model	-	PCPU1DTL17	mJ	simple	0
+Energy Model	-	PCPU1DTL18	mJ	simple	0
+Energy Model	-	PCPU1DTL19	mJ	simple	0
+Energy Model	-	PCPU1DTL1a	mJ	simple	0
+Energy Model	-	PCPU1DTL1b	mJ	simple	0
+Energy Model	-	PCPU1DTL1c	mJ	simple	0
+Energy Model	-	PCPU1DTL1d	mJ	simple	0
+Energy Model	-	PCPU1DTL1e	mJ	simple	0
+Energy Model	-	PCPU1DTL1f	mJ	simple	0
+Energy Model	-	PCPU1DTL110	mJ	simple	0
+Energy Model	-	PCPU1DTL111	mJ	simple	0
+Energy Model	-	PCPU1DTL112	mJ	simple	575
+Energy Model	-	PCPU1DTL20	mJ	simple	0
+Energy Model	-	PCPU1DTL21	mJ	simple	0
+Energy Model	-	PCPU1DTL22	mJ	simple	0
+Energy Model	-	PCPU1DTL23	mJ	simple	0
+Energy Model	-	PCPU1DTL24	mJ	simple	0
+Energy Model	-	PCPU1DTL25	mJ	simple	0
+Energy Model	-	PCPU1DTL26	mJ	simple	0
+Energy Model	-	PCPU1DTL27	mJ	simple	0
+Energy Model	-	PCPU1DTL28	mJ	simple	0
+Energy Model	-	PCPU1DTL29	mJ	simple	0
+Energy Model	-	PCPU1DTL2a	mJ	simple	0
+Energy Model	-	PCPU1DTL2b	mJ	simple	0
+Energy Model	-	PCPU1DTL2c	mJ	simple	0
+Energy Model	-	PCPU1DTL2d	mJ	simple	0
+Energy Model	-	PCPU1DTL2e	mJ	simple	0
+Energy Model	-	PCPU1DTL2f	mJ	simple	0
+Energy Model	-	PCPU1DTL210	mJ	simple	0
+Energy Model	-	PCPU1DTL211	mJ	simple	0
+Energy Model	-	PCPU1DTL212	mJ	simple	513
+Energy Model	-	PCPU1DTL30	mJ	simple	0
+Energy Model	-	PCPU1DTL31	mJ	simple	0
+Energy Model	-	PCPU1DTL32	mJ	simple	0
+Energy Model	-	PCPU1DTL33	mJ	simple	0
+Energy Model	-	PCPU1DTL34	mJ	simple	0
+Energy Model	-	PCPU1DTL35	mJ	simple	0
+Energy Model	-	PCPU1DTL36	mJ	simple	0
+Energy Model	-	PCPU1DTL37	mJ	simple	0
+Energy Model	-	PCPU1DTL38	mJ	simple	0
+Energy Model	-	PCPU1DTL39	mJ	simple	0
+Energy Model	-	PCPU1DTL3a	mJ	simple	0
+Energy Model	-	PCPU1DTL3b	mJ	simple	0
+Energy Model	-	PCPU1DTL3c	mJ	simple	0
+Energy Model	-	PCPU1DTL3d	mJ	simple	0
+Energy Model	-	PCPU1DTL3e	mJ	simple	0
+Energy Model	-	PCPU1DTL3f	mJ	simple	0
+Energy Model	-	PCPU1DTL310	mJ	simple	0
+Energy Model	-	PCPU1DTL311	mJ	simple	0
+Energy Model	-	PCPU1DTL312	mJ	simple	515
+Energy Model	-	ECPUDTL00	mJ	simple	7
+Energy Model	-	ECPUDTL01	mJ	simple	2
+Energy Model	-	ECPUDTL02	mJ	simple	7
+Energy Model	-	ECPUDTL03	mJ	simple	5
+Energy Model	-	ECPUDTL04	mJ	simple	4
+Energy Model	-	ECPUDTL05	mJ	simple	26
+Energy Model	-	ECPUDTL10	mJ	simple	3
+Energy Model	-	ECPUDTL11	mJ	simple	1
+Energy Model	-	ECPUDTL12	mJ	simple	2
+Energy Model	-	ECPUDTL13	mJ	simple	2
+Energy Model	-	ECPUDTL14	mJ	simple	2
+Energy Model	-	ECPUDTL15	mJ	simple	12
+Energy Model	-	ECPUDTL20	mJ	simple	2
+Energy Model	-	ECPUDTL21	mJ	simple	1
+Energy Model	-	ECPUDTL22	mJ	simple	1
+Energy Model	-	ECPUDTL23	mJ	simple	1
+Energy Model	-	ECPUDTL24	mJ	simple	0
+Energy Model	-	ECPUDTL25	mJ	simple	5
+Energy Model	-	ECPUDTL30	mJ	simple	1
+Energy Model	-	ECPUDTL31	mJ	simple	1
+Energy Model	-	ECPUDTL32	mJ	simple	0
+Energy Model	-	ECPUDTL33	mJ	simple	0
+Energy Model	-	ECPUDTL34	mJ	simple	0
+Energy Model	-	ECPUDTL35	mJ	simple	1
+Energy Model	-	PCPUDTL00	mJ	simple	1
+Energy Model	-	PCPUDTL01	mJ	simple	0
+Energy Model	-	PCPUDTL02	mJ	simple	0
+Energy Model	-	PCPUDTL03	mJ	simple	0
+Energy Model	-	PCPUDTL04	mJ	simple	0
+Energy Model	-	PCPUDTL05	mJ	simple	0
+Energy Model	-	PCPUDTL06	mJ	simple	0
+Energy Model	-	PCPUDTL07	mJ	simple	0
+Energy Model	-	PCPUDTL08	mJ	simple	2
+Energy Model	-	PCPUDTL09	mJ	simple	0
+Energy Model	-	PCPUDTL0a	mJ	simple	0
+Energy Model	-	PCPUDTL0b	mJ	simple	0
+Energy Model	-	PCPUDTL0c	mJ	simple	0
+Energy Model	-	PCPUDTL0d	mJ	simple	0
+Energy Model	-	PCPUDTL0e	mJ	simple	0
+Energy Model	-	PCPUDTL0f	mJ	simple	0
+Energy Model	-	PCPUDTL010	mJ	simple	0
+Energy Model	-	PCPUDTL011	mJ	simple	0
+Energy Model	-	PCPUDTL012	mJ	simple	5168
+Energy Model	-	PCPUDTL10	mJ	simple	1
+Energy Model	-	PCPUDTL11	mJ	simple	0
+Energy Model	-	PCPUDTL12	mJ	simple	0
+Energy Model	-	PCPUDTL13	mJ	simple	0
+Energy Model	-	PCPUDTL14	mJ	simple	0
+Energy Model	-	PCPUDTL15	mJ	simple	0
+Energy Model	-	PCPUDTL16	mJ	simple	0
+Energy Model	-	PCPUDTL17	mJ	simple	0
+Energy Model	-	PCPUDTL18	mJ	simple	0
+Energy Model	-	PCPUDTL19	mJ	simple	0
+Energy Model	-	PCPUDTL1a	mJ	simple	0
+Energy Model	-	PCPUDTL1b	mJ	simple	0
+Energy Model	-	PCPUDTL1c	mJ	simple	0
+Energy Model	-	PCPUDTL1d	mJ	simple	0
+Energy Model	-	PCPUDTL1e	mJ	simple	0
+Energy Model	-	PCPUDTL1f	mJ	simple	0
+Energy Model	-	PCPUDTL110	mJ	simple	0
+Energy Model	-	PCPUDTL111	mJ	simple	0
+Energy Model	-	PCPUDTL112	mJ	simple	4770
+Energy Model	-	PCPUDTL20	mJ	simple	1
+Energy Model	-	PCPUDTL21	mJ	simple	0
+Energy Model	-	PCPUDTL22	mJ	simple	0
+Energy Model	-	PCPUDTL23	mJ	simple	0
+Energy Model	-	PCPUDTL24	mJ	simple	0
+Energy Model	-	PCPUDTL25	mJ	simple	0
+Energy Model	-	PCPUDTL26	mJ	simple	0
+Energy Model	-	PCPUDTL27	mJ	simple	0
+Energy Model	-	PCPUDTL28	mJ	simple	0
+Energy Model	-	PCPUDTL29	mJ	simple	0
+Energy Model	-	PCPUDTL2a	mJ	simple	0
+Energy Model	-	PCPUDTL2b	mJ	simple	0
+Energy Model	-	PCPUDTL2c	mJ	simple	0
+Energy Model	-	PCPUDTL2d	mJ	simple	0
+Energy Model	-	PCPUDTL2e	mJ	simple	0
+Energy Model	-	PCPUDTL2f	mJ	simple	0
+Energy Model	-	PCPUDTL210	mJ	simple	0
+Energy Model	-	PCPUDTL211	mJ	simple	0
+Energy Model	-	PCPUDTL212	mJ	simple	3241
+Energy Model	-	PCPUDTL30	mJ	simple	0
+Energy Model	-	PCPUDTL31	mJ	simple	0
+Energy Model	-	PCPUDTL32	mJ	simple	0
+Energy Model	-	PCPUDTL33	mJ	simple	0
+Energy Model	-	PCPUDTL34	mJ	simple	0
+Energy Model	-	PCPUDTL35	mJ	simple	0
+Energy Model	-	PCPUDTL36	mJ	simple	0
+Energy Model	-	PCPUDTL37	mJ	simple	0
+Energy Model	-	PCPUDTL38	mJ	simple	0
+Energy Model	-	PCPUDTL39	mJ	simple	0
+Energy Model	-	PCPUDTL3a	mJ	simple	0
+Energy Model	-	PCPUDTL3b	mJ	simple	0
+Energy Model	-	PCPUDTL3c	mJ	simple	0
+Energy Model	-	PCPUDTL3d	mJ	simple	0
+Energy Model	-	PCPUDTL3e	mJ	simple	0
+Energy Model	-	PCPUDTL3f	mJ	simple	0
+Energy Model	-	PCPUDTL310	mJ	simple	0
+Energy Model	-	PCPUDTL311	mJ	simple	0
+Energy Model	-	PCPUDTL312	mJ	simple	1905
+Energy Model	-	PCPU1DTL00	mJ	simple	1
+Energy Model	-	PCPU1DTL01	mJ	simple	0
+Energy Model	-	PCPU1DTL02	mJ	simple	0
+Energy Model	-	PCPU1DTL03	mJ	simple	0
+Energy Model	-	PCPU1DTL04	mJ	simple	0
+Energy Model	-	PCPU1DTL05	mJ	simple	0
+Energy Model	-	PCPU1DTL06	mJ	simple	0
+Energy Model	-	PCPU1DTL07	mJ	simple	0
+Energy Model	-	PCPU1DTL08	mJ	simple	0
+Energy Model	-	PCPU1DTL09	mJ	simple	0
+Energy Model	-	PCPU1DTL0a	mJ	simple	0
+Energy Model	-	PCPU1DTL0b	mJ	simple	0
+Energy Model	-	PCPU1DTL0c	mJ	simple	0
+Energy Model	-	PCPU1DTL0d	mJ	simple	0
+Energy Model	-	PCPU1DTL0e	mJ	simple	0
+Energy Model	-	PCPU1DTL0f	mJ	simple	0
+Energy Model	-	PCPU1DTL010	mJ	simple	0
+Energy Model	-	PCPU1DTL011	mJ	simple	0
+Energy Model	-	PCPU1DTL012	mJ	simple	18418
+Energy Model	-	PCPU1DTL10	mJ	simple	1
+Energy Model	-	PCPU1DTL11	mJ	simple	0
+Energy Model	-	PCPU1DTL12	mJ	simple	0
+Energy Model	-	PCPU1DTL13	mJ	simple	0
+Energy Model	-	PCPU1DTL14	mJ	simple	0
+Energy Model	-	PCPU1DTL15	mJ	simple	0
+Energy Model	-	PCPU1DTL16	mJ	simple	0
+Energy Model	-	PCPU1DTL17	mJ	simple	0
+Energy Model	-	PCPU1DTL18	mJ	simple	0
+Energy Model	-	PCPU1DTL19	mJ	simple	0
+Energy Model	-	PCPU1DTL1a	mJ	simple	0
+Energy Model	-	PCPU1DTL1b	mJ	simple	0
+Energy Model	-	PCPU1DTL1c	mJ	simple	0
+Energy Model	-	PCPU1DTL1d	mJ	simple	0
+Energy Model	-	PCPU1DTL1e	mJ	simple	0
+Energy Model	-	PCPU1DTL1f	mJ	simple	0
+Energy Model	-	PCPU1DTL110	mJ	simple	0
+Energy Model	-	PCPU1DTL111	mJ	simple	0
+Energy Model	-	PCPU1DTL112	mJ	simple	17007
+Energy Model	-	PCPU1DTL20	mJ	simple	1
+Energy Model	-	PCPU1DTL21	mJ	simple	0
+Energy Model	-	PCPU1DTL22	mJ	simple	0
+Energy Model	-	PCPU1DTL23	mJ	simple	0
+Energy Model	-	PCPU1DTL24	mJ	simple	0
+Energy Model	-	PCPU1DTL25	mJ	simple	0
+Energy Model	-	PCPU1DTL26	mJ	simple	0
+Energy Model	-	PCPU1DTL27	mJ	simple	0
+Energy Model	-	PCPU1DTL28	mJ	simple	0
+Energy Model	-	PCPU1DTL29	mJ	simple	0
+Energy Model	-	PCPU1DTL2a	mJ	simple	0
+Energy Model	-	PCPU1DTL2b	mJ	simple	0
+Energy Model	-	PCPU1DTL2c	mJ	simple	0
+Energy Model	-	PCPU1DTL2d	mJ	simple	0
+Energy Model	-	PCPU1DTL2e	mJ	simple	0
+Energy Model	-	PCPU1DTL2f	mJ	simple	0
+Energy Model	-	PCPU1DTL210	mJ	simple	0
+Energy Model	-	PCPU1DTL211	mJ	simple	0
+Energy Model	-	PCPU1DTL212	mJ	simple	12537
+Energy Model	-	PCPU1DTL30	mJ	simple	0
+Energy Model	-	PCPU1DTL31	mJ	simple	0
+Energy Model	-	PCPU1DTL32	mJ	simple	0
+Energy Model	-	PCPU1DTL33	mJ	simple	0
+Energy Model	-	PCPU1DTL34	mJ	simple	0
+Energy Model	-	PCPU1DTL35	mJ	simple	0
+Energy Model	-	PCPU1DTL36	mJ	simple	0
+Energy Model	-	PCPU1DTL37	mJ	simple	0
+Energy Model	-	PCPU1DTL38	mJ	simple	0
+Energy Model	-	PCPU1DTL39	mJ	simple	0
+Energy Model	-	PCPU1DTL3a	mJ	simple	0
+Energy Model	-	PCPU1DTL3b	mJ	simple	0
+Energy Model	-	PCPU1DTL3c	mJ	simple	0
+Energy Model	-	PCPU1DTL3d	mJ	simple	0
+Energy Model	-	PCPU1DTL3e	mJ	simple	0
+Energy Model	-	PCPU1DTL3f	mJ	simple	0
+Energy Model	-	PCPU1DTL310	mJ	simple	0
+Energy Model	-	PCPU1DTL311	mJ	simple	0
+Energy Model	-	PCPU1DTL312	mJ	simple	7924
+Energy Model	-	GPU0_0	mJ	simple	3945
+Energy Model	-	GPU CS0_0	mJ	simple	918
+Energy Model	-	GPU SRAM0_0	mJ	simple	13
+Energy Model	-	GPU CS SRAM0_0	mJ	simple	0
+Energy Model	-	ANE0_0	mJ	simple	0
+Energy Model	-	ISP0_0	mJ	simple	26
+Energy Model	-	AVE0_0	mJ	simple	42
+Energy Model	-	MSR0_0	mJ	simple	47
+Energy Model	-	DCS0_0	mJ	simple	31861
+Energy Model	-	DRAM0_0	mJ	simple	22961
+Energy Model	-	AMCC0_0	mJ	simple	20099
+Energy Model	-	ANE0_1	mJ	simple	0
+Energy Model	-	ISP0_1	mJ	simple	31
+Energy Model	-	AVE0_1	mJ	simple	47
+Energy Model	-	MSR0_1	mJ	simple	56
+Energy Model	-	DCS0_1	mJ	simple	31458
+Energy Model	-	DRAM0_1	mJ	simple	22929
+Energy Model	-	AMCC0_1	mJ	simple	19815
+Energy Model	-	PCIe Port 0 Energy	uJ	simple	0
+Energy Model	-	PCIe Port 1 Energy	uJ	simple	0
+Energy Model	-	PCIe Port 2 Energy	uJ	simple	0
+Energy Model	-	PCIe Port 3 Energy	uJ	simple	0
+Energy Model	-	apciec4 Energy	uJ	simple	0
+Energy Model	-	apciec1 Energy	uJ	simple	0
+Energy Model	-	apciec2 Energy	uJ	simple	0
+Energy Model	-	apciec5 Energy	uJ	simple	0
+Energy Model	-	apciec3 Energy	uJ	simple	0
+Energy Model	-	apciec0 Energy	uJ	simple	0
+Energy Model	-	GPU Energy	nJ	simple	2506422816
+CPU Stats	CPU Complex Voltage States	DIE_0_ECPU	24Mticks	state	V0=284234598,V1=36940177,V2=27264479,V3=17648251,V4=14067297,V5=100818376
+CPU Stats	CPU Core Performance States	DIE_0_ECPU_CPU0	24Mticks	state	IDLE=393916333,V0P5=31308681,V1P4=8687244,V2P3=4379825,V3P2=3404842,V4P1=2448704,V5P0=36827640
+CPU Stats	CPU Core Performance States	DIE_0_ECPU_CPU1	24Mticks	state	IDLE=403815408,V0P5=25133978,V1P4=7880766,V2P3=4863515,V3P2=2781799,V4P1=1945643,V5P0=34552160
+CPU Stats	CPU Core Performance States	DIE_0_ECPU_CPU2	24Mticks	state	IDLE=423426804,V0P5=15772982,V1P4=4500581,V2P3=3459119,V3P2=2482997,V4P1=1353821,V5P0=29976965
+CPU Stats	CPU Core Performance States	DIE_0_ECPU_CPU3	24Mticks	state	IDLE=431867301,V0P5=12201088,V1P4=4744923,V2P3=3716504,V3P2=1848807,V4P1=1475059,V5P0=25119587
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple	11836120
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple	1540607
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple	1135356
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple	735232
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple	586435
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple	4207721
+CPU Stats	CPU Complex DVD States	DIE_0_ECPU	24Mticks	state	0-9%=0,10-19%=0,20-29%=0,30-39%=0,40-49%=0,50-59%=0,60-69%=0,70-79%=0,80-89%=0,90-99%=0,100%=481014912
+CPU Stats	CPU Complex Voltage States	DIE_0_PCPU	24Mticks	state	V0=363278590,V1=48447,V2=15559095,V3=5956482,V4=138734,V5=158565,V6=150538,V7=45615,V8=117294,V9=88262,V10=226519,V11=96446,V12=0,V13=76142,V14=94603,V15=378778,V16=94303,V17=143812,V18=94321329
+CPU Stats	CPU Core Performance States	DIE_0_PCPU_CPU0	24Mticks	state	IDLE=426528691,V0P18=283658,V1P17=0,V2P16=3694680,V3P15=543144,V4P14=12013,V5P13=6411,V6P12=7102,V7P11=3403,V8P10=2712,V9P9=2804,V10P8=3535,V11P7=4494,V12P6=0,V13P5=3308,V14P4=0,V15P3=148023,V16P2=15862,V17P1=28257,V18P0=49686099
+CPU Stats	CPU Core Performance States	DIE_0_PCPU_CPU1	24Mticks	state	IDLE=440210288,V0P18=52431,V1P17=0,V2P16=176115,V3P15=46525,V4P14=3971,V5P13=592,V6P12=522,V7P11=328,V8P10=256,V9P9=247,V10P8=238,V11P7=452,V12P6=0,V13P5=275,V14P4=0,V15P3=3993,V16P2=0,V17P1=0,V18P0=40477963
+CPU Stats	CPU Core Performance States	DIE_0_PCPU_CPU2	24Mticks	state	IDLE=452571968,V0P18=23749,V1P17=0,V2P16=7436,V3P15=27102,V4P14=59,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=32261,V16P2=0,V17P1=0,V18P0=28311621
+CPU Stats	CPU Core Performance States	DIE_0_PCPU_CPU3	24Mticks	state	IDLE=467103230,V0P18=4934,V1P17=0,V2P16=167,V3P15=1276,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=326,V16P2=0,V17P1=0,V18P0=13864263
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple	2020
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple	648321
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple	248137
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple	5767
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple	6605
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple	6272
+CPU Stats	CPU Complex Voltage State Time	 v8	us	simple	1900
+CPU Stats	CPU Complex Voltage State Time	 v9	us	simple	4887
+CPU Stats	CPU Complex Voltage State Time	 v10	us	simple	3678
+CPU Stats	CPU Complex Voltage State Time	 v11	us	simple	9439
+CPU Stats	CPU Complex Voltage State Time	 v12	us	simple	4019
+CPU Stats	CPU Complex Voltage State Time	 v13	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v14	us	simple	441471
+CPU Stats	CPU Complex Voltage State Time	 v15	us	simple	518413
+CPU Stats	CPU Complex Voltage State Time	 v16	us	simple	548990
+CPU Stats	CPU Complex Voltage State Time	 v17	us	simple	3814
+CPU Stats	CPU Complex DVD States	DIE_0_PCPU	24Mticks	state	0-9%=0,10-19%=0,20-29%=0,30-39%=0,40-49%=0,50-59%=0,60-69%=0,70-79%=0,80-89%=0,90-99%=0,100%=481017036
+CPU Stats	CPU Complex Voltage States	DIE_0_PCPU1	24Mticks	state	V0=434453146,V1=1038234,V2=0,V3=0,V4=0,V5=0,V6=0,V7=0,V8=0,V9=0,V10=0,V11=0,V12=0,V13=0,V14=0,V15=0,V16=0,V17=0,V18=45483379
+CPU Stats	CPU Core Performance States	DIE_0_PCPU1_CPU0	24Mticks	state	IDLE=472442628,V0P18=193706,V1P17=889,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=8338163
+CPU Stats	CPU Core Performance States	DIE_0_PCPU1_CPU1	24Mticks	state	IDLE=475624583,V0P18=111098,V1P17=383,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=5239322
+CPU Stats	CPU Core Performance States	DIE_0_PCPU1_CPU2	24Mticks	state	IDLE=476123373,V0P18=68745,V1P17=158,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=4783110
+CPU Stats	CPU Core Performance States	DIE_0_PCPU1_CPU3	24Mticks	state	IDLE=476259688,V0P18=38055,V1P17=0,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=4677643
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple	43116
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v8	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v9	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v10	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v11	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v12	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v13	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v14	us	simple	161990
+CPU Stats	CPU Complex Voltage State Time	 v15	us	simple	363
+CPU Stats	CPU Complex Voltage State Time	 v16	us	simple	134804
+CPU Stats	CPU Complex Voltage State Time	 v17	us	simple	0
+CPU Stats	CPU Complex DVD States	DIE_0_PCPU1	24Mticks	state	0-9%=0,10-19%=0,20-29%=0,30-39%=0,40-49%=0,50-59%=0,60-69%=0,70-79%=0,80-89%=0,90-99%=0,100%=481019646
+CPU Stats	CPU Complex Voltage States	DIE_1_ECPU	24Mticks	state	V0=447451545,V1=4137863,V2=3572117,V3=3242418,V4=1375036,V5=21196990
+CPU Stats	CPU Core Performance States	DIE_1_ECPU_CPU0	24Mticks	state	IDLE=473002879,V0P5=3612590,V1P4=691371,V2P3=862528,V3P2=553066,V4P1=313226,V5P0=1940442
+CPU Stats	CPU Core Performance States	DIE_1_ECPU_CPU1	24Mticks	state	IDLE=477258771,V0P5=1615551,V1P4=362393,V2P3=344761,V3P2=187574,V4P1=194523,V5P0=1012529
+CPU Stats	CPU Core Performance States	DIE_1_ECPU_CPU2	24Mticks	state	IDLE=479420180,V0P5=694505,V1P4=216069,V2P3=77570,V3P2=106277,V4P1=12355,V5P0=449146
+CPU Stats	CPU Core Performance States	DIE_1_ECPU_CPU3	24Mticks	state	IDLE=480334838,V0P5=368451,V1P4=103719,V2P3=13367,V3P2=10783,V4P1=4095,V5P0=140849
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple	18643114
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple	172877
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple	148886
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple	135172
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple	57359
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple	884383
+CPU Stats	CPU Complex DVD States	DIE_1_ECPU	24Mticks	state	0-9%=0,10-19%=0,20-29%=0,30-39%=0,40-49%=0,50-59%=0,60-69%=0,70-79%=0,80-89%=0,90-99%=0,100%=481023249
+CPU Stats	CPU Complex Voltage States	DIE_1_PCPU	24Mticks	state	V0=391874238,V1=1044325,V2=277201,V3=416553,V4=314083,V5=70410,V6=0,V7=0,V8=51266,V9=0,V10=0,V11=0,V12=0,V13=0,V14=0,V15=0,V16=0,V17=0,V18=86928489
+CPU Stats	CPU Core Performance States	DIE_1_PCPU_CPU0	24Mticks	state	IDLE=446092476,V0P18=208259,V1P17=0,V2P16=820,V3P15=2107,V4P14=83,V5P13=867,V6P12=0,V7P11=0,V8P10=22882,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=34649743
+CPU Stats	CPU Core Performance States	DIE_1_PCPU_CPU1	24Mticks	state	IDLE=449888615,V0P18=106959,V1P17=0,V2P16=340,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=101,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=30981222
+CPU Stats	CPU Core Performance States	DIE_1_PCPU_CPU2	24Mticks	state	IDLE=458398356,V0P18=73604,V1P17=0,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=22505277
+CPU Stats	CPU Core Performance States	DIE_1_PCPU_CPU3	24Mticks	state	IDLE=468399674,V0P18=51619,V1P17=0,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=12525944
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple	2952
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple	2133
+CPU Stats	CPU Complex Voltage State Time	 v8	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v9	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v10	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v11	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v12	us	simple	405249
+CPU Stats	CPU Complex Voltage State Time	 v13	us	simple	530618
+CPU Stats	CPU Complex Voltage State Time	 v14	us	simple	180202
+CPU Stats	CPU Complex Voltage State Time	 v15	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v16	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v17	us	simple	0
+CPU Stats	CPU Complex DVD States	DIE_1_PCPU	24Mticks	state	0-9%=0,10-19%=0,20-29%=0,30-39%=0,40-49%=0,50-59%=0,60-69%=0,70-79%=0,80-89%=0,90-99%=0,100%=481025904
+CPU Stats	CPU Complex Voltage States	DIE_1_PCPU1	24Mticks	state	V0=295604060,V1=567094,V2=523619,V3=0,V4=0,V5=0,V6=0,V7=0,V8=0,V9=50858,V10=0,V11=0,V12=0,V13=0,V14=0,V15=14674,V16=0,V17=0,V18=184217665
+CPU Stats	CPU Core Performance States	DIE_1_PCPU1_CPU0	24Mticks	state	IDLE=361373119,V0P18=126584,V1P17=581,V2P16=1560,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=597,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=589,V16P2=0,V17P1=0,V18P0=119475542
+CPU Stats	CPU Core Performance States	DIE_1_PCPU1_CPU1	24Mticks	state	IDLE=372642329,V0P18=92229,V1P17=0,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=126,V16P2=0,V17P1=0,V18P0=108243888
+CPU Stats	CPU Core Performance States	DIE_1_PCPU1_CPU2	24Mticks	state	IDLE=400460980,V0P18=72782,V1P17=0,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=80444810
+CPU Stats	CPU Core Performance States	DIE_1_PCPU1_CPU3	24Mticks	state	IDLE=436483359,V0P18=53236,V1P17=0,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=44441977
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v8	us	simple	2119
+CPU Stats	CPU Complex Voltage State Time	 v9	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v10	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v11	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v12	us	simple	1197297
+CPU Stats	CPU Complex Voltage State Time	 v13	us	simple	1548283
+CPU Stats	CPU Complex Voltage State Time	 v14	us	simple	257071
+CPU Stats	CPU Complex Voltage State Time	 v15	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v16	us	simple	0
+CPU Stats	CPU Complex Voltage State Time	 v17	us	simple	0
+CPU Stats	CPU Complex DVD States	DIE_1_PCPU1	24Mticks	state	0-9%=0,10-19%=0,20-29%=0,30-39%=0,40-49%=0,50-59%=0,60-69%=0,70-79%=0,80-89%=0,90-99%=0,100%=481028144
+CPU Stats	CPU Complex Performance States	DIE_0_ECPU	24Mticks	state	IDLE=313347390,V0P5=58783378,V1P4=18293850,V2P3=11406400,V3P2=6949084,V4P1=5372696,V5P0=66820423
+CPU Stats	CPU Complex Performance States	DIE_0_ECPM	24Mticks	state	IDLE=0,V0P5=284066870,V1P4=36974575,V2P3=27248535,V3P2=17645572,V4P1=14074450,V5P0=100985298
+CPU Stats	CPU Complex Performance States	DIE_0_PCPU	24Mticks	state	IDLE=404468434,V0P18=289877,V1P17=0,V2P16=3750264,V3P15=575969,V4P14=14158,V5P13=6480,V6P12=7102,V7P11=3403,V8P10=2712,V9P9=2804,V10P8=3540,V11P7=4754,V12P6=0,V13P5=3308,V14P4=0,V15P3=175847,V16P2=15862,V17P1=28257,V18P0=71620626
+CPU Stats	CPU Complex Performance States	DIE_0_PCPM	24Mticks	state	IDLE=0,V0P18=0,V1P17=48464,V2P16=15559693,V3P15=5955305,V4P14=138418,V5P13=158525,V6P12=150511,V7P11=45599,V8P10=117286,V9P9=88280,V10P8=226524,V11P7=96439,V12P6=0,V13P5=10595295,V14P4=12441915,V15P3=13175762,V16P2=91545,V17P1=0,V18P0=0
+CPU Stats	CPU Complex Performance States	DIE_0_PCPU1	24Mticks	state	IDLE=470080659,V0P18=200282,V1P17=889,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=10692756
+CPU Stats	CPU Complex Performance States	DIE_0_PCPM1	24Mticks	state	IDLE=0,V0P18=0,V1P17=1034786,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=3887748,V14P4=8703,V15P3=3235295,V16P2=0,V17P1=0,V18P0=0
+CPU Stats	CPU Complex Performance States	DIE_1_ECPU	24Mticks	state	IDLE=470194016,V0P5=4548293,V1P4=1101108,V2P3=1155443,V3P2=757163,V4P1=497644,V5P0=2722107
+CPU Stats	CPU Complex Performance States	DIE_1_ECPM	24Mticks	state	IDLE=0,V0P5=447434742,V1P4=4149048,V2P3=3573283,V3P2=3244114,V4P1=1376629,V5P0=21225202
+CPU Stats	CPU Complex Performance States	DIE_1_PCPU	24Mticks	state	IDLE=431236672,V0P18=215210,V1P17=0,V2P16=820,V3P15=2107,V4P14=83,V5P13=867,V6P12=0,V7P11=0,V8P10=22882,V9P9=0,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=49497609
+CPU Stats	CPU Complex Performance States	DIE_1_PCPM	24Mticks	state	IDLE=0,V0P18=0,V1P17=0,V2P16=0,V3P15=70834,V4P14=0,V5P13=0,V6P12=51212,V7P11=0,V8P10=0,V9P9=0,V10P8=0,V11P7=9725955,V12P6=12734830,V13P5=4324838,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=0
+CPU Stats	CPU Complex Performance States	DIE_1_PCPU1	24Mticks	state	IDLE=309967952,V0P18=130317,V1P17=581,V2P16=1560,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=0,V8P10=0,V9P9=597,V10P8=0,V11P7=0,V12P6=0,V13P5=0,V14P4=0,V15P3=589,V16P2=0,V17P1=0,V18P0=170876246
+CPU Stats	CPU Complex Performance States	DIE_1_PCPM1	24Mticks	state	IDLE=0,V0P18=0,V1P17=0,V2P16=0,V3P15=0,V4P14=0,V5P13=0,V6P12=0,V7P11=50871,V8P10=0,V9P9=0,V10P8=0,V11P7=28735111,V12P6=37158779,V13P5=6169696,V14P4=0,V15P3=0,V16P2=0,V17P1=0,V18P0=0
+SoC Stats	PMGR Counters	CLK0010		simple	246019160
+SoC Stats	PMGR Counters	CLK0020		simple	234669792
+SoC Stats	PMGR Counters	CLK0030		simple	245964224
+SoC Stats	PMGR Counters	CLK0040		simple	0
+SoC Stats	PMGR Counters	CLK0050		simple	0
+SoC Stats	PMGR Counters	CLK0060		simple	0
+SoC Stats	PMGR Counters	CLK0070		simple	234665736
+SoC Stats	PMGR Counters	CLK0080		simple	480977408
+SoC Stats	PMGR Counters	CLK0090		simple	0
+SoC Stats	PMGR Counters	CLK0100		simple	0
+SoC Stats	PMGR Counters	CLK0110		simple	0
+SoC Stats	PMGR Counters	CLK0120		simple	0
+SoC Stats	PMGR Counters	CLK0130		simple	0
+SoC Stats	PMGR Counters	CLK0140		simple	0
+SoC Stats	PMGR Counters	CLK0150		simple	0
+SoC Stats	PMGR Counters	CLK0160		simple	0
+SoC Stats	PMGR Counters	CLK0170		simple	480977472
+SoC Stats	PMGR Counters	CLK0180		simple	0
+SoC Stats	PMGR Counters	CLK0190		simple	209159448
+SoC Stats	PMGR Counters	CLK0200		simple	480977472
+SoC Stats	PMGR Counters	CLK0210		simple	480977472
+SoC Stats	PMGR Counters	CLK0220		simple	480977480
+SoC Stats	PMGR Counters	CLK0230		simple	0
+SoC Stats	PMGR Counters	CLK0240		simple	480977488
+SoC Stats	PMGR Counters	CLK0250		simple	480977488
+SoC Stats	PMGR Counters	CLK0260		simple	0
+SoC Stats	PMGR Counters	CLK0270		simple	0
+SoC Stats	PMGR Counters	CLK0280		simple	0
+SoC Stats	PMGR Counters	CLK0290		simple	0
+SoC Stats	PMGR Counters	CLK0300		simple	0
+SoC Stats	PMGR Counters	CLK0310		simple	0
+SoC Stats	PMGR Counters	CLK0320		simple	0
+SoC Stats	PMGR Counters	CLK0330		simple	0
+SoC Stats	PMGR Counters	CLK0340		simple	313822976
+SoC Stats	PMGR Counters	CLK0350		simple	44499672
+SoC Stats	PMGR Counters	CLK0360		simple	44499704
+SoC Stats	PMGR Counters	CLK0370		simple	44499736
+SoC Stats	PMGR Counters	CLK0380		simple	480977656
+SoC Stats	PMGR Counters	CLK0390		simple	44959264
+SoC Stats	PMGR Counters	CLK0400		simple	44959296
+SoC Stats	PMGR Counters	CLK0410		simple	480977664
+SoC Stats	PMGR Counters	CLK0420		simple	44959360
+SoC Stats	PMGR Counters	CLK0430		simple	44959392
+SoC Stats	PMGR Counters	CLK0460		simple	0
+SoC Stats	PMGR Counters	CLK0470		simple	455596160
+SoC Stats	PMGR Counters	CLK0480		simple	480820128
+SoC Stats	PMGR Counters	CLK0490		simple	463196880
+SoC Stats	PMGR Counters	CLK0500		simple	480977688
+SoC Stats	PMGR Counters	CLK0510		simple	480977688
+SoC Stats	PMGR Counters	CLK0520		simple	0
+SoC Stats	PMGR Counters	CLK0530		simple	0
+SoC Stats	PMGR Counters	CLK0540		simple	480977704
+SoC Stats	PMGR Counters	CLK0550		simple	480977704
+SoC Stats	PMGR Counters	CLK0560		simple	0
+SoC Stats	PMGR Counters	CLK0011		simple	480715152
+SoC Stats	PMGR Counters	CLK0021		simple	0
+SoC Stats	PMGR Counters	CLK0031		simple	480715232
+SoC Stats	PMGR Counters	CLK0041		simple	0
+SoC Stats	PMGR Counters	CLK0051		simple	0
+SoC Stats	PMGR Counters	CLK0061		simple	0
+SoC Stats	PMGR Counters	CLK0071		simple	0
+SoC Stats	PMGR Counters	CLK0081		simple	480988480
+SoC Stats	PMGR Counters	CLK0091		simple	0
+SoC Stats	PMGR Counters	CLK0101		simple	0
+SoC Stats	PMGR Counters	CLK0111		simple	0
+SoC Stats	PMGR Counters	CLK0121		simple	0
+SoC Stats	PMGR Counters	CLK0131		simple	0
+SoC Stats	PMGR Counters	CLK0141		simple	209196480
+SoC Stats	PMGR Counters	CLK0151		simple	0
+SoC Stats	PMGR Counters	CLK0161		simple	461552
+SoC Stats	PMGR Counters	CLK0171		simple	480988752
+SoC Stats	PMGR Counters	CLK0181		simple	0
+SoC Stats	PMGR Counters	CLK0191		simple	209196936
+SoC Stats	PMGR Counters	CLK0201		simple	0
+SoC Stats	PMGR Counters	CLK0211		simple	480988816
+SoC Stats	PMGR Counters	CLK0221		simple	480988840
+SoC Stats	PMGR Counters	CLK0231		simple	0
+SoC Stats	PMGR Counters	CLK0241		simple	480988872
+SoC Stats	PMGR Counters	CLK0251		simple	0
+SoC Stats	PMGR Counters	CLK0261		simple	0
+SoC Stats	PMGR Counters	CLK0271		simple	474299424
+SoC Stats	PMGR Counters	CLK0281		simple	0
+SoC Stats	PMGR Counters	CLK0291		simple	0
+SoC Stats	PMGR Counters	CLK0301		simple	0
+SoC Stats	PMGR Counters	CLK0311		simple	0
+SoC Stats	PMGR Counters	CLK0321		simple	0
+SoC Stats	PMGR Counters	CLK0331		simple	0
+SoC Stats	PMGR Counters	CLK0341		simple	71352
+SoC Stats	PMGR Counters	CLK0351		simple	0
+SoC Stats	PMGR Counters	CLK0361		simple	0
+SoC Stats	PMGR Counters	CLK0371		simple	0
+SoC Stats	PMGR Counters	CLK0381		simple	480989232
+SoC Stats	PMGR Counters	CLK0391		simple	44611136
+SoC Stats	PMGR Counters	CLK0401		simple	44611136
+SoC Stats	PMGR Counters	CLK0411		simple	480989328
+SoC Stats	PMGR Counters	CLK0421		simple	44611136
+SoC Stats	PMGR Counters	CLK0431		simple	44611136
+SoC Stats	PMGR Counters	CLK0461		simple	0
+SoC Stats	PMGR Counters	CLK0471		simple	455619928
+SoC Stats	PMGR Counters	CLK0481		simple	480831928
+SoC Stats	PMGR Counters	CLK0491		simple	463182848
+SoC Stats	PMGR Counters	CLK0501		simple	480989504
+SoC Stats	PMGR Counters	CLK0511		simple	480989520
+SoC Stats	PMGR Counters	CLK0521		simple	0
+SoC Stats	PMGR Counters	CLK0531		simple	0
+SoC Stats	PMGR Counters	CLK0541		simple	480989576
+SoC Stats	PMGR Counters	CLK0551		simple	480989600
+SoC Stats	PMGR Counters	CLK0561		simple	0
+SoC Stats	PMGR Counters	PWR0010		simple	56216392
+SoC Stats	PMGR Counters	PWR0020		simple	0
+SoC Stats	PMGR Counters	PWR0030		simple	480704424
+SoC Stats	PMGR Counters	PWR0040		simple	856056
+SoC Stats	PMGR Counters	PWR0050		simple	480704440
+SoC Stats	PMGR Counters	PWR0060		simple	244760624
+SoC Stats	PMGR Counters	PWR0070		simple	480704456
+SoC Stats	PMGR Counters	PWR0080		simple	480704464
+SoC Stats	PMGR Counters	PWR0090		simple	480704472
+SoC Stats	PMGR Counters	PWR0100		simple	480977816
+SoC Stats	PMGR Counters	PWR0110		simple	480977816
+SoC Stats	PMGR Counters	PWR0120		simple	480977808
+SoC Stats	PMGR Counters	PWR0130		simple	480977776
+SoC Stats	PMGR Counters	PWR0140		simple	480977784
+SoC Stats	PMGR Counters	PWR0150		simple	480977792
+SoC Stats	PMGR Counters	PWR0160		simple	480977800
+SoC Stats	PMGR Counters	PWR0170		simple	86432
+SoC Stats	PMGR Counters	PWR0180		simple	455568888
+SoC Stats	PMGR Counters	PWR0190		simple	0
+SoC Stats	PMGR Counters	PWR0200		simple	0
+SoC Stats	PMGR Counters	PWR0210		simple	0
+SoC Stats	PMGR Counters	PWR0220		simple	0
+SoC Stats	PMGR Counters	PWR0230		simple	0
+SoC Stats	PMGR Counters	PWR0240		simple	0
+SoC Stats	PMGR Counters	PWR0250		simple	0
+SoC Stats	PMGR Counters	PWR0260		simple	0
+SoC Stats	PMGR Counters	PWR0270		simple	0
+SoC Stats	PMGR Counters	PWR0280		simple	0
+SoC Stats	PMGR Counters	PWR0290		simple	480977896
+SoC Stats	PMGR Counters	PWR0300		simple	480977904
+SoC Stats	PMGR Counters	PWR0310		simple	0
+SoC Stats	PMGR Counters	PWR0320		simple	0
+SoC Stats	PMGR Counters	PWR0330		simple	480977920
+SoC Stats	PMGR Counters	PWR0340		simple	314363144
+SoC Stats	PMGR Counters	PWR0350		simple	480977928
+SoC Stats	PMGR Counters	PWR0360		simple	480977928
+SoC Stats	PMGR Counters	PWR0370		simple	480977928
+SoC Stats	PMGR Counters	PWR0380		simple	480977936
+SoC Stats	PMGR Counters	PWR0390		simple	480977936
+SoC Stats	PMGR Counters	PWR0400		simple	480977928
+SoC Stats	PMGR Counters	PWR0410		simple	480977936
+SoC Stats	PMGR Counters	PWR0420		simple	0
+SoC Stats	PMGR Counters	PWR0430		simple	0
+SoC Stats	PMGR Counters	PWR0440		simple	0
+SoC Stats	PMGR Counters	PWR0450		simple	0
+SoC Stats	PMGR Counters	PWR0460		simple	0
+SoC Stats	PMGR Counters	PWR0470		simple	0
+SoC Stats	PMGR Counters	PWR0480		simple	480977952
+SoC Stats	PMGR Counters	PWR0490		simple	0
+SoC Stats	PMGR Counters	PWR0500		simple	0
+SoC Stats	PMGR Counters	PWR0510		simple	480977960
+SoC Stats	PMGR Counters	PWR0520		simple	0
+SoC Stats	PMGR Counters	PWR0530		simple	480977976
+SoC Stats	PMGR Counters	PWR0540		simple	0
+SoC Stats	PMGR Counters	PWR0550		simple	480977984
+SoC Stats	PMGR Counters	PWR0560		simple	313575768
+SoC Stats	PMGR Counters	PWR0570		simple	44548936
+SoC Stats	PMGR Counters	PWR0580		simple	480977984
+SoC Stats	PMGR Counters	PWR0590		simple	480977992
+SoC Stats	PMGR Counters	PWR0600		simple	480977992
+SoC Stats	PMGR Counters	PWR0610		simple	480977992
+SoC Stats	PMGR Counters	PWR0620		simple	480978000
+SoC Stats	PMGR Counters	PWR0630		simple	480978000
+SoC Stats	PMGR Counters	PWR0640		simple	480978008
+SoC Stats	PMGR Counters	PWR0650		simple	480978016
+SoC Stats	PMGR Counters	PWR0660		simple	480978016
+SoC Stats	PMGR Counters	PWR0670		simple	480978024
+SoC Stats	PMGR Counters	PWR0680		simple	480978024
+SoC Stats	PMGR Counters	PWR0690		simple	480978024
+SoC Stats	PMGR Counters	PWR0700		simple	0
+SoC Stats	PMGR Counters	PWR0710		simple	0
+SoC Stats	PMGR Counters	PWR0720		simple	0
+SoC Stats	PMGR Counters	PWR0730		simple	0
+SoC Stats	PMGR Counters	PWR0740		simple	0
+SoC Stats	PMGR Counters	PWR0750		simple	0
+SoC Stats	PMGR Counters	PWR0760		simple	0
+SoC Stats	PMGR Counters	PWR0770		simple	0
+SoC Stats	PMGR Counters	PWR0780		simple	0
+SoC Stats	PMGR Counters	PWR0790		simple	0
+SoC Stats	PMGR Counters	PWR0800		simple	0
+SoC Stats	PMGR Counters	PWR0810		simple	0
+SoC Stats	PMGR Counters	PWR0820		simple	42609144
+SoC Stats	PMGR Counters	PWR0011		simple	5850720
+SoC Stats	PMGR Counters	PWR0021		simple	0
+SoC Stats	PMGR Counters	PWR0031		simple	480716640
+SoC Stats	PMGR Counters	PWR0041		simple	0
+SoC Stats	PMGR Counters	PWR0051		simple	480716712
+SoC Stats	PMGR Counters	PWR0061		simple	0
+SoC Stats	PMGR Counters	PWR0071		simple	480716792
+SoC Stats	PMGR Counters	PWR0081		simple	480716832
+SoC Stats	PMGR Counters	PWR0091		simple	480716872
+SoC Stats	PMGR Counters	PWR0101		simple	480989976
+SoC Stats	PMGR Counters	PWR0111		simple	480990016
+SoC Stats	PMGR Counters	PWR0121		simple	480990040
+SoC Stats	PMGR Counters	PWR0131		simple	480990064
+SoC Stats	PMGR Counters	PWR0141		simple	480990096
+SoC Stats	PMGR Counters	PWR0151		simple	480990128
+SoC Stats	PMGR Counters	PWR0161		simple	480990160
+SoC Stats	PMGR Counters	PWR0171		simple	480990184
+SoC Stats	PMGR Counters	PWR0181		simple	480990224
+SoC Stats	PMGR Counters	PWR0191		simple	480990248
+SoC Stats	PMGR Counters	PWR0201		simple	0
+SoC Stats	PMGR Counters	PWR0211		simple	0
+SoC Stats	PMGR Counters	PWR0221		simple	0
+SoC Stats	PMGR Counters	PWR0231		simple	0
+SoC Stats	PMGR Counters	PWR0241		simple	480990400
+SoC Stats	PMGR Counters	PWR0251		simple	480990424
+SoC Stats	PMGR Counters	PWR0261		simple	104648
+SoC Stats	PMGR Counters	PWR0271		simple	209942072
+SoC Stats	PMGR Counters	PWR0281		simple	480990512
+SoC Stats	PMGR Counters	PWR0291		simple	0
+SoC Stats	PMGR Counters	PWR0301		simple	0
+SoC Stats	PMGR Counters	PWR0311		simple	0
+SoC Stats	PMGR Counters	PWR0321		simple	0
+SoC Stats	PMGR Counters	PWR0331		simple	3881728
+SoC Stats	PMGR Counters	PWR0341		simple	36891832
+SoC Stats	PMGR Counters	PWR0351		simple	173058928
+SoC Stats	PMGR Counters	PWR0361		simple	480990744
+SoC Stats	PMGR Counters	PWR0371		simple	480990768
+SoC Stats	PMGR Counters	PWR0381		simple	480990800
+SoC Stats	PMGR Counters	PWR0391		simple	480990824
+SoC Stats	PMGR Counters	PWR0401		simple	480990848
+SoC Stats	PMGR Counters	PWR0411		simple	480990880
+SoC Stats	PMGR Counters	PWR0421		simple	0
+SoC Stats	PMGR Counters	PWR0431		simple	0
+SoC Stats	PMGR Counters	PWR0441		simple	0
+SoC Stats	PMGR Counters	PWR0451		simple	0
+SoC Stats	PMGR Counters	PWR0461		simple	0
+SoC Stats	PMGR Counters	PWR0471		simple	0
+SoC Stats	PMGR Counters	PWR0481		simple	0
+SoC Stats	PMGR Counters	PWR0491		simple	173006160
+SoC Stats	PMGR Counters	PWR0501		simple	0
+SoC Stats	PMGR Counters	PWR0511		simple	0
+SoC Stats	PMGR Counters	PWR0521		simple	7458416
+SoC Stats	PMGR Counters	PWR0531		simple	0
+SoC Stats	PMGR Counters	PWR0541		simple	0
+SoC Stats	PMGR Counters	PWR0551		simple	480991256
+SoC Stats	PMGR Counters	PWR0561		simple	0
+SoC Stats	PMGR Counters	PWR0571		simple	480991352
+SoC Stats	PMGR Counters	PWR0581		simple	480991384
+SoC Stats	PMGR Counters	PWR0591		simple	480991400
+SoC Stats	PMGR Counters	PWR0601		simple	480991424
+SoC Stats	PMGR Counters	PWR0611		simple	480991440
+SoC Stats	PMGR Counters	PWR0621		simple	480991464
+SoC Stats	PMGR Counters	PWR0631		simple	480991472
+SoC Stats	PMGR Counters	PWR0641		simple	480991496
+SoC Stats	PMGR Counters	PWR0651		simple	480991512
+SoC Stats	PMGR Counters	PWR0661		simple	480991536
+SoC Stats	PMGR Counters	PWR0671		simple	480991552
+SoC Stats	PMGR Counters	PWR0681		simple	480991568
+SoC Stats	PMGR Counters	PWR0691		simple	480991584
+SoC Stats	PMGR Counters	PWR0701		simple	0
+SoC Stats	PMGR Counters	PWR0711		simple	0
+SoC Stats	PMGR Counters	PWR0721		simple	0
+SoC Stats	PMGR Counters	PWR0731		simple	0
+SoC Stats	PMGR Counters	PWR0741		simple	0
+SoC Stats	PMGR Counters	PWR0751		simple	0
+SoC Stats	PMGR Counters	PWR0761		simple	0
+SoC Stats	PMGR Counters	PWR0771		simple	0
+SoC Stats	PMGR Counters	PWR0781		simple	0
+SoC Stats	PMGR Counters	PWR0791		simple	0
+SoC Stats	PMGR Counters	PWR0801		simple	0
+SoC Stats	PMGR Counters	PWR0811		simple	0
+SoC Stats	PMGR Counters	PWR0821		simple	42615240
+SoC Stats	PMGR Counters	EVT0080		simple	0
+SoC Stats	PMGR Counters	EVT0090		simple	0
+SoC Stats	PMGR Counters	EVT0100		simple	480978328
+SoC Stats	PMGR Counters	EVT0110		simple	0
+SoC Stats	PMGR Counters	EVT0120		simple	0
+SoC Stats	PMGR Counters	EVT0130		simple	0
+SoC Stats	PMGR Counters	EVT0140		simple	480978384
+SoC Stats	PMGR Counters	EVT0150		simple	0
+SoC Stats	PMGR Counters	EVT0160		simple	0
+SoC Stats	PMGR Counters	EVT0170		simple	0
+SoC Stats	PMGR Counters	EVT0180		simple	0
+SoC Stats	PMGR Counters	EVT0190		simple	0
+SoC Stats	PMGR Counters	EVT0200		simple	0
+SoC Stats	PMGR Counters	EVT0210		simple	0
+SoC Stats	PMGR Counters	EVT0220		simple	480978448
+SoC Stats	PMGR Counters	EVT0230		simple	0
+SoC Stats	PMGR Counters	EVT0240		simple	0
+SoC Stats	PMGR Counters	EVT0250		simple	0
+SoC Stats	PMGR Counters	EVT0260		simple	0
+SoC Stats	PMGR Counters	EVT0270		simple	0
+SoC Stats	PMGR Counters	EVT0300		simple	0
+SoC Stats	PMGR Counters	EVT0310		simple	0
+SoC Stats	PMGR Counters	EVT0320		simple	0
+SoC Stats	PMGR Counters	EVT0630		simple	0
+SoC Stats	PMGR Counters	EVT0640		simple	0
+SoC Stats	PMGR Counters	EVT0650		simple	0
+SoC Stats	PMGR Counters	EVT0660		simple	0
+SoC Stats	PMGR Counters	EVT0670		simple	0
+SoC Stats	PMGR Counters	EVT0680		simple	0
+SoC Stats	PMGR Counters	EVT0690		simple	0
+SoC Stats	PMGR Counters	EVT0700		simple	0
+SoC Stats	PMGR Counters	EVT0710		simple	0
+SoC Stats	PMGR Counters	EVT0720		simple	0
+SoC Stats	PMGR Counters	EVT0730		simple	0
+SoC Stats	PMGR Counters	EVT0740		simple	0
+SoC Stats	PMGR Counters	EVT0750		simple	0
+SoC Stats	PMGR Counters	EVT0760		simple	0
+SoC Stats	PMGR Counters	EVT0770		simple	480978904
+SoC Stats	PMGR Counters	EVT0780		simple	0
+SoC Stats	PMGR Counters	EVT0790		simple	0
+SoC Stats	PMGR Counters	EVT0800		simple	0
+SoC Stats	PMGR Counters	EVT0810		simple	0
+SoC Stats	PMGR Counters	EVT0820		simple	0
+SoC Stats	PMGR Counters	EVT0830		simple	0
+SoC Stats	PMGR Counters	EVT0840		simple	0
+SoC Stats	PMGR Counters	EVT0850		simple	0
+SoC Stats	PMGR Counters	EVT0860		simple	0
+SoC Stats	PMGR Counters	EVT0870		simple	0
+SoC Stats	PMGR Counters	EVT0880		simple	0
+SoC Stats	PMGR Counters	EVT0890		simple	0
+SoC Stats	PMGR Counters	EVT0900		simple	0
+SoC Stats	PMGR Counters	EVT0910		simple	0
+SoC Stats	PMGR Counters	EVT0920		simple	0
+SoC Stats	PMGR Counters	EVT0930		simple	0
+SoC Stats	PMGR Counters	EVT0940		simple	0
+SoC Stats	PMGR Counters	EVT0950		simple	0
+SoC Stats	PMGR Counters	EVT0960		simple	0
+SoC Stats	PMGR Counters	EVT0970		simple	0
+SoC Stats	PMGR Counters	EVT0980		simple	0
+SoC Stats	PMGR Counters	EVT0990		simple	0
+SoC Stats	PMGR Counters	EVT1000		simple	0
+SoC Stats	PMGR Counters	EVT1010		simple	0
+SoC Stats	PMGR Counters	EVT1150		simple	480979384
+SoC Stats	PMGR Counters	EVT1160		simple	480979384
+SoC Stats	PMGR Counters	EVT1170		simple	204208648
+SoC Stats	PMGR Counters	EVT1180		simple	480979400
+SoC Stats	PMGR Counters	EVT1190		simple	480979416
+SoC Stats	PMGR Counters	EVT1520		simple	0
+SoC Stats	PMGR Counters	EVT1530		simple	0
+SoC Stats	PMGR Counters	EVT1540		simple	480979776
+SoC Stats	PMGR Counters	EVT1550		simple	0
+SoC Stats	PMGR Counters	EVT1560		simple	209163888
+SoC Stats	PMGR Counters	EVT1570		simple	456028160
+SoC Stats	PMGR Counters	EVT1580		simple	474109024
+SoC Stats	PMGR Counters	EVT1590		simple	474106904
+SoC Stats	PMGR Counters	EVT1600		simple	474112504
+SoC Stats	PMGR Counters	EVT1610		simple	474112400
+SoC Stats	PMGR Counters	EVT1620		simple	430969824
+SoC Stats	PMGR Counters	EVT1630		simple	436003208
+SoC Stats	PMGR Counters	EVT1640		simple	450198488
+SoC Stats	PMGR Counters	EVT1650		simple	452036624
+SoC Stats	PMGR Counters	EVT1660		simple	452038312
+SoC Stats	PMGR Counters	EVT1670		simple	452038000
+SoC Stats	PMGR Counters	EVT1680		simple	452036528
+SoC Stats	PMGR Counters	EVT1750		simple	0
+SoC Stats	PMGR Counters	EVT1760		simple	0
+SoC Stats	PMGR Counters	EVT1770		simple	480980104
+SoC Stats	PMGR Counters	EVT1780		simple	0
+SoC Stats	PMGR Counters	EVT1790		simple	0
+SoC Stats	PMGR Counters	EVT1800		simple	0
+SoC Stats	PMGR Counters	EVT1810		simple	480980136
+SoC Stats	PMGR Counters	EVT1820		simple	0
+SoC Stats	PMGR Counters	EVT1830		simple	0
+SoC Stats	PMGR Counters	EVT1840		simple	0
+SoC Stats	PMGR Counters	EVT1850		simple	480980160
+SoC Stats	PMGR Counters	EVT1860		simple	0
+SoC Stats	PMGR Counters	EVT1870		simple	0
+SoC Stats	PMGR Counters	EVT1880		simple	0
+SoC Stats	PMGR Counters	EVT1890		simple	480980192
+SoC Stats	PMGR Counters	EVT1900		simple	0
+SoC Stats	PMGR Counters	EVT1910		simple	0
+SoC Stats	PMGR Counters	EVT1920		simple	0
+SoC Stats	PMGR Counters	EVT1930		simple	480980216
+SoC Stats	PMGR Counters	EVT1940		simple	0
+SoC Stats	PMGR Counters	EVT1950		simple	456028456
+SoC Stats	PMGR Counters	EVT1960		simple	474109424
+SoC Stats	PMGR Counters	EVT1970		simple	474107232
+SoC Stats	PMGR Counters	EVT1980		simple	474112872
+SoC Stats	PMGR Counters	EVT1990		simple	474112704
+SoC Stats	PMGR Counters	EVT2000		simple	0
+SoC Stats	PMGR Counters	EVT2010		simple	0
+SoC Stats	PMGR Counters	EVT2020		simple	0
+SoC Stats	PMGR Counters	EVT2240		simple	0
+SoC Stats	PMGR Counters	EVT2250		simple	0
+SoC Stats	PMGR Counters	EVT0081		simple	0
+SoC Stats	PMGR Counters	EVT0091		simple	0
+SoC Stats	PMGR Counters	EVT0101		simple	480992624
+SoC Stats	PMGR Counters	EVT0111		simple	0
+SoC Stats	PMGR Counters	EVT0121		simple	0
+SoC Stats	PMGR Counters	EVT0131		simple	0
+SoC Stats	PMGR Counters	EVT0141		simple	480992752
+SoC Stats	PMGR Counters	EVT0151		simple	0
+SoC Stats	PMGR Counters	EVT0161		simple	0
+SoC Stats	PMGR Counters	EVT0171		simple	0
+SoC Stats	PMGR Counters	EVT0181		simple	0
+SoC Stats	PMGR Counters	EVT0191		simple	0
+SoC Stats	PMGR Counters	EVT0201		simple	0
+SoC Stats	PMGR Counters	EVT0211		simple	0
+SoC Stats	PMGR Counters	EVT0221		simple	480993008
+SoC Stats	PMGR Counters	EVT0231		simple	0
+SoC Stats	PMGR Counters	EVT0241		simple	0
+SoC Stats	PMGR Counters	EVT0251		simple	0
+SoC Stats	PMGR Counters	EVT0261		simple	0
+SoC Stats	PMGR Counters	EVT0271		simple	0
+SoC Stats	PMGR Counters	EVT0301		simple	0
+SoC Stats	PMGR Counters	EVT0311		simple	0
+SoC Stats	PMGR Counters	EVT0321		simple	0
+SoC Stats	PMGR Counters	EVT0631		simple	0
+SoC Stats	PMGR Counters	EVT0641		simple	0
+SoC Stats	PMGR Counters	EVT0651		simple	0
+SoC Stats	PMGR Counters	EVT0661		simple	0
+SoC Stats	PMGR Counters	EVT0671		simple	0
+SoC Stats	PMGR Counters	EVT0681		simple	0
+SoC Stats	PMGR Counters	EVT0691		simple	0
+SoC Stats	PMGR Counters	EVT0701		simple	0
+SoC Stats	PMGR Counters	EVT0711		simple	0
+SoC Stats	PMGR Counters	EVT0721		simple	0
+SoC Stats	PMGR Counters	EVT0731		simple	0
+SoC Stats	PMGR Counters	EVT0741		simple	0
+SoC Stats	PMGR Counters	EVT0751		simple	0
+SoC Stats	PMGR Counters	EVT0761		simple	0
+SoC Stats	PMGR Counters	EVT0771		simple	480995710
+SoC Stats	PMGR Counters	EVT0781		simple	0
+SoC Stats	PMGR Counters	EVT0791		simple	0
+SoC Stats	PMGR Counters	EVT0801		simple	0
+SoC Stats	PMGR Counters	EVT0811		simple	0
+SoC Stats	PMGR Counters	EVT0821		simple	0
+SoC Stats	PMGR Counters	EVT0831		simple	0
+SoC Stats	PMGR Counters	EVT0841		simple	0
+SoC Stats	PMGR Counters	EVT0851		simple	0
+SoC Stats	PMGR Counters	EVT0861		simple	0
+SoC Stats	PMGR Counters	EVT0871		simple	0
+SoC Stats	PMGR Counters	EVT0881		simple	0
+SoC Stats	PMGR Counters	EVT0891		simple	0
+SoC Stats	PMGR Counters	EVT0901		simple	0
+SoC Stats	PMGR Counters	EVT0911		simple	0
+SoC Stats	PMGR Counters	EVT0921		simple	0
+SoC Stats	PMGR Counters	EVT0931		simple	0
+SoC Stats	PMGR Counters	EVT0941		simple	0
+SoC Stats	PMGR Counters	EVT0951		simple	0
+SoC Stats	PMGR Counters	EVT0961		simple	0
+SoC Stats	PMGR Counters	EVT0971		simple	0
+SoC Stats	PMGR Counters	EVT0981		simple	0
+SoC Stats	PMGR Counters	EVT0991		simple	0
+SoC Stats	PMGR Counters	EVT1001		simple	0
+SoC Stats	PMGR Counters	EVT1011		simple	0
+SoC Stats	PMGR Counters	EVT1151		simple	480997328
+SoC Stats	PMGR Counters	EVT1161		simple	480997368
+SoC Stats	PMGR Counters	EVT1171		simple	204250936
+SoC Stats	PMGR Counters	EVT1181		simple	0
+SoC Stats	PMGR Counters	EVT1191		simple	480997464
+SoC Stats	PMGR Counters	EVT1521		simple	0
+SoC Stats	PMGR Counters	EVT1531		simple	0
+SoC Stats	PMGR Counters	EVT1541		simple	480999424
+SoC Stats	PMGR Counters	EVT1551		simple	0
+SoC Stats	PMGR Counters	EVT1561		simple	209208928
+SoC Stats	PMGR Counters	EVT1571		simple	456045368
+SoC Stats	PMGR Counters	EVT1581		simple	456459840
+SoC Stats	PMGR Counters	EVT1591		simple	456472200
+SoC Stats	PMGR Counters	EVT1601		simple	474103240
+SoC Stats	PMGR Counters	EVT1611		simple	456400896
+SoC Stats	PMGR Counters	EVT1621		simple	436240072
+SoC Stats	PMGR Counters	EVT1631		simple	436317696
+SoC Stats	PMGR Counters	EVT1641		simple	450219248
+SoC Stats	PMGR Counters	EVT1651		simple	452058240
+SoC Stats	PMGR Counters	EVT1661		simple	452059736
+SoC Stats	PMGR Counters	EVT1671		simple	452059280
+SoC Stats	PMGR Counters	EVT1681		simple	452058024
+SoC Stats	PMGR Counters	EVT1751		simple	0
+SoC Stats	PMGR Counters	EVT1761		simple	0
+SoC Stats	PMGR Counters	EVT1771		simple	0
+SoC Stats	PMGR Counters	EVT1781		simple	0
+SoC Stats	PMGR Counters	EVT1791		simple	0
+SoC Stats	PMGR Counters	EVT1801		simple	0
+SoC Stats	PMGR Counters	EVT1811		simple	0
+SoC Stats	PMGR Counters	EVT1821		simple	0
+SoC Stats	PMGR Counters	EVT1831		simple	0
+SoC Stats	PMGR Counters	EVT1841		simple	0
+SoC Stats	PMGR Counters	EVT1851		simple	0
+SoC Stats	PMGR Counters	EVT1861		simple	0
+SoC Stats	PMGR Counters	EVT1871		simple	0
+SoC Stats	PMGR Counters	EVT1881		simple	0
+SoC Stats	PMGR Counters	EVT1891		simple	0
+SoC Stats	PMGR Counters	EVT1901		simple	0
+SoC Stats	PMGR Counters	EVT1911		simple	0
+SoC Stats	PMGR Counters	EVT1921		simple	0
+SoC Stats	PMGR Counters	EVT1931		simple	0
+SoC Stats	PMGR Counters	EVT1941		simple	0
+SoC Stats	PMGR Counters	EVT1951		simple	456047200
+SoC Stats	PMGR Counters	EVT1961		simple	456461544
+SoC Stats	PMGR Counters	EVT1971		simple	456474048
+SoC Stats	PMGR Counters	EVT1981		simple	474105216
+SoC Stats	PMGR Counters	EVT1991		simple	456402736
+SoC Stats	PMGR Counters	EVT2001		simple	0
+SoC Stats	PMGR Counters	EVT2011		simple	0
+SoC Stats	PMGR Counters	EVT2021		simple	0
+SoC Stats	PMGR Counters	EVT2241		simple	0
+SoC Stats	PMGR Counters	EVT2251		simple	0
+SoC Stats	PMGR Counters	DEV0160		simple	0
+SoC Stats	PMGR Counters	DEV0190		simple	0
+SoC Stats	PMGR Counters	DEV0290		simple	0
+SoC Stats	PMGR Counters	DEV0300		simple	0
+SoC Stats	PMGR Counters	DEV0310		simple	0
+SoC Stats	PMGR Counters	DEV0320		simple	0
+SoC Stats	PMGR Counters	DEV0330		simple	0
+SoC Stats	PMGR Counters	DEV0340		simple	0
+SoC Stats	PMGR Counters	DEV0350		simple	0
+SoC Stats	PMGR Counters	DEV0360		simple	0
+SoC Stats	PMGR Counters	DEV0370		simple	0
+SoC Stats	PMGR Counters	DEV0380		simple	0
+SoC Stats	PMGR Counters	DEV0390		simple	480883416
+SoC Stats	PMGR Counters	DEV0400		simple	0
+SoC Stats	PMGR Counters	DEV0410		simple	0
+SoC Stats	PMGR Counters	DEV0420		simple	148619992
+SoC Stats	PMGR Counters	DEV0430		simple	149386088
+SoC Stats	PMGR Counters	DEV0440		simple	149305400
+SoC Stats	PMGR Counters	DEV0450		simple	22537176
+SoC Stats	PMGR Counters	DEV0460		simple	480900760
+SoC Stats	PMGR Counters	DEV0470		simple	34524880
+SoC Stats	PMGR Counters	DEV0480		simple	480969936
+SoC Stats	PMGR Counters	DEV0490		simple	480901680
+SoC Stats	PMGR Counters	DEV0500		simple	480969992
+SoC Stats	PMGR Counters	DEV0510		simple	35244320
+SoC Stats	PMGR Counters	DEV0580		simple	104542032
+SoC Stats	PMGR Counters	DEV0600		simple	480975984
+SoC Stats	PMGR Counters	DEV0610		simple	480975992
+SoC Stats	PMGR Counters	DEV0710		simple	480976008
+SoC Stats	PMGR Counters	DEV0730		simple	0
+SoC Stats	PMGR Counters	DEV0740		simple	0
+SoC Stats	PMGR Counters	DEV0750		simple	480976040
+SoC Stats	PMGR Counters	DEV0760		simple	480976056
+SoC Stats	PMGR Counters	DEV0860		simple	480976064
+SoC Stats	PMGR Counters	DEV0870		simple	480976072
+SoC Stats	PMGR Counters	DEV0880		simple	480976080
+SoC Stats	PMGR Counters	DEV0890		simple	480976104
+SoC Stats	PMGR Counters	DEV0910		simple	480976112
+SoC Stats	PMGR Counters	DEV0920		simple	480976120
+SoC Stats	PMGR Counters	DEV0930		simple	480976128
+SoC Stats	PMGR Counters	DEV0940		simple	480976144
+SoC Stats	PMGR Counters	DEV1190		simple	463905208
+SoC Stats	PMGR Counters	DEV1200		simple	471386376
+SoC Stats	PMGR Counters	DEV1210		simple	471755072
+SoC Stats	PMGR Counters	DEV1220		simple	473524232
+SoC Stats	PMGR Counters	DEV1230		simple	472697112
+SoC Stats	PMGR Counters	DEV1280		simple	0
+SoC Stats	PMGR Counters	DEV1290		simple	0
+SoC Stats	PMGR Counters	DEV1300		simple	0
+SoC Stats	PMGR Counters	DEV1310		simple	0
+SoC Stats	PMGR Counters	DEV1320		simple	0
+SoC Stats	PMGR Counters	DEV1330		simple	480976264
+SoC Stats	PMGR Counters	DEV1340		simple	0
+SoC Stats	PMGR Counters	DEV1350		simple	166474824
+SoC Stats	PMGR Counters	DEV1360		simple	166949072
+SoC Stats	PMGR Counters	DEV1370		simple	166949128
+SoC Stats	PMGR Counters	DEV1400		simple	480976304
+SoC Stats	PMGR Counters	DEV1420		simple	480976304
+SoC Stats	PMGR Counters	DEV1440		simple	480852536
+SoC Stats	PMGR Counters	DEV1480		simple	480907424
+SoC Stats	PMGR Counters	DEV1620		simple	480976352
+SoC Stats	PMGR Counters	DEV1630		simple	480976344
+SoC Stats	PMGR Counters	DEV1640		simple	480976368
+SoC Stats	PMGR Counters	DEV1730		simple	480976368
+SoC Stats	PMGR Counters	DEV1740		simple	480976384
+SoC Stats	PMGR Counters	DEV1750		simple	480976392
+SoC Stats	PMGR Counters	DEV1760		simple	480976400
+SoC Stats	PMGR Counters	DEV1770		simple	480976408
+SoC Stats	PMGR Counters	DEV1780		simple	480976416
+SoC Stats	PMGR Counters	DEV2750		simple	0
+SoC Stats	PMGR Counters	DEV2760		simple	0
+SoC Stats	PMGR Counters	DEV2770		simple	0
+SoC Stats	PMGR Counters	DEV2780		simple	0
+SoC Stats	PMGR Counters	DEV2790		simple	0
+SoC Stats	PMGR Counters	DEV2800		simple	0
+SoC Stats	PMGR Counters	DEV2810		simple	0
+SoC Stats	PMGR Counters	DEV2820		simple	0
+SoC Stats	PMGR Counters	DEV2830		simple	0
+SoC Stats	PMGR Counters	DEV2840		simple	0
+SoC Stats	PMGR Counters	DEV2980		simple	480976536
+SoC Stats	PMGR Counters	DEV2990		simple	480976536
+SoC Stats	PMGR Counters	DEV3020		simple	0
+SoC Stats	PMGR Counters	DEV3040		simple	480976552
+SoC Stats	PMGR Counters	DEV3050		simple	480976568
+SoC Stats	PMGR Counters	DEV3060		simple	0
+SoC Stats	PMGR Counters	DEV3070		simple	480976584
+SoC Stats	PMGR Counters	DEV3080		simple	0
+SoC Stats	PMGR Counters	DEV3090		simple	0
+SoC Stats	PMGR Counters	DEV3230		simple	0
+SoC Stats	PMGR Counters	DEV3240		simple	0
+SoC Stats	PMGR Counters	DEV3250		simple	0
+SoC Stats	PMGR Counters	DEV3260		simple	0
+SoC Stats	PMGR Counters	DEV3270		simple	0
+SoC Stats	PMGR Counters	DEV3280		simple	0
+SoC Stats	PMGR Counters	DEV3290		simple	0
+SoC Stats	PMGR Counters	DEV3300		simple	0
+SoC Stats	PMGR Counters	DEV3310		simple	0
+SoC Stats	PMGR Counters	DEV3320		simple	0
+SoC Stats	PMGR Counters	DEV3330		simple	0
+SoC Stats	PMGR Counters	DEV3340		simple	0
+SoC Stats	PMGR Counters	DEV3350		simple	0
+SoC Stats	PMGR Counters	DEV3360		simple	0
+SoC Stats	PMGR Counters	DEV3370		simple	0
+SoC Stats	PMGR Counters	DEV3380		simple	0
+SoC Stats	PMGR Counters	DEV3390		simple	0
+SoC Stats	PMGR Counters	DEV3400		simple	0
+SoC Stats	PMGR Counters	DEV3410		simple	0
+SoC Stats	PMGR Counters	DEV3420		simple	0
+SoC Stats	PMGR Counters	DEV3430		simple	480976856
+SoC Stats	PMGR Counters	DEV3440		simple	480976864
+SoC Stats	PMGR Counters	DEV3450		simple	480976880
+SoC Stats	PMGR Counters	DEV3460		simple	480976880
+SoC Stats	PMGR Counters	DEV3470		simple	480976896
+SoC Stats	PMGR Counters	DEV3480		simple	480976896
+SoC Stats	PMGR Counters	DEV3500		simple	480976912
+SoC Stats	PMGR Counters	DEV3520		simple	480976920
+SoC Stats	PMGR Counters	DEV3550		simple	480976928
+SoC Stats	PMGR Counters	DEV3560		simple	480976912
+SoC Stats	PMGR Counters	DEV3570		simple	480976912
+SoC Stats	PMGR Counters	DEV3580		simple	480976920
+SoC Stats	PMGR Counters	DEV3600		simple	480976928
+SoC Stats	PMGR Counters	DEV3620		simple	480976936
+SoC Stats	PMGR Counters	DEV3640		simple	480976952
+SoC Stats	PMGR Counters	DEV3650		simple	480976952
+SoC Stats	PMGR Counters	DEV3660		simple	480976968
+SoC Stats	PMGR Counters	DEV3670		simple	480976976
+SoC Stats	PMGR Counters	DEV3720		simple	437774992
+SoC Stats	PMGR Counters	DEV3730		simple	437791584
+SoC Stats	PMGR Counters	DEV3790		simple	167153512
+SoC Stats	PMGR Counters	DEV3800		simple	436135880
+SoC Stats	PMGR Counters	DEV3810		simple	440371360
+SoC Stats	PMGR Counters	DEV3840		simple	0
+SoC Stats	PMGR Counters	DEV3850		simple	459330776
+SoC Stats	PMGR Counters	DEV3860		simple	439472320
+SoC Stats	PMGR Counters	DEV3870		simple	466893152
+SoC Stats	PMGR Counters	DEV3900		simple	396498120
+SoC Stats	PMGR Counters	DEV3960		simple	480703864
+SoC Stats	PMGR Counters	DEV3970		simple	0
+SoC Stats	PMGR Counters	DEV4120		simple	0
+SoC Stats	PMGR Counters	DEV4140		simple	0
+SoC Stats	PMGR Counters	DEV4160		simple	480703888
+SoC Stats	PMGR Counters	DEV4180		simple	480703896
+SoC Stats	PMGR Counters	DEV4200		simple	479802304
+SoC Stats	PMGR Counters	DEV4250		simple	0
+SoC Stats	PMGR Counters	DEV4260		simple	0
+SoC Stats	PMGR Counters	DEV4270		simple	0
+SoC Stats	PMGR Counters	DEV4280		simple	0
+SoC Stats	PMGR Counters	DEV4360		simple	0
+SoC Stats	PMGR Counters	DEV4390		simple	0
+SoC Stats	PMGR Counters	DEV4410		simple	480703944
+SoC Stats	PMGR Counters	DEV4550		simple	235496128
+SoC Stats	PMGR Counters	DEV0161		simple	0
+SoC Stats	PMGR Counters	DEV0191		simple	0
+SoC Stats	PMGR Counters	DEV0291		simple	0
+SoC Stats	PMGR Counters	DEV0301		simple	0
+SoC Stats	PMGR Counters	DEV0311		simple	0
+SoC Stats	PMGR Counters	DEV0321		simple	0
+SoC Stats	PMGR Counters	DEV0331		simple	0
+SoC Stats	PMGR Counters	DEV0341		simple	0
+SoC Stats	PMGR Counters	DEV0351		simple	0
+SoC Stats	PMGR Counters	DEV0361		simple	0
+SoC Stats	PMGR Counters	DEV0371		simple	0
+SoC Stats	PMGR Counters	DEV0381		simple	0
+SoC Stats	PMGR Counters	DEV0391		simple	0
+SoC Stats	PMGR Counters	DEV0401		simple	0
+SoC Stats	PMGR Counters	DEV0411		simple	0
+SoC Stats	PMGR Counters	DEV0421		simple	148653800
+SoC Stats	PMGR Counters	DEV0431		simple	149319824
+SoC Stats	PMGR Counters	DEV0441		simple	149396000
+SoC Stats	PMGR Counters	DEV0451		simple	0
+SoC Stats	PMGR Counters	DEV0461		simple	0
+SoC Stats	PMGR Counters	DEV0471		simple	0
+SoC Stats	PMGR Counters	DEV0481		simple	480980840
+SoC Stats	PMGR Counters	DEV0491		simple	479418744
+SoC Stats	PMGR Counters	DEV0501		simple	0
+SoC Stats	PMGR Counters	DEV0511		simple	0
+SoC Stats	PMGR Counters	DEV0581		simple	227434648
+SoC Stats	PMGR Counters	DEV0601		simple	480981016
+SoC Stats	PMGR Counters	DEV0611		simple	480981048
+SoC Stats	PMGR Counters	DEV0711		simple	428000600
+SoC Stats	PMGR Counters	DEV0731		simple	480981120
+SoC Stats	PMGR Counters	DEV0741		simple	480981160
+SoC Stats	PMGR Counters	DEV0751		simple	480956976
+SoC Stats	PMGR Counters	DEV0761		simple	480981232
+SoC Stats	PMGR Counters	DEV0861		simple	0
+SoC Stats	PMGR Counters	DEV0871		simple	480594192
+SoC Stats	PMGR Counters	DEV0881		simple	270951624
+SoC Stats	PMGR Counters	DEV0891		simple	0
+SoC Stats	PMGR Counters	DEV0911		simple	480981400
+SoC Stats	PMGR Counters	DEV0921		simple	480981440
+SoC Stats	PMGR Counters	DEV0931		simple	480981472
+SoC Stats	PMGR Counters	DEV0941		simple	480981512
+SoC Stats	PMGR Counters	DEV1191		simple	453863320
+SoC Stats	PMGR Counters	DEV1201		simple	470350568
+SoC Stats	PMGR Counters	DEV1211		simple	470087656
+SoC Stats	PMGR Counters	DEV1221		simple	472211288
+SoC Stats	PMGR Counters	DEV1231		simple	471298120
+SoC Stats	PMGR Counters	DEV1281		simple	307915112
+SoC Stats	PMGR Counters	DEV1291		simple	307955304
+SoC Stats	PMGR Counters	DEV1301		simple	307957064
+SoC Stats	PMGR Counters	DEV1311		simple	476646584
+SoC Stats	PMGR Counters	DEV1321		simple	478334288
+SoC Stats	PMGR Counters	DEV1331		simple	480527968
+SoC Stats	PMGR Counters	DEV1341		simple	478458736
+SoC Stats	PMGR Counters	DEV1351		simple	443540160
+SoC Stats	PMGR Counters	DEV1361		simple	444257640
+SoC Stats	PMGR Counters	DEV1371		simple	444267016
+SoC Stats	PMGR Counters	DEV1401		simple	307967144
+SoC Stats	PMGR Counters	DEV1421		simple	480982056
+SoC Stats	PMGR Counters	DEV1441		simple	477732088
+SoC Stats	PMGR Counters	DEV1481		simple	477763096
+SoC Stats	PMGR Counters	DEV1621		simple	480982152
+SoC Stats	PMGR Counters	DEV1631		simple	480982184
+SoC Stats	PMGR Counters	DEV1641		simple	480982216
+SoC Stats	PMGR Counters	DEV1731		simple	480982248
+SoC Stats	PMGR Counters	DEV1741		simple	480982280
+SoC Stats	PMGR Counters	DEV1751		simple	480982312
+SoC Stats	PMGR Counters	DEV1761		simple	480982344
+SoC Stats	PMGR Counters	DEV1771		simple	480982376
+SoC Stats	PMGR Counters	DEV1781		simple	480982408
+SoC Stats	PMGR Counters	DEV2751		simple	0
+SoC Stats	PMGR Counters	DEV2761		simple	0
+SoC Stats	PMGR Counters	DEV2771		simple	0
+SoC Stats	PMGR Counters	DEV2781		simple	0
+SoC Stats	PMGR Counters	DEV2791		simple	0
+SoC Stats	PMGR Counters	DEV2801		simple	0
+SoC Stats	PMGR Counters	DEV2811		simple	0
+SoC Stats	PMGR Counters	DEV2821		simple	0
+SoC Stats	PMGR Counters	DEV2831		simple	0
+SoC Stats	PMGR Counters	DEV2841		simple	0
+SoC Stats	PMGR Counters	DEV2981		simple	480982752
+SoC Stats	PMGR Counters	DEV2991		simple	480982784
+SoC Stats	PMGR Counters	DEV3021		simple	480982824
+SoC Stats	PMGR Counters	DEV3041		simple	474750936
+SoC Stats	PMGR Counters	DEV3051		simple	475251080
+SoC Stats	PMGR Counters	DEV3061		simple	480982912
+SoC Stats	PMGR Counters	DEV3071		simple	480982944
+SoC Stats	PMGR Counters	DEV3081		simple	474301696
+SoC Stats	PMGR Counters	DEV3091		simple	480983008
+SoC Stats	PMGR Counters	DEV3231		simple	0
+SoC Stats	PMGR Counters	DEV3241		simple	0
+SoC Stats	PMGR Counters	DEV3251		simple	0
+SoC Stats	PMGR Counters	DEV3261		simple	0
+SoC Stats	PMGR Counters	DEV3271		simple	0
+SoC Stats	PMGR Counters	DEV3281		simple	0
+SoC Stats	PMGR Counters	DEV3291		simple	0
+SoC Stats	PMGR Counters	DEV3301		simple	0
+SoC Stats	PMGR Counters	DEV3311		simple	0
+SoC Stats	PMGR Counters	DEV3321		simple	0
+SoC Stats	PMGR Counters	DEV3331		simple	0
+SoC Stats	PMGR Counters	DEV3341		simple	0
+SoC Stats	PMGR Counters	DEV3351		simple	0
+SoC Stats	PMGR Counters	DEV3361		simple	0
+SoC Stats	PMGR Counters	DEV3371		simple	0
+SoC Stats	PMGR Counters	DEV3381		simple	0
+SoC Stats	PMGR Counters	DEV3391		simple	0
+SoC Stats	PMGR Counters	DEV3401		simple	0
+SoC Stats	PMGR Counters	DEV3411		simple	0
+SoC Stats	PMGR Counters	DEV3421		simple	0
+SoC Stats	PMGR Counters	DEV3431		simple	480983520
+SoC Stats	PMGR Counters	DEV3441		simple	480983544
+SoC Stats	PMGR Counters	DEV3451		simple	480983568
+SoC Stats	PMGR Counters	DEV3461		simple	480983584
+SoC Stats	PMGR Counters	DEV3471		simple	480983608
+SoC Stats	PMGR Counters	DEV3481		simple	480983632
+SoC Stats	PMGR Counters	DEV3501		simple	480983656
+SoC Stats	PMGR Counters	DEV3521		simple	480983688
+SoC Stats	PMGR Counters	DEV3551		simple	480983704
+SoC Stats	PMGR Counters	DEV3561		simple	480983728
+SoC Stats	PMGR Counters	DEV3571		simple	480983752
+SoC Stats	PMGR Counters	DEV3581		simple	480983776
+SoC Stats	PMGR Counters	DEV3601		simple	480983792
+SoC Stats	PMGR Counters	DEV3621		simple	480983824
+SoC Stats	PMGR Counters	DEV3641		simple	480983848
+SoC Stats	PMGR Counters	DEV3651		simple	480983872
+SoC Stats	PMGR Counters	DEV3661		simple	480983888
+SoC Stats	PMGR Counters	DEV3671		simple	480983912
+SoC Stats	PMGR Counters	DEV3721		simple	437789464
+SoC Stats	PMGR Counters	DEV3731		simple	437770936
+SoC Stats	PMGR Counters	DEV3791		simple	480916344
+SoC Stats	PMGR Counters	DEV3801		simple	436846472
+SoC Stats	PMGR Counters	DEV3811		simple	480984104
+SoC Stats	PMGR Counters	DEV3841		simple	0
+SoC Stats	PMGR Counters	DEV3851		simple	473532248
+SoC Stats	PMGR Counters	DEV3861		simple	455888680
+SoC Stats	PMGR Counters	DEV3871		simple	476669904
+SoC Stats	PMGR Counters	DEV3901		simple	470939320
+SoC Stats	PMGR Counters	DEV3961		simple	480712096
+SoC Stats	PMGR Counters	DEV3971		simple	0
+SoC Stats	PMGR Counters	DEV4121		simple	0
+SoC Stats	PMGR Counters	DEV4141		simple	480712704
+SoC Stats	PMGR Counters	DEV4161		simple	480712912
+SoC Stats	PMGR Counters	DEV4181		simple	480713112
+SoC Stats	PMGR Counters	DEV4201		simple	480713320
+SoC Stats	PMGR Counters	DEV4251		simple	480713520
+SoC Stats	PMGR Counters	DEV4261		simple	480713728
+SoC Stats	PMGR Counters	DEV4271		simple	480713928
+SoC Stats	PMGR Counters	DEV4281		simple	480714136
+SoC Stats	PMGR Counters	DEV4361		simple	480714336
+SoC Stats	PMGR Counters	DEV4391		simple	0
+SoC Stats	PMGR Counters	DEV4411		simple	0
+SoC Stats	PMGR Counters	DEV4551		simple	480714952
+SoC Stats	Events	SLP_DDR	24Mticks	state	INACT=480981896,ACT=0
+SoC Stats	Events	AWAKE	24Mticks	state	INACT=277051,ACT=480704880
+SoC Stats	Events	SLP_S2R	24Mticks	state	INACT=480981945,ACT=0
+SoC Stats	Events	DIE_0_DEEP_WAIT	24Mticks	state	INACT=480981962,ACT=0
+SoC Stats	Events	DIE_0_SYS_AWAKE	24Mticks	state	INACT=277050,ACT=480704928
+SoC Stats	Events	DIE_0_SYS_S2R_AOP	24Mticks	state	INACT=480981994,ACT=0
+SoC Stats	Events	DIE_0_SYS_SLP_DDR	24Mticks	state	INACT=480982010,ACT=0
+SoC Stats	Events	DIE_0_SOCHOT0	24Mticks	state	INACT=480982218,ACT=0
+SoC Stats	Events	DIE_0_SOCHOT1	24Mticks	state	INACT=480982229,ACT=0
+SoC Stats	Events	DIE_0_ECPU_ADCLK_TRG	24Mticks	state	INACT=480982267,ACT=0
+SoC Stats	Events	DIE_0_PCPU0_ADCLK_TRG	24Mticks	state	INACT=480982286,ACT=0
+SoC Stats	Events	DIE_0_PCPU1_ADCLK_TRG	24Mticks	state	INACT=480982296,ACT=0
+SoC Stats	Events	DIE_0_FAB_ADCLK_TRG	24Mticks	state	INACT=480982255,ACT=0
+SoC Stats	Events	DIE_0_AFR_ADCLK_TRG	24Mticks	state	INACT=480982267,ACT=0
+SoC Stats	Events	DIE_0_C1PPT_ADCLK_TRG	24Mticks	state	INACT=480982276,ACT=0
+SoC Stats	Events	DIE_0_ECPU_DITHR_TRG	24Mticks	state	INACT=480982278,ACT=0
+SoC Stats	Events	DIE_0_PCPU0_DITHR_TRG	24Mticks	state	INACT=480982289,ACT=0
+SoC Stats	Events	DIE_0_PCPU1_DITHR_TRG	24Mticks	state	INACT=480982301,ACT=0
+SoC Stats	Events	DIE_0_FAB_DITHR_TRG	24Mticks	state	INACT=480982312,ACT=0
+SoC Stats	Events	DIE_0_AFR_DITHR_TRG	24Mticks	state	INACT=480982323,ACT=0
+SoC Stats	Events	DIE_0_C1PPT_DITHR_TRG	24Mticks	state	INACT=480982333,ACT=0
+SoC Stats	Events	DIE_0_ECPU_EXT_TRG0	24Mticks	state	INACT=480982340,ACT=0
+SoC Stats	Events	DIE_0_PCPU0_EXT_TRG0	24Mticks	state	INACT=480982348,ACT=0
+SoC Stats	Events	DIE_0_PCPU1_EXT_TRG0	24Mticks	state	INACT=480982359,ACT=0
+SoC Stats	Events	DIE_0_FAB_EXT_TRG0	24Mticks	state	INACT=480982368,ACT=0
+SoC Stats	Events	DIE_0_AFR_EXT_TRG0	24Mticks	state	INACT=480982380,ACT=0
+SoC Stats	Events	DIE_0_C1PPT_EXT_TRG0	24Mticks	state	INACT=480982391,ACT=0
+SoC Stats	Events	DIE_0_ECPU_EXT_TRG1	24Mticks	state	INACT=480982389,ACT=0
+SoC Stats	Events	DIE_0_PCPU0_EXT_TRG1	24Mticks	state	INACT=480982401,ACT=0
+SoC Stats	Events	DIE_0_PCPU1_EXT_TRG1	24Mticks	state	INACT=480982414,ACT=0
+SoC Stats	Events	DIE_0_FAB_EXT_TRG1	24Mticks	state	INACT=480982426,ACT=0
+SoC Stats	Events	DIE_0_AFR_EXT_TRG1	24Mticks	state	INACT=480982437,ACT=0
+SoC Stats	Events	DIE_0_C1PPT_EXT_TRG1	24Mticks	state	INACT=480982448,ACT=0
+SoC Stats	Events	DIE_0_ECPU_EXT_TRG2	24Mticks	state	INACT=480982460,ACT=0
+SoC Stats	Events	DIE_0_PCPU0_EXT_TRG2	24Mticks	state	INACT=480982472,ACT=0
+SoC Stats	Events	DIE_0_PCPU1_EXT_TRG2	24Mticks	state	INACT=480982484,ACT=0
+SoC Stats	Events	DIE_0_FAB_EXT_TRG2	24Mticks	state	INACT=480982496,ACT=0
+SoC Stats	Events	DIE_0_AFR_EXT_TRG2	24Mticks	state	INACT=480982508,ACT=0
+SoC Stats	Events	DIE_0_C1PPT_EXT_TRG2	24Mticks	state	INACT=480982519,ACT=0
+SoC Stats	Events	DIE_0_DCS_F0	24Mticks	state	INACT=480982915,ACT=0
+SoC Stats	Events	DIE_0_DCS_F1	24Mticks	state	INACT=278865880,ACT=202117048
+SoC Stats	Events	DIE_0_DCS_F2	24Mticks	state	INACT=480688708,ACT=294232
+SoC Stats	Events	DIE_0_DCS_F3	24Mticks	state	INACT=478931581,ACT=2051384
+SoC Stats	Events	DIE_0_DCS_F4	24Mticks	state	INACT=480982981,ACT=0
+SoC Stats	Events	DIE_0_DCS_F5	24Mticks	state	INACT=204466722,ACT=276516272
+SoC Stats	Events	DIE_0_FAB_VMIN	24Mticks	state	INACT=278849407,ACT=202133600
+SoC Stats	Events	DIE_0_FAB_VNOM	24Mticks	state	INACT=480516141,ACT=466880
+SoC Stats	Events	DIE_0_FAB_VNOM2	24Mticks	state	INACT=474418371,ACT=6564664
+SoC Stats	Events	DIE_0_FAB_VMAX	24Mticks	state	INACT=209169105,ACT=271813944
+SoC Stats	Events	DIE_0_AVEMSR_VMIN	24Mticks	state	INACT=3718,ACT=480979344
+SoC Stats	Events	DIE_0_AVEMSR_VNOM	24Mticks	state	INACT=480983074,ACT=0
+SoC Stats	Events	DIE_0_AVEMSR_VMAX	24Mticks	state	INACT=480983085,ACT=0
+SoC Stats	Events	DIE_0_ANE0_ADCLK_TRG	24Mticks	state	INACT=480983144,ACT=0
+SoC Stats	Events	DIE_0_ANE0_DITHR_TRG	24Mticks	state	INACT=480983167,ACT=0
+SoC Stats	Events	DIE_0_ANE0_EXT_TRG0	24Mticks	state	INACT=480983180,ACT=0
+SoC Stats	Events	DIE_0_ANE0_EXT_TRG1	24Mticks	state	INACT=480983193,ACT=0
+SoC Stats	Events	DIE_0_ANE0_EXT_TRG2	24Mticks	state	INACT=480983206,ACT=0
+SoC Stats	Events	DIE_0_MGPU0_ADCLK_TRG	24Mticks	state	INACT=480983219,ACT=0
+SoC Stats	Events	DIE_0_MGPU0_DITHR_TRG	24Mticks	state	INACT=480983231,ACT=0
+SoC Stats	Events	DIE_0_MGPU0_EXT_TRG0	24Mticks	state	INACT=480983241,ACT=0
+SoC Stats	Events	DIE_0_MGPU0_EXT_TRG1	24Mticks	state	INACT=480983255,ACT=0
+SoC Stats	Events	DIE_0_MGPU0_EXT_TRG2	24Mticks	state	INACT=480983268,ACT=0
+SoC Stats	Events	DIE_0_MGPU1_ADCLK_TRG	24Mticks	state	INACT=480983280,ACT=0
+SoC Stats	Events	DIE_0_MGPU1_DITHR_TRG	24Mticks	state	INACT=480983294,ACT=0
+SoC Stats	Events	DIE_0_MGPU1_EXT_TRG0	24Mticks	state	INACT=480983306,ACT=0
+SoC Stats	Events	DIE_0_MGPU1_EXT_TRG1	24Mticks	state	INACT=480983320,ACT=0
+SoC Stats	Events	DIE_0_MGPU1_EXT_TRG2	24Mticks	state	INACT=480983334,ACT=0
+SoC Stats	Events	DIE_0_MGPU2_ADCLK_TRG	24Mticks	state	INACT=480983347,ACT=0
+SoC Stats	Events	DIE_0_MGPU2_DITHR_TRG	24Mticks	state	INACT=480983361,ACT=0
+SoC Stats	Events	DIE_0_MGPU2_EXT_TRG0	24Mticks	state	INACT=480983349,ACT=0
+SoC Stats	Events	DIE_0_MGPU2_EXT_TRG1	24Mticks	state	INACT=480983341,ACT=0
+SoC Stats	Events	DIE_0_MGPU2_EXT_TRG2	24Mticks	state	INACT=480983354,ACT=0
+SoC Stats	Events	DIE_0_MGPU3_ADCLK_TRG	24Mticks	state	INACT=480983362,ACT=0
+SoC Stats	Events	DIE_0_MGPU3_DITHR_TRG	24Mticks	state	INACT=480983376,ACT=0
+SoC Stats	Events	DIE_0_MGPU3_EXT_TRG0	24Mticks	state	INACT=480983389,ACT=0
+SoC Stats	Events	DIE_0_MGPU3_EXT_TRG1	24Mticks	state	INACT=480983403,ACT=0
+SoC Stats	Events	DIE_0_MGPU3_EXT_TRG2	24Mticks	state	INACT=480983417,ACT=0
+SoC Stats	Events	DIE_0_SOC_VMIN	24Mticks	state	INACT=3715,ACT=480979712
+SoC Stats	Events	DIE_0_SOC_VNOM	24Mticks	state	INACT=480983435,ACT=0
+SoC Stats	Events	DIE_0_SOC_VMAX	24Mticks	state	INACT=480983443,ACT=0
+SoC Stats	Events	DIE_0_DISP_VMIN	24Mticks	state	INACT=3712,ACT=480979736
+SoC Stats	Events	DIE_0_DISP_VNOM	24Mticks	state	INACT=480983440,ACT=0
+SoC Stats	Events	DIE_0_DISP_VMAXNOEXT	24Mticks	state	INACT=480983447,ACT=0
+SoC Stats	Events	DIE_0_DISP_VMAX	24Mticks	state	INACT=480983456,ACT=0
+SoC Stats	Events	DIE_0_AFR_VMIN	24Mticks	state	INACT=21560330,ACT=459423432
+SoC Stats	Events	DIE_0_AFR_PERFSTAT_2	24Mticks	state	INACT=480983771,ACT=0
+SoC Stats	Events	DIE_0_AFR_VNOM	24Mticks	state	INACT=460792228,ACT=20191552
+SoC Stats	Events	DIE_0_AFR_PERFSTAT_4	24Mticks	state	INACT=480343852,ACT=639936
+SoC Stats	Events	DIE_0_AFR_VMAX	24Mticks	state	INACT=480375021,ACT=608776
+SoC Stats	Events	DIE_0_AFR_VMAX2	24Mticks	state	INACT=480867455,ACT=116352
+SoC Stats	Events	DIE_0_DISP2_VMIN	24Mticks	state	INACT=3720,ACT=480980312
+SoC Stats	Events	DIE_0_DISP2_VNOM	24Mticks	state	INACT=480984040,ACT=0
+SoC Stats	Events	DIE_0_DISP2_VMAX	24Mticks	state	INACT=480984048,ACT=0
+SoC Stats	Events	DIE_1_SLP_DDR	24Mticks	state	INACT=480995841,ACT=0
+SoC Stats	Events	DIE_1_AWAKE	24Mticks	state	INACT=277069,ACT=480719016
+SoC Stats	Events	DIE_1_SLP_S2R	24Mticks	state	INACT=480996166,ACT=0
+SoC Stats	Events	DIE_1_DEEP_WAIT	24Mticks	state	INACT=480996246,ACT=0
+SoC Stats	Events	DIE_1_SYS_AWAKE	24Mticks	state	INACT=480996325,ACT=0
+SoC Stats	Events	DIE_1_SYS_S2R_AOP	24Mticks	state	INACT=277071,ACT=480719336
+SoC Stats	Events	DIE_1_SYS_SLP_DDR	24Mticks	state	INACT=480996485,ACT=0
+SoC Stats	Events	DIE_1_SOCHOT0	24Mticks	state	INACT=480997198,ACT=0
+SoC Stats	Events	DIE_1_SOCHOT1	24Mticks	state	INACT=480997259,ACT=0
+SoC Stats	Events	DIE_1_ECPU_ADCLK_TRG	24Mticks	state	INACT=480997416,ACT=0
+SoC Stats	Events	DIE_1_PCPU0_ADCLK_TRG	24Mticks	state	INACT=480997477,ACT=0
+SoC Stats	Events	DIE_1_PCPU1_ADCLK_TRG	24Mticks	state	INACT=480997538,ACT=0
+SoC Stats	Events	DIE_1_FAB_ADCLK_TRG	24Mticks	state	INACT=480997599,ACT=0
+SoC Stats	Events	DIE_1_AFR_ADCLK_TRG	24Mticks	state	INACT=480997660,ACT=0
+SoC Stats	Events	DIE_1_C1PPT_ADCLK_TRG	24Mticks	state	INACT=480997719,ACT=0
+SoC Stats	Events	DIE_1_ECPU_DITHR_TRG	24Mticks	state	INACT=480997782,ACT=0
+SoC Stats	Events	DIE_1_PCPU0_DITHR_TRG	24Mticks	state	INACT=480997844,ACT=0
+SoC Stats	Events	DIE_1_PCPU1_DITHR_TRG	24Mticks	state	INACT=480997906,ACT=0
+SoC Stats	Events	DIE_1_FAB_DITHR_TRG	24Mticks	state	INACT=480997968,ACT=0
+SoC Stats	Events	DIE_1_AFR_DITHR_TRG	24Mticks	state	INACT=480998029,ACT=0
+SoC Stats	Events	DIE_1_C1PPT_DITHR_TRG	24Mticks	state	INACT=480998088,ACT=0
+SoC Stats	Events	DIE_1_ECPU_EXT_TRG0	24Mticks	state	INACT=480998148,ACT=0
+SoC Stats	Events	DIE_1_PCPU0_EXT_TRG0	24Mticks	state	INACT=480998210,ACT=0
+SoC Stats	Events	DIE_1_PCPU1_EXT_TRG0	24Mticks	state	INACT=480998271,ACT=0
+SoC Stats	Events	DIE_1_FAB_EXT_TRG0	24Mticks	state	INACT=480998333,ACT=0
+SoC Stats	Events	DIE_1_AFR_EXT_TRG0	24Mticks	state	INACT=480998395,ACT=0
+SoC Stats	Events	DIE_1_C1PPT_EXT_TRG0	24Mticks	state	INACT=480998457,ACT=0
+SoC Stats	Events	DIE_1_ECPU_EXT_TRG1	24Mticks	state	INACT=480998518,ACT=0
+SoC Stats	Events	DIE_1_PCPU0_EXT_TRG1	24Mticks	state	INACT=480998580,ACT=0
+SoC Stats	Events	DIE_1_PCPU1_EXT_TRG1	24Mticks	state	INACT=480998642,ACT=0
+SoC Stats	Events	DIE_1_FAB_EXT_TRG1	24Mticks	state	INACT=480998704,ACT=0
+SoC Stats	Events	DIE_1_AFR_EXT_TRG1	24Mticks	state	INACT=480998765,ACT=0
+SoC Stats	Events	DIE_1_C1PPT_EXT_TRG1	24Mticks	state	INACT=480998824,ACT=0
+SoC Stats	Events	DIE_1_ECPU_EXT_TRG2	24Mticks	state	INACT=480998885,ACT=0
+SoC Stats	Events	DIE_1_PCPU0_EXT_TRG2	24Mticks	state	INACT=480998948,ACT=0
+SoC Stats	Events	DIE_1_PCPU1_EXT_TRG2	24Mticks	state	INACT=480999010,ACT=0
+SoC Stats	Events	DIE_1_FAB_EXT_TRG2	24Mticks	state	INACT=480999069,ACT=0
+SoC Stats	Events	DIE_1_AFR_EXT_TRG2	24Mticks	state	INACT=480999131,ACT=0
+SoC Stats	Events	DIE_1_C1PPT_EXT_TRG2	24Mticks	state	INACT=480999193,ACT=0
+SoC Stats	Events	DIE_1_DCS_F0	24Mticks	state	INACT=481000512,ACT=0
+SoC Stats	Events	DIE_1_DCS_F1	24Mticks	state	INACT=481000574,ACT=0
+SoC Stats	Events	DIE_1_DCS_F2	24Mticks	state	INACT=481000636,ACT=0
+SoC Stats	Events	DIE_1_DCS_F3	24Mticks	state	INACT=481000698,ACT=0
+SoC Stats	Events	DIE_1_DCS_F4	24Mticks	state	INACT=481000761,ACT=0
+SoC Stats	Events	DIE_1_DCS_F5	24Mticks	state	INACT=481000824,ACT=0
+SoC Stats	Events	DIE_1_FAB_VMIN	24Mticks	state	INACT=481000887,ACT=0
+SoC Stats	Events	DIE_1_FAB_VNOM	24Mticks	state	INACT=481000950,ACT=0
+SoC Stats	Events	DIE_1_FAB_VNOM2	24Mticks	state	INACT=481001013,ACT=0
+SoC Stats	Events	DIE_1_FAB_VMAX	24Mticks	state	INACT=481001075,ACT=0
+SoC Stats	Events	DIE_1_AVEMSR_VMIN	24Mticks	state	INACT=3993,ACT=480997144
+SoC Stats	Events	DIE_1_AVEMSR_VNOM	24Mticks	state	INACT=481001197,ACT=0
+SoC Stats	Events	DIE_1_AVEMSR_VMAX	24Mticks	state	INACT=481001259,ACT=0
+SoC Stats	Events	DIE_1_ANE0_ADCLK_TRG	24Mticks	state	INACT=481001487,ACT=0
+SoC Stats	Events	DIE_1_ANE0_DITHR_TRG	24Mticks	state	INACT=481001549,ACT=0
+SoC Stats	Events	DIE_1_ANE0_EXT_TRG0	24Mticks	state	INACT=481001612,ACT=0
+SoC Stats	Events	DIE_1_ANE0_EXT_TRG1	24Mticks	state	INACT=481001675,ACT=0
+SoC Stats	Events	DIE_1_ANE0_EXT_TRG2	24Mticks	state	INACT=481001737,ACT=0
+SoC Stats	Events	DIE_1_MGPU0_ADCLK_TRG	24Mticks	state	INACT=481001800,ACT=0
+SoC Stats	Events	DIE_1_MGPU0_DITHR_TRG	24Mticks	state	INACT=481001862,ACT=0
+SoC Stats	Events	DIE_1_MGPU0_EXT_TRG0	24Mticks	state	INACT=481001924,ACT=0
+SoC Stats	Events	DIE_1_MGPU0_EXT_TRG1	24Mticks	state	INACT=481001986,ACT=0
+SoC Stats	Events	DIE_1_MGPU0_EXT_TRG2	24Mticks	state	INACT=481002048,ACT=0
+SoC Stats	Events	DIE_1_MGPU1_ADCLK_TRG	24Mticks	state	INACT=481002112,ACT=0
+SoC Stats	Events	DIE_1_MGPU1_DITHR_TRG	24Mticks	state	INACT=481002175,ACT=0
+SoC Stats	Events	DIE_1_MGPU1_EXT_TRG0	24Mticks	state	INACT=481002238,ACT=0
+SoC Stats	Events	DIE_1_MGPU1_EXT_TRG1	24Mticks	state	INACT=481002301,ACT=0
+SoC Stats	Events	DIE_1_MGPU1_EXT_TRG2	24Mticks	state	INACT=481002365,ACT=0
+SoC Stats	Events	DIE_1_MGPU2_ADCLK_TRG	24Mticks	state	INACT=481002427,ACT=0
+SoC Stats	Events	DIE_1_MGPU2_DITHR_TRG	24Mticks	state	INACT=481002488,ACT=0
+SoC Stats	Events	DIE_1_MGPU2_EXT_TRG0	24Mticks	state	INACT=481002550,ACT=0
+SoC Stats	Events	DIE_1_MGPU2_EXT_TRG1	24Mticks	state	INACT=481002612,ACT=0
+SoC Stats	Events	DIE_1_MGPU2_EXT_TRG2	24Mticks	state	INACT=481002676,ACT=0
+SoC Stats	Events	DIE_1_MGPU3_ADCLK_TRG	24Mticks	state	INACT=481002740,ACT=0
+SoC Stats	Events	DIE_1_MGPU3_DITHR_TRG	24Mticks	state	INACT=481002801,ACT=0
+SoC Stats	Events	DIE_1_MGPU3_EXT_TRG0	24Mticks	state	INACT=481002865,ACT=0
+SoC Stats	Events	DIE_1_MGPU3_EXT_TRG1	24Mticks	state	INACT=481002928,ACT=0
+SoC Stats	Events	DIE_1_MGPU3_EXT_TRG2	24Mticks	state	INACT=481002992,ACT=0
+SoC Stats	Events	DIE_1_SOC_VMIN	24Mticks	state	INACT=3980,ACT=480999064
+SoC Stats	Events	DIE_1_SOC_VNOM	24Mticks	state	INACT=481003087,ACT=0
+SoC Stats	Events	DIE_1_SOC_VMAX	24Mticks	state	INACT=481003130,ACT=0
+SoC Stats	Events	DIE_1_DISP_VMIN	24Mticks	state	INACT=481003174,ACT=0
+SoC Stats	Events	DIE_1_DISP_VNOM	24Mticks	state	INACT=481003218,ACT=0
+SoC Stats	Events	DIE_1_DISP_VMAXNOEXT	24Mticks	state	INACT=481003263,ACT=0
+SoC Stats	Events	DIE_1_DISP_VMAX	24Mticks	state	INACT=3988,ACT=480999320
+SoC Stats	Events	DIE_1_AFR_VMIN	24Mticks	state	INACT=21557468,ACT=459446520
+SoC Stats	Events	DIE_1_AFR_PERFSTAT_2	24Mticks	state	INACT=481004077,ACT=0
+SoC Stats	Events	DIE_1_AFR_VNOM	24Mticks	state	INACT=460816381,ACT=20187784
+SoC Stats	Events	DIE_1_AFR_PERFSTAT_4	24Mticks	state	INACT=480364353,ACT=639904
+SoC Stats	Events	DIE_1_AFR_VMAX	24Mticks	state	INACT=480393396,ACT=610952
+SoC Stats	Events	DIE_1_AFR_VMAX2	24Mticks	state	INACT=480889607,ACT=114832
+SoC Stats	Events	DIE_1_DISP2_VMIN	24Mticks	state	INACT=3979,ACT=481001688
+SoC Stats	Events	DIE_1_DISP2_VNOM	24Mticks	state	INACT=481005711,ACT=0
+SoC Stats	Events	DIE_1_DISP2_VMAX	24Mticks	state	INACT=481005755,ACT=0
+SoC Stats	Cluster Power States	DIE_0_EACC	24Mticks	state	INACT=0,ACT=481045890
+SoC Stats	Cluster Power States	DIE_0_PACC0	24Mticks	state	INACT=0,ACT=481045920
+SoC Stats	Cluster Power States	DIE_0_PACC1	24Mticks	state	INACT=0,ACT=481045954
+SoC Stats	Cluster Power States	DIE_0_ANE0	24Mticks	state	INACT=481045985,ACT=0
+SoC Stats	Cluster Power States	DIE_0_AVEMSR	24Mticks	state	INACT=481045986,ACT=0
+SoC Stats	Cluster Power States	DIE_0_DISPLAY2	24Mticks	state	INACT=481046022,ACT=0
+SoC Stats	Cluster Power States	DIE_0_DISPLAY	24Mticks	state	INACT=0,ACT=481046048
+SoC Stats	Cluster Power States	DIE_1_EACC	24Mticks	state	INACT=0,ACT=481046082
+SoC Stats	Cluster Power States	DIE_1_PACC0	24Mticks	state	INACT=0,ACT=481046111
+SoC Stats	Cluster Power States	DIE_1_PACC1	24Mticks	state	INACT=0,ACT=481046149
+SoC Stats	Cluster Power States	DIE_1_ANE0	24Mticks	state	INACT=481046220,ACT=0
+SoC Stats	Cluster Power States	DIE_1_AVEMSR	24Mticks	state	INACT=481046275,ACT=0
+SoC Stats	Cluster Power States	DIE_1_DISPLAY2	24Mticks	state	INACT=481046307,ACT=0
+SoC Stats	Cluster Power States	DIE_1_DISPLAY	24Mticks	state	INACT=0,ACT=481046339
+SoC Stats	oprtp	OPRT0000		simple	0
+SoC Stats	oprtp	OPRT0001		simple	0
+SoC Stats	oprtp	OPRT0002		simple	0
+SoC Stats	oprtp	OPRT0100		simple	0
+SoC Stats	oprtp	OPRT0101		simple	0
+SoC Stats	oprtp	OPRT0102		simple	0
+SoC Stats	oprtp	OPRT0103		simple	0
+SoC Stats	oprtp	OPRT0104		simple	0
+SoC Stats	oprtp	OPRT0105		simple	0
+SoC Stats	oprtp	OPRT0200		simple	0
+SoC Stats	oprtp	OPRT0201		simple	0
+SoC Stats	oprtp	OPRT0202		simple	0
+SoC Stats	oprtp	OPRT0203		simple	0
+SoC Stats	oprtp	OPRT0300		simple	0
+SoC Stats	oprtp	OPRT0301		simple	0
+SoC Stats	oprtp	OPRT0302		simple	0
+SoC Stats	oprtp	OPRT0303		simple	0
+SoC Stats	oprtp	OPRT0304		simple	0
+SoC Stats	oprtp	OPRT0305		simple	0
+SoC Stats	oprtp	OPRT0306		simple	0
+SoC Stats	oprtp	OPRT0307		simple	0
+SoC Stats	oprtp	OPRT0308		simple	0
+SoC Stats	oprtp	OPRT0309		simple	0
+SoC Stats	oprtp	OPRT0310		simple	0
+SoC Stats	oprtp	OPRT0311		simple	0
+SoC Stats	oprtp	OPRT0312		simple	0
+SoC Stats	oprtp	OPRT0313		simple	0
+SoC Stats	oprtp	OPRT0314		simple	0
+SoC Stats	oprtp	OPRT0315		simple	0
+SoC Stats	oprtp	OPRT0316		simple	0
+SoC Stats	oprtp	OPRT0317		simple	0
+SoC Stats	oprtp	OPRT0318		simple	0
+SoC Stats	oprtp	OPRT0700		simple	0
+SoC Stats	oprtp	OPRT0701		simple	0
+SoC Stats	oprtp	OPRT0702		simple	0
+SoC Stats	oprtp	OPRT0703		simple	0
+SoC Stats	oprtp	OPRT0704		simple	0
+SoC Stats	oprtp	OPRT0705		simple	0
+SoC Stats	oprtp	OPRT0706		simple	0
+SoC Stats	oprtp	OPRT0707		simple	0
+SoC Stats	oprtp	OPRT0708		simple	0
+SoC Stats	oprtp	OPRT0709		simple	0
+SoC Stats	oprtp	OPRT0710		simple	0
+SoC Stats	oprtp	OPRT0711		simple	0
+SoC Stats	oprtp	OPRT0712		simple	0
+SoC Stats	oprtp	OPRT0713		simple	0
+SoC Stats	oprtp	OPRT0714		simple	0
+SoC Stats	oprtp	OPRT0715		simple	0
+SoC Stats	oprtp	OPRT0716		simple	0
+SoC Stats	oprtp	OPRT0717		simple	0
+SoC Stats	oprtp	OPRT0718		simple	0
+SoC Stats	oprtp	OPRT1400		simple	0
+SoC Stats	oprtp	OPRT1401		simple	0
+SoC Stats	oprtp	OPRT1402		simple	0
+SoC Stats	oprtp	OPRT1500		simple	0
+SoC Stats	oprtp	OPRT1501		simple	0
+SoC Stats	oprtp	OPRT1502		simple	0
+SoC Stats	oprtp	OPRT1503		simple	0
+SoC Stats	oprtp	OPRT1504		simple	0
+SoC Stats	oprtp	OPRT1505		simple	0
+SoC Stats	oprtp	OPRT1600		simple	0
+SoC Stats	oprtp	OPRT1601		simple	0
+SoC Stats	oprtp	OPRT1602		simple	0
+SoC Stats	oprtp	OPRT1603		simple	0
+SoC Stats	oprtp	OPRT1700		simple	0
+SoC Stats	oprtp	OPRT1701		simple	0
+SoC Stats	oprtp	OPRT1702		simple	0
+SoC Stats	oprtp	OPRT1703		simple	0
+SoC Stats	oprtp	OPRT1704		simple	0
+SoC Stats	oprtp	OPRT1705		simple	0
+SoC Stats	oprtp	OPRT1706		simple	0
+SoC Stats	oprtp	OPRT1707		simple	0
+SoC Stats	oprtp	OPRT1708		simple	0
+SoC Stats	oprtp	OPRT1709		simple	0
+SoC Stats	oprtp	OPRT1710		simple	0
+SoC Stats	oprtp	OPRT1711		simple	0
+SoC Stats	oprtp	OPRT1712		simple	0
+SoC Stats	oprtp	OPRT1713		simple	0
+SoC Stats	oprtp	OPRT1714		simple	0
+SoC Stats	oprtp	OPRT1715		simple	0
+SoC Stats	oprtp	OPRT1716		simple	0
+SoC Stats	oprtp	OPRT1717		simple	0
+SoC Stats	oprtp	OPRT1718		simple	0
+SoC Stats	oprtp	OPRT2100		simple	0
+SoC Stats	oprtp	OPRT2101		simple	0
+SoC Stats	oprtp	OPRT2102		simple	0
+SoC Stats	oprtp	OPRT2103		simple	0
+SoC Stats	oprtp	OPRT2104		simple	0
+SoC Stats	oprtp	OPRT2105		simple	0
+SoC Stats	oprtp	OPRT2106		simple	0
+SoC Stats	oprtp	OPRT2107		simple	0
+SoC Stats	oprtp	OPRT2108		simple	0
+SoC Stats	oprtp	OPRT2109		simple	0
+SoC Stats	oprtp	OPRT2110		simple	0
+SoC Stats	oprtp	OPRT2111		simple	0
+SoC Stats	oprtp	OPRT2112		simple	0
+SoC Stats	oprtp	OPRT2113		simple	0
+SoC Stats	oprtp	OPRT2114		simple	0
+SoC Stats	oprtp	OPRT2115		simple	0
+SoC Stats	oprtp	OPRT2116		simple	0
+SoC Stats	oprtp	OPRT2117		simple	0
+SoC Stats	oprtp	OPRT2118		simple	0

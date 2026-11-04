@@ -1,0 +1,5 @@
+02:58:10 collect.sh: gpu dvfs into ~/linux-lab-macos/20261104-025810
+02:58:10 gpu: metal-chain
+02:58:14 metal-chain failed (see gpu-metal-chain.txt)
+02:58:14 dvfs
+02:59:39 dvfs: 2540 channels

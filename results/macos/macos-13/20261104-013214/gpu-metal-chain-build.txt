@@ -1,0 +1,7 @@
+/Volumes/UNTITLED/linux-lab-macos/linux-lab/gpu/vk-chain/metal-chain.m:111:17: error: property 'mathMode' not found on object of type 'MTLCompileOptions *'
+            opt.mathMode = MTLMathModeSafe;
+                ^
+/Volumes/UNTITLED/linux-lab-macos/linux-lab/gpu/vk-chain/metal-chain.m:111:28: error: use of undeclared identifier 'MTLMathModeSafe'
+            opt.mathMode = MTLMathModeSafe;
+                           ^
+2 errors generated.

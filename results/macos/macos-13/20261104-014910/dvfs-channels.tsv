@@ -1,0 +1,2540 @@
+PMP	IOP State	status	24Mticks	state
+PMP	IO Reporting statistics	update count		simple
+PMP	IO Reporting statistics	last update		simple
+PMP	Power	Duty cycle		simple
+PMP	Power	Sleep count	events	simple
+PMP	Power	Wake count	events	simple
+PMP	Power	Power state	us	state
+PMP	Power	Free heap	B	simple
+PMP	Power	Total heap	B	simple
+PMP	Power	Peak heap alloc	B	simple
+PMP	Used stack	Used stack(0)	B	simple
+PMP	Used stack	Used stack(1)	B	simple
+PMP	Used stack	Used stack(2)	B	simple
+PMP	Used stack	Used stack(3)	B	simple
+PMP	Used stack	Used stack(4)	B	simple
+PMP	Used stack	Used stack(5)	B	simple
+PMP	Used stack	Used stack(6)	B	simple
+PMP	Used stack	Used stack(7)	B	simple
+PMP	Used stack	Used stack(8)	B	simple
+PMP	Used stack	Used stack(9)	B	simple
+PMP	Used stack	Used stack(10)	B	simple
+PMP	Used stack	Used stack(11)	B	simple
+PMP	Used stack	Used stack(12)	B	simple
+PMP	Used stack	Used stack(13)	B	simple
+PMP	Used stack	Used stack(14)	B	simple
+PMP	Used stack	Used stack(15)	B	simple
+PMP	Used stack	Used stack(16)	B	simple
+PMP	Used stack	Used stack(17)	B	simple
+PMP	Used stack	Used stack(18)	B	simple
+PMP	Used stack	Used stack(19)	B	simple
+PMP	Used stack	Used stack(20)	B	simple
+PMP	Used stack	Used stack(21)	B	simple
+PMP	Used stack	Used stack(22)	B	simple
+PMP	Used stack	Used stack(23)	B	simple
+PMP	Used stack	Used stack(24)	B	simple
+PMP	Used stack	Used stack(25)	B	simple
+PMP	Used stack	Used stack(26)	B	simple
+PMP	Used stack	Used stack(27)	B	simple
+PMP	Used stack	Used stack(28)	B	simple
+PMP	Used stack	Used stack(29)	B	simple
+PMP	Used stack	Used stack(30)	B	simple
+PMP	Used stack	Used stack(31)	B	simple
+PMP	Total stack	Total stack(0)	B	simple
+PMP	Total stack	Total stack(1)	B	simple
+PMP	Total stack	Total stack(2)	B	simple
+PMP	Total stack	Total stack(3)	B	simple
+PMP	Total stack	Total stack(4)	B	simple
+PMP	Total stack	Total stack(5)	B	simple
+PMP	Total stack	Total stack(6)	B	simple
+PMP	Total stack	Total stack(7)	B	simple
+PMP	Total stack	Total stack(8)	B	simple
+PMP	Total stack	Total stack(9)	B	simple
+PMP	Total stack	Total stack(10)	B	simple
+PMP	Total stack	Total stack(11)	B	simple
+PMP	Total stack	Total stack(12)	B	simple
+PMP	Total stack	Total stack(13)	B	simple
+PMP	Total stack	Total stack(14)	B	simple
+PMP	Total stack	Total stack(15)	B	simple
+PMP	Total stack	Total stack(16)	B	simple
+PMP	Total stack	Total stack(17)	B	simple
+PMP	Total stack	Total stack(18)	B	simple
+PMP	Total stack	Total stack(19)	B	simple
+PMP	Total stack	Total stack(20)	B	simple
+PMP	Total stack	Total stack(21)	B	simple
+PMP	Total stack	Total stack(22)	B	simple
+PMP	Total stack	Total stack(23)	B	simple
+PMP	Total stack	Total stack(24)	B	simple
+PMP	Total stack	Total stack(25)	B	simple
+PMP	Total stack	Total stack(26)	B	simple
+PMP	Total stack	Total stack(27)	B	simple
+PMP	Total stack	Total stack(28)	B	simple
+PMP	Total stack	Total stack(29)	B	simple
+PMP	Total stack	Total stack(30)	B	simple
+PMP	Total stack	Total stack(31)	B	simple
+PMP	Power	CPU count	events	simple
+PMP	DCS BW	AMCC RD	events	state
+PMP	DCS BW	AMCC WR	events	state
+PMP	DCS BW	AMCC RD+WR	events	state
+PMP	AFC BW	AMCC RD	events	state
+PMP	AFC BW	AMCC WR	events	state
+PMP	AFC BW	AMCC RD+WR	events	state
+PMP	AFI BW	AMCC RD	events	state
+PMP	AFI BW	AMCC WR	events	state
+PMP	AFI BW	AMCC RD+WR	events	state
+PMP	AFR BW	AMCC RD	events	state
+PMP	AFR BW	AMCC WR	events	state
+PMP	AFR BW	AMCC RD+WR	events	state
+PMP	DRAM BW (AMCC)	F1 RD	B	simple
+PMP	DRAM BW (AMCC)	F1 WR	B	simple
+PMP	DRAM BW (AMCC)	F2 RD	B	simple
+PMP	DRAM BW (AMCC)	F2 WR	B	simple
+PMP	DRAM BW (AMCC)	F3 RD	B	simple
+PMP	DRAM BW (AMCC)	F3 WR	B	simple
+PMP	DRAM BW (AMCC)	F5 RD	B	simple
+PMP	DRAM BW (AMCC)	F5 WR	B	simple
+PMP	AFNC BW	IOA0 RD+WR	events	state
+PMP	AFI BW	IOA0 RD+WR	events	state
+PMP	AFR BW	IOA0 RD+WR	events	state
+PMP	AFNC BW	IOA1 RD+WR	events	state
+PMP	AFI BW	IOA1 RD+WR	events	state
+PMP	PIO-DWN-WR BW	IOA1 WR	events	state
+PMP	AFNC BW	IOA2 RD+WR	events	state
+PMP	AFI BW	IOA2 RD+WR	events	state
+PMP	AFNC BW	IOA3 RD+WR	events	state
+PMP	AFI BW	IOA3 RD+WR	events	state
+PMP	AFR BW	IOA3 RD+WR	events	state
+PMP	AFNC BW	IOA6 RD+WR	events	state
+PMP	AFI BW	IOA6 RD+WR	events	state
+PMP	PIO-DWN-WR BW	IOA6 WR	events	state
+PMP	FAB	EACC0	events	state
+PMP	DCS	EACC0	events	state
+PMP	FAB	PACC0	events	state
+PMP	DCS	PACC0	events	state
+PMP	FAB	PACC1	events	state
+PMP	DCS	PACC1	events	state
+PMP	AFR	AGX	events	state
+PMP	FAB	AGX	events	state
+PMP	DCS	AGX	events	state
+PMP	AGX	Mem Latency	events	state
+PMP	AGX	#Mem Trans	events	state
+PMP	AF BW	ANE0 RD+WR	events	state
+PMP	SOC0	ANE0	events	state
+PMP	FAB	ANE0	events	state
+PMP	AFR	ANE0	events	state
+PMP	DCS	ANE0	events	state
+PMP	SOC0	ISP0	events	state
+PMP	FAB	ISP0	events	state
+PMP	DCS	ISP0	events	state
+PMP	BWR	ISP0 RD	events	state
+PMP	BWR	ISP0 WR	events	state
+PMP	BWR	ISP0 RD+WR	events	state
+PMP	DISP0	DISP0	events	state
+PMP	FAB	DISP0	events	state
+PMP	DCS	DISP0	events	state
+PMP	BWR	DISP0 RD	events	state
+PMP	BWR	DISP0 WR	events	state
+PMP	BWR	DISP0 RD+WR	events	state
+PMP	DISP0	DISPEXT0	events	state
+PMP	FAB	DISPEXT0	events	state
+PMP	DCS	DISPEXT0	events	state
+PMP	BWR	DISPEXT0 RD	events	state
+PMP	BWR	DISPEXT0 WR	events	state
+PMP	BWR	DISPEXT0 RD+WR	events	state
+PMP	DISP0	DISPEXT1	events	state
+PMP	FAB	DISPEXT1	events	state
+PMP	DCS	DISPEXT1	events	state
+PMP	BWR	DISPEXT1 RD	events	state
+PMP	BWR	DISPEXT1 WR	events	state
+PMP	BWR	DISPEXT1 RD+WR	events	state
+PMP	AVEMSR0	AVE0	events	state
+PMP	FAB	AVE0	events	state
+PMP	AFR	AVE0	events	state
+PMP	DCS	AVE0	events	state
+PMP	SOC0	AVD0	events	state
+PMP	FAB	AVD0	events	state
+PMP	AFR	AVD0	events	state
+PMP	DCS	AVD0	events	state
+PMP	AVEMSR0	MSR0	events	state
+PMP	FAB	MSR0	events	state
+PMP	AFR	MSR0	events	state
+PMP	DCS	MSR0	events	state
+PMP	SOC0	JPEG0	events	state
+PMP	FAB	JPEG0	events	state
+PMP	AFR	JPEG0	events	state
+PMP	DCS	JPEG0	events	state
+PMP	SOC0	SCODEC0	events	state
+PMP	FAB	SCODEC0	events	state
+PMP	DCS	SCODEC0	events	state
+PMP	BWR	SCODEC0 RD	events	state
+PMP	BWR	SCODEC0 WR	events	state
+PMP	BWR	SCODEC0 RD+WR	events	state
+PMP	SOC0	SCODEC1	events	state
+PMP	FAB	SCODEC1	events	state
+PMP	DCS	SCODEC1	events	state
+PMP	BWR	SCODEC1 RD	events	state
+PMP	BWR	SCODEC1 WR	events	state
+PMP	BWR	SCODEC1 RD+WR	events	state
+PMP	SOC0	LTR	events	state
+PMP	DCS	LTR	events	state
+PMP	AFNC BW	IOA4 RD+WR	events	state
+PMP	AFI BW	IOA4 RD+WR	events	state
+PMP	AFNC BW	IOA5 RD+WR	events	state
+PMP	AFI BW	IOA5 RD+WR	events	state
+PMP	DISP1	DISPEXT2	events	state
+PMP	FAB	DISPEXT2	events	state
+PMP	DCS	DISPEXT2	events	state
+PMP	BWR	DISPEXT2 RD	events	state
+PMP	BWR	DISPEXT2 WR	events	state
+PMP	BWR	DISPEXT2 RD+WR	events	state
+PMP	DISP1	DISPEXT3	events	state
+PMP	FAB	DISPEXT3	events	state
+PMP	DCS	DISPEXT3	events	state
+PMP	BWR	DISPEXT3 RD	events	state
+PMP	BWR	DISPEXT3 WR	events	state
+PMP	BWR	DISPEXT3 RD+WR	events	state
+PMP	AF BW	AVE1 RD+WR	events	state
+PMP	AVEMSR0	AVE1	events	state
+PMP	FAB	AVE1	events	state
+PMP	DCS	AVE1	events	state
+PMP	AF BW	MSR1 RD+WR	events	state
+PMP	AVEMSR0	MSR1	events	state
+PMP	FAB	MSR1	events	state
+PMP	DCS	MSR1	events	state
+PMP	AFNC BW	IOA7 RD+WR	events	state
+PMP	AFI BW	IOA7 RD+WR	events	state
+PMP	AFR BW	IOA7 RD+WR	events	state
+PMP	AFNC BW	IOA8 RD+WR	events	state
+PMP	AFI BW	IOA8 RD+WR	events	state
+PMP	PIO-DWN-WR BW	IOA8 WR	events	state
+PMP	AFNC BW	IOA9 RD+WR	events	state
+PMP	AFI BW	IOA9 RD+WR	events	state
+PMP	AFNC BW	IOA10 RD+WR	events	state
+PMP	AFI BW	IOA10 RD+WR	events	state
+PMP	AFR BW	IOA10 RD+WR	events	state
+PMP	AFNC BW	IOA11 RD+WR	events	state
+PMP	AFI BW	IOA11 RD+WR	events	state
+PMP	AFNC BW	IOA12 RD+WR	events	state
+PMP	AFI BW	IOA12 RD+WR	events	state
+PMP	AFNC BW	IOA13 RD+WR	events	state
+PMP	AFI BW	IOA13 RD+WR	events	state
+PMP	PIO-DWN-WR BW	IOA13 WR	events	state
+PMP	FAB	EACC1	events	state
+PMP	DCS	EACC1	events	state
+PMP	FAB	PACC2	events	state
+PMP	DCS	PACC2	events	state
+PMP	FAB	PACC3	events	state
+PMP	DCS	PACC3	events	state
+PMP	AF BW	ANE1 RD+WR	events	state
+PMP	SOC1	ANE1	events	state
+PMP	FAB	ANE1	events	state
+PMP	AFR	ANE1	events	state
+PMP	DCS	ANE1	events	state
+PMP	SOC1	ISP1	events	state
+PMP	FAB	ISP1	events	state
+PMP	DCS	ISP1	events	state
+PMP	DISP2	DISPEXT4	events	state
+PMP	FAB	DISPEXT4	events	state
+PMP	DCS	DISPEXT4	events	state
+PMP	BWR	DISPEXT4 RD	events	state
+PMP	BWR	DISPEXT4 WR	events	state
+PMP	BWR	DISPEXT4 RD+WR	events	state
+PMP	DISP2	DISPEXT5	events	state
+PMP	FAB	DISPEXT5	events	state
+PMP	DCS	DISPEXT5	events	state
+PMP	BWR	DISPEXT5 RD	events	state
+PMP	BWR	DISPEXT5 WR	events	state
+PMP	BWR	DISPEXT5 RD+WR	events	state
+PMP	DISP3	DISPEXT6	events	state
+PMP	FAB	DISPEXT6	events	state
+PMP	DCS	DISPEXT6	events	state
+PMP	BWR	DISPEXT6 RD	events	state
+PMP	BWR	DISPEXT6 WR	events	state
+PMP	BWR	DISPEXT6 RD+WR	events	state
+PMP	DISP3	DISPEXT7	events	state
+PMP	FAB	DISPEXT7	events	state
+PMP	DCS	DISPEXT7	events	state
+PMP	BWR	DISPEXT7 RD	events	state
+PMP	BWR	DISPEXT7 WR	events	state
+PMP	BWR	DISPEXT7 RD+WR	events	state
+PMP	AVEMSR1	AVE2	events	state
+PMP	FAB	AVE2	events	state
+PMP	AFR	AVE2	events	state
+PMP	DCS	AVE2	events	state
+PMP	AF BW	AVE3 RD+WR	events	state
+PMP	AVEMSR1	AVE3	events	state
+PMP	FAB	AVE3	events	state
+PMP	DCS	AVE3	events	state
+PMP	SOC1	AVD1	events	state
+PMP	FAB	AVD1	events	state
+PMP	AFR	AVD1	events	state
+PMP	DCS	AVD1	events	state
+PMP	AVEMSR1	MSR2	events	state
+PMP	FAB	MSR2	events	state
+PMP	AFR	MSR2	events	state
+PMP	DCS	MSR2	events	state
+PMP	AF BW	MSR3 RD+WR	events	state
+PMP	AVEMSR1	MSR3	events	state
+PMP	FAB	MSR3	events	state
+PMP	DCS	MSR3	events	state
+PMP	SOC1	JPEG1	events	state
+PMP	FAB	JPEG1	events	state
+PMP	AFR	JPEG1	events	state
+PMP	DCS	JPEG1	events	state
+PMP	SOC1	SCODEC2	events	state
+PMP	FAB	SCODEC2	events	state
+PMP	DCS	SCODEC2	events	state
+PMP	BWR	SCODEC2 RD	events	state
+PMP	BWR	SCODEC2 WR	events	state
+PMP	BWR	SCODEC2 RD+WR	events	state
+PMP	SOC1	SCODEC3	events	state
+PMP	FAB	SCODEC3	events	state
+PMP	DCS	SCODEC3	events	state
+PMP	BWR	SCODEC3 RD	events	state
+PMP	BWR	SCODEC3 WR	events	state
+PMP	BWR	SCODEC3 RD+WR	events	state
+PMP	DCS	#DISP	events	state
+PMP	Fast-Die CE	EACC0	events	state
+PMP	Fast-Die CE	PACC0	events	state
+PMP	Fast-Die CE	PACC1	events	state
+PMP	Fast-Die CE	ANE0	events	state
+PMP	Fast-Die CE	EACC1	events	state
+PMP	Fast-Die CE	PACC2	events	state
+PMP	Fast-Die CE	PACC3	events	state
+PMP	Fast-Die CE	ANE1	events	state
+PMP	Fast-Die Delay	DELAY	events	state
+PMP	DCS	DCS-BW	events	state
+PMP	AFR	AFR-BW	events	state
+PMP	FAB	AFI-TOP-BW	events	state
+PMP	FAB	IOA0-AFNC-BW	events	state
+PMP	AFR	IOA0-AFR-BW	events	state
+PMP	FAB	IOA1-AFNC-BW	events	state
+PMP	FAB	IOA2-AFNC-BW	events	state
+PMP	FAB	IOA3-AFNC-BW	events	state
+PMP	AFR	IOA3-AFR-BW	events	state
+PMP	FAB	IOA6-AFNC-BW	events	state
+PMP	FAB	IOA1-PIO-DWN-WR	events	state
+PMP	FAB	IOA6-PIO-DWN-WR	events	state
+PMP	FAB	AGX-SLOW-AF-BW	events	state
+PMP	FAB	AGX-FAST-AF-BW	events	state
+PMP	AFR	AGX-SLOW-AFR-BW	events	state
+PMP	AFR	AGX-FAST-AFR-BW	events	state
+PMP	DCS	AGX-SLOW-DCS-BW	events	state
+PMP	DCS	AGX-FAST-DCS-BW	events	state
+PMP	DCS	DCS-BWR	events	state
+PMP	FAB	IOA0-AFI-RD-BWR	events	state
+PMP	FAB	IOA1-AFI-RD-BWR	events	state
+PMP	FAB	IOA1-AFI-WR-BWR	events	state
+PMP	FAB	IOA2-AFI-RD-BWR	events	state
+PMP	FAB	IOA2-AFI-WR-BWR	events	state
+PMP	FAB	AFI-LD1-BWR	events	state
+PMP	FAB	AFI-LD6-BWR	events	state
+PMP	FAB	AGX-SLOW-AF-LAT	events	state
+PMP	FAB	AGX-FAST-AF-LAT	events	state
+PMP	AFR	AGX-SLOW-AFR-LA	events	state
+PMP	AFR	AGX-FAST-AFR-LA	events	state
+PMP	DCS	AGX-SLOW-DCS-LA	events	state
+PMP	DCS	AGX-FAST-DCS-LA	events	state
+PMP	SOC0	ANE0-SLOW-BW	events	state
+PMP	SOC0	ANE0-FAST-BW	events	state
+PMP	FAB	ANE0-SLOW-AF-BW	events	state
+PMP	FAB	ANE0-FAST-AF-BW	events	state
+PMP	AFR	ANE0-SLOW-AFR-B	events	state
+PMP	AFR	ANE0-FAST-AFR-B	events	state
+PMP	FAB	IOA4-AFNC-BW	events	state
+PMP	FAB	IOA5-AFNC-BW	events	state
+PMP	FAB	AVE1-BW	events	state
+PMP	FAB	MSR1-BW	events	state
+PMP	FAB	IOA4-AFI-RD-BWR	events	state
+PMP	FAB	IOA5-AFI-RD-BWR	events	state
+PMP	FAB	AFI-D2D-BW	events	state
+PMP	FAB	AFI-BOTTOM-BW	events	state
+PMP	FAB	IOA7-AFNC-BW	events	state
+PMP	AFR	IOA7-AFR-BW	events	state
+PMP	FAB	IOA8-AFNC-BW	events	state
+PMP	FAB	IOA9-AFNC-BW	events	state
+PMP	FAB	IOA10-AFNC-BW	events	state
+PMP	AFR	IOA10-AFR-BW	events	state
+PMP	FAB	IOA11-AFNC-BW	events	state
+PMP	FAB	IOA12-AFNC-BW	events	state
+PMP	FAB	IOA13-AFNC-BW	events	state
+PMP	FAB	IOA8-PIO-DWN-WR	events	state
+PMP	FAB	IOA13-PIO-DWN-W	events	state
+PMP	FAB	AVE3-BW	events	state
+PMP	FAB	MSR3-BW	events	state
+PMP	FAB	IOA7-AFI-RD-BWR	events	state
+PMP	FAB	IOA8-AFI-RD-BWR	events	state
+PMP	FAB	IOA8-AFI-WR-BWR	events	state
+PMP	FAB	IOA11-AFI-RD-BW	events	state
+PMP	FAB	IOA12-AFI-RD-BW	events	state
+PMP	FAB	AFI-LD15-BWR	events	state
+PMP	FAB	AFI-LD39-BWR	events	state
+PMP	SOC1	ANE1-SLOW-BW	events	state
+PMP	SOC1	ANE1-FAST-BW	events	state
+PMP	FAB	ANE1-SLOW-AF-BW	events	state
+PMP	FAB	ANE1-FAST-AF-BW	events	state
+PMP	AFR	ANE1-SLOW-AFR-B	events	state
+PMP	AFR	ANE1-FAST-AFR-B	events	state
+PMP	PWC Window 0	DELAY	events	state
+PMP	PWC Window 0	BUSY	events	state
+PMP	PWC Window 0	IDLE	events	state
+PMP	PWC Window 0	SPILL	events	state
+PMP	PWRS0	TICKS	events	simple
+PMP	PWRS0	STRESS-0	events	simple
+PMP	PWRS0	STRESS-1	events	simple
+PMP	PWRS0	STRESS-2	events	simple
+PMP	PWRS0	STRESS-3	events	simple
+PMP	PWRS0	THROT-ALL-SUM	events	simple
+PMP	PWRS0	Q-TICKS-0	events	simple
+PMP	PWRS0	Q-TICKS-1	events	simple
+PMP	PWRS0	STRESS	events	state
+PMP	PWRS1	TICKS	events	simple
+PMP	PWRS1	STRESS-0	events	simple
+PMP	PWRS1	STRESS-1	events	simple
+PMP	PWRS1	STRESS-2	events	simple
+PMP	PWRS1	STRESS-3	events	simple
+PMP	PWRS1	THROT-ALL-SUM	events	simple
+PMP	PWRS1	Q-TICKS-0	events	simple
+PMP	PWRS1	Q-TICKS-1	events	simple
+PMP	PWRS1	STRESS	events	state
+PMP	DSID Stats	Grp1 Hits	B	simple
+PMP	DSID Stats	Grp1 Misses	B	simple
+PMP	DSID Stats	Grp2 Hits	B	simple
+PMP	DSID Stats	Grp2 Misses	B	simple
+PMP	DSID Stats	Grp3 Hits	B	simple
+PMP	DSID Stats	Grp3 Misses	B	simple
+PMP	DSID Stats	Grp4 Hits	B	simple
+PMP	DSID Stats	Grp4 Misses	B	simple
+PMP	DSID Stats	Grp5 Hits	B	simple
+PMP	DSID Stats	Grp5 Misses	B	simple
+PMP	DSID Stats	Grp6 Hits	B	simple
+PMP	DSID Stats	Grp6 Misses	B	simple
+PMP	DSID Stats	Grp7 Hits	B	simple
+PMP	DSID Stats	Grp7 Misses	B	simple
+PMP	DSID Stats	Grp8 Hits	B	simple
+PMP	DSID Stats	Grp8 Misses	B	simple
+PMP	DSID Stats	Grp9 Hits	B	simple
+PMP	DSID Stats	Grp9 Misses	B	simple
+PMP	DSID Stats	Grp10 Hits	B	simple
+PMP	DSID Stats	Grp10 Misses	B	simple
+PMP	DSID Stats	Grp11 Hits	B	simple
+PMP	DSID Stats	Grp11 Misses	B	simple
+PMP	DSID Stats	Grp14 Hits	B	simple
+PMP	DSID Stats	Grp14 Misses	B	simple
+PMP	DSID Stats	Grp15 Hits	B	simple
+PMP	DSID Stats	Grp15 Misses	B	simple
+PMP	DSID Stats	Grp16 Hits	B	simple
+PMP	DSID Stats	Grp16 Misses	B	simple
+PMP	DSID Stats	Grp17 Hits	B	simple
+PMP	DSID Stats	Grp17 Misses	B	simple
+PMP	DSID Stats	Grp18 Hits	B	simple
+PMP	DSID Stats	Grp18 Misses	B	simple
+PMP	DSID Stats	Grp19 Hits	B	simple
+PMP	DSID Stats	Grp19 Misses	B	simple
+PMP	DSID Stats	Grp21 Hits	B	simple
+PMP	DSID Stats	Grp21 Misses	B	simple
+PMP	DSID Stats	Grp24 Hits	B	simple
+PMP	DSID Stats	Grp24 Misses	B	simple
+GPU Stats	Power Zone Filters	GPU Power Zone Filter 0	events	simple
+GPU Stats	Power Zone Filters	GPU Power Zone Filter 1	events	simple
+GPU Stats	Power Zone Filters	GPU Power Zone Filter 2	events	simple
+GPU Stats	Power Zone Filters	GPU Power Zone Filter 3	events	simple
+GPU Stats	Power Zone Filters	GPU Power Zone Filter 4	events	simple
+GPU Stats	Power Zone Filters	GPU Power Filter	events	simple
+GPU Stats	Temperature	Average Sum		simple
+GPU Stats	Temperature	Average Sum Count		simple
+GPU Stats	Temperature	Min		simple
+GPU Stats	Temperature	Max		simple
+GPU Stats	Temperature	Tg8a Sum		simple
+GPU Stats	Temperature	Tg8a Sum Count		simple
+GPU Stats	Temperature	Tg8a Min		simple
+GPU Stats	Temperature	Tg8a Max		simple
+GPU Stats	Temperature	Tg10a Sum		simple
+GPU Stats	Temperature	Tg10a Sum Count		simple
+GPU Stats	Temperature	Tg10a Min		simple
+GPU Stats	Temperature	Tg10a Max		simple
+GPU Stats	Temperature	Tg11a Sum		simple
+GPU Stats	Temperature	Tg11a Sum Count		simple
+GPU Stats	Temperature	Tg11a Min		simple
+GPU Stats	Temperature	Tg11a Max		simple
+GPU Stats	Temperature	Tg12a Sum		simple
+GPU Stats	Temperature	Tg12a Sum Count		simple
+GPU Stats	Temperature	Tg12a Min		simple
+GPU Stats	Temperature	Tg12a Max		simple
+GPU Stats	Temperature	Tg24a Sum		simple
+GPU Stats	Temperature	Tg24a Sum Count		simple
+GPU Stats	Temperature	Tg24a Min		simple
+GPU Stats	Temperature	Tg24a Max		simple
+GPU Stats	Temperature	Tg26a Sum		simple
+GPU Stats	Temperature	Tg26a Sum Count		simple
+GPU Stats	Temperature	Tg26a Min		simple
+GPU Stats	Temperature	Tg26a Max		simple
+GPU Stats	Temperature	Tg27a Sum		simple
+GPU Stats	Temperature	Tg27a Sum Count		simple
+GPU Stats	Temperature	Tg27a Min		simple
+GPU Stats	Temperature	Tg27a Max		simple
+GPU Stats	Temperature	Tg28a Sum		simple
+GPU Stats	Temperature	Tg28a Sum Count		simple
+GPU Stats	Temperature	Tg28a Min		simple
+GPU Stats	Temperature	Tg28a Max		simple
+GPU Stats	Temperature	Tg40a Sum		simple
+GPU Stats	Temperature	Tg40a Sum Count		simple
+GPU Stats	Temperature	Tg40a Min		simple
+GPU Stats	Temperature	Tg40a Max		simple
+GPU Stats	Temperature	Tg42a Sum		simple
+GPU Stats	Temperature	Tg42a Sum Count		simple
+GPU Stats	Temperature	Tg42a Min		simple
+GPU Stats	Temperature	Tg42a Max		simple
+GPU Stats	Temperature	Tg44a Sum		simple
+GPU Stats	Temperature	Tg44a Sum Count		simple
+GPU Stats	Temperature	Tg44a Min		simple
+GPU Stats	Temperature	Tg44a Max		simple
+GPU Stats	Temperature	Tg58a Sum		simple
+GPU Stats	Temperature	Tg58a Sum Count		simple
+GPU Stats	Temperature	Tg58a Min		simple
+GPU Stats	Temperature	Tg58a Max		simple
+GPU Stats	Temperature	Tg60a Sum		simple
+GPU Stats	Temperature	Tg60a Sum Count		simple
+GPU Stats	Temperature	Tg60a Min		simple
+GPU Stats	Temperature	Tg60a Max		simple
+GPU Stats	Temperature	Tg74a Sum		simple
+GPU Stats	Temperature	Tg74a Sum Count		simple
+GPU Stats	Temperature	Tg74a Min		simple
+GPU Stats	Temperature	Tg74a Max		simple
+GPU Stats	Temperature	Tg76a Sum		simple
+GPU Stats	Temperature	Tg76a Sum Count		simple
+GPU Stats	Temperature	Tg76a Min		simple
+GPU Stats	Temperature	Tg76a Max		simple
+GPU Stats	Temperature	Tg88a Sum		simple
+GPU Stats	Temperature	Tg88a Sum Count		simple
+GPU Stats	Temperature	Tg88a Min		simple
+GPU Stats	Temperature	Tg88a Max		simple
+GPU Stats	Temperature	Tg90a Sum		simple
+GPU Stats	Temperature	Tg90a Sum Count		simple
+GPU Stats	Temperature	Tg90a Min		simple
+GPU Stats	Temperature	Tg90a Max		simple
+GPU Stats	Temperature	Tg92a Sum		simple
+GPU Stats	Temperature	Tg92a Sum Count		simple
+GPU Stats	Temperature	Tg92a Min		simple
+GPU Stats	Temperature	Tg92a Max		simple
+GPU Stats	Temperature	Tg106a Sum		simple
+GPU Stats	Temperature	Tg106a Sum Count		simple
+GPU Stats	Temperature	Tg106a Min		simple
+GPU Stats	Temperature	Tg106a Max		simple
+GPU Stats	Temperature	Tg107a Sum		simple
+GPU Stats	Temperature	Tg107a Sum Count		simple
+GPU Stats	Temperature	Tg107a Min		simple
+GPU Stats	Temperature	Tg107a Max		simple
+GPU Stats	Temperature	Tg108a Sum		simple
+GPU Stats	Temperature	Tg108a Sum Count		simple
+GPU Stats	Temperature	Tg108a Min		simple
+GPU Stats	Temperature	Tg108a Max		simple
+GPU Stats	Temperature	Tg120a Sum		simple
+GPU Stats	Temperature	Tg120a Sum Count		simple
+GPU Stats	Temperature	Tg120a Min		simple
+GPU Stats	Temperature	Tg120a Max		simple
+GPU Stats	Temperature	Tg122a Sum		simple
+GPU Stats	Temperature	Tg122a Sum Count		simple
+GPU Stats	Temperature	Tg122a Min		simple
+GPU Stats	Temperature	Tg122a Max		simple
+GPU Stats	Temperature	Tg123a Sum		simple
+GPU Stats	Temperature	Tg123a Sum Count		simple
+GPU Stats	Temperature	Tg123a Min		simple
+GPU Stats	Temperature	Tg123a Max		simple
+GPU Stats	Temperature	Tg124a Sum		simple
+GPU Stats	Temperature	Tg124a Sum Count		simple
+GPU Stats	Temperature	Tg124a Min		simple
+GPU Stats	Temperature	Tg124a Max		simple
+GPU Stats	GPU Performance States	GPUPH	24Mticks	state
+GPU Stats	GPU Boost Controller Performance States	BSTGPUPH	24Mticks	state
+GPU Stats	GPU Software Performance States	GPU_SW	24Mticks	state
+GPU Stats	Fender State	FENDER	24Mticks	state
+GPU Stats	DVD Request States	GPUDVDH	24Mticks	state
+GPU Stats	CLTM-induced GPU Performance States	GPU_CLTM	24Mticks	state
+GPU Stats	Active Time Histogram	GPU Active Time	24Mticks	histogram
+GPU Stats	Idle Time Histogram	GPU Idle Time	24Mticks	histogram
+GPU Stats	Fender Active Time Histogram	Fender Active Time	24Mticks	histogram
+GPU Stats	Fender Idle Time Histogram	Fender Idle Time	24Mticks	histogram
+GPU Stats	UV Warn State	UVWarn Instances	events	simple
+GPU Stats	UV Warn State	UVWarn Active	events	simple
+GPU Stats	Issue Counts	Total Restarts	events	simple
+GPU Stats	Issue Counts	Unknown Restarts	events	simple
+GPU Stats	Issue Counts	mediaserverd Restarts	events	simple
+GPU Stats	Issue Counts	36223	events	simple
+GPU Stats	Issue Counts	41819	events	simple
+GPU Stats	Issue Counts	42822	events	simple
+GPU Stats	Issue Counts	DM Kill Count	events	simple
+GPU Stats	Issue Counts	GTP Kill Count	events	simple
+GPU Stats	Issue Counts	FRG Kill Count	events	simple
+GPU Stats	Issue Counts	CDM Kill Count	events	simple
+GPU Stats	Issue Counts	Memless Render Failed	events	simple
+GPU Stats	vChannel Selection	GTP Single	events	simple
+GPU Stats	vChannel Selection	GTP Dependent	events	simple
+GPU Stats	vChannel Selection	GTP Idle	events	simple
+GPU Stats	vChannel Selection	GTP Alloc New	events	simple
+GPU Stats	vChannel Selection	GTP Round robin	events	simple
+GPU Stats	vChannel Selection	FRG Single	events	simple
+GPU Stats	vChannel Selection	FRG Dependent	events	simple
+GPU Stats	vChannel Selection	FRG Idle	events	simple
+GPU Stats	vChannel Selection	FRG Alloc New	events	simple
+GPU Stats	vChannel Selection	FRG Round robin	events	simple
+GPU Stats	vChannel Selection	CDM Single	events	simple
+GPU Stats	vChannel Selection	CDM Dependent	events	simple
+GPU Stats	vChannel Selection	CDM Idle	events	simple
+GPU Stats	vChannel Selection	CDM Alloc New	events	simple
+GPU Stats	vChannel Selection	CDM Round robin	events	simple
+GPU Stats	GTP vChannel Usage	Channel 0	events	simple
+GPU Stats	GTP vChannel Usage	Channel 1	events	simple
+GPU Stats	GTP vChannel Usage	Channel 2	events	simple
+GPU Stats	GTP vChannel Usage	Channel 3	events	simple
+GPU Stats	GTP vChannel Usage	Invalid	events	simple
+GPU Stats	FRG vChannel Usage	Channel 0	events	simple
+GPU Stats	FRG vChannel Usage	Channel 1	events	simple
+GPU Stats	FRG vChannel Usage	Channel 2	events	simple
+GPU Stats	FRG vChannel Usage	Channel 3	events	simple
+GPU Stats	FRG vChannel Usage	Invalid	events	simple
+GPU Stats	CDM vChannel Usage	Channel 0	events	simple
+GPU Stats	CDM vChannel Usage	Channel 1	events	simple
+GPU Stats	CDM vChannel Usage	Channel 2	events	simple
+GPU Stats	CDM vChannel Usage	Channel 3	events	simple
+GPU Stats	CDM vChannel Usage	Invalid	events	simple
+GPU Stats	GPU Discrete Power Zone Residency	PZRSDNCY	24Mticks	state
+GPU Stats	GPU Power Controller States	PWRCTRL	24Mticks	state
+GPU Stats	PMU Loop Lost Performance Reason Code States	PMU_RC	24Mticks	state
+GPU Stats	PPM Target as % of Max GPU Power	GPU_PPM	24Mticks	state
+GPU Stats	UT Engagement centi-% Histogram	GPU UT Engagement centi-%		histogram
+GPU Stats	Spill Buffer Usage Histogram	Spill Buffer Usage	KiB	histogram
+GPU Stats	Spill Buffer Metadata Usage Histogram	Spill Buffer Metadata Usage	KiB	histogram
+GPU Stats	Spill Buffer Metadata Unused Blocks Per Task Histogram	Spill Buffer Unused Blocks per Task		histogram
+AMC Stats	Perf Counters	DIE0 PCPU0 RD	B	simple
+AMC Stats	Perf Counters	DIE0 PCPU0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 PCPU0 WR	B	simple
+AMC Stats	Perf Counters	DIE0 PCPU0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 PCPU1 RD	B	simple
+AMC Stats	Perf Counters	DIE0 PCPU1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 PCPU1 WR	B	simple
+AMC Stats	Perf Counters	DIE0 PCPU1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 ECPU0 RD	B	simple
+AMC Stats	Perf Counters	DIE0 ECPU0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 ECPU0 WR	B	simple
+AMC Stats	Perf Counters	DIE0 ECPU0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 GFXA RD	B	simple
+AMC Stats	Perf Counters	DIE0 GFXA WR	B	simple
+AMC Stats	Perf Counters	DIE0 GFXB RD	B	simple
+AMC Stats	Perf Counters	DIE0 GFXB WR	B	simple
+AMC Stats	Perf Counters	DIE0 GFX DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 GFX DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 AFC RD	B	simple
+AMC Stats	Perf Counters	DIE0 AFC WR	B	simple
+AMC Stats	Perf Counters	DIE0 AFI RD	B	simple
+AMC Stats	Perf Counters	DIE0 AFI WR	B	simple
+AMC Stats	Perf Counters	DIE0 AFRA RD	B	simple
+AMC Stats	Perf Counters	DIE0 AFRA WR	B	simple
+AMC Stats	Perf Counters	DIE0 AFRB RD	B	simple
+AMC Stats	Perf Counters	DIE0 AFRB WR	B	simple
+AMC Stats	Perf Counters	DIE0 ANE RD	B	simple
+AMC Stats	Perf Counters	DIE0 ANE DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 ANE WR	B	simple
+AMC Stats	Perf Counters	DIE0 ANE DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 AVD RD	B	simple
+AMC Stats	Perf Counters	DIE0 AVD DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 AVD WR	B	simple
+AMC Stats	Perf Counters	DIE0 AVD DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP0 RD	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP0 WR	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 SB RD	B	simple
+AMC Stats	Perf Counters	DIE0 SB DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 SB WR	B	simple
+AMC Stats	Perf Counters	DIE0 SB DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 ATC0 RD	B	simple
+AMC Stats	Perf Counters	DIE0 ATC0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 ATC0 WR	B	simple
+AMC Stats	Perf Counters	DIE0 ATC0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 ATC1 RD	B	simple
+AMC Stats	Perf Counters	DIE0 ATC1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 ATC1 WR	B	simple
+AMC Stats	Perf Counters	DIE0 ATC1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 ATC2 RD	B	simple
+AMC Stats	Perf Counters	DIE0 ATC2 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 ATC2 WR	B	simple
+AMC Stats	Perf Counters	DIE0 ATC2 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 ATC3 RD	B	simple
+AMC Stats	Perf Counters	DIE0 ATC3 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 ATC3 WR	B	simple
+AMC Stats	Perf Counters	DIE0 ATC3 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP1 RD	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP1 WR	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 STRM CODEC RD	B	simple
+AMC Stats	Perf Counters	DIE0 STRM CODEC DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 STRM CODEC WR	B	simple
+AMC Stats	Perf Counters	DIE0 STRM CODEC DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 PCIE RD	B	simple
+AMC Stats	Perf Counters	DIE0 PCIE DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 PCIE WR	B	simple
+AMC Stats	Perf Counters	DIE0 PCIE DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 ANS RD	B	simple
+AMC Stats	Perf Counters	DIE0 ANS DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 ANS WR	B	simple
+AMC Stats	Perf Counters	DIE0 ANS DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 DISP0 RD	B	simple
+AMC Stats	Perf Counters	DIE0 DISP0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 DISP0 WR	B	simple
+AMC Stats	Perf Counters	DIE0 DISP0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 JPEG RD	B	simple
+AMC Stats	Perf Counters	DIE0 JPEG DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 JPEG WR	B	simple
+AMC Stats	Perf Counters	DIE0 JPEG DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 ISP RD	B	simple
+AMC Stats	Perf Counters	DIE0 ISP DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 ISP WR	B	simple
+AMC Stats	Perf Counters	DIE0 ISP DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 SIO_SEP RD	B	simple
+AMC Stats	Perf Counters	DIE0 SIO_SEP DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 SIO_SEP WR	B	simple
+AMC Stats	Perf Counters	DIE0 SIO_SEP DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 MSR0 RD	B	simple
+AMC Stats	Perf Counters	DIE0 MSR0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 MSR0 WR	B	simple
+AMC Stats	Perf Counters	DIE0 MSR0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 AVE0 RD	B	simple
+AMC Stats	Perf Counters	DIE0 AVE0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 AVE0 WR	B	simple
+AMC Stats	Perf Counters	DIE0 AVE0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 PRORES1 RD	B	simple
+AMC Stats	Perf Counters	DIE0 PRORES1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 PRORES1 WR	B	simple
+AMC Stats	Perf Counters	DIE0 PRORES1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 GFXC RD	B	simple
+AMC Stats	Perf Counters	DIE0 GFXC DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 GFXC WR	B	simple
+AMC Stats	Perf Counters	DIE0 GFXC DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 AVE1 RD	B	simple
+AMC Stats	Perf Counters	DIE0 AVE1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 AVE1 WR	B	simple
+AMC Stats	Perf Counters	DIE0 AVE1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP3 RD	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP3 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP3 WR	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP3 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 MSR1 RD	B	simple
+AMC Stats	Perf Counters	DIE0 MSR1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 MSR1 WR	B	simple
+AMC Stats	Perf Counters	DIE0 MSR1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP2 RD	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP2 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP2 WR	B	simple
+AMC Stats	Perf Counters	DIE0 EXT DISP2 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 PCPU0 RD	B	simple
+AMC Stats	Perf Counters	DIE1 PCPU0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 PCPU0 WR	B	simple
+AMC Stats	Perf Counters	DIE1 PCPU0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 PCPU1 RD	B	simple
+AMC Stats	Perf Counters	DIE1 PCPU1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 PCPU1 WR	B	simple
+AMC Stats	Perf Counters	DIE1 PCPU1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 ECPU0 RD	B	simple
+AMC Stats	Perf Counters	DIE1 ECPU0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 ECPU0 WR	B	simple
+AMC Stats	Perf Counters	DIE1 ECPU0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 GFXA RD	B	simple
+AMC Stats	Perf Counters	DIE1 GFXA WR	B	simple
+AMC Stats	Perf Counters	DIE1 GFXB RD	B	simple
+AMC Stats	Perf Counters	DIE1 GFXB WR	B	simple
+AMC Stats	Perf Counters	DIE1 GFX DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 GFX DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 AFC RD	B	simple
+AMC Stats	Perf Counters	DIE1 AFC WR	B	simple
+AMC Stats	Perf Counters	DIE1 AFI RD	B	simple
+AMC Stats	Perf Counters	DIE1 AFI WR	B	simple
+AMC Stats	Perf Counters	DIE1 AFRA RD	B	simple
+AMC Stats	Perf Counters	DIE1 AFRA WR	B	simple
+AMC Stats	Perf Counters	DIE1 AFRB RD	B	simple
+AMC Stats	Perf Counters	DIE1 AFRB WR	B	simple
+AMC Stats	Perf Counters	DIE1 ANE RD	B	simple
+AMC Stats	Perf Counters	DIE1 ANE DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 ANE WR	B	simple
+AMC Stats	Perf Counters	DIE1 ANE DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 AVD RD	B	simple
+AMC Stats	Perf Counters	DIE1 AVD DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 AVD WR	B	simple
+AMC Stats	Perf Counters	DIE1 AVD DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP0 RD	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP0 WR	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 SB RD	B	simple
+AMC Stats	Perf Counters	DIE1 SB DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 SB WR	B	simple
+AMC Stats	Perf Counters	DIE1 SB DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 ATC0 RD	B	simple
+AMC Stats	Perf Counters	DIE1 ATC0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 ATC0 WR	B	simple
+AMC Stats	Perf Counters	DIE1 ATC0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 ATC1 RD	B	simple
+AMC Stats	Perf Counters	DIE1 ATC1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 ATC1 WR	B	simple
+AMC Stats	Perf Counters	DIE1 ATC1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 ATC2 RD	B	simple
+AMC Stats	Perf Counters	DIE1 ATC2 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 ATC2 WR	B	simple
+AMC Stats	Perf Counters	DIE1 ATC2 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 ATC3 RD	B	simple
+AMC Stats	Perf Counters	DIE1 ATC3 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 ATC3 WR	B	simple
+AMC Stats	Perf Counters	DIE1 ATC3 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP1 RD	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP1 WR	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 STRM CODEC RD	B	simple
+AMC Stats	Perf Counters	DIE1 STRM CODEC DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 STRM CODEC WR	B	simple
+AMC Stats	Perf Counters	DIE1 STRM CODEC DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 PCIE RD	B	simple
+AMC Stats	Perf Counters	DIE1 PCIE DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 PCIE WR	B	simple
+AMC Stats	Perf Counters	DIE1 PCIE DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 ANS RD	B	simple
+AMC Stats	Perf Counters	DIE1 ANS DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 ANS WR	B	simple
+AMC Stats	Perf Counters	DIE1 ANS DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 DISP0 RD	B	simple
+AMC Stats	Perf Counters	DIE1 DISP0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 DISP0 WR	B	simple
+AMC Stats	Perf Counters	DIE1 DISP0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 JPEG RD	B	simple
+AMC Stats	Perf Counters	DIE1 JPEG DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 JPEG WR	B	simple
+AMC Stats	Perf Counters	DIE1 JPEG DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 ISP RD	B	simple
+AMC Stats	Perf Counters	DIE1 ISP DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 ISP WR	B	simple
+AMC Stats	Perf Counters	DIE1 ISP DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 SIO_SEP RD	B	simple
+AMC Stats	Perf Counters	DIE1 SIO_SEP DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 SIO_SEP WR	B	simple
+AMC Stats	Perf Counters	DIE1 SIO_SEP DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 MSR0 RD	B	simple
+AMC Stats	Perf Counters	DIE1 MSR0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 MSR0 WR	B	simple
+AMC Stats	Perf Counters	DIE1 MSR0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 AVE0 RD	B	simple
+AMC Stats	Perf Counters	DIE1 AVE0 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 AVE0 WR	B	simple
+AMC Stats	Perf Counters	DIE1 AVE0 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 PRORES1 RD	B	simple
+AMC Stats	Perf Counters	DIE1 PRORES1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 PRORES1 WR	B	simple
+AMC Stats	Perf Counters	DIE1 PRORES1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 GFXC RD	B	simple
+AMC Stats	Perf Counters	DIE1 GFXC DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 GFXC WR	B	simple
+AMC Stats	Perf Counters	DIE1 GFXC DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 AVE1 RD	B	simple
+AMC Stats	Perf Counters	DIE1 AVE1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 AVE1 WR	B	simple
+AMC Stats	Perf Counters	DIE1 AVE1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP3 RD	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP3 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP3 WR	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP3 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 MSR1 RD	B	simple
+AMC Stats	Perf Counters	DIE1 MSR1 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 MSR1 WR	B	simple
+AMC Stats	Perf Counters	DIE1 MSR1 DCS WR	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP2 RD	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP2 DCS RD	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP2 WR	B	simple
+AMC Stats	Perf Counters	DIE1 EXT DISP2 DCS WR	B	simple
+AMC Stats	Perf Counters	DCS	B	simple
+AMC Stats	Perf Counters	DCS RD	B	simple
+AMC Stats	Perf Counters	DCS WR	B	simple
+AMC Stats	Perf Counters	DCS CAS		simple
+AMC Stats	Perf Counters	DCS RAS		simple
+AMC Stats	Perf Counters	DCS SR ENTRIES		simple
+AMC Stats	Perf Counters	DCS PD ENTRIES		simple
+AMC Stats	Perf Counters	DCS SR CYCLES		simple
+AMC Stats	Perf Counters	DCS PD CYCLES		simple
+AMC Stats	Perf Counters	SR duration(usec)		simple
+AMC Stats	Perf Counters	PD duration(usec)		simple
+Energy Model	-	DIE_0_EACC_CPU0	mJ	simple
+Energy Model	-	DIE_0_EACC_CPU1	mJ	simple
+Energy Model	-	DIE_0_EACC_CPU2	mJ	simple
+Energy Model	-	DIE_0_EACC_CPU3	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPU0	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPU1	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPU2	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPU3	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPU0	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPU1	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPU2	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPU3	mJ	simple
+Energy Model	-	DIE_0_EACC_CPM	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPM	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPM	mJ	simple
+Energy Model	-	DIE_0_EACC_CPU0_SRAM	mJ	simple
+Energy Model	-	DIE_0_EACC_CPU1_SRAM	mJ	simple
+Energy Model	-	DIE_0_EACC_CPU2_SRAM	mJ	simple
+Energy Model	-	DIE_0_EACC_CPU3_SRAM	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPU0_SRAM	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPU1_SRAM	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPU2_SRAM	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPU3_SRAM	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPU0_SRAM	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPU1_SRAM	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPU2_SRAM	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPU3_SRAM	mJ	simple
+Energy Model	-	DIE_0_EACC_CPM_SRAM	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPM_SRAM	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPM_SRAM	mJ	simple
+Energy Model	-	DIE_0_EACC_CPU	mJ	simple
+Energy Model	-	DIE_0_PACC0_CPU	mJ	simple
+Energy Model	-	DIE_0_PACC1_CPU	mJ	simple
+Energy Model	-	DIE_0_CPU Energy	mJ	simple
+Energy Model	-	DIE_1_EACC_CPU0	mJ	simple
+Energy Model	-	DIE_1_EACC_CPU1	mJ	simple
+Energy Model	-	DIE_1_EACC_CPU2	mJ	simple
+Energy Model	-	DIE_1_EACC_CPU3	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPU0	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPU1	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPU2	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPU3	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPU0	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPU1	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPU2	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPU3	mJ	simple
+Energy Model	-	DIE_1_EACC_CPM	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPM	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPM	mJ	simple
+Energy Model	-	DIE_1_EACC_CPU0_SRAM	mJ	simple
+Energy Model	-	DIE_1_EACC_CPU1_SRAM	mJ	simple
+Energy Model	-	DIE_1_EACC_CPU2_SRAM	mJ	simple
+Energy Model	-	DIE_1_EACC_CPU3_SRAM	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPU0_SRAM	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPU1_SRAM	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPU2_SRAM	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPU3_SRAM	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPU0_SRAM	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPU1_SRAM	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPU2_SRAM	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPU3_SRAM	mJ	simple
+Energy Model	-	DIE_1_EACC_CPM_SRAM	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPM_SRAM	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPM_SRAM	mJ	simple
+Energy Model	-	DIE_1_EACC_CPU	mJ	simple
+Energy Model	-	DIE_1_PACC0_CPU	mJ	simple
+Energy Model	-	DIE_1_PACC1_CPU	mJ	simple
+Energy Model	-	DIE_1_CPU Energy	mJ	simple
+Energy Model	-	ECPUDTL00	mJ	simple
+Energy Model	-	ECPUDTL01	mJ	simple
+Energy Model	-	ECPUDTL02	mJ	simple
+Energy Model	-	ECPUDTL03	mJ	simple
+Energy Model	-	ECPUDTL04	mJ	simple
+Energy Model	-	ECPUDTL05	mJ	simple
+Energy Model	-	ECPUDTL10	mJ	simple
+Energy Model	-	ECPUDTL11	mJ	simple
+Energy Model	-	ECPUDTL12	mJ	simple
+Energy Model	-	ECPUDTL13	mJ	simple
+Energy Model	-	ECPUDTL14	mJ	simple
+Energy Model	-	ECPUDTL15	mJ	simple
+Energy Model	-	ECPUDTL20	mJ	simple
+Energy Model	-	ECPUDTL21	mJ	simple
+Energy Model	-	ECPUDTL22	mJ	simple
+Energy Model	-	ECPUDTL23	mJ	simple
+Energy Model	-	ECPUDTL24	mJ	simple
+Energy Model	-	ECPUDTL25	mJ	simple
+Energy Model	-	ECPUDTL30	mJ	simple
+Energy Model	-	ECPUDTL31	mJ	simple
+Energy Model	-	ECPUDTL32	mJ	simple
+Energy Model	-	ECPUDTL33	mJ	simple
+Energy Model	-	ECPUDTL34	mJ	simple
+Energy Model	-	ECPUDTL35	mJ	simple
+Energy Model	-	PCPUDTL00	mJ	simple
+Energy Model	-	PCPUDTL01	mJ	simple
+Energy Model	-	PCPUDTL02	mJ	simple
+Energy Model	-	PCPUDTL03	mJ	simple
+Energy Model	-	PCPUDTL04	mJ	simple
+Energy Model	-	PCPUDTL05	mJ	simple
+Energy Model	-	PCPUDTL06	mJ	simple
+Energy Model	-	PCPUDTL07	mJ	simple
+Energy Model	-	PCPUDTL08	mJ	simple
+Energy Model	-	PCPUDTL09	mJ	simple
+Energy Model	-	PCPUDTL0a	mJ	simple
+Energy Model	-	PCPUDTL0b	mJ	simple
+Energy Model	-	PCPUDTL0c	mJ	simple
+Energy Model	-	PCPUDTL0d	mJ	simple
+Energy Model	-	PCPUDTL0e	mJ	simple
+Energy Model	-	PCPUDTL0f	mJ	simple
+Energy Model	-	PCPUDTL010	mJ	simple
+Energy Model	-	PCPUDTL011	mJ	simple
+Energy Model	-	PCPUDTL012	mJ	simple
+Energy Model	-	PCPUDTL10	mJ	simple
+Energy Model	-	PCPUDTL11	mJ	simple
+Energy Model	-	PCPUDTL12	mJ	simple
+Energy Model	-	PCPUDTL13	mJ	simple
+Energy Model	-	PCPUDTL14	mJ	simple
+Energy Model	-	PCPUDTL15	mJ	simple
+Energy Model	-	PCPUDTL16	mJ	simple
+Energy Model	-	PCPUDTL17	mJ	simple
+Energy Model	-	PCPUDTL18	mJ	simple
+Energy Model	-	PCPUDTL19	mJ	simple
+Energy Model	-	PCPUDTL1a	mJ	simple
+Energy Model	-	PCPUDTL1b	mJ	simple
+Energy Model	-	PCPUDTL1c	mJ	simple
+Energy Model	-	PCPUDTL1d	mJ	simple
+Energy Model	-	PCPUDTL1e	mJ	simple
+Energy Model	-	PCPUDTL1f	mJ	simple
+Energy Model	-	PCPUDTL110	mJ	simple
+Energy Model	-	PCPUDTL111	mJ	simple
+Energy Model	-	PCPUDTL112	mJ	simple
+Energy Model	-	PCPUDTL20	mJ	simple
+Energy Model	-	PCPUDTL21	mJ	simple
+Energy Model	-	PCPUDTL22	mJ	simple
+Energy Model	-	PCPUDTL23	mJ	simple
+Energy Model	-	PCPUDTL24	mJ	simple
+Energy Model	-	PCPUDTL25	mJ	simple
+Energy Model	-	PCPUDTL26	mJ	simple
+Energy Model	-	PCPUDTL27	mJ	simple
+Energy Model	-	PCPUDTL28	mJ	simple
+Energy Model	-	PCPUDTL29	mJ	simple
+Energy Model	-	PCPUDTL2a	mJ	simple
+Energy Model	-	PCPUDTL2b	mJ	simple
+Energy Model	-	PCPUDTL2c	mJ	simple
+Energy Model	-	PCPUDTL2d	mJ	simple
+Energy Model	-	PCPUDTL2e	mJ	simple
+Energy Model	-	PCPUDTL2f	mJ	simple
+Energy Model	-	PCPUDTL210	mJ	simple
+Energy Model	-	PCPUDTL211	mJ	simple
+Energy Model	-	PCPUDTL212	mJ	simple
+Energy Model	-	PCPUDTL30	mJ	simple
+Energy Model	-	PCPUDTL31	mJ	simple
+Energy Model	-	PCPUDTL32	mJ	simple
+Energy Model	-	PCPUDTL33	mJ	simple
+Energy Model	-	PCPUDTL34	mJ	simple
+Energy Model	-	PCPUDTL35	mJ	simple
+Energy Model	-	PCPUDTL36	mJ	simple
+Energy Model	-	PCPUDTL37	mJ	simple
+Energy Model	-	PCPUDTL38	mJ	simple
+Energy Model	-	PCPUDTL39	mJ	simple
+Energy Model	-	PCPUDTL3a	mJ	simple
+Energy Model	-	PCPUDTL3b	mJ	simple
+Energy Model	-	PCPUDTL3c	mJ	simple
+Energy Model	-	PCPUDTL3d	mJ	simple
+Energy Model	-	PCPUDTL3e	mJ	simple
+Energy Model	-	PCPUDTL3f	mJ	simple
+Energy Model	-	PCPUDTL310	mJ	simple
+Energy Model	-	PCPUDTL311	mJ	simple
+Energy Model	-	PCPUDTL312	mJ	simple
+Energy Model	-	PCPU1DTL00	mJ	simple
+Energy Model	-	PCPU1DTL01	mJ	simple
+Energy Model	-	PCPU1DTL02	mJ	simple
+Energy Model	-	PCPU1DTL03	mJ	simple
+Energy Model	-	PCPU1DTL04	mJ	simple
+Energy Model	-	PCPU1DTL05	mJ	simple
+Energy Model	-	PCPU1DTL06	mJ	simple
+Energy Model	-	PCPU1DTL07	mJ	simple
+Energy Model	-	PCPU1DTL08	mJ	simple
+Energy Model	-	PCPU1DTL09	mJ	simple
+Energy Model	-	PCPU1DTL0a	mJ	simple
+Energy Model	-	PCPU1DTL0b	mJ	simple
+Energy Model	-	PCPU1DTL0c	mJ	simple
+Energy Model	-	PCPU1DTL0d	mJ	simple
+Energy Model	-	PCPU1DTL0e	mJ	simple
+Energy Model	-	PCPU1DTL0f	mJ	simple
+Energy Model	-	PCPU1DTL010	mJ	simple
+Energy Model	-	PCPU1DTL011	mJ	simple
+Energy Model	-	PCPU1DTL012	mJ	simple
+Energy Model	-	PCPU1DTL10	mJ	simple
+Energy Model	-	PCPU1DTL11	mJ	simple
+Energy Model	-	PCPU1DTL12	mJ	simple
+Energy Model	-	PCPU1DTL13	mJ	simple
+Energy Model	-	PCPU1DTL14	mJ	simple
+Energy Model	-	PCPU1DTL15	mJ	simple
+Energy Model	-	PCPU1DTL16	mJ	simple
+Energy Model	-	PCPU1DTL17	mJ	simple
+Energy Model	-	PCPU1DTL18	mJ	simple
+Energy Model	-	PCPU1DTL19	mJ	simple
+Energy Model	-	PCPU1DTL1a	mJ	simple
+Energy Model	-	PCPU1DTL1b	mJ	simple
+Energy Model	-	PCPU1DTL1c	mJ	simple
+Energy Model	-	PCPU1DTL1d	mJ	simple
+Energy Model	-	PCPU1DTL1e	mJ	simple
+Energy Model	-	PCPU1DTL1f	mJ	simple
+Energy Model	-	PCPU1DTL110	mJ	simple
+Energy Model	-	PCPU1DTL111	mJ	simple
+Energy Model	-	PCPU1DTL112	mJ	simple
+Energy Model	-	PCPU1DTL20	mJ	simple
+Energy Model	-	PCPU1DTL21	mJ	simple
+Energy Model	-	PCPU1DTL22	mJ	simple
+Energy Model	-	PCPU1DTL23	mJ	simple
+Energy Model	-	PCPU1DTL24	mJ	simple
+Energy Model	-	PCPU1DTL25	mJ	simple
+Energy Model	-	PCPU1DTL26	mJ	simple
+Energy Model	-	PCPU1DTL27	mJ	simple
+Energy Model	-	PCPU1DTL28	mJ	simple
+Energy Model	-	PCPU1DTL29	mJ	simple
+Energy Model	-	PCPU1DTL2a	mJ	simple
+Energy Model	-	PCPU1DTL2b	mJ	simple
+Energy Model	-	PCPU1DTL2c	mJ	simple
+Energy Model	-	PCPU1DTL2d	mJ	simple
+Energy Model	-	PCPU1DTL2e	mJ	simple
+Energy Model	-	PCPU1DTL2f	mJ	simple
+Energy Model	-	PCPU1DTL210	mJ	simple
+Energy Model	-	PCPU1DTL211	mJ	simple
+Energy Model	-	PCPU1DTL212	mJ	simple
+Energy Model	-	PCPU1DTL30	mJ	simple
+Energy Model	-	PCPU1DTL31	mJ	simple
+Energy Model	-	PCPU1DTL32	mJ	simple
+Energy Model	-	PCPU1DTL33	mJ	simple
+Energy Model	-	PCPU1DTL34	mJ	simple
+Energy Model	-	PCPU1DTL35	mJ	simple
+Energy Model	-	PCPU1DTL36	mJ	simple
+Energy Model	-	PCPU1DTL37	mJ	simple
+Energy Model	-	PCPU1DTL38	mJ	simple
+Energy Model	-	PCPU1DTL39	mJ	simple
+Energy Model	-	PCPU1DTL3a	mJ	simple
+Energy Model	-	PCPU1DTL3b	mJ	simple
+Energy Model	-	PCPU1DTL3c	mJ	simple
+Energy Model	-	PCPU1DTL3d	mJ	simple
+Energy Model	-	PCPU1DTL3e	mJ	simple
+Energy Model	-	PCPU1DTL3f	mJ	simple
+Energy Model	-	PCPU1DTL310	mJ	simple
+Energy Model	-	PCPU1DTL311	mJ	simple
+Energy Model	-	PCPU1DTL312	mJ	simple
+Energy Model	-	ECPUDTL00	mJ	simple
+Energy Model	-	ECPUDTL01	mJ	simple
+Energy Model	-	ECPUDTL02	mJ	simple
+Energy Model	-	ECPUDTL03	mJ	simple
+Energy Model	-	ECPUDTL04	mJ	simple
+Energy Model	-	ECPUDTL05	mJ	simple
+Energy Model	-	ECPUDTL10	mJ	simple
+Energy Model	-	ECPUDTL11	mJ	simple
+Energy Model	-	ECPUDTL12	mJ	simple
+Energy Model	-	ECPUDTL13	mJ	simple
+Energy Model	-	ECPUDTL14	mJ	simple
+Energy Model	-	ECPUDTL15	mJ	simple
+Energy Model	-	ECPUDTL20	mJ	simple
+Energy Model	-	ECPUDTL21	mJ	simple
+Energy Model	-	ECPUDTL22	mJ	simple
+Energy Model	-	ECPUDTL23	mJ	simple
+Energy Model	-	ECPUDTL24	mJ	simple
+Energy Model	-	ECPUDTL25	mJ	simple
+Energy Model	-	ECPUDTL30	mJ	simple
+Energy Model	-	ECPUDTL31	mJ	simple
+Energy Model	-	ECPUDTL32	mJ	simple
+Energy Model	-	ECPUDTL33	mJ	simple
+Energy Model	-	ECPUDTL34	mJ	simple
+Energy Model	-	ECPUDTL35	mJ	simple
+Energy Model	-	PCPUDTL00	mJ	simple
+Energy Model	-	PCPUDTL01	mJ	simple
+Energy Model	-	PCPUDTL02	mJ	simple
+Energy Model	-	PCPUDTL03	mJ	simple
+Energy Model	-	PCPUDTL04	mJ	simple
+Energy Model	-	PCPUDTL05	mJ	simple
+Energy Model	-	PCPUDTL06	mJ	simple
+Energy Model	-	PCPUDTL07	mJ	simple
+Energy Model	-	PCPUDTL08	mJ	simple
+Energy Model	-	PCPUDTL09	mJ	simple
+Energy Model	-	PCPUDTL0a	mJ	simple
+Energy Model	-	PCPUDTL0b	mJ	simple
+Energy Model	-	PCPUDTL0c	mJ	simple
+Energy Model	-	PCPUDTL0d	mJ	simple
+Energy Model	-	PCPUDTL0e	mJ	simple
+Energy Model	-	PCPUDTL0f	mJ	simple
+Energy Model	-	PCPUDTL010	mJ	simple
+Energy Model	-	PCPUDTL011	mJ	simple
+Energy Model	-	PCPUDTL012	mJ	simple
+Energy Model	-	PCPUDTL10	mJ	simple
+Energy Model	-	PCPUDTL11	mJ	simple
+Energy Model	-	PCPUDTL12	mJ	simple
+Energy Model	-	PCPUDTL13	mJ	simple
+Energy Model	-	PCPUDTL14	mJ	simple
+Energy Model	-	PCPUDTL15	mJ	simple
+Energy Model	-	PCPUDTL16	mJ	simple
+Energy Model	-	PCPUDTL17	mJ	simple
+Energy Model	-	PCPUDTL18	mJ	simple
+Energy Model	-	PCPUDTL19	mJ	simple
+Energy Model	-	PCPUDTL1a	mJ	simple
+Energy Model	-	PCPUDTL1b	mJ	simple
+Energy Model	-	PCPUDTL1c	mJ	simple
+Energy Model	-	PCPUDTL1d	mJ	simple
+Energy Model	-	PCPUDTL1e	mJ	simple
+Energy Model	-	PCPUDTL1f	mJ	simple
+Energy Model	-	PCPUDTL110	mJ	simple
+Energy Model	-	PCPUDTL111	mJ	simple
+Energy Model	-	PCPUDTL112	mJ	simple
+Energy Model	-	PCPUDTL20	mJ	simple
+Energy Model	-	PCPUDTL21	mJ	simple
+Energy Model	-	PCPUDTL22	mJ	simple
+Energy Model	-	PCPUDTL23	mJ	simple
+Energy Model	-	PCPUDTL24	mJ	simple
+Energy Model	-	PCPUDTL25	mJ	simple
+Energy Model	-	PCPUDTL26	mJ	simple
+Energy Model	-	PCPUDTL27	mJ	simple
+Energy Model	-	PCPUDTL28	mJ	simple
+Energy Model	-	PCPUDTL29	mJ	simple
+Energy Model	-	PCPUDTL2a	mJ	simple
+Energy Model	-	PCPUDTL2b	mJ	simple
+Energy Model	-	PCPUDTL2c	mJ	simple
+Energy Model	-	PCPUDTL2d	mJ	simple
+Energy Model	-	PCPUDTL2e	mJ	simple
+Energy Model	-	PCPUDTL2f	mJ	simple
+Energy Model	-	PCPUDTL210	mJ	simple
+Energy Model	-	PCPUDTL211	mJ	simple
+Energy Model	-	PCPUDTL212	mJ	simple
+Energy Model	-	PCPUDTL30	mJ	simple
+Energy Model	-	PCPUDTL31	mJ	simple
+Energy Model	-	PCPUDTL32	mJ	simple
+Energy Model	-	PCPUDTL33	mJ	simple
+Energy Model	-	PCPUDTL34	mJ	simple
+Energy Model	-	PCPUDTL35	mJ	simple
+Energy Model	-	PCPUDTL36	mJ	simple
+Energy Model	-	PCPUDTL37	mJ	simple
+Energy Model	-	PCPUDTL38	mJ	simple
+Energy Model	-	PCPUDTL39	mJ	simple
+Energy Model	-	PCPUDTL3a	mJ	simple
+Energy Model	-	PCPUDTL3b	mJ	simple
+Energy Model	-	PCPUDTL3c	mJ	simple
+Energy Model	-	PCPUDTL3d	mJ	simple
+Energy Model	-	PCPUDTL3e	mJ	simple
+Energy Model	-	PCPUDTL3f	mJ	simple
+Energy Model	-	PCPUDTL310	mJ	simple
+Energy Model	-	PCPUDTL311	mJ	simple
+Energy Model	-	PCPUDTL312	mJ	simple
+Energy Model	-	PCPU1DTL00	mJ	simple
+Energy Model	-	PCPU1DTL01	mJ	simple
+Energy Model	-	PCPU1DTL02	mJ	simple
+Energy Model	-	PCPU1DTL03	mJ	simple
+Energy Model	-	PCPU1DTL04	mJ	simple
+Energy Model	-	PCPU1DTL05	mJ	simple
+Energy Model	-	PCPU1DTL06	mJ	simple
+Energy Model	-	PCPU1DTL07	mJ	simple
+Energy Model	-	PCPU1DTL08	mJ	simple
+Energy Model	-	PCPU1DTL09	mJ	simple
+Energy Model	-	PCPU1DTL0a	mJ	simple
+Energy Model	-	PCPU1DTL0b	mJ	simple
+Energy Model	-	PCPU1DTL0c	mJ	simple
+Energy Model	-	PCPU1DTL0d	mJ	simple
+Energy Model	-	PCPU1DTL0e	mJ	simple
+Energy Model	-	PCPU1DTL0f	mJ	simple
+Energy Model	-	PCPU1DTL010	mJ	simple
+Energy Model	-	PCPU1DTL011	mJ	simple
+Energy Model	-	PCPU1DTL012	mJ	simple
+Energy Model	-	PCPU1DTL10	mJ	simple
+Energy Model	-	PCPU1DTL11	mJ	simple
+Energy Model	-	PCPU1DTL12	mJ	simple
+Energy Model	-	PCPU1DTL13	mJ	simple
+Energy Model	-	PCPU1DTL14	mJ	simple
+Energy Model	-	PCPU1DTL15	mJ	simple
+Energy Model	-	PCPU1DTL16	mJ	simple
+Energy Model	-	PCPU1DTL17	mJ	simple
+Energy Model	-	PCPU1DTL18	mJ	simple
+Energy Model	-	PCPU1DTL19	mJ	simple
+Energy Model	-	PCPU1DTL1a	mJ	simple
+Energy Model	-	PCPU1DTL1b	mJ	simple
+Energy Model	-	PCPU1DTL1c	mJ	simple
+Energy Model	-	PCPU1DTL1d	mJ	simple
+Energy Model	-	PCPU1DTL1e	mJ	simple
+Energy Model	-	PCPU1DTL1f	mJ	simple
+Energy Model	-	PCPU1DTL110	mJ	simple
+Energy Model	-	PCPU1DTL111	mJ	simple
+Energy Model	-	PCPU1DTL112	mJ	simple
+Energy Model	-	PCPU1DTL20	mJ	simple
+Energy Model	-	PCPU1DTL21	mJ	simple
+Energy Model	-	PCPU1DTL22	mJ	simple
+Energy Model	-	PCPU1DTL23	mJ	simple
+Energy Model	-	PCPU1DTL24	mJ	simple
+Energy Model	-	PCPU1DTL25	mJ	simple
+Energy Model	-	PCPU1DTL26	mJ	simple
+Energy Model	-	PCPU1DTL27	mJ	simple
+Energy Model	-	PCPU1DTL28	mJ	simple
+Energy Model	-	PCPU1DTL29	mJ	simple
+Energy Model	-	PCPU1DTL2a	mJ	simple
+Energy Model	-	PCPU1DTL2b	mJ	simple
+Energy Model	-	PCPU1DTL2c	mJ	simple
+Energy Model	-	PCPU1DTL2d	mJ	simple
+Energy Model	-	PCPU1DTL2e	mJ	simple
+Energy Model	-	PCPU1DTL2f	mJ	simple
+Energy Model	-	PCPU1DTL210	mJ	simple
+Energy Model	-	PCPU1DTL211	mJ	simple
+Energy Model	-	PCPU1DTL212	mJ	simple
+Energy Model	-	PCPU1DTL30	mJ	simple
+Energy Model	-	PCPU1DTL31	mJ	simple
+Energy Model	-	PCPU1DTL32	mJ	simple
+Energy Model	-	PCPU1DTL33	mJ	simple
+Energy Model	-	PCPU1DTL34	mJ	simple
+Energy Model	-	PCPU1DTL35	mJ	simple
+Energy Model	-	PCPU1DTL36	mJ	simple
+Energy Model	-	PCPU1DTL37	mJ	simple
+Energy Model	-	PCPU1DTL38	mJ	simple
+Energy Model	-	PCPU1DTL39	mJ	simple
+Energy Model	-	PCPU1DTL3a	mJ	simple
+Energy Model	-	PCPU1DTL3b	mJ	simple
+Energy Model	-	PCPU1DTL3c	mJ	simple
+Energy Model	-	PCPU1DTL3d	mJ	simple
+Energy Model	-	PCPU1DTL3e	mJ	simple
+Energy Model	-	PCPU1DTL3f	mJ	simple
+Energy Model	-	PCPU1DTL310	mJ	simple
+Energy Model	-	PCPU1DTL311	mJ	simple
+Energy Model	-	PCPU1DTL312	mJ	simple
+Energy Model	-	GPU0_0	mJ	simple
+Energy Model	-	GPU CS0_0	mJ	simple
+Energy Model	-	GPU SRAM0_0	mJ	simple
+Energy Model	-	GPU CS SRAM0_0	mJ	simple
+Energy Model	-	ANE0_0	mJ	simple
+Energy Model	-	ISP0_0	mJ	simple
+Energy Model	-	AVE0_0	mJ	simple
+Energy Model	-	MSR0_0	mJ	simple
+Energy Model	-	DCS0_0	mJ	simple
+Energy Model	-	DRAM0_0	mJ	simple
+Energy Model	-	AMCC0_0	mJ	simple
+Energy Model	-	ANE0_1	mJ	simple
+Energy Model	-	ISP0_1	mJ	simple
+Energy Model	-	AVE0_1	mJ	simple
+Energy Model	-	MSR0_1	mJ	simple
+Energy Model	-	DCS0_1	mJ	simple
+Energy Model	-	DRAM0_1	mJ	simple
+Energy Model	-	AMCC0_1	mJ	simple
+Energy Model	-	PCIe Port 0 Energy	uJ	simple
+Energy Model	-	PCIe Port 1 Energy	uJ	simple
+Energy Model	-	PCIe Port 2 Energy	uJ	simple
+Energy Model	-	PCIe Port 3 Energy	uJ	simple
+Energy Model	-	apciec4 Energy	uJ	simple
+Energy Model	-	apciec1 Energy	uJ	simple
+Energy Model	-	apciec2 Energy	uJ	simple
+Energy Model	-	apciec5 Energy	uJ	simple
+Energy Model	-	apciec3 Energy	uJ	simple
+Energy Model	-	apciec0 Energy	uJ	simple
+Energy Model	-	GPU Energy	nJ	simple
+CPU Stats	CPU Complex Voltage States	DIE_0_ECPU	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_ECPU_CPU0	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_ECPU_CPU1	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_ECPU_CPU2	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_ECPU_CPU3	24Mticks	state
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple
+CPU Stats	CPU Complex DVD States	DIE_0_ECPU	24Mticks	state
+CPU Stats	CPU Complex Voltage States	DIE_0_PCPU	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_PCPU_CPU0	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_PCPU_CPU1	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_PCPU_CPU2	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_PCPU_CPU3	24Mticks	state
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v8	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v9	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v10	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v11	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v12	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v13	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v14	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v15	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v16	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v17	us	simple
+CPU Stats	CPU Complex DVD States	DIE_0_PCPU	24Mticks	state
+CPU Stats	CPU Complex Voltage States	DIE_0_PCPU1	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_PCPU1_CPU0	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_PCPU1_CPU1	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_PCPU1_CPU2	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_0_PCPU1_CPU3	24Mticks	state
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v8	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v9	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v10	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v11	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v12	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v13	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v14	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v15	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v16	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v17	us	simple
+CPU Stats	CPU Complex DVD States	DIE_0_PCPU1	24Mticks	state
+CPU Stats	CPU Complex Voltage States	DIE_1_ECPU	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_ECPU_CPU0	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_ECPU_CPU1	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_ECPU_CPU2	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_ECPU_CPU3	24Mticks	state
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple
+CPU Stats	CPU Complex DVD States	DIE_1_ECPU	24Mticks	state
+CPU Stats	CPU Complex Voltage States	DIE_1_PCPU	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_PCPU_CPU0	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_PCPU_CPU1	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_PCPU_CPU2	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_PCPU_CPU3	24Mticks	state
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v8	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v9	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v10	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v11	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v12	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v13	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v14	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v15	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v16	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v17	us	simple
+CPU Stats	CPU Complex DVD States	DIE_1_PCPU	24Mticks	state
+CPU Stats	CPU Complex Voltage States	DIE_1_PCPU1	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_PCPU1_CPU0	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_PCPU1_CPU1	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_PCPU1_CPU2	24Mticks	state
+CPU Stats	CPU Core Performance States	DIE_1_PCPU1_CPU3	24Mticks	state
+CPU Stats	CPU Complex Voltage State Time	 v2	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v3	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v4	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v5	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v6	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v7	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v8	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v9	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v10	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v11	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v12	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v13	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v14	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v15	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v16	us	simple
+CPU Stats	CPU Complex Voltage State Time	 v17	us	simple
+CPU Stats	CPU Complex DVD States	DIE_1_PCPU1	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_0_ECPU	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_0_ECPM	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_0_PCPU	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_0_PCPM	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_0_PCPU1	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_0_PCPM1	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_1_ECPU	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_1_ECPM	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_1_PCPU	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_1_PCPM	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_1_PCPU1	24Mticks	state
+CPU Stats	CPU Complex Performance States	DIE_1_PCPM1	24Mticks	state
+SoC Stats	PMGR Counters	CLK0010		simple
+SoC Stats	PMGR Counters	CLK0020		simple
+SoC Stats	PMGR Counters	CLK0030		simple
+SoC Stats	PMGR Counters	CLK0040		simple
+SoC Stats	PMGR Counters	CLK0050		simple
+SoC Stats	PMGR Counters	CLK0060		simple
+SoC Stats	PMGR Counters	CLK0070		simple
+SoC Stats	PMGR Counters	CLK0080		simple
+SoC Stats	PMGR Counters	CLK0090		simple
+SoC Stats	PMGR Counters	CLK0100		simple
+SoC Stats	PMGR Counters	CLK0110		simple
+SoC Stats	PMGR Counters	CLK0120		simple
+SoC Stats	PMGR Counters	CLK0130		simple
+SoC Stats	PMGR Counters	CLK0140		simple
+SoC Stats	PMGR Counters	CLK0150		simple
+SoC Stats	PMGR Counters	CLK0160		simple
+SoC Stats	PMGR Counters	CLK0170		simple
+SoC Stats	PMGR Counters	CLK0180		simple
+SoC Stats	PMGR Counters	CLK0190		simple
+SoC Stats	PMGR Counters	CLK0200		simple
+SoC Stats	PMGR Counters	CLK0210		simple
+SoC Stats	PMGR Counters	CLK0220		simple
+SoC Stats	PMGR Counters	CLK0230		simple
+SoC Stats	PMGR Counters	CLK0240		simple
+SoC Stats	PMGR Counters	CLK0250		simple
+SoC Stats	PMGR Counters	CLK0260		simple
+SoC Stats	PMGR Counters	CLK0270		simple
+SoC Stats	PMGR Counters	CLK0280		simple
+SoC Stats	PMGR Counters	CLK0290		simple
+SoC Stats	PMGR Counters	CLK0300		simple
+SoC Stats	PMGR Counters	CLK0310		simple
+SoC Stats	PMGR Counters	CLK0320		simple
+SoC Stats	PMGR Counters	CLK0330		simple
+SoC Stats	PMGR Counters	CLK0340		simple
+SoC Stats	PMGR Counters	CLK0350		simple
+SoC Stats	PMGR Counters	CLK0360		simple
+SoC Stats	PMGR Counters	CLK0370		simple
+SoC Stats	PMGR Counters	CLK0380		simple
+SoC Stats	PMGR Counters	CLK0390		simple
+SoC Stats	PMGR Counters	CLK0400		simple
+SoC Stats	PMGR Counters	CLK0410		simple
+SoC Stats	PMGR Counters	CLK0420		simple
+SoC Stats	PMGR Counters	CLK0430		simple
+SoC Stats	PMGR Counters	CLK0460		simple
+SoC Stats	PMGR Counters	CLK0470		simple
+SoC Stats	PMGR Counters	CLK0480		simple
+SoC Stats	PMGR Counters	CLK0490		simple
+SoC Stats	PMGR Counters	CLK0500		simple
+SoC Stats	PMGR Counters	CLK0510		simple
+SoC Stats	PMGR Counters	CLK0520		simple
+SoC Stats	PMGR Counters	CLK0530		simple
+SoC Stats	PMGR Counters	CLK0540		simple
+SoC Stats	PMGR Counters	CLK0550		simple
+SoC Stats	PMGR Counters	CLK0560		simple
+SoC Stats	PMGR Counters	CLK0011		simple
+SoC Stats	PMGR Counters	CLK0021		simple
+SoC Stats	PMGR Counters	CLK0031		simple
+SoC Stats	PMGR Counters	CLK0041		simple
+SoC Stats	PMGR Counters	CLK0051		simple
+SoC Stats	PMGR Counters	CLK0061		simple
+SoC Stats	PMGR Counters	CLK0071		simple
+SoC Stats	PMGR Counters	CLK0081		simple
+SoC Stats	PMGR Counters	CLK0091		simple
+SoC Stats	PMGR Counters	CLK0101		simple
+SoC Stats	PMGR Counters	CLK0111		simple
+SoC Stats	PMGR Counters	CLK0121		simple
+SoC Stats	PMGR Counters	CLK0131		simple
+SoC Stats	PMGR Counters	CLK0141		simple
+SoC Stats	PMGR Counters	CLK0151		simple
+SoC Stats	PMGR Counters	CLK0161		simple
+SoC Stats	PMGR Counters	CLK0171		simple
+SoC Stats	PMGR Counters	CLK0181		simple
+SoC Stats	PMGR Counters	CLK0191		simple
+SoC Stats	PMGR Counters	CLK0201		simple
+SoC Stats	PMGR Counters	CLK0211		simple
+SoC Stats	PMGR Counters	CLK0221		simple
+SoC Stats	PMGR Counters	CLK0231		simple
+SoC Stats	PMGR Counters	CLK0241		simple
+SoC Stats	PMGR Counters	CLK0251		simple
+SoC Stats	PMGR Counters	CLK0261		simple
+SoC Stats	PMGR Counters	CLK0271		simple
+SoC Stats	PMGR Counters	CLK0281		simple
+SoC Stats	PMGR Counters	CLK0291		simple
+SoC Stats	PMGR Counters	CLK0301		simple
+SoC Stats	PMGR Counters	CLK0311		simple
+SoC Stats	PMGR Counters	CLK0321		simple
+SoC Stats	PMGR Counters	CLK0331		simple
+SoC Stats	PMGR Counters	CLK0341		simple
+SoC Stats	PMGR Counters	CLK0351		simple
+SoC Stats	PMGR Counters	CLK0361		simple
+SoC Stats	PMGR Counters	CLK0371		simple
+SoC Stats	PMGR Counters	CLK0381		simple
+SoC Stats	PMGR Counters	CLK0391		simple
+SoC Stats	PMGR Counters	CLK0401		simple
+SoC Stats	PMGR Counters	CLK0411		simple
+SoC Stats	PMGR Counters	CLK0421		simple
+SoC Stats	PMGR Counters	CLK0431		simple
+SoC Stats	PMGR Counters	CLK0461		simple
+SoC Stats	PMGR Counters	CLK0471		simple
+SoC Stats	PMGR Counters	CLK0481		simple
+SoC Stats	PMGR Counters	CLK0491		simple
+SoC Stats	PMGR Counters	CLK0501		simple
+SoC Stats	PMGR Counters	CLK0511		simple
+SoC Stats	PMGR Counters	CLK0521		simple
+SoC Stats	PMGR Counters	CLK0531		simple
+SoC Stats	PMGR Counters	CLK0541		simple
+SoC Stats	PMGR Counters	CLK0551		simple
+SoC Stats	PMGR Counters	CLK0561		simple
+SoC Stats	PMGR Counters	PWR0010		simple
+SoC Stats	PMGR Counters	PWR0020		simple
+SoC Stats	PMGR Counters	PWR0030		simple
+SoC Stats	PMGR Counters	PWR0040		simple
+SoC Stats	PMGR Counters	PWR0050		simple
+SoC Stats	PMGR Counters	PWR0060		simple
+SoC Stats	PMGR Counters	PWR0070		simple
+SoC Stats	PMGR Counters	PWR0080		simple
+SoC Stats	PMGR Counters	PWR0090		simple
+SoC Stats	PMGR Counters	PWR0100		simple
+SoC Stats	PMGR Counters	PWR0110		simple
+SoC Stats	PMGR Counters	PWR0120		simple
+SoC Stats	PMGR Counters	PWR0130		simple
+SoC Stats	PMGR Counters	PWR0140		simple
+SoC Stats	PMGR Counters	PWR0150		simple
+SoC Stats	PMGR Counters	PWR0160		simple
+SoC Stats	PMGR Counters	PWR0170		simple
+SoC Stats	PMGR Counters	PWR0180		simple
+SoC Stats	PMGR Counters	PWR0190		simple
+SoC Stats	PMGR Counters	PWR0200		simple
+SoC Stats	PMGR Counters	PWR0210		simple
+SoC Stats	PMGR Counters	PWR0220		simple
+SoC Stats	PMGR Counters	PWR0230		simple
+SoC Stats	PMGR Counters	PWR0240		simple
+SoC Stats	PMGR Counters	PWR0250		simple
+SoC Stats	PMGR Counters	PWR0260		simple
+SoC Stats	PMGR Counters	PWR0270		simple
+SoC Stats	PMGR Counters	PWR0280		simple
+SoC Stats	PMGR Counters	PWR0290		simple
+SoC Stats	PMGR Counters	PWR0300		simple
+SoC Stats	PMGR Counters	PWR0310		simple
+SoC Stats	PMGR Counters	PWR0320		simple
+SoC Stats	PMGR Counters	PWR0330		simple
+SoC Stats	PMGR Counters	PWR0340		simple
+SoC Stats	PMGR Counters	PWR0350		simple
+SoC Stats	PMGR Counters	PWR0360		simple
+SoC Stats	PMGR Counters	PWR0370		simple
+SoC Stats	PMGR Counters	PWR0380		simple
+SoC Stats	PMGR Counters	PWR0390		simple
+SoC Stats	PMGR Counters	PWR0400		simple
+SoC Stats	PMGR Counters	PWR0410		simple
+SoC Stats	PMGR Counters	PWR0420		simple
+SoC Stats	PMGR Counters	PWR0430		simple
+SoC Stats	PMGR Counters	PWR0440		simple
+SoC Stats	PMGR Counters	PWR0450		simple
+SoC Stats	PMGR Counters	PWR0460		simple
+SoC Stats	PMGR Counters	PWR0470		simple
+SoC Stats	PMGR Counters	PWR0480		simple
+SoC Stats	PMGR Counters	PWR0490		simple
+SoC Stats	PMGR Counters	PWR0500		simple
+SoC Stats	PMGR Counters	PWR0510		simple
+SoC Stats	PMGR Counters	PWR0520		simple
+SoC Stats	PMGR Counters	PWR0530		simple
+SoC Stats	PMGR Counters	PWR0540		simple
+SoC Stats	PMGR Counters	PWR0550		simple
+SoC Stats	PMGR Counters	PWR0560		simple
+SoC Stats	PMGR Counters	PWR0570		simple
+SoC Stats	PMGR Counters	PWR0580		simple
+SoC Stats	PMGR Counters	PWR0590		simple
+SoC Stats	PMGR Counters	PWR0600		simple
+SoC Stats	PMGR Counters	PWR0610		simple
+SoC Stats	PMGR Counters	PWR0620		simple
+SoC Stats	PMGR Counters	PWR0630		simple
+SoC Stats	PMGR Counters	PWR0640		simple
+SoC Stats	PMGR Counters	PWR0650		simple
+SoC Stats	PMGR Counters	PWR0660		simple
+SoC Stats	PMGR Counters	PWR0670		simple
+SoC Stats	PMGR Counters	PWR0680		simple
+SoC Stats	PMGR Counters	PWR0690		simple
+SoC Stats	PMGR Counters	PWR0700		simple
+SoC Stats	PMGR Counters	PWR0710		simple
+SoC Stats	PMGR Counters	PWR0720		simple
+SoC Stats	PMGR Counters	PWR0730		simple
+SoC Stats	PMGR Counters	PWR0740		simple
+SoC Stats	PMGR Counters	PWR0750		simple
+SoC Stats	PMGR Counters	PWR0760		simple
+SoC Stats	PMGR Counters	PWR0770		simple
+SoC Stats	PMGR Counters	PWR0780		simple
+SoC Stats	PMGR Counters	PWR0790		simple
+SoC Stats	PMGR Counters	PWR0800		simple
+SoC Stats	PMGR Counters	PWR0810		simple
+SoC Stats	PMGR Counters	PWR0820		simple
+SoC Stats	PMGR Counters	PWR0011		simple
+SoC Stats	PMGR Counters	PWR0021		simple
+SoC Stats	PMGR Counters	PWR0031		simple
+SoC Stats	PMGR Counters	PWR0041		simple
+SoC Stats	PMGR Counters	PWR0051		simple
+SoC Stats	PMGR Counters	PWR0061		simple
+SoC Stats	PMGR Counters	PWR0071		simple
+SoC Stats	PMGR Counters	PWR0081		simple
+SoC Stats	PMGR Counters	PWR0091		simple
+SoC Stats	PMGR Counters	PWR0101		simple
+SoC Stats	PMGR Counters	PWR0111		simple
+SoC Stats	PMGR Counters	PWR0121		simple
+SoC Stats	PMGR Counters	PWR0131		simple
+SoC Stats	PMGR Counters	PWR0141		simple
+SoC Stats	PMGR Counters	PWR0151		simple
+SoC Stats	PMGR Counters	PWR0161		simple
+SoC Stats	PMGR Counters	PWR0171		simple
+SoC Stats	PMGR Counters	PWR0181		simple
+SoC Stats	PMGR Counters	PWR0191		simple
+SoC Stats	PMGR Counters	PWR0201		simple
+SoC Stats	PMGR Counters	PWR0211		simple
+SoC Stats	PMGR Counters	PWR0221		simple
+SoC Stats	PMGR Counters	PWR0231		simple
+SoC Stats	PMGR Counters	PWR0241		simple
+SoC Stats	PMGR Counters	PWR0251		simple
+SoC Stats	PMGR Counters	PWR0261		simple
+SoC Stats	PMGR Counters	PWR0271		simple
+SoC Stats	PMGR Counters	PWR0281		simple
+SoC Stats	PMGR Counters	PWR0291		simple
+SoC Stats	PMGR Counters	PWR0301		simple
+SoC Stats	PMGR Counters	PWR0311		simple
+SoC Stats	PMGR Counters	PWR0321		simple
+SoC Stats	PMGR Counters	PWR0331		simple
+SoC Stats	PMGR Counters	PWR0341		simple
+SoC Stats	PMGR Counters	PWR0351		simple
+SoC Stats	PMGR Counters	PWR0361		simple
+SoC Stats	PMGR Counters	PWR0371		simple
+SoC Stats	PMGR Counters	PWR0381		simple
+SoC Stats	PMGR Counters	PWR0391		simple
+SoC Stats	PMGR Counters	PWR0401		simple
+SoC Stats	PMGR Counters	PWR0411		simple
+SoC Stats	PMGR Counters	PWR0421		simple
+SoC Stats	PMGR Counters	PWR0431		simple
+SoC Stats	PMGR Counters	PWR0441		simple
+SoC Stats	PMGR Counters	PWR0451		simple
+SoC Stats	PMGR Counters	PWR0461		simple
+SoC Stats	PMGR Counters	PWR0471		simple
+SoC Stats	PMGR Counters	PWR0481		simple
+SoC Stats	PMGR Counters	PWR0491		simple
+SoC Stats	PMGR Counters	PWR0501		simple
+SoC Stats	PMGR Counters	PWR0511		simple
+SoC Stats	PMGR Counters	PWR0521		simple
+SoC Stats	PMGR Counters	PWR0531		simple
+SoC Stats	PMGR Counters	PWR0541		simple
+SoC Stats	PMGR Counters	PWR0551		simple
+SoC Stats	PMGR Counters	PWR0561		simple
+SoC Stats	PMGR Counters	PWR0571		simple
+SoC Stats	PMGR Counters	PWR0581		simple
+SoC Stats	PMGR Counters	PWR0591		simple
+SoC Stats	PMGR Counters	PWR0601		simple
+SoC Stats	PMGR Counters	PWR0611		simple
+SoC Stats	PMGR Counters	PWR0621		simple
+SoC Stats	PMGR Counters	PWR0631		simple
+SoC Stats	PMGR Counters	PWR0641		simple
+SoC Stats	PMGR Counters	PWR0651		simple
+SoC Stats	PMGR Counters	PWR0661		simple
+SoC Stats	PMGR Counters	PWR0671		simple
+SoC Stats	PMGR Counters	PWR0681		simple
+SoC Stats	PMGR Counters	PWR0691		simple
+SoC Stats	PMGR Counters	PWR0701		simple
+SoC Stats	PMGR Counters	PWR0711		simple
+SoC Stats	PMGR Counters	PWR0721		simple
+SoC Stats	PMGR Counters	PWR0731		simple
+SoC Stats	PMGR Counters	PWR0741		simple
+SoC Stats	PMGR Counters	PWR0751		simple
+SoC Stats	PMGR Counters	PWR0761		simple
+SoC Stats	PMGR Counters	PWR0771		simple
+SoC Stats	PMGR Counters	PWR0781		simple
+SoC Stats	PMGR Counters	PWR0791		simple
+SoC Stats	PMGR Counters	PWR0801		simple
+SoC Stats	PMGR Counters	PWR0811		simple
+SoC Stats	PMGR Counters	PWR0821		simple
+SoC Stats	PMGR Counters	EVT0080		simple
+SoC Stats	PMGR Counters	EVT0090		simple
+SoC Stats	PMGR Counters	EVT0100		simple
+SoC Stats	PMGR Counters	EVT0110		simple
+SoC Stats	PMGR Counters	EVT0120		simple
+SoC Stats	PMGR Counters	EVT0130		simple
+SoC Stats	PMGR Counters	EVT0140		simple
+SoC Stats	PMGR Counters	EVT0150		simple
+SoC Stats	PMGR Counters	EVT0160		simple
+SoC Stats	PMGR Counters	EVT0170		simple
+SoC Stats	PMGR Counters	EVT0180		simple
+SoC Stats	PMGR Counters	EVT0190		simple
+SoC Stats	PMGR Counters	EVT0200		simple
+SoC Stats	PMGR Counters	EVT0210		simple
+SoC Stats	PMGR Counters	EVT0220		simple
+SoC Stats	PMGR Counters	EVT0230		simple
+SoC Stats	PMGR Counters	EVT0240		simple
+SoC Stats	PMGR Counters	EVT0250		simple
+SoC Stats	PMGR Counters	EVT0260		simple
+SoC Stats	PMGR Counters	EVT0270		simple
+SoC Stats	PMGR Counters	EVT0300		simple
+SoC Stats	PMGR Counters	EVT0310		simple
+SoC Stats	PMGR Counters	EVT0320		simple
+SoC Stats	PMGR Counters	EVT0630		simple
+SoC Stats	PMGR Counters	EVT0640		simple
+SoC Stats	PMGR Counters	EVT0650		simple
+SoC Stats	PMGR Counters	EVT0660		simple
+SoC Stats	PMGR Counters	EVT0670		simple
+SoC Stats	PMGR Counters	EVT0680		simple
+SoC Stats	PMGR Counters	EVT0690		simple
+SoC Stats	PMGR Counters	EVT0700		simple
+SoC Stats	PMGR Counters	EVT0710		simple
+SoC Stats	PMGR Counters	EVT0720		simple
+SoC Stats	PMGR Counters	EVT0730		simple
+SoC Stats	PMGR Counters	EVT0740		simple
+SoC Stats	PMGR Counters	EVT0750		simple
+SoC Stats	PMGR Counters	EVT0760		simple
+SoC Stats	PMGR Counters	EVT0770		simple
+SoC Stats	PMGR Counters	EVT0780		simple
+SoC Stats	PMGR Counters	EVT0790		simple
+SoC Stats	PMGR Counters	EVT0800		simple
+SoC Stats	PMGR Counters	EVT0810		simple
+SoC Stats	PMGR Counters	EVT0820		simple
+SoC Stats	PMGR Counters	EVT0830		simple
+SoC Stats	PMGR Counters	EVT0840		simple
+SoC Stats	PMGR Counters	EVT0850		simple
+SoC Stats	PMGR Counters	EVT0860		simple
+SoC Stats	PMGR Counters	EVT0870		simple
+SoC Stats	PMGR Counters	EVT0880		simple
+SoC Stats	PMGR Counters	EVT0890		simple
+SoC Stats	PMGR Counters	EVT0900		simple
+SoC Stats	PMGR Counters	EVT0910		simple
+SoC Stats	PMGR Counters	EVT0920		simple
+SoC Stats	PMGR Counters	EVT0930		simple
+SoC Stats	PMGR Counters	EVT0940		simple
+SoC Stats	PMGR Counters	EVT0950		simple
+SoC Stats	PMGR Counters	EVT0960		simple
+SoC Stats	PMGR Counters	EVT0970		simple
+SoC Stats	PMGR Counters	EVT0980		simple
+SoC Stats	PMGR Counters	EVT0990		simple
+SoC Stats	PMGR Counters	EVT1000		simple
+SoC Stats	PMGR Counters	EVT1010		simple
+SoC Stats	PMGR Counters	EVT1150		simple
+SoC Stats	PMGR Counters	EVT1160		simple
+SoC Stats	PMGR Counters	EVT1170		simple
+SoC Stats	PMGR Counters	EVT1180		simple
+SoC Stats	PMGR Counters	EVT1190		simple
+SoC Stats	PMGR Counters	EVT1520		simple
+SoC Stats	PMGR Counters	EVT1530		simple
+SoC Stats	PMGR Counters	EVT1540		simple
+SoC Stats	PMGR Counters	EVT1550		simple
+SoC Stats	PMGR Counters	EVT1560		simple
+SoC Stats	PMGR Counters	EVT1570		simple
+SoC Stats	PMGR Counters	EVT1580		simple
+SoC Stats	PMGR Counters	EVT1590		simple
+SoC Stats	PMGR Counters	EVT1600		simple
+SoC Stats	PMGR Counters	EVT1610		simple
+SoC Stats	PMGR Counters	EVT1620		simple
+SoC Stats	PMGR Counters	EVT1630		simple
+SoC Stats	PMGR Counters	EVT1640		simple
+SoC Stats	PMGR Counters	EVT1650		simple
+SoC Stats	PMGR Counters	EVT1660		simple
+SoC Stats	PMGR Counters	EVT1670		simple
+SoC Stats	PMGR Counters	EVT1680		simple
+SoC Stats	PMGR Counters	EVT1750		simple
+SoC Stats	PMGR Counters	EVT1760		simple
+SoC Stats	PMGR Counters	EVT1770		simple
+SoC Stats	PMGR Counters	EVT1780		simple
+SoC Stats	PMGR Counters	EVT1790		simple
+SoC Stats	PMGR Counters	EVT1800		simple
+SoC Stats	PMGR Counters	EVT1810		simple
+SoC Stats	PMGR Counters	EVT1820		simple
+SoC Stats	PMGR Counters	EVT1830		simple
+SoC Stats	PMGR Counters	EVT1840		simple
+SoC Stats	PMGR Counters	EVT1850		simple
+SoC Stats	PMGR Counters	EVT1860		simple
+SoC Stats	PMGR Counters	EVT1870		simple
+SoC Stats	PMGR Counters	EVT1880		simple
+SoC Stats	PMGR Counters	EVT1890		simple
+SoC Stats	PMGR Counters	EVT1900		simple
+SoC Stats	PMGR Counters	EVT1910		simple
+SoC Stats	PMGR Counters	EVT1920		simple
+SoC Stats	PMGR Counters	EVT1930		simple
+SoC Stats	PMGR Counters	EVT1940		simple
+SoC Stats	PMGR Counters	EVT1950		simple
+SoC Stats	PMGR Counters	EVT1960		simple
+SoC Stats	PMGR Counters	EVT1970		simple
+SoC Stats	PMGR Counters	EVT1980		simple
+SoC Stats	PMGR Counters	EVT1990		simple
+SoC Stats	PMGR Counters	EVT2000		simple
+SoC Stats	PMGR Counters	EVT2010		simple
+SoC Stats	PMGR Counters	EVT2020		simple
+SoC Stats	PMGR Counters	EVT2240		simple
+SoC Stats	PMGR Counters	EVT2250		simple
+SoC Stats	PMGR Counters	EVT0081		simple
+SoC Stats	PMGR Counters	EVT0091		simple
+SoC Stats	PMGR Counters	EVT0101		simple
+SoC Stats	PMGR Counters	EVT0111		simple
+SoC Stats	PMGR Counters	EVT0121		simple
+SoC Stats	PMGR Counters	EVT0131		simple
+SoC Stats	PMGR Counters	EVT0141		simple
+SoC Stats	PMGR Counters	EVT0151		simple
+SoC Stats	PMGR Counters	EVT0161		simple
+SoC Stats	PMGR Counters	EVT0171		simple
+SoC Stats	PMGR Counters	EVT0181		simple
+SoC Stats	PMGR Counters	EVT0191		simple
+SoC Stats	PMGR Counters	EVT0201		simple
+SoC Stats	PMGR Counters	EVT0211		simple
+SoC Stats	PMGR Counters	EVT0221		simple
+SoC Stats	PMGR Counters	EVT0231		simple
+SoC Stats	PMGR Counters	EVT0241		simple
+SoC Stats	PMGR Counters	EVT0251		simple
+SoC Stats	PMGR Counters	EVT0261		simple
+SoC Stats	PMGR Counters	EVT0271		simple
+SoC Stats	PMGR Counters	EVT0301		simple
+SoC Stats	PMGR Counters	EVT0311		simple
+SoC Stats	PMGR Counters	EVT0321		simple
+SoC Stats	PMGR Counters	EVT0631		simple
+SoC Stats	PMGR Counters	EVT0641		simple
+SoC Stats	PMGR Counters	EVT0651		simple
+SoC Stats	PMGR Counters	EVT0661		simple
+SoC Stats	PMGR Counters	EVT0671		simple
+SoC Stats	PMGR Counters	EVT0681		simple
+SoC Stats	PMGR Counters	EVT0691		simple
+SoC Stats	PMGR Counters	EVT0701		simple
+SoC Stats	PMGR Counters	EVT0711		simple
+SoC Stats	PMGR Counters	EVT0721		simple
+SoC Stats	PMGR Counters	EVT0731		simple
+SoC Stats	PMGR Counters	EVT0741		simple
+SoC Stats	PMGR Counters	EVT0751		simple
+SoC Stats	PMGR Counters	EVT0761		simple
+SoC Stats	PMGR Counters	EVT0771		simple
+SoC Stats	PMGR Counters	EVT0781		simple
+SoC Stats	PMGR Counters	EVT0791		simple
+SoC Stats	PMGR Counters	EVT0801		simple
+SoC Stats	PMGR Counters	EVT0811		simple
+SoC Stats	PMGR Counters	EVT0821		simple
+SoC Stats	PMGR Counters	EVT0831		simple
+SoC Stats	PMGR Counters	EVT0841		simple
+SoC Stats	PMGR Counters	EVT0851		simple
+SoC Stats	PMGR Counters	EVT0861		simple
+SoC Stats	PMGR Counters	EVT0871		simple
+SoC Stats	PMGR Counters	EVT0881		simple
+SoC Stats	PMGR Counters	EVT0891		simple
+SoC Stats	PMGR Counters	EVT0901		simple
+SoC Stats	PMGR Counters	EVT0911		simple
+SoC Stats	PMGR Counters	EVT0921		simple
+SoC Stats	PMGR Counters	EVT0931		simple
+SoC Stats	PMGR Counters	EVT0941		simple
+SoC Stats	PMGR Counters	EVT0951		simple
+SoC Stats	PMGR Counters	EVT0961		simple
+SoC Stats	PMGR Counters	EVT0971		simple
+SoC Stats	PMGR Counters	EVT0981		simple
+SoC Stats	PMGR Counters	EVT0991		simple
+SoC Stats	PMGR Counters	EVT1001		simple
+SoC Stats	PMGR Counters	EVT1011		simple
+SoC Stats	PMGR Counters	EVT1151		simple
+SoC Stats	PMGR Counters	EVT1161		simple
+SoC Stats	PMGR Counters	EVT1171		simple
+SoC Stats	PMGR Counters	EVT1181		simple
+SoC Stats	PMGR Counters	EVT1191		simple
+SoC Stats	PMGR Counters	EVT1521		simple
+SoC Stats	PMGR Counters	EVT1531		simple
+SoC Stats	PMGR Counters	EVT1541		simple
+SoC Stats	PMGR Counters	EVT1551		simple
+SoC Stats	PMGR Counters	EVT1561		simple
+SoC Stats	PMGR Counters	EVT1571		simple
+SoC Stats	PMGR Counters	EVT1581		simple
+SoC Stats	PMGR Counters	EVT1591		simple
+SoC Stats	PMGR Counters	EVT1601		simple
+SoC Stats	PMGR Counters	EVT1611		simple
+SoC Stats	PMGR Counters	EVT1621		simple
+SoC Stats	PMGR Counters	EVT1631		simple
+SoC Stats	PMGR Counters	EVT1641		simple
+SoC Stats	PMGR Counters	EVT1651		simple
+SoC Stats	PMGR Counters	EVT1661		simple
+SoC Stats	PMGR Counters	EVT1671		simple
+SoC Stats	PMGR Counters	EVT1681		simple
+SoC Stats	PMGR Counters	EVT1751		simple
+SoC Stats	PMGR Counters	EVT1761		simple
+SoC Stats	PMGR Counters	EVT1771		simple
+SoC Stats	PMGR Counters	EVT1781		simple
+SoC Stats	PMGR Counters	EVT1791		simple
+SoC Stats	PMGR Counters	EVT1801		simple
+SoC Stats	PMGR Counters	EVT1811		simple
+SoC Stats	PMGR Counters	EVT1821		simple
+SoC Stats	PMGR Counters	EVT1831		simple
+SoC Stats	PMGR Counters	EVT1841		simple
+SoC Stats	PMGR Counters	EVT1851		simple
+SoC Stats	PMGR Counters	EVT1861		simple
+SoC Stats	PMGR Counters	EVT1871		simple
+SoC Stats	PMGR Counters	EVT1881		simple
+SoC Stats	PMGR Counters	EVT1891		simple
+SoC Stats	PMGR Counters	EVT1901		simple
+SoC Stats	PMGR Counters	EVT1911		simple
+SoC Stats	PMGR Counters	EVT1921		simple
+SoC Stats	PMGR Counters	EVT1931		simple
+SoC Stats	PMGR Counters	EVT1941		simple
+SoC Stats	PMGR Counters	EVT1951		simple
+SoC Stats	PMGR Counters	EVT1961		simple
+SoC Stats	PMGR Counters	EVT1971		simple
+SoC Stats	PMGR Counters	EVT1981		simple
+SoC Stats	PMGR Counters	EVT1991		simple
+SoC Stats	PMGR Counters	EVT2001		simple
+SoC Stats	PMGR Counters	EVT2011		simple
+SoC Stats	PMGR Counters	EVT2021		simple
+SoC Stats	PMGR Counters	EVT2241		simple
+SoC Stats	PMGR Counters	EVT2251		simple
+SoC Stats	PMGR Counters	DEV0160		simple
+SoC Stats	PMGR Counters	DEV0190		simple
+SoC Stats	PMGR Counters	DEV0290		simple
+SoC Stats	PMGR Counters	DEV0300		simple
+SoC Stats	PMGR Counters	DEV0310		simple
+SoC Stats	PMGR Counters	DEV0320		simple
+SoC Stats	PMGR Counters	DEV0330		simple
+SoC Stats	PMGR Counters	DEV0340		simple
+SoC Stats	PMGR Counters	DEV0350		simple
+SoC Stats	PMGR Counters	DEV0360		simple
+SoC Stats	PMGR Counters	DEV0370		simple
+SoC Stats	PMGR Counters	DEV0380		simple
+SoC Stats	PMGR Counters	DEV0390		simple
+SoC Stats	PMGR Counters	DEV0400		simple
+SoC Stats	PMGR Counters	DEV0410		simple
+SoC Stats	PMGR Counters	DEV0420		simple
+SoC Stats	PMGR Counters	DEV0430		simple
+SoC Stats	PMGR Counters	DEV0440		simple
+SoC Stats	PMGR Counters	DEV0450		simple
+SoC Stats	PMGR Counters	DEV0460		simple
+SoC Stats	PMGR Counters	DEV0470		simple
+SoC Stats	PMGR Counters	DEV0480		simple
+SoC Stats	PMGR Counters	DEV0490		simple
+SoC Stats	PMGR Counters	DEV0500		simple
+SoC Stats	PMGR Counters	DEV0510		simple
+SoC Stats	PMGR Counters	DEV0580		simple
+SoC Stats	PMGR Counters	DEV0600		simple
+SoC Stats	PMGR Counters	DEV0610		simple
+SoC Stats	PMGR Counters	DEV0710		simple
+SoC Stats	PMGR Counters	DEV0730		simple
+SoC Stats	PMGR Counters	DEV0740		simple
+SoC Stats	PMGR Counters	DEV0750		simple
+SoC Stats	PMGR Counters	DEV0760		simple
+SoC Stats	PMGR Counters	DEV0860		simple
+SoC Stats	PMGR Counters	DEV0870		simple
+SoC Stats	PMGR Counters	DEV0880		simple
+SoC Stats	PMGR Counters	DEV0890		simple
+SoC Stats	PMGR Counters	DEV0910		simple
+SoC Stats	PMGR Counters	DEV0920		simple
+SoC Stats	PMGR Counters	DEV0930		simple
+SoC Stats	PMGR Counters	DEV0940		simple
+SoC Stats	PMGR Counters	DEV1190		simple
+SoC Stats	PMGR Counters	DEV1200		simple
+SoC Stats	PMGR Counters	DEV1210		simple
+SoC Stats	PMGR Counters	DEV1220		simple
+SoC Stats	PMGR Counters	DEV1230		simple
+SoC Stats	PMGR Counters	DEV1280		simple
+SoC Stats	PMGR Counters	DEV1290		simple
+SoC Stats	PMGR Counters	DEV1300		simple
+SoC Stats	PMGR Counters	DEV1310		simple
+SoC Stats	PMGR Counters	DEV1320		simple
+SoC Stats	PMGR Counters	DEV1330		simple
+SoC Stats	PMGR Counters	DEV1340		simple
+SoC Stats	PMGR Counters	DEV1350		simple
+SoC Stats	PMGR Counters	DEV1360		simple
+SoC Stats	PMGR Counters	DEV1370		simple
+SoC Stats	PMGR Counters	DEV1400		simple
+SoC Stats	PMGR Counters	DEV1420		simple
+SoC Stats	PMGR Counters	DEV1440		simple
+SoC Stats	PMGR Counters	DEV1480		simple
+SoC Stats	PMGR Counters	DEV1620		simple
+SoC Stats	PMGR Counters	DEV1630		simple
+SoC Stats	PMGR Counters	DEV1640		simple
+SoC Stats	PMGR Counters	DEV1730		simple
+SoC Stats	PMGR Counters	DEV1740		simple
+SoC Stats	PMGR Counters	DEV1750		simple
+SoC Stats	PMGR Counters	DEV1760		simple
+SoC Stats	PMGR Counters	DEV1770		simple
+SoC Stats	PMGR Counters	DEV1780		simple
+SoC Stats	PMGR Counters	DEV2750		simple
+SoC Stats	PMGR Counters	DEV2760		simple
+SoC Stats	PMGR Counters	DEV2770		simple
+SoC Stats	PMGR Counters	DEV2780		simple
+SoC Stats	PMGR Counters	DEV2790		simple
+SoC Stats	PMGR Counters	DEV2800		simple
+SoC Stats	PMGR Counters	DEV2810		simple
+SoC Stats	PMGR Counters	DEV2820		simple
+SoC Stats	PMGR Counters	DEV2830		simple
+SoC Stats	PMGR Counters	DEV2840		simple
+SoC Stats	PMGR Counters	DEV2980		simple
+SoC Stats	PMGR Counters	DEV2990		simple
+SoC Stats	PMGR Counters	DEV3020		simple
+SoC Stats	PMGR Counters	DEV3040		simple
+SoC Stats	PMGR Counters	DEV3050		simple
+SoC Stats	PMGR Counters	DEV3060		simple
+SoC Stats	PMGR Counters	DEV3070		simple
+SoC Stats	PMGR Counters	DEV3080		simple
+SoC Stats	PMGR Counters	DEV3090		simple
+SoC Stats	PMGR Counters	DEV3230		simple
+SoC Stats	PMGR Counters	DEV3240		simple
+SoC Stats	PMGR Counters	DEV3250		simple
+SoC Stats	PMGR Counters	DEV3260		simple
+SoC Stats	PMGR Counters	DEV3270		simple
+SoC Stats	PMGR Counters	DEV3280		simple
+SoC Stats	PMGR Counters	DEV3290		simple
+SoC Stats	PMGR Counters	DEV3300		simple
+SoC Stats	PMGR Counters	DEV3310		simple
+SoC Stats	PMGR Counters	DEV3320		simple
+SoC Stats	PMGR Counters	DEV3330		simple
+SoC Stats	PMGR Counters	DEV3340		simple
+SoC Stats	PMGR Counters	DEV3350		simple
+SoC Stats	PMGR Counters	DEV3360		simple
+SoC Stats	PMGR Counters	DEV3370		simple
+SoC Stats	PMGR Counters	DEV3380		simple
+SoC Stats	PMGR Counters	DEV3390		simple
+SoC Stats	PMGR Counters	DEV3400		simple
+SoC Stats	PMGR Counters	DEV3410		simple
+SoC Stats	PMGR Counters	DEV3420		simple
+SoC Stats	PMGR Counters	DEV3430		simple
+SoC Stats	PMGR Counters	DEV3440		simple
+SoC Stats	PMGR Counters	DEV3450		simple
+SoC Stats	PMGR Counters	DEV3460		simple
+SoC Stats	PMGR Counters	DEV3470		simple
+SoC Stats	PMGR Counters	DEV3480		simple
+SoC Stats	PMGR Counters	DEV3500		simple
+SoC Stats	PMGR Counters	DEV3520		simple
+SoC Stats	PMGR Counters	DEV3550		simple
+SoC Stats	PMGR Counters	DEV3560		simple
+SoC Stats	PMGR Counters	DEV3570		simple
+SoC Stats	PMGR Counters	DEV3580		simple
+SoC Stats	PMGR Counters	DEV3600		simple
+SoC Stats	PMGR Counters	DEV3620		simple
+SoC Stats	PMGR Counters	DEV3640		simple
+SoC Stats	PMGR Counters	DEV3650		simple
+SoC Stats	PMGR Counters	DEV3660		simple
+SoC Stats	PMGR Counters	DEV3670		simple
+SoC Stats	PMGR Counters	DEV3720		simple
+SoC Stats	PMGR Counters	DEV3730		simple
+SoC Stats	PMGR Counters	DEV3790		simple
+SoC Stats	PMGR Counters	DEV3800		simple
+SoC Stats	PMGR Counters	DEV3810		simple
+SoC Stats	PMGR Counters	DEV3840		simple
+SoC Stats	PMGR Counters	DEV3850		simple
+SoC Stats	PMGR Counters	DEV3860		simple
+SoC Stats	PMGR Counters	DEV3870		simple
+SoC Stats	PMGR Counters	DEV3900		simple
+SoC Stats	PMGR Counters	DEV3960		simple
+SoC Stats	PMGR Counters	DEV3970		simple
+SoC Stats	PMGR Counters	DEV4120		simple
+SoC Stats	PMGR Counters	DEV4140		simple
+SoC Stats	PMGR Counters	DEV4160		simple
+SoC Stats	PMGR Counters	DEV4180		simple
+SoC Stats	PMGR Counters	DEV4200		simple
+SoC Stats	PMGR Counters	DEV4250		simple
+SoC Stats	PMGR Counters	DEV4260		simple
+SoC Stats	PMGR Counters	DEV4270		simple
+SoC Stats	PMGR Counters	DEV4280		simple
+SoC Stats	PMGR Counters	DEV4360		simple
+SoC Stats	PMGR Counters	DEV4390		simple
+SoC Stats	PMGR Counters	DEV4410		simple
+SoC Stats	PMGR Counters	DEV4550		simple
+SoC Stats	PMGR Counters	DEV0161		simple
+SoC Stats	PMGR Counters	DEV0191		simple
+SoC Stats	PMGR Counters	DEV0291		simple
+SoC Stats	PMGR Counters	DEV0301		simple
+SoC Stats	PMGR Counters	DEV0311		simple
+SoC Stats	PMGR Counters	DEV0321		simple
+SoC Stats	PMGR Counters	DEV0331		simple
+SoC Stats	PMGR Counters	DEV0341		simple
+SoC Stats	PMGR Counters	DEV0351		simple
+SoC Stats	PMGR Counters	DEV0361		simple
+SoC Stats	PMGR Counters	DEV0371		simple
+SoC Stats	PMGR Counters	DEV0381		simple
+SoC Stats	PMGR Counters	DEV0391		simple
+SoC Stats	PMGR Counters	DEV0401		simple
+SoC Stats	PMGR Counters	DEV0411		simple
+SoC Stats	PMGR Counters	DEV0421		simple
+SoC Stats	PMGR Counters	DEV0431		simple
+SoC Stats	PMGR Counters	DEV0441		simple
+SoC Stats	PMGR Counters	DEV0451		simple
+SoC Stats	PMGR Counters	DEV0461		simple
+SoC Stats	PMGR Counters	DEV0471		simple
+SoC Stats	PMGR Counters	DEV0481		simple
+SoC Stats	PMGR Counters	DEV0491		simple
+SoC Stats	PMGR Counters	DEV0501		simple
+SoC Stats	PMGR Counters	DEV0511		simple
+SoC Stats	PMGR Counters	DEV0581		simple
+SoC Stats	PMGR Counters	DEV0601		simple
+SoC Stats	PMGR Counters	DEV0611		simple
+SoC Stats	PMGR Counters	DEV0711		simple
+SoC Stats	PMGR Counters	DEV0731		simple
+SoC Stats	PMGR Counters	DEV0741		simple
+SoC Stats	PMGR Counters	DEV0751		simple
+SoC Stats	PMGR Counters	DEV0761		simple
+SoC Stats	PMGR Counters	DEV0861		simple
+SoC Stats	PMGR Counters	DEV0871		simple
+SoC Stats	PMGR Counters	DEV0881		simple
+SoC Stats	PMGR Counters	DEV0891		simple
+SoC Stats	PMGR Counters	DEV0911		simple
+SoC Stats	PMGR Counters	DEV0921		simple
+SoC Stats	PMGR Counters	DEV0931		simple
+SoC Stats	PMGR Counters	DEV0941		simple
+SoC Stats	PMGR Counters	DEV1191		simple
+SoC Stats	PMGR Counters	DEV1201		simple
+SoC Stats	PMGR Counters	DEV1211		simple
+SoC Stats	PMGR Counters	DEV1221		simple
+SoC Stats	PMGR Counters	DEV1231		simple
+SoC Stats	PMGR Counters	DEV1281		simple
+SoC Stats	PMGR Counters	DEV1291		simple
+SoC Stats	PMGR Counters	DEV1301		simple
+SoC Stats	PMGR Counters	DEV1311		simple
+SoC Stats	PMGR Counters	DEV1321		simple
+SoC Stats	PMGR Counters	DEV1331		simple
+SoC Stats	PMGR Counters	DEV1341		simple
+SoC Stats	PMGR Counters	DEV1351		simple
+SoC Stats	PMGR Counters	DEV1361		simple
+SoC Stats	PMGR Counters	DEV1371		simple
+SoC Stats	PMGR Counters	DEV1401		simple
+SoC Stats	PMGR Counters	DEV1421		simple
+SoC Stats	PMGR Counters	DEV1441		simple
+SoC Stats	PMGR Counters	DEV1481		simple
+SoC Stats	PMGR Counters	DEV1621		simple
+SoC Stats	PMGR Counters	DEV1631		simple
+SoC Stats	PMGR Counters	DEV1641		simple
+SoC Stats	PMGR Counters	DEV1731		simple
+SoC Stats	PMGR Counters	DEV1741		simple
+SoC Stats	PMGR Counters	DEV1751		simple
+SoC Stats	PMGR Counters	DEV1761		simple
+SoC Stats	PMGR Counters	DEV1771		simple
+SoC Stats	PMGR Counters	DEV1781		simple
+SoC Stats	PMGR Counters	DEV2751		simple
+SoC Stats	PMGR Counters	DEV2761		simple
+SoC Stats	PMGR Counters	DEV2771		simple
+SoC Stats	PMGR Counters	DEV2781		simple
+SoC Stats	PMGR Counters	DEV2791		simple
+SoC Stats	PMGR Counters	DEV2801		simple
+SoC Stats	PMGR Counters	DEV2811		simple
+SoC Stats	PMGR Counters	DEV2821		simple
+SoC Stats	PMGR Counters	DEV2831		simple
+SoC Stats	PMGR Counters	DEV2841		simple
+SoC Stats	PMGR Counters	DEV2981		simple
+SoC Stats	PMGR Counters	DEV2991		simple
+SoC Stats	PMGR Counters	DEV3021		simple
+SoC Stats	PMGR Counters	DEV3041		simple
+SoC Stats	PMGR Counters	DEV3051		simple
+SoC Stats	PMGR Counters	DEV3061		simple
+SoC Stats	PMGR Counters	DEV3071		simple
+SoC Stats	PMGR Counters	DEV3081		simple
+SoC Stats	PMGR Counters	DEV3091		simple
+SoC Stats	PMGR Counters	DEV3231		simple
+SoC Stats	PMGR Counters	DEV3241		simple
+SoC Stats	PMGR Counters	DEV3251		simple
+SoC Stats	PMGR Counters	DEV3261		simple
+SoC Stats	PMGR Counters	DEV3271		simple
+SoC Stats	PMGR Counters	DEV3281		simple
+SoC Stats	PMGR Counters	DEV3291		simple
+SoC Stats	PMGR Counters	DEV3301		simple
+SoC Stats	PMGR Counters	DEV3311		simple
+SoC Stats	PMGR Counters	DEV3321		simple
+SoC Stats	PMGR Counters	DEV3331		simple
+SoC Stats	PMGR Counters	DEV3341		simple
+SoC Stats	PMGR Counters	DEV3351		simple
+SoC Stats	PMGR Counters	DEV3361		simple
+SoC Stats	PMGR Counters	DEV3371		simple
+SoC Stats	PMGR Counters	DEV3381		simple
+SoC Stats	PMGR Counters	DEV3391		simple
+SoC Stats	PMGR Counters	DEV3401		simple
+SoC Stats	PMGR Counters	DEV3411		simple
+SoC Stats	PMGR Counters	DEV3421		simple
+SoC Stats	PMGR Counters	DEV3431		simple
+SoC Stats	PMGR Counters	DEV3441		simple
+SoC Stats	PMGR Counters	DEV3451		simple
+SoC Stats	PMGR Counters	DEV3461		simple
+SoC Stats	PMGR Counters	DEV3471		simple
+SoC Stats	PMGR Counters	DEV3481		simple
+SoC Stats	PMGR Counters	DEV3501		simple
+SoC Stats	PMGR Counters	DEV3521		simple
+SoC Stats	PMGR Counters	DEV3551		simple
+SoC Stats	PMGR Counters	DEV3561		simple
+SoC Stats	PMGR Counters	DEV3571		simple
+SoC Stats	PMGR Counters	DEV3581		simple
+SoC Stats	PMGR Counters	DEV3601		simple
+SoC Stats	PMGR Counters	DEV3621		simple
+SoC Stats	PMGR Counters	DEV3641		simple
+SoC Stats	PMGR Counters	DEV3651		simple
+SoC Stats	PMGR Counters	DEV3661		simple
+SoC Stats	PMGR Counters	DEV3671		simple
+SoC Stats	PMGR Counters	DEV3721		simple
+SoC Stats	PMGR Counters	DEV3731		simple
+SoC Stats	PMGR Counters	DEV3791		simple
+SoC Stats	PMGR Counters	DEV3801		simple
+SoC Stats	PMGR Counters	DEV3811		simple
+SoC Stats	PMGR Counters	DEV3841		simple
+SoC Stats	PMGR Counters	DEV3851		simple
+SoC Stats	PMGR Counters	DEV3861		simple
+SoC Stats	PMGR Counters	DEV3871		simple
+SoC Stats	PMGR Counters	DEV3901		simple
+SoC Stats	PMGR Counters	DEV3961		simple
+SoC Stats	PMGR Counters	DEV3971		simple
+SoC Stats	PMGR Counters	DEV4121		simple
+SoC Stats	PMGR Counters	DEV4141		simple
+SoC Stats	PMGR Counters	DEV4161		simple
+SoC Stats	PMGR Counters	DEV4181		simple
+SoC Stats	PMGR Counters	DEV4201		simple
+SoC Stats	PMGR Counters	DEV4251		simple
+SoC Stats	PMGR Counters	DEV4261		simple
+SoC Stats	PMGR Counters	DEV4271		simple
+SoC Stats	PMGR Counters	DEV4281		simple
+SoC Stats	PMGR Counters	DEV4361		simple
+SoC Stats	PMGR Counters	DEV4391		simple
+SoC Stats	PMGR Counters	DEV4411		simple
+SoC Stats	PMGR Counters	DEV4551		simple
+SoC Stats	Events	SLP_DDR	24Mticks	state
+SoC Stats	Events	AWAKE	24Mticks	state
+SoC Stats	Events	SLP_S2R	24Mticks	state
+SoC Stats	Events	DIE_0_DEEP_WAIT	24Mticks	state
+SoC Stats	Events	DIE_0_SYS_AWAKE	24Mticks	state
+SoC Stats	Events	DIE_0_SYS_S2R_AOP	24Mticks	state
+SoC Stats	Events	DIE_0_SYS_SLP_DDR	24Mticks	state
+SoC Stats	Events	DIE_0_SOCHOT0	24Mticks	state
+SoC Stats	Events	DIE_0_SOCHOT1	24Mticks	state
+SoC Stats	Events	DIE_0_ECPU_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_PCPU0_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_PCPU1_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_FAB_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_C1PPT_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_ECPU_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_PCPU0_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_PCPU1_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_FAB_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_C1PPT_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_ECPU_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_PCPU0_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_PCPU1_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_FAB_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_C1PPT_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_ECPU_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_PCPU0_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_PCPU1_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_FAB_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_C1PPT_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_ECPU_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_PCPU0_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_PCPU1_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_FAB_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_C1PPT_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_DCS_F0	24Mticks	state
+SoC Stats	Events	DIE_0_DCS_F1	24Mticks	state
+SoC Stats	Events	DIE_0_DCS_F2	24Mticks	state
+SoC Stats	Events	DIE_0_DCS_F3	24Mticks	state
+SoC Stats	Events	DIE_0_DCS_F4	24Mticks	state
+SoC Stats	Events	DIE_0_DCS_F5	24Mticks	state
+SoC Stats	Events	DIE_0_FAB_VMIN	24Mticks	state
+SoC Stats	Events	DIE_0_FAB_VNOM	24Mticks	state
+SoC Stats	Events	DIE_0_FAB_VNOM2	24Mticks	state
+SoC Stats	Events	DIE_0_FAB_VMAX	24Mticks	state
+SoC Stats	Events	DIE_0_AVEMSR_VMIN	24Mticks	state
+SoC Stats	Events	DIE_0_AVEMSR_VNOM	24Mticks	state
+SoC Stats	Events	DIE_0_AVEMSR_VMAX	24Mticks	state
+SoC Stats	Events	DIE_0_ANE0_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_ANE0_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_ANE0_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_ANE0_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_ANE0_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU0_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU0_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU0_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU0_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU0_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU1_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU1_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU1_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU1_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU1_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU2_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU2_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU2_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU2_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU2_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU3_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU3_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU3_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU3_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_0_MGPU3_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_0_SOC_VMIN	24Mticks	state
+SoC Stats	Events	DIE_0_SOC_VNOM	24Mticks	state
+SoC Stats	Events	DIE_0_SOC_VMAX	24Mticks	state
+SoC Stats	Events	DIE_0_DISP_VMIN	24Mticks	state
+SoC Stats	Events	DIE_0_DISP_VNOM	24Mticks	state
+SoC Stats	Events	DIE_0_DISP_VMAXNOEXT	24Mticks	state
+SoC Stats	Events	DIE_0_DISP_VMAX	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_VMIN	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_PERFSTAT_2	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_VNOM	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_PERFSTAT_4	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_VMAX	24Mticks	state
+SoC Stats	Events	DIE_0_AFR_VMAX2	24Mticks	state
+SoC Stats	Events	DIE_0_DISP2_VMIN	24Mticks	state
+SoC Stats	Events	DIE_0_DISP2_VNOM	24Mticks	state
+SoC Stats	Events	DIE_0_DISP2_VMAX	24Mticks	state
+SoC Stats	Events	DIE_1_SLP_DDR	24Mticks	state
+SoC Stats	Events	DIE_1_AWAKE	24Mticks	state
+SoC Stats	Events	DIE_1_SLP_S2R	24Mticks	state
+SoC Stats	Events	DIE_1_DEEP_WAIT	24Mticks	state
+SoC Stats	Events	DIE_1_SYS_AWAKE	24Mticks	state
+SoC Stats	Events	DIE_1_SYS_S2R_AOP	24Mticks	state
+SoC Stats	Events	DIE_1_SYS_SLP_DDR	24Mticks	state
+SoC Stats	Events	DIE_1_SOCHOT0	24Mticks	state
+SoC Stats	Events	DIE_1_SOCHOT1	24Mticks	state
+SoC Stats	Events	DIE_1_ECPU_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_PCPU0_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_PCPU1_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_FAB_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_C1PPT_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_ECPU_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_PCPU0_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_PCPU1_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_FAB_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_C1PPT_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_ECPU_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_PCPU0_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_PCPU1_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_FAB_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_C1PPT_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_ECPU_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_PCPU0_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_PCPU1_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_FAB_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_C1PPT_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_ECPU_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_PCPU0_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_PCPU1_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_FAB_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_C1PPT_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_DCS_F0	24Mticks	state
+SoC Stats	Events	DIE_1_DCS_F1	24Mticks	state
+SoC Stats	Events	DIE_1_DCS_F2	24Mticks	state
+SoC Stats	Events	DIE_1_DCS_F3	24Mticks	state
+SoC Stats	Events	DIE_1_DCS_F4	24Mticks	state
+SoC Stats	Events	DIE_1_DCS_F5	24Mticks	state
+SoC Stats	Events	DIE_1_FAB_VMIN	24Mticks	state
+SoC Stats	Events	DIE_1_FAB_VNOM	24Mticks	state
+SoC Stats	Events	DIE_1_FAB_VNOM2	24Mticks	state
+SoC Stats	Events	DIE_1_FAB_VMAX	24Mticks	state
+SoC Stats	Events	DIE_1_AVEMSR_VMIN	24Mticks	state
+SoC Stats	Events	DIE_1_AVEMSR_VNOM	24Mticks	state
+SoC Stats	Events	DIE_1_AVEMSR_VMAX	24Mticks	state
+SoC Stats	Events	DIE_1_ANE0_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_ANE0_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_ANE0_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_ANE0_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_ANE0_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU0_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU0_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU0_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU0_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU0_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU1_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU1_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU1_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU1_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU1_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU2_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU2_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU2_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU2_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU2_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU3_ADCLK_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU3_DITHR_TRG	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU3_EXT_TRG0	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU3_EXT_TRG1	24Mticks	state
+SoC Stats	Events	DIE_1_MGPU3_EXT_TRG2	24Mticks	state
+SoC Stats	Events	DIE_1_SOC_VMIN	24Mticks	state
+SoC Stats	Events	DIE_1_SOC_VNOM	24Mticks	state
+SoC Stats	Events	DIE_1_SOC_VMAX	24Mticks	state
+SoC Stats	Events	DIE_1_DISP_VMIN	24Mticks	state
+SoC Stats	Events	DIE_1_DISP_VNOM	24Mticks	state
+SoC Stats	Events	DIE_1_DISP_VMAXNOEXT	24Mticks	state
+SoC Stats	Events	DIE_1_DISP_VMAX	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_VMIN	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_PERFSTAT_2	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_VNOM	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_PERFSTAT_4	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_VMAX	24Mticks	state
+SoC Stats	Events	DIE_1_AFR_VMAX2	24Mticks	state
+SoC Stats	Events	DIE_1_DISP2_VMIN	24Mticks	state
+SoC Stats	Events	DIE_1_DISP2_VNOM	24Mticks	state
+SoC Stats	Events	DIE_1_DISP2_VMAX	24Mticks	state
+SoC Stats	Cluster Power States	DIE_0_EACC	24Mticks	state
+SoC Stats	Cluster Power States	DIE_0_PACC0	24Mticks	state
+SoC Stats	Cluster Power States	DIE_0_PACC1	24Mticks	state
+SoC Stats	Cluster Power States	DIE_0_ANE0	24Mticks	state
+SoC Stats	Cluster Power States	DIE_0_AVEMSR	24Mticks	state
+SoC Stats	Cluster Power States	DIE_0_DISPLAY2	24Mticks	state
+SoC Stats	Cluster Power States	DIE_0_DISPLAY	24Mticks	state
+SoC Stats	Cluster Power States	DIE_1_EACC	24Mticks	state
+SoC Stats	Cluster Power States	DIE_1_PACC0	24Mticks	state
+SoC Stats	Cluster Power States	DIE_1_PACC1	24Mticks	state
+SoC Stats	Cluster Power States	DIE_1_ANE0	24Mticks	state
+SoC Stats	Cluster Power States	DIE_1_AVEMSR	24Mticks	state
+SoC Stats	Cluster Power States	DIE_1_DISPLAY2	24Mticks	state
+SoC Stats	Cluster Power States	DIE_1_DISPLAY	24Mticks	state
+SoC Stats	oprtp	OPRT0000		simple
+SoC Stats	oprtp	OPRT0001		simple
+SoC Stats	oprtp	OPRT0002		simple
+SoC Stats	oprtp	OPRT0100		simple
+SoC Stats	oprtp	OPRT0101		simple
+SoC Stats	oprtp	OPRT0102		simple
+SoC Stats	oprtp	OPRT0103		simple
+SoC Stats	oprtp	OPRT0104		simple
+SoC Stats	oprtp	OPRT0105		simple
+SoC Stats	oprtp	OPRT0200		simple
+SoC Stats	oprtp	OPRT0201		simple
+SoC Stats	oprtp	OPRT0202		simple
+SoC Stats	oprtp	OPRT0203		simple
+SoC Stats	oprtp	OPRT0300		simple
+SoC Stats	oprtp	OPRT0301		simple
+SoC Stats	oprtp	OPRT0302		simple
+SoC Stats	oprtp	OPRT0303		simple
+SoC Stats	oprtp	OPRT0304		simple
+SoC Stats	oprtp	OPRT0305		simple
+SoC Stats	oprtp	OPRT0306		simple
+SoC Stats	oprtp	OPRT0307		simple
+SoC Stats	oprtp	OPRT0308		simple
+SoC Stats	oprtp	OPRT0309		simple
+SoC Stats	oprtp	OPRT0310		simple
+SoC Stats	oprtp	OPRT0311		simple
+SoC Stats	oprtp	OPRT0312		simple
+SoC Stats	oprtp	OPRT0313		simple
+SoC Stats	oprtp	OPRT0314		simple
+SoC Stats	oprtp	OPRT0315		simple
+SoC Stats	oprtp	OPRT0316		simple
+SoC Stats	oprtp	OPRT0317		simple
+SoC Stats	oprtp	OPRT0318		simple
+SoC Stats	oprtp	OPRT0700		simple
+SoC Stats	oprtp	OPRT0701		simple
+SoC Stats	oprtp	OPRT0702		simple
+SoC Stats	oprtp	OPRT0703		simple
+SoC Stats	oprtp	OPRT0704		simple
+SoC Stats	oprtp	OPRT0705		simple
+SoC Stats	oprtp	OPRT0706		simple
+SoC Stats	oprtp	OPRT0707		simple
+SoC Stats	oprtp	OPRT0708		simple
+SoC Stats	oprtp	OPRT0709		simple
+SoC Stats	oprtp	OPRT0710		simple
+SoC Stats	oprtp	OPRT0711		simple
+SoC Stats	oprtp	OPRT0712		simple
+SoC Stats	oprtp	OPRT0713		simple
+SoC Stats	oprtp	OPRT0714		simple
+SoC Stats	oprtp	OPRT0715		simple
+SoC Stats	oprtp	OPRT0716		simple
+SoC Stats	oprtp	OPRT0717		simple
+SoC Stats	oprtp	OPRT0718		simple
+SoC Stats	oprtp	OPRT1400		simple
+SoC Stats	oprtp	OPRT1401		simple
+SoC Stats	oprtp	OPRT1402		simple
+SoC Stats	oprtp	OPRT1500		simple
+SoC Stats	oprtp	OPRT1501		simple
+SoC Stats	oprtp	OPRT1502		simple
+SoC Stats	oprtp	OPRT1503		simple
+SoC Stats	oprtp	OPRT1504		simple
+SoC Stats	oprtp	OPRT1505		simple
+SoC Stats	oprtp	OPRT1600		simple
+SoC Stats	oprtp	OPRT1601		simple
+SoC Stats	oprtp	OPRT1602		simple
+SoC Stats	oprtp	OPRT1603		simple
+SoC Stats	oprtp	OPRT1700		simple
+SoC Stats	oprtp	OPRT1701		simple
+SoC Stats	oprtp	OPRT1702		simple
+SoC Stats	oprtp	OPRT1703		simple
+SoC Stats	oprtp	OPRT1704		simple
+SoC Stats	oprtp	OPRT1705		simple
+SoC Stats	oprtp	OPRT1706		simple
+SoC Stats	oprtp	OPRT1707		simple
+SoC Stats	oprtp	OPRT1708		simple
+SoC Stats	oprtp	OPRT1709		simple
+SoC Stats	oprtp	OPRT1710		simple
+SoC Stats	oprtp	OPRT1711		simple
+SoC Stats	oprtp	OPRT1712		simple
+SoC Stats	oprtp	OPRT1713		simple
+SoC Stats	oprtp	OPRT1714		simple
+SoC Stats	oprtp	OPRT1715		simple
+SoC Stats	oprtp	OPRT1716		simple
+SoC Stats	oprtp	OPRT1717		simple
+SoC Stats	oprtp	OPRT1718		simple
+SoC Stats	oprtp	OPRT2100		simple
+SoC Stats	oprtp	OPRT2101		simple
+SoC Stats	oprtp	OPRT2102		simple
+SoC Stats	oprtp	OPRT2103		simple
+SoC Stats	oprtp	OPRT2104		simple
+SoC Stats	oprtp	OPRT2105		simple
+SoC Stats	oprtp	OPRT2106		simple
+SoC Stats	oprtp	OPRT2107		simple
+SoC Stats	oprtp	OPRT2108		simple
+SoC Stats	oprtp	OPRT2109		simple
+SoC Stats	oprtp	OPRT2110		simple
+SoC Stats	oprtp	OPRT2111		simple
+SoC Stats	oprtp	OPRT2112		simple
+SoC Stats	oprtp	OPRT2113		simple
+SoC Stats	oprtp	OPRT2114		simple
+SoC Stats	oprtp	OPRT2115		simple
+SoC Stats	oprtp	OPRT2116		simple
+SoC Stats	oprtp	OPRT2117		simple
+SoC Stats	oprtp	OPRT2118		simple

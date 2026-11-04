@@ -1,0 +1,49 @@
+device Apple M2 Ultra
+== run: plain add, one float per thread, 256-thread threadgroups, 1500 launches
+      16 KB chain       2.43 us per launch
+      16 KB barrier     4.28 us per launch
+      16 KB free        0.30 us per launch
+     256 KB chain       3.22 us per launch
+     256 KB barrier     5.20 us per launch
+     256 KB free        1.18 us per launch
+    4096 KB chain      19.61 us per launch
+    4096 KB barrier    21.64 us per launch
+    4096 KB free       13.33 us per launch
+   65536 KB chain     241.51 us per launch
+   65536 KB barrier   243.90 us per launch
+   65536 KB free      231.02 us per launch
+== groups: the same add of 1 MB and 16 MB over 8 to 4096 threadgroups
+  1024 KB,    8 threadgroups: chain    45.12 us
+  1024 KB,   32 threadgroups: chain    14.00 us
+  1024 KB,   76 threadgroups: chain     8.19 us
+  1024 KB,  152 threadgroups: chain     5.93 us
+  1024 KB,  304 threadgroups: chain     5.53 us
+  1024 KB,  608 threadgroups: chain     5.56 us
+  1024 KB, 1024 threadgroups: chain     6.57 us
+  1024 KB, 4096 threadgroups: chain    14.20 us
+ 16384 KB,    8 threadgroups: chain   650.73 us
+ 16384 KB,   32 threadgroups: chain   171.89 us
+ 16384 KB,   76 threadgroups: chain    80.54 us
+ 16384 KB,  152 threadgroups: chain    46.18 us
+ 16384 KB,  304 threadgroups: chain    29.86 us
+ 16384 KB,  608 threadgroups: chain    23.69 us
+ 16384 KB, 1024 threadgroups: chain    24.81 us
+ 16384 KB, 4096 threadgroups: chain    29.33 us
+== dot: minimal f32 matrix-vector, 2 rows per 128-thread threadgroup
+512x2048 f32 chain      12.74 us per launch
+512x2048 f32 barrier    14.80 us per launch
+512x2048 f32 free        1.58 us per launch
+2048x512 f32 chain       7.48 us per launch
+2048x512 f32 barrier     9.36 us per launch
+2048x512 f32 free        3.05 us per launch
+4096x4096 f32 chain      52.42 us per launch
+4096x4096 f32 barrier    54.09 us per launch
+4096x4096 f32 free       39.23 us per launch
+== bw: read bandwidth, as vk-chain.sh bw: one float4 per thread, and 1216 threadgroups walking the buffer
+    1 MB: one float4 each    438.7 GB/s (2.4 us)   1216 groups    204.2 GB/s (5.1 us)
+   16 MB: one float4 each    910.6 GB/s (18.4 us)   1216 groups   1926.2 GB/s (8.7 us)
+   64 MB: one float4 each    802.9 GB/s (83.6 us)   1216 groups    963.4 GB/s (69.7 us)
+  256 MB: one float4 each    743.5 GB/s (361.1 us)   1216 groups    739.5 GB/s (363.0 us)
+ 1024 MB: one float4 each    761.7 GB/s (1409.7 us)   1216 groups    762.8 GB/s (1407.5 us)
+== clock: one thread's dependent multiply-adds (16 per step against 1, 100k steps)
+one dependent multiply-add 1.38 ns (1.9 cycles at 1398 MHz); one loop step 25.56 ns

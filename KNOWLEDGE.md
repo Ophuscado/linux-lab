@@ -516,6 +516,22 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
 
 ## Power management (PMP)
 
+- 4 Nov, VERIFIED (m1n1 hypervisor trace of macOS 13.7.8 booting, `macos/hv-pmp.sh`; raw log kept off-repo, on the
+  operator's stick and in-session): macOS's PMP bring-up uses the exact message protocol our `drivers/soc/apple/pmp.rs`
+  implements. Sequence: SetBuf, `GetIOVATable -> IOVA=0x0` (twice; so t602x needs no address table, as our empty-table
+  path does), ~794 Advertise/AdvertiseAck (the firmware reads its tunables by name from the ADT), `SetAPPower STATE=0x20`,
+  StartEP 0x20. The controller then ran stably for ~28k more log lines; the late crash (a forwarded mailbox write to
+  0x28ec08800 faulting, then the USB link dropping) was long after bring-up and is the Mac-side going down under an
+  unsupported 13.7.8 guest, not a bring-up problem. So Linux CAN bring the PMP up: the firmware speaks the protocol we
+  have. The 4 hard hangs (3 Nov) are in Linux's tunables or its device-request writes, not the protocol.
+- 4 Nov, VERIFIED (same trace, PMPRegTracer decode of DEV_STATUS_TGT_WR at report+0x11000): the device-request word is a
+  live control loop, rewritten 41 times during boot as subsystems power up and down (not a one-shot), exactly what
+  `pmp-report`'s genpd does per power domain. Bit = soc-device id1 - 1, confirmed: GFX = bit 10 (macOS sets and holds it
+  -- the bit linux-aurora PR 334 proposed), PCPM0/1 = 8/9, DISPEXT0/1_FE = 14/15, AFNC4/5_IOA = 29/30. Steady state this
+  boot 0x61e6006000c700 (GFX, both display FEs, the two P-CPU clusters, the two fabric IOAs, the four DP voltage reqs).
+  All writes were word 0 (bits <64); no word-1 writes occurred (no die-1 display attached this boot), so pmp_votes'
+  word-1 path stays unconfirmed. macOS set no DCAP-dependent behaviour visible here; DCAP left 0 matches its M2 init.
+
 - 3 Nov, OBSERVED: the `t6022-pmp` device tree (`kernel/dt/t6022-pmp.dts`: the pmp alias, so m1n1 fills the node and
   it goes okay with no driver bound) hard-hung the machine twice, each time in `kernel/pmp.sh measure` (vk-chain bw,
   then llama-compare's bench): once a minute into Qwen, once at the start of GPT-OSS 20B. No kernel message before the
@@ -537,6 +553,18 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
   has 0x0a, 6 and 8; 8 x 24 GB = this Mac's 192 GB). Without a driver the PMP's status word is 0: not running.
 
 ## macOS reference data
+
+- 4 Nov, VERIFIED (`results/macos/macos-13`, `macos-15`; `collect.sh idle dvfs gpu`, llama-bench by hand): macOS vs
+  this Linux (7.1.13-tbtwip), same machine. Idle PSTR 16.2-16.7 W / PMVR 8.1-8.3 W, Linux 21.3 W / 10.9 W (+28%): at
+  idle macOS holds memory (DCS) and fabric (FAB/AFR) at their lowest state 99.8% of the time, ~1.9 W, 0.45 GB/s; Linux
+  cannot be that low (its 668 GB/s needs a high memory state), so it holds memory/fabric near the top state always ->
+  the idle gap. Under Metal llama both are driven to top (F5/VMAX) by the GPU's own votes, GPU at P8 = 1398 MHz. GPU
+  read bw (vk-chain pattern): 1 GB 755-763 vs Linux 668; 16 MB (in cache) 1909-1926 vs 1005; one-float4-per-thread
+  296 vs 762. Metal Llama-2-7B Q4_0 (a91eab67d): pp512 1516 vs 874 (58%), pp2048 1459 vs 950 (65%), tg128 123.5 vs 70.4
+  (57%). tg128 123.5 t/s = ~472 GB/s of weights, far under our own 668 GB/s bw -> generation is NOT memory-bound; it
+  and the one-float4 gap are many-small-workgroup launch cost + GPU clock (1236 not 1398), fixable in the Linux GPU
+  stack. Prompt is compute-bound (30 GB/s DRAM at 113 W). So: idle power + cache-side bw -> PMP; pp/tg speed -> GPU stack.
+
 
 - 27-28 Oct: `macos/collect.sh` runs on macOS 13.7.8, 14.8.9 and 15.8.1, 45 runs in `results/macos/`: device tree and
   IORegistry, Neural Engine nodes and firmware hashes, Thunderbolt and PCIe trees, SMC keys idle and under load,

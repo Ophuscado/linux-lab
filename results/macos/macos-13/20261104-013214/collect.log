@@ -1,0 +1,10 @@
+01:32:14 collect.sh: idle dvfs gpu into ~/linux-lab-macos/20261104-013214
+01:32:14 idle
+macOS 13.7.8; quiet no; start 2026-11-04T01:42:15Z; load { 1.52 1.56 1.52 }
+PSTR (Linux: Total System Power) over 300 s: mean 16.66 W, median 16.17 W, p10 15.71 W, p90 16.89 W
+PMVR (Linux: 3.8 V Rail Power) mean 8.32 W; load mean 1.49
+end 2026-11-04T01:47:24Z
+01:47:24 dvfs
+01:48:13 dvfs: no model or llama-bench for the load samples
+01:48:13 gpu: metal-chain
+01:48:13 metal-chain does not build (see gpu-metal-chain-build.txt)
