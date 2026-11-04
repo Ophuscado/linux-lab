@@ -1,0 +1,6 @@
+# The power management processor (PMP) on the M2 family: the driver started at boot on the M2 Ultra.
+UPSTREAM=https://github.com/Ophuscado/linux
+BASE=9d460b403164694c0f6a1a6ca1038d6a79dfc167  # tbt/7.1, the pinned commit of kernel/tbt-kernel.sh
+FORK=https://github.com/Ophuscado/linux
+BRANCH=pmp
+CLONE=src/linux

@@ -6,7 +6,9 @@
 # the stock pmp.ko never binds it.
 #
 # What runs it (4 Nov, on that tree, right after boot): build, votes, start --now; then dump shows the status word's
-# bit 0 set and word 0 acknowledged. measure gives the numbers (KNOWLEDGE, Power management).
+# bit 0 set and word 0 acknowledged. measure gives the numbers (KNOWLEDGE, Power management). A kernel with the lab's
+# pmp series (src-patches/linux/pmp, in tbt-kernel.sh's default) starts it at boot instead, from the overlay's
+# always-on request entries; then status, dump and measure are what is left here, and votes and start refuse.
 #
 #   kernel/pmp.sh build       pmp_votes.ko (kernel/pmp/pmp_votes.c) and pmp_lab.ko, pmp_lab_ro.ko (kernel/pmp/make_lab.py
 #                             on the running kernel's drivers/soc/apple/pmp.rs) against the running kernel, into var/pmp
@@ -86,6 +88,7 @@ bootargs)
 votes)
     need pmp_votes
     ! loaded pmp_votes || die "pmp_votes is loaded already ($0 unvotes first)"
+    ! loaded pmp || die "the kernel's own pmp driver has the PMP (the pmp series): its tree sets the request word"
     sync
     sudo insmod "$B/pmp_votes.ko" macos=1 ${VOTES_MASK:+mask=$VOTES_MASK} $([[ ${VOTES_DIE1:-0} == 1 ]] && echo die1=1)
     klog votes
@@ -93,6 +96,7 @@ votes)
 start)
     [[ ${2:-} == --now ]] || die "usage: $0 start --now   (the PMP runs until reboot; sync and stop the pool's writers first)"
     ready; need pmp_lab
+    ! loaded pmp || die "the kernel's own pmp driver has the PMP (the pmp series): nothing to start"
     [[ $(cat /sys/module/pmp_votes/parameters/macos 2>/dev/null) == Y ]] || die "macOS's word 0 is not set: $0 votes"
     ! loaded pmp_lab || die "pmp_lab is loaded already"
     sync

@@ -1,0 +1,65 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Wed, 4 Nov 2026 08:08:03 +0000
+Subject: [PATCH 3/3] soc: apple: pmp: Support the M2 Pro/Max/Ultra
+
+Match apple,t6020-pmp-v2, and patch only BDID and DVID into the boot
+arguments there, as m1n1's experiments/pmp_init.py does for this family
+(DCAP and the IOVA table are T600X only; the driver already answers an
+empty IOVA table when apple,pio-ranges is absent).
+
+On an M2 Ultra (t6022) this starts the PMP: its status reads ready, and
+its request word is acknowledged bit for bit, once the tree requests the
+P-CPU clusters and the GPU before the start (as macOS does). Memory and
+fabric then follow the load: idle 21.3 W to 16.1 W, GPU read bandwidth
+668 to 775 GB/s.
+---
+ drivers/soc/apple/pmp.rs | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/soc/apple/pmp.rs b/drivers/soc/apple/pmp.rs
+index f11043160..13672cd68 100644
+--- a/drivers/soc/apple/pmp.rs
++++ b/drivers/soc/apple/pmp.rs
+@@ -407,16 +407,21 @@ fn crashed(data: <Self::Data as ForeignOwnable>::Borrowed<'_>, _crashlog: Option
+ kernel::of_device_table!(
+     OF_TABLE,
+     MODULE_OF_TABLE,
+-    (),
+-    [(of::DeviceId::new(c"apple,t6000-pmp-v2"), ())]
++    bool,
++    [
++        // M1 Pro/Max/Ultra: the DRAM capacity goes to the firmware too.
++        (of::DeviceId::new(c"apple,t6000-pmp-v2"), true),
++        // M2 Pro/Max/Ultra: BDID and DVID only, as m1n1's experiments/pmp_init.py.
++        (of::DeviceId::new(c"apple,t6020-pmp-v2"), false),
++    ]
+ );
+ 
+ impl platform::Driver for PmpDriver {
+-    type IdInfo = ();
++    type IdInfo = bool;
+ 
+     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
+ 
+-    fn probe(pdev: &platform::Device<Core>, _info: Option<&()>) -> impl PinInit<Self, Error> {
++    fn probe(pdev: &platform::Device<Core>, info: Option<&bool>) -> impl PinInit<Self, Error> {
+         let dev: ARef<device::Device> = pdev.as_ref().into();
+         let data = PmpData::new(pdev)?;
+         let node = dev.fwnode().ok_or(EIO)?;
+@@ -424,7 +429,11 @@ fn probe(pdev: &platform::Device<Core>, _info: Option<&()>) -> impl PinInit<Self
+             .property_read(c"apple,dram-vendor-id")
+             .required_by(&dev)?;
+         let bdid = node.property_read(c"apple,board-id").required_by(&dev)?;
+-        match node.property_read(c"apple,dram-capacity").optional() {
++        let dcap = match info {
++            Some(true) => node.property_read(c"apple,dram-capacity").optional(),
++            _ => None,
++        };
++        match dcap {
+             Some(dcap) => data.patch_bootargs(
+                 pdev,
+                 &[
+-- 
+2.56.0
+

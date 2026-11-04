@@ -562,9 +562,11 @@ State on 4 Nov, for anyone picking this up (the entries below are the evidence, 
 - 4 Nov, VERIFIED (five hangs, then one write that held): every `votes` hang (twice 3 Nov, three times 4 Nov, whatever
   the bits) was pmp_votes writing the report through plain `ioremap` on a `nonposted-mmio` bus: posted writes hang the
   machine, reads pass. With `ioremap_np` the same write held at once (06:48). Map any second view of an Apple SoC
-  register non-posted (`of_iomap`, or `ioremap_np` when the resource has IORESOURCE_MEM_NONPOSTED). Before that,
-  Linux had never written the request word: pmp-report's five domains read `off-0` in genpd while word 0 held their
-  bits (0x6000c000), iBoot's value. The PMS, PMS-SRAM, bridge, c1ppt and PMP domains were on, on both dies.
+  register non-posted (`of_iomap`, or `ioremap_np` when the resource has IORESOURCE_MEM_NONPOSTED). pmp-report itself
+  writes the word non-posted at every boot: its always-on entries (DISPEXT0/1, AFNC4/5_IOA) set 0x6000c000 when they
+  probe, and genpd then lists them `off-0`, because pmp-report registers them as off after setting the bit
+  (VERIFIED, pmp-report.c and the running tree, 4 Nov; corrected: this line said that value was iBoot's and that
+  Linux had never written the word). The PMS, PMS-SRAM, bridge, c1ppt and PMP domains were on, on both dies.
 - 4 Nov, VERIFIED (m1n1 hypervisor trace of macOS 13.7.8 booting, `macos/hv-pmp.sh`; raw log kept off-repo, on the
   operator's stick and in-session): macOS's PMP bring-up uses the exact message protocol our `drivers/soc/apple/pmp.rs`
   implements. Sequence: SetBuf, `GetIOVATable -> IOVA=0x0` (twice; so t602x needs no address table, as our empty-table

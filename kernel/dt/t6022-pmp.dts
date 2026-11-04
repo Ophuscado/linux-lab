@@ -19,10 +19,16 @@
  * wrote no word 1 in the boot traced on 4 Nov, and that day the HDMI display stayed fine with the PMP running and
  * word 1 empty.
  *
- * The pmp node's compatible is cut to "apple,t6020-pmp-v2": the stock pmp.ko matches "apple,t6000-pmp-v2" and
- * would otherwise be loaded by udev and start the PMP on the first boot with this tree, without the request word the
- * PMP needs on this machine. The lab copy of the driver (kernel/pmp.sh, pmp_lab) binds t6020 only and is loaded by
- * hand, after kernel/pmp.sh votes.
+ * The pmp node's compatible is cut to "apple,t6020-pmp-v2": the stock pmp.ko matches "apple,t6000-pmp-v2" only and
+ * would start the PMP with the M1 family's boot arguments. The lab's pmp series (src-patches/linux/pmp) matches
+ * t6020 with the M2 family's, so a kernel built with it starts the PMP at boot; without the series nothing binds
+ * and kernel/pmp.sh can start it by hand (votes, start --now).
+ *
+ * The request word as macOS has it when it starts the PMP (0x0001e6006000c700, traced 4 Nov): the stock entries
+ * set DISPEXT0/1 (bits 14, 15) and AFNC4/5_IOA (29, 30) at boot; the entries added below, always on as those are,
+ * set the P-CPU clusters (8, 9), the GPU (10) and bits 41, 42 and 45-48, which macOS sets one each after its device
+ * requests and no soc-device or pmgr entry names. pmp-report sets an always-on entry's bit when it probes, which is
+ * before the pmp module loads. Bits past 31 need the series' first patch (a 64-bit bit in pmp-report).
  *
  * m1n1 adds at most 96 KB to the tree, and with this alias needs about 27 KB more than the ~93 KB it adds today:
  * tbt-kernel.sh pads the board tree when this overlay is applied.
@@ -52,4 +58,87 @@
 
 &{/soc@200000000/iommu@3860e8000} {
 	power-domains = <&pmp_report_isp_sys>;
+};
+
+&{/soc@200000000/pmp_report@28e3c0000} {
+	report@8 {
+		compatible = "apple,t6020-pmp-v2-report-entry",
+			"apple,t6000-pmp-v2-report-entry";
+		reg = <0x8>;
+		label = "pmp-pcpm0";
+		#power-domain-cells = <0>;
+		apple,always-on;
+	};
+
+	report@9 {
+		compatible = "apple,t6020-pmp-v2-report-entry",
+			"apple,t6000-pmp-v2-report-entry";
+		reg = <0x9>;
+		label = "pmp-pcpm1";
+		#power-domain-cells = <0>;
+		apple,always-on;
+	};
+
+	report@a {
+		compatible = "apple,t6020-pmp-v2-report-entry",
+			"apple,t6000-pmp-v2-report-entry";
+		reg = <0xa>;
+		label = "pmp-gfx";
+		#power-domain-cells = <0>;
+		apple,always-on;
+	};
+
+	report@29 {
+		compatible = "apple,t6020-pmp-v2-report-entry",
+			"apple,t6000-pmp-v2-report-entry";
+		reg = <0x29>;
+		label = "pmp-bit41";
+		#power-domain-cells = <0>;
+		apple,always-on;
+	};
+
+	report@2a {
+		compatible = "apple,t6020-pmp-v2-report-entry",
+			"apple,t6000-pmp-v2-report-entry";
+		reg = <0x2a>;
+		label = "pmp-bit42";
+		#power-domain-cells = <0>;
+		apple,always-on;
+	};
+
+	report@2d {
+		compatible = "apple,t6020-pmp-v2-report-entry",
+			"apple,t6000-pmp-v2-report-entry";
+		reg = <0x2d>;
+		label = "pmp-bit45";
+		#power-domain-cells = <0>;
+		apple,always-on;
+	};
+
+	report@2e {
+		compatible = "apple,t6020-pmp-v2-report-entry",
+			"apple,t6000-pmp-v2-report-entry";
+		reg = <0x2e>;
+		label = "pmp-bit46";
+		#power-domain-cells = <0>;
+		apple,always-on;
+	};
+
+	report@2f {
+		compatible = "apple,t6020-pmp-v2-report-entry",
+			"apple,t6000-pmp-v2-report-entry";
+		reg = <0x2f>;
+		label = "pmp-bit47";
+		#power-domain-cells = <0>;
+		apple,always-on;
+	};
+
+	report@30 {
+		compatible = "apple,t6020-pmp-v2-report-entry",
+			"apple,t6000-pmp-v2-report-entry";
+		reg = <0x30>;
+		label = "pmp-bit48";
+		#power-domain-cells = <0>;
+		apple,always-on;
+	};
 };

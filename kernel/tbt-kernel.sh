@@ -243,9 +243,10 @@ checkout_pinned() {
 }
 
 # The lab's other kernel series (src-patches/linux/NAME, each based on a commit the pinned one contains), applied
-# with git am on top of the pinned commit: TBT_SERIES, default the GPU's fdinfo and the two HID drivers;
-# TBT_SERIES= builds the pinned commit alone.
-SERIES=${TBT_SERIES-asahi-fdinfo hid-magicmouse hid-apple}
+# with git am on top of the pinned commit: TBT_SERIES, default the GPU's fdinfo, the two HID drivers and the PMP
+# (pmp: the driver starts it at boot on this machine, with the t6022-pmp overlay); TBT_SERIES= builds the pinned
+# commit alone.
+SERIES=${TBT_SERIES-asahi-fdinfo hid-magicmouse hid-apple pmp}
 apply_series() {
     local s d
     for s in $SERIES; do
@@ -265,9 +266,11 @@ apply_series() {
 # the M2 Ultra's die-0 Neural Engine (a node only: its driver is loaded by hand, kernel/ane.sh) and, after it, this
 # repository's kernel/dt/t6022-ane-dart-power.dts: with the overlay alone the kernel panicked at boot (29 Oct,
 # SError in apple_dart_probe: a DART read with its power island off). An overlay is taken from kernel/dt/ first,
-# then from src/linux-ane/packaging/dt/. t6022-pmp (kernel/dt/t6022-pmp.dts, the PMP for die 0: kernel/pmp.sh) also
-# pads the board tree by TBT_DT_PAD bytes (default 64 KB), for m1n1: see the end of apply_overlays.
-OVERLAYS=${TBT_OVERLAYS-t6022-ane}
+# then from src/linux-ane/packaging/dt/. t6022-pmp (kernel/dt/t6022-pmp.dts, the PMP for die 0), on by default since
+# 4 Nov, also pads the board tree by TBT_DT_PAD bytes (default 64 KB), for m1n1: see the end of apply_overlays. It
+# wants a kernel with the pmp series, which starts the PMP at boot: on 3 Nov this tree hung the machine twice under
+# GPU load with the PMP stopped, and held the same load with it running (4 Nov).
+OVERLAYS=${TBT_OVERLAYS-t6022-ane t6022-pmp}
 [[ " $OVERLAYS " != *" t6022-ane "* || " $OVERLAYS " == *" t6022-ane-dart-power "* ]] || OVERLAYS="$OVERLAYS t6022-ane-dart-power"
 # Properties whose phandle points at no node (dtc checks them on a compiled tree too: "Could not get phandle node").
 # Not the __symbols__ paths: overlays record /soc/... for nodes under /soc@200000000, which dtc reports as missing
@@ -317,6 +320,8 @@ apply_overlays() {
         (($(dangling "$DTB") <= before)) || die "padding left unresolved phandle references in $DTB"
         scripts/dtc/dtc -q -I dtb -O dts "$DTB" | grep -A2 'pmp@28e700000 {' | grep -q 'compatible = "apple,t6020-pmp-v2";' ||
             die "the pmp node in $DTB keeps the stock compatible: the t6022-pmp overlay did not apply"
+        grep -q 'c"apple,t6020-pmp-v2"' drivers/soc/apple/pmp.rs || [[ ${TBT_FORCE:-0} == 1 ]] ||
+            die "t6022-pmp without the pmp series in $PWD: nothing would start the PMP (TBT_SERIES with pmp, or TBT_FORCE=1 to start it by hand with kernel/pmp.sh)"
         echo "padded $DTB by ${TBT_DT_PAD:-65536} bytes to $(stat -c %s "$DTB"), for m1n1's PMP settings"
     fi
 }
