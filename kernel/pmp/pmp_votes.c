@@ -15,7 +15,9 @@
  *                                41, 42, 45-48, which it sets one each after those votes and which no soc-device or
  *                                pmgr entry names. Linux's tree has no report entry for PCPM or GFX, and pmp-report
  *                                cannot set a bit past 31. Kept at unload once the PMP runs: dropping the CPU
- *                                clusters' vote under a running PMP is the one thing this module must not do
+ *                                clusters' vote under a running PMP is the one thing this module must not do.
+ *                                mask=0x700 (say) sets only those of macOS's bits: setting all of them with the PMP
+ *                                stopped hung the machine (4 Nov), so the groups are tried one at a time
  *   insmod pmp_votes.ko die1=1   also set in word 1 what pmp-report keeps on in word 0 for die 0, for die 1:
  *                                bit 14 (DISPEXT4, the HDMI port's DCP), 29 and 30 (IOA11, IOA12); the PMP's
  *                                acknowledgement is awaited only when it is running
@@ -50,6 +52,10 @@ MODULE_PARM_DESC(die1, "set die 1's display and fabric votes in word 1 (default:
 static bool macos;
 module_param(macos, bool, 0444);
 MODULE_PARM_DESC(macos, "set in word 0 the votes macOS holds when it starts the PMP (default: read only)");
+
+static unsigned long long mask = MACOS_AT_RUN;
+module_param(mask, ullong, 0444);
+MODULE_PARM_DESC(mask, "with macos=1, only these of macOS's bits (default: all of 0x0001e6006000c700)");
 
 static void __iomem *base;
 static u64 word1_at_load;
@@ -131,7 +137,8 @@ static int __init pmp_votes_init(void)
 		return -ENOMEM;
 	show("at load");
 	if (macos) {
-		word0_added = MACOS_AT_RUN & ~readq(base + REQ_RD(0));
+		word0_added = MACOS_AT_RUN & mask & ~readq(base + REQ_RD(0));
+		pr_info("pmp_votes: setting word 0 bits %016llx\n", word0_added);
 		ret = set_word0(word0_added, 0);
 		if (ret) {
 			pr_err("pmp_votes: word 0 refused %016llx (%d)\n", word0_added, ret);

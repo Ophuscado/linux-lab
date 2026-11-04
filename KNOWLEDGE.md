@@ -540,6 +540,9 @@ Qwen3-Coder-Next 422 / 574 / 24.8 (pp512 / pp2048 / tg128).
     and pmp-report cannot set a bit past 31. A PMP that starts with the CPU clusters and the GPU unrequested may cut
     them, which fits both start-chain crashes landing right after the sudo password (3 Nov). `pmp_votes macos=1` sets
     macOS's word 0 before the start.
+    4 Nov, OBSERVED (t6022-pmp tree, right after boot): writing all of that word with the PMP stopped hung the
+    machine. The screen's last line was `status`'s (word 7 at unload); the journal and var/pmp lost the last ~60 s,
+    so nothing logged `votes`. Next: `VOTES_MASK` one group at a time (0x700, then the high bits).
   - AdvertiseAck numbering. macOS numbers from 0 and answers a name it lacks with INDEX 0 SIZE 0 without spending an
     index; pmp.rs numbers from 1, spends one per miss, and its SetVal looks up entry INDEX of a list that starts at 0
     (the last entry is out of range). The firmware sent no SetVal that boot. `make_lab.py` now numbers as macOS does.

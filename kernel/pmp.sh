@@ -14,7 +14,7 @@
 #   kernel/pmp.sh votes       pmp_votes macos=1: word 0 as macOS has it when it starts the PMP (the P-CPU clusters, the
 #                             GPU, the high bits; 4 Nov trace), which Linux's pmp-report cannot set; VOTES_DIE1=1 adds
 #                             die1=1, die 1's display and fabric votes in word 1 (macOS wrote none that boot); held
-#                             until 'unvotes' or reboot
+#                             until 'unvotes' or reboot. VOTES_MASK=0x700 (say) sets only those of macOS's bits
 #   kernel/pmp.sh start --now pmp_lab: patches BDID and DVID, starts the PMP's firmware and serves its messages. Needs
 #                             'votes' first. There is no stop: the PMP runs until reboot
 #   kernel/pmp.sh dump        the words again, through the loaded pmp_votes
@@ -83,7 +83,8 @@ bootargs)
 votes)
     need pmp_votes
     ! loaded pmp_votes || die "pmp_votes is loaded already ($0 unvotes first)"
-    sudo insmod "$B/pmp_votes.ko" macos=1 $([[ ${VOTES_DIE1:-0} == 1 ]] && echo die1=1)
+    sync
+    sudo insmod "$B/pmp_votes.ko" macos=1 ${VOTES_MASK:+mask=$VOTES_MASK} $([[ ${VOTES_DIE1:-0} == 1 ]] && echo die1=1)
     klog votes
     ;;
 start)
