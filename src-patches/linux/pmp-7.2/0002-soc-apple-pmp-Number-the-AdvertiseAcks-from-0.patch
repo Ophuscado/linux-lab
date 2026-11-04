@@ -1,0 +1,40 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Wed, 4 Nov 2026 08:08:03 +0000
+Subject: [PATCH 2/3] soc: apple: pmp: Number the AdvertiseAcks from 0
+
+The firmware registers its tunables and IOReport channels one Advertise
+at a time, and the driver answers each with an index and a size. The
+driver numbered them from 1 (the list's length after the push) and gave
+an index to a property it could not find, while set_ioreg looks the
+index up in a list that starts at 0, so the last entry is out of range.
+
+macOS, traced booting on an M2 Ultra under m1n1's hypervisor (794
+Advertises), numbers from 0 and answers a property it lacks with INDEX 0,
+SIZE 0 without taking an index. Do the same.
+---
+ drivers/soc/apple/pmp.rs | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/soc/apple/pmp.rs b/drivers/soc/apple/pmp.rs
+index 7924881a2..6b93fda21 100644
+--- a/drivers/soc/apple/pmp.rs
++++ b/drivers/soc/apple/pmp.rs
+@@ -326,8 +326,13 @@ fn register_ioreg(&self, addr: u64) -> Result<u64> {
+                 dev_info!(self.dev, "unknown property {:?}", name_str);
+             }
+         }
+-        state.ioreg_entries.push(size, GFP_KERNEL)?;
++        // As macOS answers: indices from 0, and a property the tree lacks gets INDEX 0, SIZE 0
++        // without taking an index.
++        if size == 0 {
++            return Ok((OPC_REGISTER_IOREG | OPC_ACK_MASK) << OPC_SHIFT);
++        }
+         let index = state.ioreg_entries.len() as u64;
++        state.ioreg_entries.push(size, GFP_KERNEL)?;
+         let msg = (OPC_REGISTER_IOREG | OPC_ACK_MASK) << OPC_SHIFT | (index << 32) | size as u64;
+         Ok(msg)
+     }
+-- 
+2.56.0
+

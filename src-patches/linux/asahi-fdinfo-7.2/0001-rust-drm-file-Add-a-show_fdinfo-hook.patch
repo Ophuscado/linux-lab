@@ -1,0 +1,130 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Mon, 26 Oct 2026 01:45:14 +0000
+Subject: [PATCH 1/3] rust: drm: file: Add a show_fdinfo hook
+
+Let a Rust DRM driver print its per-client usage stats into the client's
+fdinfo (Documentation/gpu/drm-usage-stats.rst), the way C drivers do
+through struct drm_driver::show_fdinfo. A driver sets
+DriverFile::HAS_FDINFO and implements DriverFile::show_fdinfo, which
+gets a Printer for its own lines and for the DRM core's per-client
+memory stats (drm_show_memory_stats). The GEM file operations get
+show_fdinfo = drm_show_fdinfo, as DRM_GEM_FOPS gives C drivers: without
+it /proc/<pid>/fdinfo never reaches the DRM core, and a Rust driver's
+fdinfo shows no drm-* line at all.
+---
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/drm/device.rs       |  6 ++++-
+ rust/kernel/drm/file.rs         | 44 +++++++++++++++++++++++++++++++++
+ rust/kernel/drm/gem/mod.rs      |  4 +++
+ 4 files changed, 54 insertions(+), 1 deletion(-)
+
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index ce864cc20..cb963ff3d 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -37,6 +37,7 @@
+ #include <drm/drm_gem_shmem_helper.h>
+ #include <drm/drm_gpuvm.h>
+ #include <drm/drm_ioctl.h>
++#include <drm/drm_print.h>
+ #include <drm/drm_syncobj.h>
+ #include <drm/gpu_scheduler.h>
+ #include <kunit/test.h>
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+index 28eed5eb2..c9f7fe119 100644
+--- a/rust/kernel/drm/device.rs
++++ b/rust/kernel/drm/device.rs
+@@ -192,7 +192,11 @@ const fn compute_features() -> u32 {
+         dumb_create: T::Object::ALLOC_OPS.dumb_create,
+         dumb_map_offset: T::Object::ALLOC_OPS.dumb_map_offset,
+ 
+-        show_fdinfo: None,
++        show_fdinfo: if <T::File as drm::file::DriverFile>::HAS_FDINFO {
++            Some(drm::File::<T::File>::show_fdinfo_callback)
++        } else {
++            None
++        },
+         fbdev_probe: None,
+ 
+         major: T::INFO.major,
+diff --git a/rust/kernel/drm/file.rs b/rust/kernel/drm/file.rs
+index f978061af..013c2f96f 100644
+--- a/rust/kernel/drm/file.rs
++++ b/rust/kernel/drm/file.rs
+@@ -22,6 +22,39 @@ pub trait DriverFile {
+ 
+     /// Get raw drm_file pointer
+     fn as_raw(&self) -> *mut bindings::drm_file;
++
++    /// Whether the driver implements [`DriverFile::show_fdinfo`]; fills `struct
++    /// drm_driver::show_fdinfo`.
++    const HAS_FDINFO: bool = false;
++
++    /// Print this client's usage into its fdinfo, after the lines the DRM core prints itself
++    /// (`drm-driver`, `drm-client-id`, ...). See `Documentation/gpu/drm-usage-stats.rst`.
++    fn show_fdinfo(_file: &File<Self>, _printer: &mut Printer)
++    where
++        Self: Sized,
++    {
++    }
++}
++
++/// The `struct drm_printer` a driver's [`DriverFile::show_fdinfo`] prints into.
++pub struct Printer(*mut bindings::drm_printer);
++
++impl Printer {
++    /// Print formatted text (usually one `key:\tvalue` line, ending in a newline).
++    pub fn print(&mut self, args: core::fmt::Arguments<'_>) -> Result {
++        let s = crate::str::CString::try_from_fmt(args)?;
++        // SAFETY: `self.0` is the valid printer `show_fdinfo_callback` was called with, and `s` is
++        // a NUL-terminated string that outlives the call.
++        unsafe { bindings::drm_puts(self.0, s.as_char_ptr()) };
++        Ok(())
++    }
++
++    /// Print the DRM core's per-client memory lines (`drm-total-*`, `drm-resident-*`, ...) for the
++    /// GEM objects this client holds handles to.
++    pub fn memory_stats<T: DriverFile>(&mut self, file: &File<T>) {
++        // SAFETY: `self.0` is a valid printer and `file.as_raw()` a valid open `struct drm_file`.
++        unsafe { bindings::drm_show_memory_stats(self.0, file.as_raw()) };
++    }
+ }
+ 
+ /// An open DRM File.
+@@ -91,6 +124,17 @@ pub(crate) extern "C" fn open_callback(
+         0
+     }
+ 
++    /// The show_fdinfo callback of a `struct drm_file`.
++    pub(crate) extern "C" fn show_fdinfo_callback(
++        printer: *mut bindings::drm_printer,
++        raw_file: *mut bindings::drm_file,
++    ) {
++        // SAFETY: The DRM core calls this with a valid printer and an open `struct drm_file`,
++        // opened through `T::open`.
++        let file = unsafe { File::<T>::from_raw(raw_file) };
++        T::show_fdinfo(file, &mut Printer(printer));
++    }
++
+     /// The postclose callback of a `struct drm_file`.
+     pub(crate) extern "C" fn postclose_callback(
+         _raw_dev: *mut bindings::drm_device,
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index c7e3de5e5..9d0d75d17 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -528,6 +528,10 @@ pub(super) const fn create_fops() -> bindings::file_operations {
+     fops.read = Some(bindings::drm_read);
+     fops.llseek = Some(bindings::noop_llseek);
+     fops.mmap = Some(bindings::drm_gem_mmap);
++    // /proc/<pid>/fdinfo/<fd> calls the file's show_fdinfo; drm_show_fdinfo prints the common drm-*
++    // lines and calls the driver's own (struct drm_driver::show_fdinfo), as DRM_GEM_FOPS does for C
++    // drivers.
++    fops.show_fdinfo = Some(bindings::drm_show_fdinfo);
+     fops.fop_flags = bindings::FOP_UNSIGNED_OFFSET;
+ 
+     fops
+-- 
+2.56.0
+

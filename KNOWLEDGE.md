@@ -67,6 +67,21 @@ Kernel 7.1.13-tbtwip: Asahi's 7.1.13 with the 7.2 Thunderbolt stack, the 2023 tu
 (`src-patches/linux/tbt-7.1`, `tbt-pcie`). The disks lived in four home-made ASM2464 USB4 enclosures until 21 Oct
 and in two M424 Thunderbolt 3 boxes since 22 Oct.
 
+- 4 Nov, VERIFIED (a work tree in the clone's `_tmp`, not built or booted): what moving to Asahi's asahi-7.2.14-1
+  (414e55d) takes. Five of the ten tbt-7.1 patches are in 7.2.14 already (the CIO reset binding and driver, the
+  swapped TBT adapter value, the Type-C Thunderbolt switch, the ATC PHY driver); the two wholesale backports (the
+  thunderbolt subsystem, tipd) give way to 7.2.14's own, newer, code. The tbt-pcie series, written on the 7.2 WIP
+  tree, applies as it is except its two device-tree patches: 7.2.14 has the M2 Pro/Max/Ultra USB4 host routers and
+  the die-1 Type-C wiring, so the port (`tbt-7.2/0008`) adds only the tunneled controllers, their DARTs, the
+  routers' PCIe adapter, the rear ports' Type-C wiring and the Mac Studio's aliases, keeping 7.2.14's five-cell
+  DART references. asahi-fdinfo needed two conflicts resolved (the DRM vtable, and `File::open` now inside
+  `registration_data_with`); the HID series apply unchanged; the pmp series' M2 match was rewritten for 7.2's
+  probe signature. All of it compiles against the stock config moved to 7.2.14 (rust, the GPU driver, PMP and
+  report, thunderbolt, PCI, DART, tipd, HID) without a warning; the board tree compiles with all six tunneled
+  controllers okay, and the t6022-ane, ane-dart-power and t6022-pmp overlays apply to it with no dangling phandle
+  (the PMP overlay now names its devices by label: the AVD moved from 0x286000000 to 0x287080000).
+  `tbt-kernel.sh` builds 7.2 by default in `src/linux-7.2`; `TBT_BASE=7.1` keeps the 7.1 build in `src/linux`.
+
 - 22 Oct, VERIFIED: the same kernel drives Thunderbolt 3 with no change: two M424 24-bay boxes, each an Intel JHL7440
   (Titan Ridge) bridge, an LSI SAS3008 HBA (`mpt3sas`) and a SAS expander, train at 40 Gb/s (2 x 20) and have carried
   the migration around the clock with no Thunderbolt, PCIe or `mpt3sas` error. Behind the HBA disks have no ataN

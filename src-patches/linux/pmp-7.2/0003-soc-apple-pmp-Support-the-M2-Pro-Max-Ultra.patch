@@ -1,0 +1,68 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ophuscado <postbox@ophuscado.com>
+Date: Wed, 4 Nov 2026 08:31:56 +0000
+Subject: [PATCH 3/3] soc: apple: pmp: Support the M2 Pro/Max/Ultra
+
+Match apple,t6020-pmp-v2, and patch only BDID and DVID into the boot
+arguments there, as m1n1's experiments/pmp_init.py does for this family
+(DCAP and the IOVA table are T600X only; the driver already answers an
+empty IOVA table when apple,pio-ranges is absent).
+
+On an M2 Ultra (t6022) this starts the PMP: its status reads ready, and
+its request word is acknowledged bit for bit, once the tree requests the
+P-CPU clusters and the GPU before the start (as macOS does). Memory and
+fabric then follow the load: idle 21.3 W to 16.1 W, GPU read bandwidth
+668 to 775 GB/s.
+---
+ drivers/soc/apple/pmp.rs | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/soc/apple/pmp.rs b/drivers/soc/apple/pmp.rs
+index 6b93fda21..9d043066f 100644
+--- a/drivers/soc/apple/pmp.rs
++++ b/drivers/soc/apple/pmp.rs
+@@ -403,19 +403,24 @@ fn crashed(data: <Self::Data as ForeignOwnable>::Borrowed<'_>, _crashlog: Option
+ kernel::of_device_table!(
+     OF_TABLE,
+     MODULE_OF_TABLE,
+-    (),
+-    [(of::DeviceId::new(c"apple,t6000-pmp-v2"), ())]
++    bool,
++    [
++        // M1 Pro/Max/Ultra: the DRAM capacity goes to the firmware too.
++        (of::DeviceId::new(c"apple,t6000-pmp-v2"), true),
++        // M2 Pro/Max/Ultra: BDID and DVID only, as m1n1's experiments/pmp_init.py.
++        (of::DeviceId::new(c"apple,t6020-pmp-v2"), false),
++    ]
+ );
+ 
+ impl platform::Driver for PmpDriver {
+-    type IdInfo = ();
++    type IdInfo = bool;
+     type Data<'bound> = PmpDriver;
+ 
+     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
+ 
+     fn probe<'bound>(
+         pdev: &'bound platform::Device<Core<'_>>,
+-        _info: Option<&'bound Self::IdInfo>,
++        info: Option<&'bound Self::IdInfo>,
+     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
+         let dev: ARef<device::Device> = pdev.as_ref().into();
+         let pmp_req = pdev.io_request_by_name(c"pmp").ok_or(EINVAL)?;
+@@ -430,7 +435,11 @@ fn probe<'bound>(
+             .property_read(c"apple,dram-vendor-id")
+             .required_by(&dev)?;
+         let bdid = node.property_read(c"apple,board-id").required_by(&dev)?;
+-        match node.property_read(c"apple,dram-capacity").optional() {
++        let dcap = match info {
++            Some(true) => node.property_read(c"apple,dram-capacity").optional(),
++            _ => None,
++        };
++        match dcap {
+             Some(dcap) => data.patch_bootargs(
+                 &pmp_mmio,
+                 &[
+-- 
+2.56.0
+

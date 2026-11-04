@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # tbt-kernel.sh: a kernel with Thunderbolt disks AND the GPU, installed next to the stock
-# Fedora Asahi kernel. It is the stock kernel's own source (Asahi tag asahi-7.1.13-3) with
-# the Apple USB4/Thunderbolt host driver of the Asahi 7.2 work-in-progress tree backported
-# and this lab's PCIe tunneling on top (branch tbt/7.1 of github.com/Ophuscado/linux).
+# Fedora Asahi kernel. Two bases (TBT_BASE):
+#   7.2  (default since 4 Nov) Asahi's tag asahi-7.2.14-1, which has the USB4 stack, with this lab's
+#        PCIe tunneling (series tbt-7.2) and the other series rebased; built in src/linux-7.2
+#   7.1  the stock kernel's own source (asahi-7.1.13-3) with the Asahi 7.2 work-in-progress USB4
+#        driver backported (branch tbt/7.1 of github.com/Ophuscado/linux); built in src/linux. Kept
+#        as the way back: TBT_BASE=7.1 tbt-kernel.sh try boots that build again
 # The earlier trial kernel (7.2.2-tbtwip, branch tbt/pcie) had no GPU driver.
 #
 # Written for: Apple Mac Studio (M2 Ultra, 2023), Fedora Asahi Remix 44,
@@ -51,7 +54,7 @@
 #   cp "/Volumes/<EFI name>/m1n1/boot.bin.stock" "/Volumes/<EFI name>/m1n1/boot.bin"
 # and pick the stock kernel in the GRUB menu.
 #
-# Environment overrides: SRC (build directory), TBT_NO_GPU=1 (accept a build that lost
+# Environment overrides: TBT_BASE (7.2, the default, or 7.1: above), SRC (build directory), TBT_NO_GPU=1 (accept a build that lost
 # the GPU driver; not expected any more), TBT_FORCE=1 (skip the machine and config
 # guards), TBT_BASECFG (base kernel config; default is the stock kernel's),
 # TBT_MAKE_ARGS (extra make arguments), TBT_SERIES (the extra series applied, below), TBT_OVERLAYS (device-tree
@@ -60,20 +63,37 @@
 set -euo pipefail
 HERE=$(cd "$(dirname "$(readlink -f "$0")")" && pwd)
 
-# The fork's branch: Asahi tag asahi-7.1.13-3 plus the backported USB4 stack and the
-# changes kept as patches/ in this repository.
-REPO=https://github.com/Ophuscado/linux
-BRANCH=tbt/7.1
-# Pinned so that what gets built is the tree this script was written against.
-COMMIT=9d460b403164694c0f6a1a6ca1038d6a79dfc167
+# Pinned so that what gets built is the tree this script was written against. 7.2: Asahi's tag, the lab's changes
+# as series (below). 7.1: the fork's branch, Asahi tag asahi-7.1.13-3 plus the backported USB4 stack.
+case ${TBT_BASE:-7.2} in
+7.2)
+    REPO=https://github.com/AsahiLinux/linux
+    BRANCH=asahi-7.2.14-1
+    COMMIT=414e55da7a0afaca2a97b29603be88ce0a6fd6de
+    SERIES_DEFAULT="tbt-7.2 asahi-fdinfo-7.2 hid-magicmouse hid-apple pmp-7.2"
+    SRC_DIRS="src/linux-7.2"
+    ;;
+7.1)
+    REPO=https://github.com/Ophuscado/linux
+    BRANCH=tbt/7.1
+    COMMIT=9d460b403164694c0f6a1a6ca1038d6a79dfc167
+    SERIES_DEFAULT="asahi-fdinfo hid-magicmouse hid-apple pmp"
+    SRC_DIRS="src/linux"
+    ;;
+*) printf 'ERR: TBT_BASE is 7.2 or 7.1, not %s\n' "$TBT_BASE" >&2; exit 1 ;;
+esac
 SUFFIX=-tbtwip
 KEEP=/var/lib/tbt-kernel/previous
-# The kernel tree: src/linux beside this repository (since 27 Oct), else the operator's older trees
-# ~/Projects/linux-asahi-tbt or ~/Projects/asahi-linux-tbt, the first that exists. Under sudo the home is the
-# invoking user's, not root's (29 Oct: 'sudo tbt-kernel.sh install' looked in /root and found no build).
+# The kernel tree, one per base: src/linux-7.2 or src/linux beside this repository (since 27 Oct), for 7.1 else the
+# operator's older trees ~/Projects/linux-asahi-tbt or ~/Projects/asahi-linux-tbt, the first that exists. Under sudo
+# the home is the invoking user's, not root's (29 Oct: 'sudo tbt-kernel.sh install' looked in /root and found no build).
 UHOME=$(getent passwd "${SUDO_USER:-$(id -un)}" | cut -d: -f6); UHOME=${UHOME:-$HOME}
 if [[ -z ${SRC:-} ]]; then
-    for SRC in "$HERE/../src/linux" "$UHOME/Projects/linux-asahi-tbt" "$UHOME/Projects/asahi-linux-tbt"; do [[ -d $SRC/.git ]] && break; done
+    if [[ $SRC_DIRS == src/linux ]]; then
+        for SRC in "$HERE/../src/linux" "$UHOME/Projects/linux-asahi-tbt" "$UHOME/Projects/asahi-linux-tbt"; do [[ -d $SRC/.git ]] && break; done
+    else
+        SRC=$HERE/../$SRC_DIRS
+    fi
     SRC=$(cd "$SRC" 2>/dev/null && pwd || echo "$SRC")
 fi
 ESP_MNT=/run/tbt-esp
@@ -243,10 +263,10 @@ checkout_pinned() {
 }
 
 # The lab's other kernel series (src-patches/linux/NAME, each based on a commit the pinned one contains), applied
-# with git am on top of the pinned commit: TBT_SERIES, default the GPU's fdinfo, the two HID drivers and the PMP
-# (pmp: the driver starts it at boot on this machine, with the t6022-pmp overlay); TBT_SERIES= builds the pinned
-# commit alone.
-SERIES=${TBT_SERIES-asahi-fdinfo hid-magicmouse hid-apple pmp}
+# with git am on top of the pinned commit: TBT_SERIES, default for 7.2 the tunneled PCIe (tbt-7.2), the GPU's
+# fdinfo, the two HID drivers and the PMP (the driver starts it at boot on this machine, with the t6022-pmp
+# overlay), for 7.1 the same without tbt-7.2 (its branch has the tunnel); TBT_SERIES= builds the pinned commit alone.
+SERIES=${TBT_SERIES-$SERIES_DEFAULT}
 apply_series() {
     local s d
     for s in $SERIES; do
@@ -388,9 +408,9 @@ stage_build() {
         die "required options were dropped (see WARN lines above); not building"
     fi
 
-    # The 7.1 tree keeps the GPU driver. Should a build lose it anyway (the 7.2 tree marks
-    # it BROKEN), the display would still work, rendered on the CPU: a visible change, so
-    # it needs an explicit yes.
+    # Both trees keep the GPU driver (the 7.2 work-in-progress tree of October marked it BROKEN;
+    # asahi-7.2.14-1 does not). Should a build lose it anyway, the display would still work,
+    # rendered on the CPU: a visible change, so it needs an explicit yes.
     was=$(scripts/config --file "$base" -s DRM_ASAHI)
     v=$(scripts/config -s DRM_ASAHI)
     if [[ $was == y || $was == m ]] && [[ $v != y && $v != m ]]; then

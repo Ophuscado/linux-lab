@@ -30,6 +30,9 @@
  * requests and no soc-device or pmgr entry names. pmp-report sets an always-on entry's bit when it probes, which is
  * before the pmp module loads. Bits past 31 need the series' first patch (a 64-bit bit in pmp-report).
  *
+ * The devices are named by label, not path: the AVD moved from 0x286000000 (7.1) to 0x287080000 (Asahi 7.2), and
+ * the labels are the same in both trees.
+ *
  * m1n1 adds at most 96 KB to the tree, and with this alias needs about 27 KB more than the ~93 KB it adds today:
  * tbt-kernel.sh pads the board tree when this overlay is applied.
  */
@@ -44,19 +47,19 @@
 	compatible = "apple,t6020-pmp-v2";
 };
 
-&{/soc@200000000/avd@286000000} {
+&avd {
 	power-domains = <&pmp_report_avd_sys>;
 };
 
-&{/soc@200000000/dcp@289c00000} {
+&dcpext0 {
 	power-domains = <&pmp_report_dispext0>;
 };
 
-&{/soc@200000000/dcp@315c00000} {
+&dcpext1 {
 	power-domains = <&pmp_report_dispext1>;
 };
 
-&{/soc@200000000/iommu@3860e8000} {
+&isp_dart0 {
 	power-domains = <&pmp_report_isp_sys>;
 };
 

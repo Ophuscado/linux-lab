@@ -1,0 +1,6 @@
+# GPU usage per program in fdinfo for the Rust asahi driver, on Asahi 7.2.14 (the asahi-fdinfo series, rebased).
+UPSTREAM=https://github.com/AsahiLinux/linux
+BASE=414e55da7a0afaca2a97b29603be88ce0a6fd6de  # tag asahi-7.2.14-1
+FORK=https://github.com/Ophuscado/linux
+BRANCH=asahi-fdinfo-7.2
+CLONE=src/linux-7.2

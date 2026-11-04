@@ -1,0 +1,6 @@
+# The USB4/Thunderbolt PCIe tunnel on Asahi 7.2.14, which has the USB4 stack itself: the lab's tbt-pcie drivers and the tunneled PCIe device tree.
+UPSTREAM=https://github.com/AsahiLinux/linux
+BASE=414e55da7a0afaca2a97b29603be88ce0a6fd6de  # tag asahi-7.2.14-1
+FORK=https://github.com/Ophuscado/linux
+BRANCH=tbt/7.2
+CLONE=src/linux-7.2
